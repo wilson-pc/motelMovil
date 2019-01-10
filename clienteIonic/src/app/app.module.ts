@@ -1,9 +1,11 @@
+import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+
 import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -22,6 +24,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { ActivityService } from '../services/activity-service';
 import { TripService } from '../services/trip-service';
 import { WeatherProvider } from '../services/weather';
+import {FileChooser} from '@ionic-native/file-chooser';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,8 @@ import { WeatherProvider } from '../services/weather';
     RegisterPage,
     SearchLocationPage,
     TripDetailPage,
-    TripsPage
+    TripsPage,
+    RegisterRoomPage
   ],
   imports: [
     BrowserModule,
@@ -64,14 +69,17 @@ import { WeatherProvider } from '../services/weather';
     RegisterPage,
     SearchLocationPage,
     TripDetailPage,
-    TripsPage
+    TripsPage,
+    RegisterRoomPage
   ],
   providers: [
     StatusBar,
     ActivityService,
     TripService,
     WeatherProvider,
+    FileChooser,
     SplashScreen,
+    ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
