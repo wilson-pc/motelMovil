@@ -3,6 +3,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { getBase64, resizeBase64 } from 'base64js-es6'
+import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import {
   ImagePicker,
@@ -23,9 +24,10 @@ declare var window;
   templateUrl: 'register-room.html',
 })
 export class RegisterRoomPage {
-  Habitacion: Habitacion;
+  habitacion: Habitacion;
   preview: any;
-
+  habitacionesref: AngularFireList<any>;
+  habitaciones: Observable<any[]>;
   public hasBaseDropZoneOver: boolean = false;
   image: any;
   imagen1: string = "selecciona una foto";
@@ -33,8 +35,14 @@ export class RegisterRoomPage {
   @ViewChild('fileInput2') fileInput2: ElementRef;
 
   public imageLists: any[] = [];
-  constructor(private imagePicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams) {
-    this.Habitacion = new Habitacion;
+  constructor(public database: AngularFireDatabase,private imagePicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams) {
+    this.habitacion = new Habitacion;
+    this.habitacionesref = this.database.list('habitaciones');
+    this.habitaciones = this.habitacionesref.snapshotChanges()
+    .map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    });
+  
   }
 
   ionViewDidLoad() {
@@ -43,11 +51,21 @@ export class RegisterRoomPage {
   filechoosser() {
     this.fileInput.nativeElement.click();
   }
+  guardarDatos(){
+    this.habitacion.foto={imagen:this.image.data,miniatura:this.image.preview,tipo:this.image.type};
+    console.log(this.habitacion);
+ this.habitacionesref.push(
+   this.habitacion
+ );
+
+  }
   filechoosser2() {
     let options = {
       maximumImagesCount: 10,
 
     }
+
+    
 
     this.imagePicker.getPictures(options)
       .then((results) => {
@@ -91,7 +109,7 @@ export class RegisterRoomPage {
           preview: this.preview
         };
         this.imagen1 = this.image.name;
-        console.log(this.image);
+       
         //   this.image=data;
 
         //  alert(this.preview.substring(0, 10));

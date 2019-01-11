@@ -26,6 +26,18 @@ import { TripService } from '../services/trip-service';
 import { WeatherProvider } from '../services/weather';
 import {FileChooser} from '@ionic-native/file-chooser';
 import { ImagePicker } from '@ionic-native/image-picker';
+import { AuthProvider } from '../providers/auth/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireModule } from 'angularfire2';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
+  authDomain: "hotelmovildb.firebaseapp.com",
+  databaseURL: "https://hotelmovildb.firebaseio.com",
+  projectId: "hotelmovildb",
+  storageBucket: "hotelmovildb.appspot.com",
+  messagingSenderId: "1084156115455"
+};
 
 @NgModule({
   declarations: [
@@ -51,6 +63,8 @@ import { ImagePicker } from '@ionic-native/image-picker';
       scrollAssist: true,
       autoFocusAssist: false
     }),
+    AngularFireModule.initializeApp(firebaseConfig,'demo104'),
+    AngularFireDatabaseModule,
     IonicStorageModule.forRoot({
       name: '__ionic3_start_theme',
         driverOrder: ['indexeddb', 'sqlite', 'websql']
@@ -80,7 +94,8 @@ import { ImagePicker } from '@ionic-native/image-picker';
     FileChooser,
     SplashScreen,
     ImagePicker,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthProvider,
   ]
 })
 export class AppModule {}

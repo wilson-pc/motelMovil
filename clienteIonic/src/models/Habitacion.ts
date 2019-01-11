@@ -8,7 +8,7 @@ export class Habitacion {
     public foto:{imagen:string,miniatura:string,tipo:string};
     public fotos:[string];
     public precio:string;
-    public modificacion:{imagen:string,miniatura:string,tipo:string};
+    public modificacion:{fecha:string,usuario:string};
     public estado:string;
     public borrado:boolean;
 }
