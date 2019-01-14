@@ -37,7 +37,7 @@ export class AuthProvider {
       if(firebase.auth().currentUser){
         firebase.auth().signOut()
         .then(() => {
-          this.firebaseService.unsubscribeOnLogOut();
+         // this.firebaseService.unsubscribeOnLogOut();
           resolve();
         }).catch((error) => {
           reject();
