@@ -36,14 +36,9 @@ export class RegisterRoomPage {
   @ViewChild('fileInput2') fileInput2: ElementRef;
 
   public imageLists: string[] = [];
-  private dbPath:string = '/habitaciones';
-  public list:Observable<any[]>;
   constructor(public database: AngularFireDatabase,private imagePicker: ImagePicker, public navCtrl: NavController, public navParams: NavParams) {
     this.habitacion = new Habitacion;
     this.habitacionesref = this.database.list('habitaciones');
-  
-    this.list=this.habitacionesref.valueChanges();
-    console.log(this.list);
     this.habitaciones = this.habitacionesref.snapshotChanges()
     .map(changes => {
       return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
