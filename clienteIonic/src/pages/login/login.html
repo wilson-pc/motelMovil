@@ -6,7 +6,7 @@
     <div padding-horizontal text-center class="animated fadeInDown">
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        <strong>Motel</strong> Las 3 Hermanas
+        <strong>SEX</strong>VAGO
       </h2>
     </div>
 
@@ -29,42 +29,27 @@
       </ion-item>
     </form>
 
-    <p text-right ion-text color="secondary" tappable (click)="forgotPass()"><strong>Olvidaste tu Contraseña?</strong></p>
-
     <div>
       <button ion-button icon-start block color="dark" tappable (click)="login()">
         <ion-icon name="log-in"></ion-icon>
         INGRESAR
       </button>
 
-      <p text-center ion-text color="secondary">O ingresa con:</p>
+      <p text-right ion-text color="primary" tappable (click)="forgotPass()"><strong>Olvidaste tu Contraseña</strong></p>
 
-      <ion-grid>
-        <ion-row>
-          <ion-col col-4>
-            <button ion-button icon-only block class="btn-facebook">
-              <ion-icon name="logo-facebook"></ion-icon>
-            </button>
-          </ion-col>
-          <ion-col col-4>
-            <button ion-button icon-only block class="btn-twitter">
-              <ion-icon name="logo-twitter"></ion-icon>
-            </button>
-          </ion-col>
-          <ion-col col-4>
-            <button ion-button icon-only block class="btn-gplus">
-              <ion-icon name="logo-googleplus"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <!-- Other links -->
+      <button ion-button icon-start block tappable (click)="register()">
+        <ion-icon name="log-in"></ion-icon>
+        REGISTRATE
+      </button>
+
+      <p text-center ion-text color="dark">O</p>
+
+      
+      <button ion-button icon-only block class="btn-gplus">
+        <ion-icon name="logo-google"></ion-icon>
+      </button>
 
     </div>
-
-    <!-- Other links -->
-    <div text-center margin-top>
-      <span ion-text color="secondary" tappable (click)="register()"><strong>Registrate?</strong></span>
-    </div>
-
   </div>
 </ion-content>
