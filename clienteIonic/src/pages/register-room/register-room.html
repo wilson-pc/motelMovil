@@ -1,0 +1,71 @@
+<!--
+  Generated template for the RegisterRoomPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>registerRoom</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+
+        <ion-item>
+          <ion-label fixed>Nombre</ion-label>
+          <ion-input [(ngModel)]="habitacion.nombre" name="nombre" type="text" value=""></ion-input>
+        </ion-item>
+      
+        <ion-item>
+          <ion-label fixed>Precio</ion-label>
+          <ion-input [(ngModel)]="habitacion.precio" name="precio" type="text"></ion-input>
+        </ion-item>
+      
+        
+          <ion-item>
+            <ion-label fixed>Descripcion</ion-label>
+            <ion-input [(ngModel)]="habitacion.descriptcion" name="descripcion" type="text"></ion-input>
+          </ion-item>
+          <input type="file" accept="image/*"  name="fileInput" (change)="fileChange($event)" #fileInput  class="input-file" style="position:absolute; top: -999999px">
+          <ion-item (click)="filechoosser()"  for="fileInput">
+              <ion-label fixed>Foto</ion-label>
+              <ion-input [(ngModel)]="imagen1" type="text" disabled="true"></ion-input>
+            </ion-item>
+             <ion-card *ngIf="image" >
+               
+                <ion-card-content>
+                    <img [src]="image.data"/>
+                </ion-card-content>
+              </ion-card> 
+            <input type="file" accept="image/*"  name="fileInput2" (change)="fileChange2($event)" #fileInput2  class="input-file" style="position:absolute; top: -999999px" multiple>
+            <ion-item (click)="filechoosser2()"  for="fileInput2">
+              <ion-label fixed>Fotos</ion-label>
+              <ion-input type="text" disabled="true"></ion-input>
+            </ion-item>
+
+            
+            <ion-list>
+              <ion-item *ngFor="let item of imageLists"  >
+                <ion-card *ngIf="image" >
+                  <ion-card-content>
+                      <img [src]="item"/>
+                  </ion-card-content>
+                </ion-card> 
+              </ion-item>
+            </ion-list>
+          <ion-item align="center" class="col text-center">
+              <button (click)="guardarDatos()"  style="text-align:center" ion-button icon-start>
+                  <ion-icon  name="document"></ion-icon>
+                  guardar
+                </button>
+          </ion-item>
+      </ion-list>
+
+
+        
+</ion-content>

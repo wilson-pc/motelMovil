@@ -1,9 +1,11 @@
+import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+
 import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -22,6 +24,20 @@ import { IonicStorageModule } from '@ionic/storage';
 import { ActivityService } from '../services/activity-service';
 import { TripService } from '../services/trip-service';
 import { WeatherProvider } from '../services/weather';
+import {FileChooser} from '@ionic-native/file-chooser';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { AuthProvider } from '../providers/auth/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireModule } from 'angularfire2';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
+  authDomain: "hotelmovildb.firebaseapp.com",
+  databaseURL: "https://hotelmovildb.firebaseio.com",
+  projectId: "hotelmovildb",
+  storageBucket: "hotelmovildb.appspot.com",
+  messagingSenderId: "1084156115455"
+};
 
 @NgModule({
   declarations: [
@@ -36,7 +52,8 @@ import { WeatherProvider } from '../services/weather';
     RegisterPage,
     SearchLocationPage,
     TripDetailPage,
-    TripsPage
+    TripsPage,
+    RegisterRoomPage
   ],
   imports: [
     BrowserModule,
@@ -46,6 +63,8 @@ import { WeatherProvider } from '../services/weather';
       scrollAssist: true,
       autoFocusAssist: false
     }),
+    AngularFireModule.initializeApp(firebaseConfig,'demo104'),
+    AngularFireDatabaseModule,
     IonicStorageModule.forRoot({
       name: '__ionic3_start_theme',
         driverOrder: ['indexeddb', 'sqlite', 'websql']
@@ -64,15 +83,19 @@ import { WeatherProvider } from '../services/weather';
     RegisterPage,
     SearchLocationPage,
     TripDetailPage,
-    TripsPage
+    TripsPage,
+    RegisterRoomPage
   ],
   providers: [
     StatusBar,
     ActivityService,
     TripService,
     WeatherProvider,
+    FileChooser,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    ImagePicker,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthProvider,
   ]
 })
 export class AppModule {}
