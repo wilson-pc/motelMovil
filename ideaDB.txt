@@ -1,0 +1,44 @@
+{ usuario:{id,nombre,apellido,ci,telfono,email,direccion},
+	{usaername, passs},
+	{tipoUsuario:{Rol}},
+	tipoRegistroEN LA APP,
+}
+
+{	
+	negocio: {foto,idUSuario,
+		idnegocion, 
+		nombreNegocio, 
+		tipos:{negocio}, 
+		direccion:{ubicacionGPS,descripcion}, 
+		telefono,
+		correo}
+
+	},
+
+	visitantesEnLaApp:{idNEgocio,tipoNegocio,idUsuario, fechaIngreso},
+	
+	calificacion:{idNegocio, usuarioActualizar, calificacion, fecha},
+
+	Productos:{idProdructo, nombre, precio, disponibilidad, cantidad, idNegocio, tipo:TIPO, foto{normal,pequeño}, descripcion},
+
+	Habitaciones:{idNegocio, idHabitacion, nombre, tipo:TIPO, estadoReservado}
+
+	tiempoReservado: {idtiempoResevado, fechainicio, tiempoLimite, fechaconcretada, descripcion, idHabitacion}
+	tiempoReservadoProductos: {fechainicio, tiempoLimite, fechaconcretada, descripcion, idProducto},
+
+	Tipo:{id, nombre},
+
+
+	ReservasHabitaciones:{idUsuarioCliente, idnegocio, idHabitacion:Habitaciones, idtiempoResevado, }
+	ReservasProductos:{idUsuarioCliente, idnegocio, idproducto:Producto, idTiempoReservado}
+
+	
+	billetera:{idbilletera, saldo, idUsuario}//actualizacion
+
+
+	RegistroMovimientoEntrante:{idRegistroEntrante, fecha, monto, idUsuario}//variable
+
+
+	RegistroMovimientoSaliente:{idRegistroSaliente, fecha, monto, idUsuario, idProducto}//variable
+
+}
