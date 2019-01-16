@@ -29,6 +29,11 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { AuthProvider } from '../providers/auth/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
+import { LicoreriaPage } from '../pages/licoreria/licoreria';
+import { TopsPage } from '../pages/tops/tops';
+import { MotelPage } from '../pages/motel/motel';
+import { SexShopPage } from '../pages/sex-shop/sex-shop';
+import { CercaDeMiPage } from '../pages/cerca-de-mi/cerca-de-mi';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -53,7 +58,12 @@ export const firebaseConfig = {
     SearchLocationPage,
     TripDetailPage,
     TripsPage,
-    RegisterRoomPage
+    RegisterRoomPage,
+    LicoreriaPage,
+    TopsPage,
+    MotelPage,
+    SexShopPage,
+    CercaDeMiPage,
   ],
   imports: [
     BrowserModule,
@@ -84,7 +94,12 @@ export const firebaseConfig = {
     SearchLocationPage,
     TripDetailPage,
     TripsPage,
-    RegisterRoomPage
+    RegisterRoomPage,
+    LicoreriaPage,
+    TopsPage,
+    MotelPage,
+    SexShopPage,
+    CercaDeMiPage,
   ],
   providers: [
     StatusBar,

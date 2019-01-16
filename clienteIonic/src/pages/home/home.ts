@@ -6,6 +6,11 @@ import {NotificationsPage} from "../notifications/notifications";
 import {SettingsPage} from "../settings/settings";
 import {TripsPage} from "../trips/trips";
 import {SearchLocationPage} from "../search-location/search-location";
+import { LicoreriaPage } from "../licoreria/licoreria";
+import { TopsPage } from "../tops/tops";
+import { MotelPage } from "../motel/motel";
+import { SexShopPage } from "../sex-shop/sex-shop";
+import { CercaDeMiPage } from "../cerca-de-mi/cerca-de-mi";
 
 
 @Component({
@@ -14,14 +19,26 @@ import {SearchLocationPage} from "../search-location/search-location";
 })
 
 export class HomePage {
+  top: any;
+  motel: any;
+  bar: any;
+  sexShop: any;
+  map: any;
+
+  constructor(private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
+    this.top = TopsPage;
+    this.motel = MotelPage;
+    this.bar = LicoreriaPage;
+    this.sexShop = SexShopPage;
+    this.map = CercaDeMiPage;
+  }
+
   // search condition
   public search = {
     name: "Rio de Janeiro, Brazil",
     date: new Date().toISOString()
   }
 
-  constructor(private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
-  }
 
   ionViewWillEnter() {
     // this.search.pickup = "Rio de Janeiro, Brazil";
