@@ -1,7 +1,8 @@
 import { Habitacion } from './../../models/Habitacion';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject  } from 'rxjs-compat';
+import { map, windowWhen } from 'rxjs/operators';
 import { getBase64, resizeBase64 } from 'base64js-es6'
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { ReplaySubject } from "rxjs/ReplaySubject";
@@ -42,15 +43,26 @@ export class RegisterRoomPage {
     this.habitacion = new Habitacion;
     this.habitacionesref = this.database.list('habitaciones');
   
-    this.list=this.habitacionesref.valueChanges();
-    console.log(this.list);
-    this.habitaciones = this.habitacionesref.snapshotChanges()
-    .map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    this.habitaciones = this.getNoteList()
+    .snapshotChanges()
+    .map(
+    changes => {
+      return changes.map(c => ({
+        key: c.payload.key, ...c.payload.val()
+      }))
+      
     });
-  
+    this.database.list('/habitaciones').valueChanges().subscribe((datas) => { 
+      console.log("datas", datas)
+    },(err)=>{
+       console.log("probleme : ", err)
+    });
+
   }
 
+  getNoteList() {
+    return this.habitacionesref;
+}
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterRoomPage');
   }
@@ -61,14 +73,15 @@ export class RegisterRoomPage {
    this.mensaje="Guardando";
     this.habitacion.foto={imagen:this.image.data,miniatura:this.image.preview,tipo:this.image.type};
   
-    console.log(this.habitacion);
-   let dato= await this.habitacionesref.push(
-   this.habitacion
- );
-this.mensaje="guardado con exito"
+this.save(this.habitacion).then(data=>{
+  console.log(data.path.pieces[1]);
+})
 
- console.log(dato);
-
+  }
+  save(data){
+    return this.habitacionesref.push(
+      this.habitacion
+    );
   }
   filechoosser2() {
     let options = {

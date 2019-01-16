@@ -29,7 +29,7 @@ export class MyApp {
       { title: 'Lista de Favoritos', component: ListPage },
       { title: 'Lista de Deseos', component: ListPage },
       { title: 'Billetera', component: LocalWeatherPage},
-      //{ title: 'Registrar Habitaciones', component: RegisterRoomPage}
+      { title: 'Registrar Habitaciones', component: RegisterRoomPage}
     ];
 
   }
