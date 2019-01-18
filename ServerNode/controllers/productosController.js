@@ -1,7 +1,4 @@
 "use strict"
-
-
-
 module.exports = async function(io) {
   var users=[];
   
@@ -11,7 +8,7 @@ var clients = [];
     clients.push(socket.id);
     console.log("alguin se conecto");
     
-      socket.on('hola', async (data) => {
+      socket.on('registrar-tienda', async (data) => {
      
         io.emit('respuesta', {user: socket.nickname, event: 'left'});   
       });
