@@ -1,15 +1,17 @@
 import { Footer } from "ionic-angular";
+import { Tipo } from "./TipoProducto";
 
 export class Habitacion {
     public id:string;
     public nombre: string;
     public descripcion : string;
-    public tipohabitacion:string;
-    public seccionubicacion:string;
-    public creacion : {fecha:Date,usuario:string};
+    public tipo:Tipo;
+    public seccionubicacion:string;    
     public foto:{imagen:string,miniatura:string,tipo:string};    
-    public precio:string;
-    public modificacion:{fecha:string,usuario:string};
+    public precio:string;    
     public estado:string;
-    public borrado:boolean;
+    public eliminado:{estado:Boolean,razon:string};
+    public creacion:{usuario:string,fecha:Date}
+    public modificacion:{fecha:string,usuario:string};
+   
 }
