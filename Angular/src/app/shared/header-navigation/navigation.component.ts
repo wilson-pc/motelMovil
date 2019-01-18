@@ -1,69 +1,74 @@
 import { Component, AfterViewInit } from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'ap-navigation',
-  templateUrl: './navigation.component.html'
+    selector: 'ap-navigation',
+    templateUrl: './navigation.component.html'
 })
 export class NavigationComponent implements AfterViewInit {
-	name:string;
-  
-  	constructor() {}
+    name: string;
+
+    constructor(private rout: Router) { }
+
+    exitAdmin() {
+        this.rout.navigate(['/administracion']);
+    }
 
     // This is for Notifications
     notifications: Object[] = [{
         round: 'round-danger',
         icon: 'ti-link',
-        title: 'Luanch Admin',    
+        title: 'Luanch Admin',
         subject: 'Just see the my new admin!',
-        time: '9:30 AM'  
+        time: '9:30 AM'
     }, {
         round: 'round-success',
         icon: 'ti-calendar',
-        title: 'Event today',    
+        title: 'Event today',
         subject: 'Just a reminder that you have event',
         time: '9:10 AM'
     }, {
-        round: 'round-info', 
+        round: 'round-info',
         icon: 'ti-settings',
-        title: 'Settings',    
+        title: 'Settings',
         subject: 'You can customize this template as you want',
         time: '9:08 AM'
     }, {
         round: 'round-primary',
         icon: 'ti-user',
-        title: 'Pavan kumar',    
+        title: 'Pavan kumar',
         subject: 'Just see the my admin!',
         time: '9:00 AM'
     }];
-    
+
     // This is for Mymessages
     mymessages: Object[] = [{
         useravatar: 'assets/images/users/1.jpg',
         status: 'online',
-        from: 'Pavan kumar',    
+        from: 'Pavan kumar',
         subject: 'Just see the my admin!',
-        time: '9:30 AM'  
+        time: '9:30 AM'
     }, {
         useravatar: 'assets/images/users/2.jpg',
         status: 'busy',
-        from: 'Sonu Nigam',    
+        from: 'Sonu Nigam',
         subject: 'I have sung a song! See you at',
         time: '9:10 AM'
     }, {
         useravatar: 'assets/images/users/2.jpg',
         status: 'away',
-        from: 'Arijit Sinh',    
+        from: 'Arijit Sinh',
         subject: 'I am a singer!',
         time: '9:08 AM'
     }, {
         useravatar: 'assets/images/users/4.jpg',
         status: 'offline',
-        from: 'Pavan kumar',    
+        from: 'Pavan kumar',
         subject: 'Just see the my admin!',
         time: '9:00 AM'
     }];
-    
+
     ngAfterViewInit() {
 
         $(function () {
@@ -92,13 +97,13 @@ export class NavigationComponent implements AfterViewInit {
         };
         $(window).ready(set);
         $(window).on("resize", set);
-        
+
         $(".search-box a, .search-box .app-search .srh-btn").on('click', function () {
             $(".app-search").toggle(200);
         });
 
         (<any>$('[data-toggle="tooltip"]')).tooltip();
-        
+
         (<any>$('.scroll-sidebar')).slimScroll({
             position: 'left',
             size: "5px",
