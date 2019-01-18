@@ -20,8 +20,19 @@
                             class="mdi mdi-arrange-bring-forward"></i><span class="hide-menu">Administracion</span></a>
                 </li>
 
+                <li>
+                    <a routerLink="/component/registry-owner" (click)="addExpandClass('component')" [routerLinkActive]="['router-link-active']"><i
+                            class="mdi mdi-view-carousel"></i><span class="hide-menu">Registro Dueño</span></a>
+                </li>
+
+                <li>
+                    <a routerLink="/component/list-product" (click)="addExpandClass('component')" [routerLinkActive]="['router-link-active']"><i
+                            class="mdi mdi-view-carousel"></i><span class="hide-menu">Registro Productos</span></a>
+                </li>
+
 
                 <!--Demas menus-->
+
                 <!--
                 <li class="nav-small-cap">UI Components</li>
                 <li>
