@@ -13,14 +13,14 @@ export class ListProductComponent implements OnInit {
 	closeResult: string;
 
 	elements: any = [
-		{ apellidos: 'Castillo Rosas', nombres: 'Carla', ci: '96854885', genero: "otro", contacto: "45685222", email: "servicio@gmail.com", }
+		{  nombre: 'Carla', cantidad: '968' }
 		//user, pass
 	];
 	// Cabezeras de los elementos
-	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
+	headElements = ['Nro', 'Nombre', 'cantidad'];
 
 	constructor(private modalService: NgbModal) {
-		this.titulo = "Usuarios Administradores"
+		this.titulo = "administracion de productos"
 	}
 
 	ngOnInit() { 
