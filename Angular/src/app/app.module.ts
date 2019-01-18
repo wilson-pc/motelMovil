@@ -9,9 +9,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
+import { WebComponent } from './web/web.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, SpinnerComponent],
+  declarations: [
+    AppComponent, 
+    SpinnerComponent,
+    WebComponent,
+    LoginComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

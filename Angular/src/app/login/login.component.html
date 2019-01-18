@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-sm-6 mx-auto">
+    <div class="card card-signin">
+      <div class="card-body">
+        <h5 class="card-title text-center">Iniciar Sesión</h5>
+        <form class="form-signin">
+          <div class="form-group">
+            <label for="">Usuario:</label>
+            <input #user type="text" #user class="form-control" placeholder="admin" required autofocus>
+          </div>
+
+          <div class="form-group">
+            <label for="">Contraseña: </label>
+            <input #pass type="password" class="form-control" placeholder="********" required>
+          </div>
+
+          <div *ngIf="isError" class="alert alert-danger">
+            <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Error revisa tu usuario y contraseña
+          </div>
+          <div *ngIf="isIncorrect" class="alert alert-danger">
+            <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-lg btn-block" type="submit" (click)="login(user.value, pass.value)">INICIAR SESION</button>
+          </div>
+
+          <div>
+            <input type="checkbox">
+            <label>Recordarme</label>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
