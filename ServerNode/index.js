@@ -1,0 +1,14 @@
+"use strict"
+var app = require("./app");
+var mongoose = require("mongoose");
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+const host = '0.0.0.0';
+const port = process.env.PORT || 3000;
+
+var productos = io.of('/productos');
+var negocios=io.of('/negocios');
+let UseProductos =require('./controllers/productosController')(productos);
+http.listen(port,host, function(){
+    console.log('listening on *:3000');
+  });

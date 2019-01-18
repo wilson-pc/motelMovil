@@ -1,7 +1,8 @@
 import {Component} from "@angular/core";
 import {NavController, PopoverController} from "ionic-angular";
 import {Storage} from '@ionic/storage';
-
+import * as Chart from 'chart.js';  
+import { ChartsModule } from 'ng2-charts';
 import {NotificationsPage} from "../notifications/notifications";
 import {SettingsPage} from "../settings/settings";
 import {TripsPage} from "../trips/trips";
@@ -22,7 +23,16 @@ export class HomePage {
 
   constructor(private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
   }
-
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio'];
+  public barChartType = 'line';
+  public barChartLegend = false;
+  public barChartData = [
+    {data: [65, 59, 80, 81, 56, 55, 40]}
+  ];
   ionViewWillEnter() {
     // this.search.pickup = "Rio de Janeiro, Brazil";
     // this.search.dropOff = "Same as pickup";
