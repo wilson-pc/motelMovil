@@ -1,10 +1,13 @@
 "use strict"
 var mongose = require("mongoose");
 var Schema = mongose.Schema;
+var Rol= require("./rol").schema;
 var UsuarioSchema = Schema({
 nombre:String,
 apellido:String,
 ci:String,
+rol:Rol,
+genero:String,
 telefono:String,
 email:String,
 login:{usuario:String,password:String},
