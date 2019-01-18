@@ -1,291 +1,51 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
+        
                 <h4 class="card-title"> {{titulo}}</h4>
-                <!--Modal Administradores-->
-                <ng-template #contentAdd let-modal>
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modal-basic-title">Registro de Administrador</h4>
-                        <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!--FORMULARIO DE ADMINISTRADORES-->
-                        <form>
-                            <!--Nombre-->
-                            <div class="form-group">
-                                <label class=" control-label">Nombres: </label>
-                                <div class="">
-                                    <input type="text" placeholder="Ari" class="form-control input-md" required="">
-                                </div>
-                            </div>
-                            <!--Apellido-->
-                            <div class="form-group">
-                                <label class=" control-label">Apellidos: </label>
-                                <div class="">
-                                    <input type="text" placeholder="Castillo " class="form-control input-md" required="">
-                                </div>
-                            </div>
-                            <!--Ci-->
-                            <div class="form-group">
-                                <label class=" control-label">Ci: </label>
-                                <div class="">
-                                    <input type="text" placeholder="1254576CBB" class="form-control input-md" required="">
-                                </div>
-                            </div>
-                            <!--Genero-->
-                            <div class="form-group">
-                                <label class=" control-label">Generos: </label>
-                                <div class="">
-                                    <select class="form-control" id="selectCurso">
-                                        <option></option>
-                                        <option value="Masculino">Masculino</option>
-                                        <option value="Femenino">Femenino</option>
-                                        <option value="Otros">Otro</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--Contacto-->
-                            <div class="form-group">
-                                <label class=" control-label">Contacto: </label>
-                                <div class="">
-                                    <input type="number" placeholder="76592654" class="form-control input-md" required="">
-                                </div>
-                            </div>
-                            <!--Email-->
-                            <div class="form-group">
-                                <label class=" control-label">Email: </label>
-                                <div class="">
-                                    <input type="text" placeholder="example@gmail.com" class="form-control input-md"
-                                        required="">
-                                </div>
-                            </div>
-                            <!--Usuario-->
-                            <div class="form-group">
-                                <label class=" control-label">Usuario: </label>
-                                <div class="">
-                                    <input type="text" placeholder="ari365" class="form-control input-md" required="">
-                                </div>
-                            </div>
-                            <!--Contraseña-->
-                            <div class="form-group">
-                                <label class=" control-label">Contraseña: </label>
-                                <div class="">
-                                    <input type="text" placeholder="ari9867KlP" class="form-control input-md" required="">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <!--Notificaciones-->
-                    <div class="alert alert-danger" *ngIf="isError">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Error no se pudo guardar
-                        el
-                        registro
-                    </div>
-                    <li role="separator" class="divider"></li>
-                    <div class="alert alert-success" *ngIf="isExito">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>registro guardado con
-                        exito
-                    </div>
-                    <div class="alert alert-danger" *ngIf="isRequired">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
-                    </div>
-                    <!--btnCancelar / btnGuardar-->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
-                        <button type="button" class="btn btn-success" (click)="add()">Guardar</button>
-                    </div>
-                </ng-template>
-                <!--END MODAL-->
+                
+                <!--Inicio de Tarjetas vista-->
 
-                <!--Boton registrar docente-->
-                <i class='mdi mdi-account-multiple-plus btn btn-info' (click)="openFromRegistry(contentAdd)"></i>
-                <!--Mensaje Notifiacion de accion-->
-                <pre>{{closeResult}}</pre>
+                <div class="row">
+
+                    <div class="col-sm">
+                      <div class="card bg-dark text-white">
+                            <img src="../../../assets/images/advance-card-bttf.png" class="card-img-top" alt="qwe">
+                        <div class="card-img-overlay">
+                          <h5 class="card-title">Special title treatment</h5>
+                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Special title treatment</h5>
+                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-sm">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Special title treatment</h5>
+                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                          <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                <!--Fin de tarjetas vista-->
+
+
+                <!-- Modal Administradores -->
             </div>
-
-            <!--FORMULARIO DE ACTUALIZACION-->
-            <ng-template #contentUpdate let-modal>
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modal-basic-title">ACTUALIZAR DATOS DEL DOCENTE</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <!--Nombre-->
-                        <div class="form-group">
-                            <label class=" control-label">Nombres: </label>
-                            <div class="">
-                                <input type="text" class="form-control input-md" required="">
-                            </div>
-                        </div>
-                        <!--Apellido-->
-                        <div class="form-group">
-                            <label class=" control-label">Apellidos: </label>
-                            <div class="">
-                                <input type="text" class="form-control input-md" required="">
-                            </div>
-                        </div>
-                        <!--Ci-->
-                        <div class="form-group">
-                            <label class=" control-label">Ci: </label>
-                            <div class="">
-                                <input name="ci" type="text" class="form-control input-md" required="">
-                            </div>
-                        </div>
-                        <!--Genero-->
-                        <div class="form-group">
-                            <label class=" control-label">Genero: </label>
-                            <div class="">
-                                <select name="genero" class="form-control">
-                                    <option></option>
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
-                                    <option value="Otros">Otro</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!--Contacto-->
-                        <div class="form-group">
-                            <label class=" control-label">Contacto: </label>
-                            <div class="">
-                                <input name="conatco" type="number" class="form-control input-md" required="">
-                            </div>
-                        </div>
-                        <!--Email-->
-                        <div class="form-group">
-                            <label class=" control-label">Email: </label>
-                            <div class="">
-                                <input name="email" type="text" class="form-control input-md" required="">
-                            </div>
-                        </div>
-                        <li role="separator" class="divider"></li>
-                        <!--Usuario-->
-                        <div class="form-group">
-                            <label class=" control-label">Usuario: </label>
-                            <div class="">
-                                <input type="text" class="form-control input-md" required="">
-                            </div>
-                        </div>
-                        <!--Contraseña-->
-                        <div class="form-group">
-                            <label class=" control-label">Contraseña: </label>
-                            <div class="">
-                                <input type="text" class="form-control input-md" required="">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" (click)="update()">ACTUALIZAR</button>
-                </div>
-            </ng-template>
-            <!--END MODAL-->
-
-            <!--MODAL DE VIEW INFO-->
-            <ng-template #contentModelView let-modal>
-                <div class="modal-header">
-                    <h4 class="modal-title">Informacion del Admonistrador</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!--NOMBRES-->
-                    <div class="form-group">
-                        <label class=" control-label">Nombres: </label>
-
-                    </div>
-                    <!--APELLIDOS-->
-                    <div class="form-group">
-                        <label class=" control-label">Apellidos: </label>
-
-                    </div>
-                    <!--CI-->
-                    <div class="form-group">
-                        <label class=" control-label">Ci: </label>
-
-                    </div>
-                    <!--GENERO-->
-                    <div class="form-group">
-                        <label class=" control-label">Genero: </label>
-
-                    </div>
-                    <!--CONTACTO-->
-                    <div class="form-group">
-                        <label class=" control-label">Contacto: </label>
-
-                    </div>
-                    <!--EMAIL-->
-                    <div class="form-group">
-                        <label class=" control-label">Email: </label>
-
-                    </div>
-                    <!--Usuario-->
-                    <div class="form-group">
-                        <label class=" control-label">Usuario: </label>
-                        
-                    </div>
-                    <!--Contraseña-->
-                    <div class="form-group">
-                        <label class=" control-label">Contraseña: </label>
-                        
-                    </div>
-                    <!--fin del toggle ROW-->
-                </div>
-            </ng-template>
-
-            <!--MODAL ALERTA-->
-            <!--Modal Eliminar-->
-            <ng-template #contentDelete let-modal>
-                <div class="modal-header">
-                    <h4 class="modal-title">Eliminar Registro</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Desea eliminar el registro?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
-                    <button type="button" class="btn btn-danger" (click)="delete()">Eliminar</button>
-                </div>
-            </ng-template>
-
-            <!--LISTA ADMINISTRADORES-->
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class=" text-primary">
-                            <th class="hedarTitleTable" *ngFor="let head of headElements">{{head}}</th>
-                            <th class="text-right hedarTitleTable">
-                                Opciones
-                            </th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let user of elements, let i=index">
-                                <td>{{i+1}}</td>
-                                <td>{{user.nombres}}</td>
-                                <td>{{user.apellidos}}</td>
-                                <td>{{user.ci}}</td>
-                                <td>{{user.genero}}</td>
-                                <td>{{user.contacto}}</td>
-                                <td>{{user.email}}</td>
-                                <td class="text-right">
-                                    <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
-                                    <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentUpdate)"></i>
-                                    <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete)"></i>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
