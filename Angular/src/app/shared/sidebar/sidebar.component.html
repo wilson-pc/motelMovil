@@ -6,18 +6,8 @@
             <!-- User profile image -->
             <div class="profile-img"> <img src="assets/images/users/1.jpg" alt="user" /> </div>
             <!-- User profile text-->
-            <div class="profile-text"> <a href="#" class="dropdown-toggle link u-dropdown" data-toggle="dropdown" role="button"
-                    aria-haspopup="true" aria-expanded="true">Markarn Doe <span class="caret"></span></a>
-                <div class="dropdown-menu animated flipInY">
-                    <a href="#" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
-                    <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
-                    <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
-                    <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account
-                        Setting
-                    </a>
-                    <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="fa fa-power-off"></i>
-                        Logout</a>
-                </div>
+            <div class="profile-text">
+                <label for="">Ari</label>
             </div>
         </div>
         <!-- End User profile text-->
@@ -26,9 +16,13 @@
             <ul id="sidebarnav">
                 <li class="nav-devider"></li>
                 <li [class.active]="showMenu === 'starter'">
-                    <a routerLink="/starter" (click)="addExpandClass('starter')" [routerLinkActive]="['router-link-active']"><i
-                            class="mdi mdi-file"></i><span class="hide-menu">Starter Page</span></a>
+                    <a routerLink="/administracion" (click)="addExpandClass('starter')" [routerLinkActive]="['router-link-active']"><i
+                            class="mdi mdi-arrange-bring-forward"></i><span class="hide-menu">Administracion</span></a>
                 </li>
+
+
+                <!--Demas menus-->
+                <!--
                 <li class="nav-small-cap">UI Components</li>
                 <li>
                     <a routerLink="/component/accordion" (click)="addExpandClass('component')" [routerLinkActive]="['router-link-active']"><i
@@ -81,24 +75,10 @@
                 <li>
                     <a routerLink="/component/cards" (click)="addExpandClass('component')" [routerLinkActive]="['router-link-active']"><i
                             class="mdi mdi-arrange-bring-forward"></i><span class="hide-menu">Card</span></a>
-                </li>
-                <li class="m-t-40 p-20">
-                    <a href="https://wrappixel.com/templates/monster-angular-dashboard/" target="_blank" class="btn hidden-sm-down btn-success text-white">Upgrade
-                        To Pro</a>
-                </li>
+                </li>-->
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
     </div>
     <!-- End Sidebar scroll-->
-    <!-- Bottom points-->
-    <div class="sidebar-footer">
-        <!-- item-->
-        <a href="" class="link" data-toggle="tooltip" title="Settings"><i class="ti-settings"></i></a>
-        <!-- item-->
-        <a href="" class="link" data-toggle="tooltip" title="Email"><i class="mdi mdi-gmail"></i></a>
-        <!-- item-->
-        <a href="" class="link" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
-    </div>
-    <!-- End Bottom points-->
 </aside>
