@@ -8,8 +8,7 @@ const routes: Routes = [
         component: PageComponent, 
         children: [
             { path: 'administracion', loadChildren: './starter/starter.module#StarterModule' },
-            { path: 'component', loadChildren: './component/component.module#ComponentsModule' },
-            { path: 'registro-dueño', loadChildren: './component/component.module#ComponentsModule' },
+            { path: 'administracion', loadChildren: './component/component.module#ComponentsModule' },
         ]
     }
 ];

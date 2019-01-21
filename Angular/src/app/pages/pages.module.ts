@@ -7,6 +7,7 @@ import { NavigationComponent } from '../shared/header-navigation/navigation.comp
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { BreadcrumbComponent } from '../shared/breadcrumb/breadcrumb.component';
 
+
 @NgModule({
     imports: [
         CommonModule,
@@ -17,7 +18,7 @@ import { BreadcrumbComponent } from '../shared/breadcrumb/breadcrumb.component';
         NavigationComponent,
         SidebarComponent,
         BreadcrumbComponent,
-        SIDEBAR_TOGGLE_DIRECTIVES
+        SIDEBAR_TOGGLE_DIRECTIVES,
     ]
 })
 export class PagesModule { }
