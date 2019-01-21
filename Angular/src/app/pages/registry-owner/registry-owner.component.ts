@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Usuarios } from '../../../models/Usuarios';
+import { Usuarios } from '../../models/Usuarios';
 
 @Component({
   selector: 'app-registry-owner',
