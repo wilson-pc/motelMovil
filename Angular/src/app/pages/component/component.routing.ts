@@ -36,7 +36,7 @@ export const ComponentsRoutes: Routes = [
     path: '',
     children: [
       {
-        path: 'registro-dueno',
+        path: 'registro-dueño',
         component: RegistryOwnerComponent,
         data: {
           title: 'registro-dueno',
@@ -44,18 +44,18 @@ export const ComponentsRoutes: Routes = [
         }
       },
       {
-        path: 'registro-negocio',
+        path: 'negocio',
         component: ListCommerceComponent,
         data: {
-          title: 'registro-negocio',
+          title: 'negocio',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
       {
-        path: 'registro-productos',
+        path: 'negocio/lista-productos',
         component: ListProductComponent,
         data: {
-          title: 'registro-productos',
+          title: 'lista-productos',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-commerce',
@@ -22,7 +23,7 @@ export class ListCommerceComponent implements OnInit {
   // Cabezeras de los elementos
   headElements = ['Nro', 'Nombre', 'Cantidad Productos', 'Valoracion', 'Reportes', 'Visitas', 'Monto Total', 'Monto Mes Pasado', 'Monto Actual'];
 
-  constructor() {
+  constructor(private rout: Router) {
   }
 
   ngOnInit() {
@@ -34,5 +35,9 @@ export class ListCommerceComponent implements OnInit {
   // COSUMO DE SERVICIOS
   getAdmin() {
 
+  }
+
+  openListProducts(){
+		this.rout.navigate(['/administracion/negocio/lista-productos']);
   }
 }
