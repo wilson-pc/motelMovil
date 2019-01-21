@@ -189,7 +189,7 @@ var clients = [];
                  var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
                    
                     
-            Usuario,find({"eliminado.estado":false,nombre:datos.termino,apellido:datos.termino}, function (error, lista){
+            Usuario.find({"eliminado.estado":false,nombre:datos.termino,apellido:datos.termino}, function (error, lista){
                 if (error) {
                    // res.status(500).send({ mensaje: "Error al listar" })
                 } else {
