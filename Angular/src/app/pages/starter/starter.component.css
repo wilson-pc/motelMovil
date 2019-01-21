@@ -4,3 +4,8 @@
 .card-img-top{
     height: 100%;
 }
+.btnregistrar{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+}
