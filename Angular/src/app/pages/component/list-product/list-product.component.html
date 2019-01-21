@@ -1,0 +1,154 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> {{titulo}}</h4>
+                <!--Modal -->
+                <ng-template #contentAdd let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">Perfil de usuario</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--FORMULARIO DE Productos-->
+
+                        <div class="row">
+                            
+                            <div class="col-lg-9">
+
+
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"></h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-3" align="center"> <img alt="User Pic" src="https://www.socialtools.me/blog/wp-content/uploads/2016/04/foto-de-perfil.jpg"
+                                                    class="img-circle img-responsive"> </div>
+
+                                            <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                                        <dl>
+                                          <dt>DEPARTMENT:</dt>
+                                          <dd>Administrator</dd>
+                                          <dt>HIRE DATE</dt>
+                                          <dd>11/12/2013</dd>
+                                          <dt>DATE OF BIRTH</dt>
+                                             <dd>11/12/2013</dd>
+                                          <dt>GENDER</dt>
+                                          <dd>Male</dd>
+                                        </dl>
+                                      </div>-->
+                                            <div class=" col-md-9 col-lg-9 ">
+                                                <table class="table table-user-information">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Department:</td>
+                                                            <td>Programming</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Hire date:</td>
+                                                            <td>06/23/2013</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Date of Birth</td>
+                                                            <td>01/24/1988</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                        <tr>
+                                                            <td>Gender</td>
+                                                            <td>Female</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Home Address</td>
+                                                            <td>Kathmandu,Nepal</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Email</td>
+                                                            <td><a href="mailto:info@support.com">info@support.com</a></td>
+                                                        </tr>
+                                                        <td>Phone Number</td>
+                                                        <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
+                                                        </td>
+
+                                                    
+
+                                                    </tbody>
+                                                </table>
+
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="cancelModal()">Cerrar</button>
+                       
+                    </div>
+                </ng-template>
+                <!--END MODAL-->
+
+                <!--Boton registrar docente-->
+                <i class='mdi mdi-account-outline btn btn-info' (click)="openFromRegistry(contentAdd)"></i>
+                <!--Mensaje Notifiacion de accion-->
+                <pre>{{closeResult}}</pre>
+            </div>
+
+            <!--FORMULARIO DE ACTUALIZACION-->
+           
+
+            <!--MODAL ALERTA-->
+            <!--Modal Eliminar-->
+            <ng-template #contentDelete let-modal>
+                <div class="modal-header">
+                    <h4 class="modal-title">Eliminar Registro</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Desea eliminar el registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
+                    <button type="button" class="btn btn-danger" (click)="delete()">Eliminar</button>
+                </div>
+            </ng-template>
+
+            <!--LISTA ADMINISTRADORES-->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <th class="hedarTitleTable" *ngFor="let head of headElements">{{head}}</th>
+                            <th class="text-right hedarTitleTable">
+                               Eliminar
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let product of elements, let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{product.nombre}}</td>
+                                <td>{{product.cantidad}}</td>
+                               
+                                <td class="text-right">
+
+                                    <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
