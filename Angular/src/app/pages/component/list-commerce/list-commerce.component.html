@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <!--LISTA Negocios-->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <th class="hedarTitleTable" *ngFor="let head of headElements">{{head}}</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let commerce of elements, let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{commerce.nombre}}</td>
+                                <td>{{commerce.cantidadProductos}}</td>
+                                <td>{{commerce.valoracion}}</td>
+                                <td>{{commerce.cantidadReportes}}</td>
+                                <td>{{commerce.cantidadVisitas}}</td>
+                                <td>{{commerce.montoTotal}}</td>
+                                <td>{{commerce.montoMesPasado}}</td>
+                                <td>{{commerce.montoActual}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
