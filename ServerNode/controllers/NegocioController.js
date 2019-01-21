@@ -53,9 +53,38 @@ var clients = [];
     });
 
     
-      socket.on('registrar-tienda', async (data) => {
+      socket.on('actualizar-negocio', async (data) => {
      
-        io.emit('respuesta', {user: socket.nickname, event: 'left'});   
+        
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var negocio = new Producto();
+        //  var tipo = new Tipo();
+          var params = datos.negocio;
+          negocio.nombre=params.nombre;
+          negocio.titular = params.titular;
+          negocio.foto=params.foto;
+          negocio.direccion=params.direccion;
+          negocio.telefono=params.telefono;
+          negocio.correo=params.correo;
+          negocio.modificacion=params.modificacion;
+      
+                      Negocio.findByIdAndUpdate(params.id,negocio,{new: true},(error, actualizado) => {
+                          if (error) {
+                  
+                          //    res.status(500).send({ mensaje: "error al guradar" })
+                          } else {
+                            io.emit('respuesta',actualizado);  
+                          }
+                      })
+              
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
       });
 
       socket.on('registrar-negocio', async (data) => {
