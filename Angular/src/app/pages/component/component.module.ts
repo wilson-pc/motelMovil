@@ -25,6 +25,7 @@ import { ButtonsComponent } from './buttons/buttons.component';
 import { RegistryOwnerComponent } from './registry-owner/registry-owner.component';
 import { ListCommerceComponent } from './list-commerce/list-commerce.component';
 import { ListProductComponent } from './list-product/list-product.component';
+import { FormComerceComponent } from './form-comerce/form-comerce.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { ListProductComponent } from './list-product/list-product.component';
     ButtonsComponent,
     RegistryOwnerComponent,
     ListCommerceComponent,
-    ListProductComponent
+    ListProductComponent,
+    FormComerceComponent
   ]
 })
 

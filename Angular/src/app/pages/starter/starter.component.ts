@@ -4,7 +4,8 @@ import { getAllDebugNodes } from '@angular/core/src/debug/debug_node';
 import { Router } from '@angular/router';
 
 @Component({
-	templateUrl: './starter.component.html'
+	templateUrl: './starter.component.html',
+	styleUrls: ['./starter.component.css']
 })
 export class StarterComponent implements AfterViewInit {
 	

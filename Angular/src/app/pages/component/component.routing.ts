@@ -59,6 +59,16 @@ export const ComponentsRoutes: Routes = [
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
+
+      {
+        path: 'formulario-negocios',
+        component: ListProductComponent,
+        data: {
+          title: 'Formulario de Negocios',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+
       {
         path: 'accordion',
         component: NgbdAccordionBasic,
