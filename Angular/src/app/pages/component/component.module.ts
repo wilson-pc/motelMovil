@@ -22,7 +22,6 @@ import { NgbdtimepickerBasic } from './timepicker/timepicker.component';
 import { NgbdtypeheadBasic } from './typehead/typehead.component';
 import { CardsComponent } from './card/card.component';
 import { ButtonsComponent } from './buttons/buttons.component';
-import { RegistryOwnerComponent } from './registry-owner/registry-owner.component';
 import { ListCommerceComponent } from './list-commerce/list-commerce.component';
 import { ListProductComponent } from './list-product/list-product.component';
 
@@ -51,7 +50,6 @@ import { ListProductComponent } from './list-product/list-product.component';
     NgbdtypeheadBasic,
     CardsComponent,
     ButtonsComponent,
-    RegistryOwnerComponent,
     ListCommerceComponent,
     ListProductComponent
   ]
