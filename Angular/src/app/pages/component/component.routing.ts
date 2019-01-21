@@ -16,10 +16,11 @@ import { NgbdtypeheadBasic } from './typehead/typehead.component';
 import { CardsComponent } from './card/card.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { RegistryOwnerComponent } from './registry-owner/registry-owner.component';
+import { ListCommerceComponent } from './list-commerce/list-commerce.component';
 import { ListProductComponent } from './list-product/list-product.component';
 
 export const ComponentsRoutes: Routes = [
-  {
+  /*{
     path: '',
     children: [
       {
@@ -29,28 +30,32 @@ export const ComponentsRoutes: Routes = [
           title: 'Progressbar',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Progressbar' }]
         }
-      },
+      },*/
+
+  {
+    path: '',
+    children: [
       {
-        path: 'registry-owner',
+        path: 'registro-dueño',
         component: RegistryOwnerComponent,
         data: {
-          title: 'registry-owner',
-          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'registry-owner' }]
-        }
-      }, 
-      {
-        path: 'list-product',
-        component: ListProductComponent,
-        data: {
-          title: 'list-product',
-          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'list-product' }]
+          title: 'registro-dueno',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Progressbar' }]
         }
       },
       {
-        path: 'pagination',
-        component: NgbdpaginationBasic,
+        path: 'negocio',
+        component: ListCommerceComponent,
         data: {
-          title: 'Pagination',
+          title: 'negocio',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+      {
+        path: 'negocio/lista-productos',
+        component: ListProductComponent,
+        data: {
+          title: 'lista-productos',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
