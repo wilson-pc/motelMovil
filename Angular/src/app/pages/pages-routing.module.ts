@@ -9,6 +9,7 @@ const routes: Routes = [
         children: [
             { path: 'administracion', loadChildren: './starter/starter.module#StarterModule' },
             { path: 'administracion', loadChildren: './component/component.module#ComponentsModule' },
+            { path: 'registro-usuarios', loadChildren: './starter/starter.module#StarterModule' },
         ]
     }
 ];
