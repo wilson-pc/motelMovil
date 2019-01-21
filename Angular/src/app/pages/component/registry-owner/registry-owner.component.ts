@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Usuarios } from '../../../models/Usuarios';
 
 @Component({
   selector: 'app-registry-owner',
@@ -11,7 +12,7 @@ export class RegistryOwnerComponent implements OnInit {
 	public isCollapsed = true;
 	modal: NgbModalRef;
 	closeResult: string;
-
+   usuario:Usuarios;
 	elements: any = [
 		{ apellidos: 'Castillo Rosas', nombres: 'Carla', ci: '96854885', genero: "otro", contacto: "45685222", email: "servicio@gmail.com", }
 		//user, pass
@@ -20,7 +21,8 @@ export class RegistryOwnerComponent implements OnInit {
 	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
 
 	constructor(private modalService: NgbModal) {
-		this.titulo = "Usuarios Administradores"
+		this.titulo = "Usuarios Administradores";
+		this.usuario=new Usuarios();
 	}
 
 	ngOnInit() { 

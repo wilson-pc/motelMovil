@@ -1,8 +1,8 @@
 "use strict"
 var CryptoJS = require("crypto-js");
-var Usuario = require("../schemas/usuario");
+var Producto = require("../schemas/producto");
 var clave=require("./../variables/claveCrypto");
-
+var Tipo=require("../schemas/tipo");
 module.exports = async function(io) {
 var clients = [];
   io.on('connection', async function (socket) {
@@ -11,44 +11,37 @@ var clients = [];
     clients.push(socket.id);
     console.log("alguien se conecto");
 
-    socket.on('registrar-usuario',async (data) => {
+    socket.on('registrar-producto',async (data) => {
 
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          var usuario = new Usuario();
-          var params = datos.usuario;
-          usuario.nombre=params.nombre;
-          usuario.apellido = params.apellido;
-          usuario.ci=params.ci;
-          usuario.telefono=params.telefono;
-          usuario.email=params.email;
-          usuario.login=params.login;
-          usuario.eliminado=params.eliminado;
-          usuario.creacion=params.creacion
-          usuario.modificacion=params.modificacion;
-          usuario.rol=await Rol.findById(params.rol);
-          if (params.ci) {
-              //encripta el pasword del usuario
-              bcript.hash(login.password, null, null, function(error, hash) {
-                  login.password=hash;
-                  usuario.login=login
-                  if (login.usuario != null) {
-                      //guarda al nuevo usuario en la bd
+          var producto = new Producto();
+        //  var tipo = new Tipo();
+          var params = datos.producto;
+          producto.nombre=params.nombre;
+          producto.negocio = params.negocio;
+          producto.precio=params.precio;
+          producto.disponibilidad=params.disponibilidad;
+          producto.cantidad=params.cantidad;
+          producto.tipo=await Tipo.findById(params.tito);
+          producto.foto=params.foto;
+          usuario.eliminado={estado:false,razon:""};
+          producto.descripcion=params.descripcion;
+          producto.creacion=params.creacion
+          producto.modificacion=params.modificacion;
+
                   
-                      usuario.save((error, nuevoUsuario) => {
+                      producto.save((error, nuevoProducto) => {
                           if (error) {
                   
                               res.status(500).send({ mensaje: "error al guradar" })
                           } else {
-                            io.emit('respuesta',nuevoUsuario);  
+                            io.emit('respuesta',nuevoProducto);  
                           }
                       })
-                  }
-      
-            });
-          } 
+              
         }
         return data;
       } catch (e) {
