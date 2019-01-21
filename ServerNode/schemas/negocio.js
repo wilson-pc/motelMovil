@@ -10,6 +10,7 @@ tipo:TipoNegocio,
 direccion:{ubicaciongps:String,descripcion:String},
 telefono:String,
 correo:String,
+nit:String,
 eliminado:{estado:Boolean,razon:String},
 creacion: {usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date },
 modificacion:{fecha:Date,usuario:{ type: Schema.ObjectId, ref: "Usuarios" }}
