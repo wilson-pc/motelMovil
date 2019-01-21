@@ -36,10 +36,10 @@ export const ComponentsRoutes: Routes = [
     path: '',
     children: [
       {
-        path: 'registro-dueño',
+        path: 'registro-usuario',
         component: RegistryOwnerComponent,
         data: {
-          title: 'registro-dueno',
+          title: 'registro-usuario',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Progressbar' }]
         }
       },
