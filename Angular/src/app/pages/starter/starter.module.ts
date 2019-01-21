@@ -11,7 +11,8 @@ const routes: Routes = [{
 	data: {
         title: 'ADMINISTRACION',
         urls: [{title: 'ADMINISTRACION',url: '/administracion'},{title: 'ADMINISTRACION'}]
-    },
+	},
+	
 	component: StarterComponent
 }];
 

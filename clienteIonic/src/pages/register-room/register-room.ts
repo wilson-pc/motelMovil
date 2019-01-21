@@ -98,7 +98,7 @@ this.save(this.habitacion).then(data=>{
           const element = results[index];
           getFileContentAsBase64(element, (base64Image) => {
             this.imageLists.push(base64Image);
-            this.habitacion.fotos.push(base64Image);
+            this.habitacion.foto.imagen=base64Image;
            
             //  this.imageLists.push(base64Image);
             //window.open(base64Image);
