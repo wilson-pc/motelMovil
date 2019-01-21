@@ -18,28 +18,28 @@
                             <div class="form-group">
                                 <label class=" control-label">Nombres: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="" placeholder="Ari" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.nombre" name="nombre"  placeholder="Ari" class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Apellido-->
                             <div class="form-group">
                                 <label class=" control-label">Apellidos: </label>
                                 <div class="">
-                                    <input type="text" placeholder="Castillo " class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Ci-->
                             <div class="form-group">
                                 <label class=" control-label">Ci: </label>
                                 <div class="">
-                                    <input type="text" placeholder="1254576CBB" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.ci" name="ci" placeholder="1254576CBB" class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Genero-->
                             <div class="form-group">
                                 <label class=" control-label">Generos: </label>
                                 <div class="">
-                                    <select class="form-control" id="selectCurso">
+                                    <select [(ngModel)]="usuario.genero" name="genero" class="form-control" id="selectCurso">
                                         <option></option>
                                         <option value="Masculino">Masculino</option>
                                         <option value="Femenino">Femenino</option>
@@ -51,14 +51,20 @@
                             <div class="form-group">
                                 <label class=" control-label">Contacto: </label>
                                 <div class="">
-                                    <input type="number" placeholder="76592654" class="form-control input-md" required="">
+                                    <input type="number" [(ngModel)]="usuario.telefono" name="telefono" placeholder="76592654" class="form-control input-md" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class=" control-label">Foto: </label>
+                                <div class="">
+                                    <input type="file" class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Email-->
                             <div class="form-group">
                                 <label class=" control-label">Email: </label>
                                 <div class="">
-                                    <input type="text" placeholder="example@gmail.com" class="form-control input-md"
+                                    <input type="text" [(ngModel)]="usuario.email" name="email" placeholder="example@gmail.com" class="form-control input-md"
                                         required="">
                                 </div>
                             </div>
@@ -66,14 +72,14 @@
                             <div class="form-group">
                                 <label class=" control-label">Usuario: </label>
                                 <div class="">
-                                    <input type="text" placeholder="ari365" class="form-control input-md" required="">
+                                    <input type="text"  name="usuario" placeholder="ari365" class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Contraseña-->
                             <div class="form-group">
                                 <label class=" control-label">Contraseña: </label>
                                 <div class="">
-                                    <input type="text" placeholder="ari9867KlP" class="form-control input-md" required="">
+                                    <input type="text"  name="password" placeholder="ari9867KlP" class="form-control input-md" required="">
                                 </div>
                             </div>
                         </form>

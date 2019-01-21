@@ -7,7 +7,8 @@ export class Usuarios{
     public Rol:Rol;
     public ci:string;
     public foto:string;
-    public telfcontacto:string;
+    public telefono:string;
+    public genero:string;
     public direccion:string;
     public email:String;
     public login:{usuario:string,password:string}

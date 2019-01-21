@@ -12,6 +12,9 @@ export class RegistryOwnerComponent implements OnInit {
 	public isCollapsed = true;
 	modal: NgbModalRef;
 	closeResult: string;
+	isError:boolean=false;
+	isExito:boolean=false;
+	isRequired:boolean=false;
    usuario:Usuarios;
 	elements: any = [
 		{ apellidos: 'Castillo Rosas', nombres: 'Carla', ci: '96854885', genero: "otro", contacto: "45685222", email: "servicio@gmail.com", }
@@ -22,7 +25,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 	constructor(private modalService: NgbModal) {
 		this.titulo = "Usuarios Administradores";
-		this.usuario=new Usuarios();
+		this.usuario=new Usuarios;
 	}
 
 	ngOnInit() { 

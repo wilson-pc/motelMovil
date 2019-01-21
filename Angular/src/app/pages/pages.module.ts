@@ -7,12 +7,13 @@ import { NavigationComponent } from '../shared/header-navigation/navigation.comp
 import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { BreadcrumbComponent } from '../shared/breadcrumb/breadcrumb.component';
 import { RegistryOwnerComponent } from './registry-owner/registry-owner.component';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
         CommonModule,
-        PagesRoutingModule
+        PagesRoutingModule,
+        FormsModule
     ],
     declarations: [
         PageComponent,

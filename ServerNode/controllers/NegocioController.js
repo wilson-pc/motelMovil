@@ -172,7 +172,7 @@ var clients = [];
                  var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
                    
                     
-            Negocio.find({"eliminado.estado":false,nombre:datos.termino,apellido:datos.nit}, function (error, lista){
+            Negocio.find({"eliminado.estado":false,nombre:datos.termino,nit:datos.termino}, function (error, lista){
                 if (error) {
                    // res.status(500).send({ mensaje: "Error al listar" })
                 } else {
