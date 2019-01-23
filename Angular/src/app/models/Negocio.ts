@@ -12,8 +12,8 @@ export class Negocio {
     public nit:string;//ok
     public correo:string;//ok
     public eliminado:{estado:Boolean,razon:string}
-    public creacion:{usuario:string,fecha:Date};
-    public modificacion:{fecha:Date,usuario:string}
+    public creacion:{usuario:string,fecha:string};
+    public modificacion:{fecha:string,usuario:string}
 }
 
 /**

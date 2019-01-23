@@ -4,6 +4,9 @@ import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuarios } from '../../../models/Usuarios';
 import { Negocio } from '../../../models/Negocio';
 import { getBase64, resizeBase64 } from 'base64js-es6';
+import { UsuarioService } from '../../../services/usuario.service';
+import * as CryptoJS from 'crypto-js';
+import { clave } from '../../../cryptoclave';
 @Component({
   selector: 'app-form-comerce',
   templateUrl: './form-comerce.component.html',
@@ -26,7 +29,7 @@ export class FormComerceComponent implements OnInit {
 	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Titular', 'Email', 'Opciones'];
-  constructor(private modalService: NgbModal) { 
+  constructor(private modalService: NgbModal, private usuarioServ:UsuarioService) { 
     this.titulo = "Registrar Negocios";
 		this.negocios=new Negocio;
 	}
@@ -45,12 +48,13 @@ export class FormComerceComponent implements OnInit {
 		 // this.docente.perfil.foto = myReader.result.toString();
 		// console.log(myReader.result.toString());
       resizeBase64(myReader.result, 400, 500).then((result) => {
-				this.negocios.foto = result;
-			
+				this.negocios.foto = result;	
+				
        
       });
     }
-    myReader.readAsDataURL(file);
+		myReader.readAsDataURL(file);
+		
   }
 
   ngOnInit() {
@@ -89,6 +93,13 @@ export class FormComerceComponent implements OnInit {
 		this.isError=false;
 		this.isRequired=false;
 		this.isExito=false;
+
+		this.negocios.creacion={usuario:this.usuarioServ.usuarioActual.datos._id,fecha:date};
+		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+
+		let data={usuario:this.negocios}
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
+		this.socket.emit("registrar-negocio",ciphertext.toString());
 		console.log(this.negocios);
 
 	}
