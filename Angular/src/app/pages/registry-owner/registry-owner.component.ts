@@ -7,6 +7,8 @@ import { SocketConfigService2 } from '../../socket-config.service'
 import { Observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
+import { FormControl } from '@angular/forms';
+import { Negocio } from '../../models/Negocio';
 
 @Component({
   selector: 'app-registry-owner',
@@ -33,12 +35,21 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
 
+  items : any = []
+	term: string;
+	negocio: Negocio;
+	negocios: Negocio[];
+
 	constructor(private socket:SocketConfigService2,private modalService: NgbModal,private usuarioServ:UsuarioService) {
 		this.titulo = "Usuarios Administradores";
 		this.usuario=new Usuarios;
 		this.getUsers();
 		this.conn();
 		this.a=1;
+		this.items = ["Kyle","Eric","Bailey", "Deborah", "Glenn", "Jaco", "Joni", "Gigi"]
+		// Model Negocios
+		this.negocio = new Negocio;
+		this.getCommerce();
 	}
 
 	ejm(){
@@ -50,9 +61,13 @@ export class RegistryOwnerComponent implements OnInit {
 		this.getAdmin();
 	}
 
-	  getUsers(){
-			this.socket.emit("listar-usuario",{data:"nada"});
-		}
+	getCommerce(){
+		this.socket.emit("listar-negocio", {data: "nada"});
+	}
+
+	getUsers(){
+		this.socket.emit("listar-usuario",{data:"nada"});
+	}
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    

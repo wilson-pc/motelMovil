@@ -8,12 +8,14 @@ import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 import { BreadcrumbComponent } from '../shared/breadcrumb/breadcrumb.component';
 import { RegistryOwnerComponent } from './registry-owner/registry-owner.component';
 import { FormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
     imports: [
         CommonModule,
         PagesRoutingModule,
-        FormsModule
+        FormsModule,
+        Ng2SearchPipeModule
     ],
     declarations: [
         PageComponent,
