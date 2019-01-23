@@ -46,14 +46,41 @@ var clients = [];
       } catch (e) {
         console.log(e);
       }
-      
-    //console.log(req.body);
-   
-     
-      
     });
 
     
+    socket.on('registrar-tipo-negocio',async (data) => {
+
+      try {
+          var tipoNegocio = new TipoNegocio();
+        //  var tipo = new Tipo();
+          var params = data.negocio;
+          tipoNegocio .nombre=params.nombre;
+        //  negocio.titular = params.titular;
+          
+             tipoNegocio.save((error, nuevoNegocio) => {
+                          if (error) {
+                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
+                  
+                          //    res.status(500).send({ mensaje: "error al guradar" })
+                          } else {
+                            console.log(nuevoNegocio);
+                            io.emit('respuesta-registro-producto',nuevoNegocio);  
+                          }
+                      })
+              
+        }
+    catch (e) {
+        console.log(e);
+      }
+      
+    
+  //console.log(req.body);
+ 
+   
+    
+  });
+
       socket.on('actualizar-negocio', async (data) => {
      
         
