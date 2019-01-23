@@ -83,19 +83,19 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// COSUMO DE SERVICIOS
 	add(){
-		var date = new Date().toUTCString();
-		this.isError = false;
-    this.isRequired = false;
-    this.isExito = false;
-	//console.log(this.usuario,this.user,this.password);
-	this.usuario.login={usuario:this.user,password:this.password,estado:false};
+	// 	var date = new Date().toUTCString();
+	// 	this.isError = false;
+  //   this.isRequired = false;
+  //   this.isExito = false;
+	// //console.log(this.usuario,this.user,this.password);
+	// this.usuario.login={usuario:this.user,password:this.password,estado:false};
 
-	this.usuario.rol="5c45ef012f230f065ce7d830" as any;
-	this.usuario.creacion = {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id} 
-	this.usuario.modificacion= {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
-	let data ={usuario:this.usuario}
-	var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
- this.socket.emit("registrar-usuario",ciphertext.toString());
+	// this.usuario.rol="5c45ef012f230f065ce7d830" as any;
+	// this.usuario.creacion = {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id} 
+	// this.usuario.modificacion= {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+	// let data ={usuario:this.usuario}
+	// var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+ this.socket.emit("registrar-negocio",{data:"l"});
 	}
 
 	

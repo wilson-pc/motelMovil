@@ -4,6 +4,8 @@ var Usuario = require("../schemas/usuario");
 var clave = require("./../variables/claveCrypto");
 var Rol = require("./../schemas/rol");
 var token = require("./../token/token");
+var TipoNegocio = require("../schemas/tipoNegocio");
+var Negocio=require("../schemas/negocio");
 const bcrypt = require('bcrypt-nodejs');
 module.exports = async function (io) {
   var clients = [];
@@ -14,6 +16,75 @@ module.exports = async function (io) {
     clients.push(socket.id);
     console.log("alguien se conecto");
 
+    socket.on('registrar-negocio',async (data) => { 
+      console.log(data);
+      try {
+        
+          var negocio = new Negocio();
+        //  var tipo = new Tipo();
+        //  var params = datos.negocio;
+          negocio.nombre="canario";
+        //  negocio.titular = params.titular;
+        // negocio.foto=params.foto;
+          negocio.tipo=await TipoNegocio.findById("5c4884160a1ca42b68044bc6");
+      //    negocio.direccion="vvvvvvv";
+          negocio.telefono="fdgrthtytyht";
+          negocio.correo="wilson@gmail.com"
+          negocio.nit="5553746645656565";
+          negocio.eliminado={estado:false,razon:""};
+         // negocio.creacion=params.creacion
+          //negocio.modificacion=params.modificacion;
+      
+                      negocio.save((error, nuevoProducto) => {
+                          if (error) {
+                            console.log(error);
+                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
+                  
+                          //    res.status(500).send({ mensaje: "error al guradar" })
+                          } else {
+                            console.log(nuevoProducto);
+                            io.emit('respuesta-registro-producto',nuevoProducto);  
+                          }
+                      })
+              
+        }
+        catch (e) {
+        console.log(e);
+      }
+    });
+
+
+    socket.on('registrar-tipo-negocio',async (data) => {
+
+      try {
+          var tipoNegocio = new TipoNegocio();
+        //  var tipo = new Tipo();
+          var params = data.negocio;
+          tipoNegocio.nombre="Licoreria";
+        //  negocio.titular = params.titular;
+          
+             tipoNegocio.save((error, nuevoNegocio) => {
+                          if (error) {
+                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
+                  
+                          //    res.status(500).send({ mensaje: "error al guradar" })
+                          } else {
+                            console.log(nuevoNegocio);
+                            io.emit('respuesta-registro-producto',nuevoNegocio);  
+                          }
+                      })
+              
+        }
+    catch (e) {
+        console.log(e);
+      }
+      
+    
+  //console.log(req.body);
+ 
+   
+    
+  });
     socket.on('registrar-usuario', async (data) => {
       // console.log("entra entra");
       // console.log(data);
