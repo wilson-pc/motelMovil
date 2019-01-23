@@ -7,6 +7,8 @@ import { getBase64, resizeBase64 } from 'base64js-es6';
 import { UsuarioService } from '../../../services/usuario.service';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../../cryptoclave';
+import { SocketConfigService2 } from '../../../socket-config.service';
+ 
 @Component({
   selector: 'app-form-comerce',
   templateUrl: './form-comerce.component.html',
@@ -29,7 +31,7 @@ export class FormComerceComponent implements OnInit {
 	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Titular', 'Email', 'Opciones'];
-  constructor(private modalService: NgbModal, private usuarioServ:UsuarioService) { 
+  constructor(private socket:SocketConfigService2,private modalService: NgbModal, private usuarioServ:UsuarioService) { 
     this.titulo = "Registrar Negocios";
 		this.negocios=new Negocio;
 	}
