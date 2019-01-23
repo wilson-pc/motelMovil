@@ -20,7 +20,7 @@ var clients = [];
         //  var tipo = new Tipo();
           var params = datos.negocio;
           negocio.nombre=params.nombre;
-          negocio.titular = params.titular;
+        //  negocio.titular = params.titular;
           negocio.foto=params.foto;
           negocio.tipo=await TipoNegocio.findById(params.tiponegocio);
           negocio.direccion=params.direccion;
@@ -33,10 +33,11 @@ var clients = [];
       
                       negocio.save((error, nuevoProducto) => {
                           if (error) {
+                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
                   
                           //    res.status(500).send({ mensaje: "error al guradar" })
                           } else {
-                            io.emit('respuesta',nuevoProducto);  
+                            io.emit('respuesta-registro-producto',nuevoProducto);  
                           }
                       })
               
@@ -45,14 +46,41 @@ var clients = [];
       } catch (e) {
         console.log(e);
       }
-      
-    //console.log(req.body);
-   
-     
-      
     });
 
     
+    socket.on('registrar-tipo-negocio',async (data) => {
+
+      try {
+          var tipoNegocio = new TipoNegocio();
+        //  var tipo = new Tipo();
+          var params = data.negocio;
+          tipoNegocio .nombre=params.nombre;
+        //  negocio.titular = params.titular;
+          
+             tipoNegocio.save((error, nuevoNegocio) => {
+                          if (error) {
+                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
+                  
+                          //    res.status(500).send({ mensaje: "error al guradar" })
+                          } else {
+                            console.log(nuevoNegocio);
+                            io.emit('respuesta-registro-producto',nuevoNegocio);  
+                          }
+                      })
+              
+        }
+    catch (e) {
+        console.log(e);
+      }
+      
+    
+  //console.log(req.body);
+ 
+   
+    
+  });
+
       socket.on('actualizar-negocio', async (data) => {
      
         
@@ -68,15 +96,16 @@ var clients = [];
           negocio.foto=params.foto;
           negocio.direccion=params.direccion;
           negocio.telefono=params.telefono;
+          negocio.nit=params.nit;
           negocio.correo=params.correo;
           negocio.modificacion=params.modificacion;
       
                       Negocio.findByIdAndUpdate(params.id,negocio,{new: true},(error, actualizado) => {
                           if (error) {
-                  
+                            io.to(socket.id).emit('respuesta-actualizar-negocio',{error: "error al guradar nuevos datos"});
                           //    res.status(500).send({ mensaje: "error al guradar" })
                           } else {
-                            io.emit('respuesta',actualizado);  
+                            io.emit('respuesta-actualizar-negocio',actualizado);  
                           }
                       })
               
@@ -106,10 +135,10 @@ var clients = [];
                       
                           Negocio.findByIdAndUpdate(params.id,negocio,{new: true},(error, actualizado) => {
                               if (error) {
-                      
+                                io.to(socket.id).emit('respuesta-elimina-negocio',{error: "error no se pudo guardar"})
                                  // res.status(500).send({ mensaje: "error al guradar" })
                               } else {
-                                io.emit('respuesta',actualizado);  
+                                io.emit('respuesta-elimina-negocio',actualizado);  
                               }
                           })
                     
@@ -126,13 +155,15 @@ var clients = [];
       socket.on('listar-negocio', async (data) => {
       Negocio.find({"eliminado.estado":false}, function (error, lista){
         if (error) {
+          io.to(socket.id).emit('respuesta-listar-negocio',{error: "No se pudo listar los negocios"})
            // res.status(500).send({ mensaje: "Error al listar" })
         } else {
             if (!lista) {
+              io.to(socket.id).emit('respuesta-listar-negocio',{error: "aun no hay negocios en registrados"})
              //   res.status(404).send({ mensaje: "Error al listar" })
             } else {
-                io.emit('respuesta',lista);  
-            }
+                io.emit('respuesta-listar-negocio',lista);  
+            }  
         }
       });
       });
@@ -147,9 +178,11 @@ var clients = [];
                 
         Negocio.findOne({_id:datos.id,"eliminado.estado":false}, function (error, dato){
             if (error) {
+              io.to(socket.id).emit('respuesta-sacar-negocio',{error: "no se pudo buscar al negocio"})
                // res.status(500).send({ mensaje: "Error al listar" })
             } else {
                 if (!lista) {
+                  io.to(socket.id).emit('respuesta-sacar-negocio',{error: "no se pudo encontrar al negocio"})
                  //   res.status(404).send({ mensaje: "Error al listar" })
                 } else {
                     io.emit('respuesta',dato);  
@@ -165,7 +198,7 @@ var clients = [];
           }   
 
         });
-        socket.on('buscar-usuario', async (data) => {
+        socket.on('buscar-negocio', async (data) => {
             try {
                 const bytes = CryptoJS.AES.decrypt(data, clave.clave);
                 if (bytes.toString()) {
@@ -174,12 +207,14 @@ var clients = [];
                     
             Negocio.find({"eliminado.estado":false,nombre:datos.termino,nit:datos.termino}, function (error, lista){
                 if (error) {
+                  io.to(socket.id).emit('respuesta-buscar-negocio',{error: "aun no hay negocios en registrados"})
                    // res.status(500).send({ mensaje: "Error al listar" })
                 } else {
                     if (!lista) {
+                      io.to(socket.id).emit('respuesta-buscar-negocio',{error: "aun no hay negocios en registrados"})
                      //   res.status(404).send({ mensaje: "Error al listar" })
                     } else {
-                        io.emit('respuesta',lista);  
+                        io.emit('respuesta-buscar-negocio',lista);  
                     }
                 }
               });
