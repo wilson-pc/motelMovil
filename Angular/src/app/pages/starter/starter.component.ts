@@ -31,4 +31,7 @@ export class StarterComponent implements AfterViewInit {
 	openCommerceSex(){
 		this.rout.navigate(['/administracion/negocio']);
 	}
+	OpenFormCommerce(){
+		this.rout.navigate(['/administracion/formulario-negocios'])
+	}
 }

@@ -1,3 +1,118 @@
-<p>
-  form-comerce works!
-</p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title"> {{titulo}}</h4>
+                <!--Modal Administradores-->
+                <ng-template #contentAdd let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">Registro de Negocio</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--FORMULARIO DE ADMINISTRADORES-->
+                        <form>
+                            <!--Nombre-->
+                            <div class="form-group">
+                                <label class=" control-label">Nro </label>
+                                <div class="">
+                                    <input type="text"  name="nombre"  placeholder="Ari" class="form-control input-md" required="">
+                                </div>
+                            </div>
+                            <!--Apellido-->
+                            <div class="form-group">
+                                <label class=" control-label">Nombres del Negocio: </label>
+                                <div class="">
+                                    <input type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
+                                </div>
+                            </div>
+                            <!--Ci-->
+                            <div class="form-group">
+                                <label class=" control-label">Direccion</label>
+                                <div class="">
+                                    <input type="text"  name="ci" placeholder="1254576CBB" class="form-control input-md" required="">
+                                </div>
+                            </div>
+                            
+                            
+                            <!--Contacto-->
+                            <div class="form-group">
+                                <label class=" control-label">Telefono: </label>
+                                <div class="">
+                                    <input type="number"  name="telefono" placeholder="76592654" class="form-control input-md" required="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class=" control-label">Titular</label>
+                                <div class="">
+                                    <input type="file" class="form-control input-md" required="">
+                                </div>
+                            </div>
+                            <!--Email-->
+                            <div class="form-group">
+                                <label class=" control-label">Correo(s): </label>
+                                <div class="">
+                                    <input type="text"  name="email" placeholder="example@gmail.com" class="form-control input-md"
+                                        required="">
+                                </div>
+                            </div>
+                           
+                            
+                        </form>
+                    </div>
+                    <!--Notificaciones-->
+                    <div class="alert alert-danger" *ngIf="isError">
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Error no se pudo guardar
+                        el
+                        registro
+                    </div>
+                    <li role="separator" class="divider"></li>
+                    <div class="alert alert-success" *ngIf="isExito">
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>registro guardado con
+                        exito
+                    </div>
+                    <div class="alert alert-danger" *ngIf="isRequired">
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
+                    </div>
+                    <!--btnCancelar / btnGuardar-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
+                        <button type="button" class="btn btn-success" (click)="add()">Guardar</button>
+                    </div>
+                </ng-template>
+
+                <i class='mdi mdi-account-multiple-plus btn btn-info' (click)="openFromRegistry(contentAdd)"></i>
+              </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <th class="hedarTitleTable" *ngFor="let head of headElements">{{head}}</th>
+                                
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of elements, let i=index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{user.negocio}}</td>
+                                    <td>{{user.direccion}}</td>
+                                    <td>{{user.telefono}}</td>
+                                   
+                                    <td>{{user.titular}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td class="text-right">
+                                        <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
+                                        <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentAdd)"></i>
+                                        <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentAdd)"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+          </div>
+    </div>
+</div>

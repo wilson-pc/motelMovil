@@ -17,6 +17,7 @@ import { CardsComponent } from './card/card.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { ListCommerceComponent } from './list-commerce/list-commerce.component';
 import { ListProductComponent } from './list-product/list-product.component';
+import { FormComerceComponent } from './form-comerce/form-comerce.component';
 
 export const ComponentsRoutes: Routes = [
   /*{
@@ -53,9 +54,9 @@ export const ComponentsRoutes: Routes = [
 
       {
         path: 'formulario-negocios',
-        component: ListProductComponent,
+        component: FormComerceComponent,
         data: {
-          title: 'Formulario de Negocios',
+          title: 'Formularios de Negocios',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
