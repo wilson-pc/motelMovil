@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuarios } from '../../../models/Usuarios';
-
+import { Negocio } from '../../../models/Negocio';
+import { getBase64, resizeBase64 } from 'base64js-es6';
 @Component({
   selector: 'app-form-comerce',
   templateUrl: './form-comerce.component.html',
@@ -17,7 +18,8 @@ export class FormComerceComponent implements OnInit {
 	isError:boolean=false;
 	isExito:boolean=false;
 	isRequired:boolean=false;
-   usuario:Usuarios;
+	 negocios:Negocio;
+	 
 	elements: any = [
 		{ negocio: 'Las tres hermanas', direccion: 'Av. Heroinas Nro 100', telefono: '96854885', titular: "Sir Angel", email: "servicio@gmail.com", }
 		//user, pass
@@ -26,7 +28,29 @@ export class FormComerceComponent implements OnInit {
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Titular', 'Email', 'Opciones'];
   constructor(private modalService: NgbModal) { 
     this.titulo = "Registrar Negocios";
-		this.usuario=new Usuarios;
+		this.negocios=new Negocio;
+	}
+	
+	changeListener($event): void {
+    this.readThis($event.target);
+	}
+	
+	readThis(inputValue: any): void {
+    var file: File = inputValue.files[0];
+    console.log(inputValue.files[0]);
+    //this.docente.perfil = { tipo: inputValue.files[0].type, foto: ""};
+    var myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+		 // this.docente.perfil.foto = myReader.result.toString();
+		// console.log(myReader.result.toString());
+      resizeBase64(myReader.result, 400, 500).then((result) => {
+				this.negocios.foto = result;
+			
+       
+      });
+    }
+    myReader.readAsDataURL(file);
   }
 
   ngOnInit() {
@@ -61,6 +85,11 @@ export class FormComerceComponent implements OnInit {
 
 	// COSUMO DE SERVICIOS
 	add(){
+		var date= new Date().toUTCString();
+		this.isError=false;
+		this.isRequired=false;
+		this.isExito=false;
+		console.log(this.negocios);
 
 	}
 
@@ -75,6 +104,7 @@ export class FormComerceComponent implements OnInit {
 	getAdmin(){
 
 	}
+
 
 
 }

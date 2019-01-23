@@ -3,14 +3,14 @@ import { TipoNegocio } from "./TipoNegocio";
 
 export class Negocio {
     public id:string;
-    public nombre:string;
-    public titular:string;
+    public nombre:string;//ok
+    public titular:string;//ok
     public foto:string;
     public tipo:TipoNegocio;
     public direccion:{ubicaciongps:string,descripcion:string}
-    public telefono:string
-    public nit:string;
-    public correo:string;
+    public telefono:string//ok
+    public nit:string;//ok
+    public correo:string;//ok
     public eliminado:{estado:Boolean,razon:string}
     public creacion:{usuario:string,fecha:Date};
     public modificacion:{fecha:Date,usuario:string}

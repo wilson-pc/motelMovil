@@ -14,47 +14,71 @@
                     <div class="modal-body">
                         <!--FORMULARIO DE ADMINISTRADORES-->
                         <form>
-                            <!--Nombre-->
-                            <div class="form-group">
-                                <label class=" control-label">Nro </label>
-                                <div class="">
-                                    <input type="text"  name="nombre"  placeholder="Ari" class="form-control input-md" required="">
-                                </div>
-                            </div>
-                            <!--Apellido-->
+                           
+                            <!--Nombre negocio-->
                             <div class="form-group">
                                 <label class=" control-label">Nombres del Negocio: </label>
                                 <div class="">
-                                    <input type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.nombre" type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
                                 </div>
                             </div>
-                            <!--Ci-->
+                            <!--Direccion-->
                             <div class="form-group">
                                 <label class=" control-label">Direccion</label>
                                 <div class="">
-                                    <input type="text"  name="ci" placeholder="1254576CBB" class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.direccion" type="text"  name="ci" placeholder="1254576CBB" class="form-control input-md" required="">
                                 </div>
                             </div>
                             
                             
-                            <!--Contacto-->
+                            <!--Telefono-->
                             <div class="form-group">
                                 <label class=" control-label">Telefono: </label>
                                 <div class="">
-                                    <input type="number"  name="telefono" placeholder="76592654" class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.telefono" type="number"  name="telefono" placeholder="76592654" class="form-control input-md" required="">
                                 </div>
                             </div>
+                            <!--Titular-->
                             <div class="form-group">
                                 <label class=" control-label">Titular</label>
                                 <div class="">
-                                    <input type="file" class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.titular" type="text" name="titular" placeholder="Propietario(a)" class="form-control input-md" required="">
                                 </div>
                             </div>
+
+                            <!--Foto-->
+                            <div class="form-group">
+                                <label class=" control-label">Foto: </label>
+                                <div class="">
+                                    <input [(ngModel)]="negocios.foto" type="file" (change)="changeListener($event)"  name="fileInput" class="form-control input-md" required="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Tipos de Negocio</label>
+                                <div>
+                                    <select [(ngModel)]="negocios.tipo" name="genero" class="form-control" id="selectTipo">
+                                        <option value="Elegir una opcion"></option>
+                                        <option value="Motel">Motel</option>
+                                        <option value="Licoreria">Licoreria</option>
+                                        <option value="Sexshop">Sex Shop</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!--Email-->
                             <div class="form-group">
                                 <label class=" control-label">Correo(s): </label>
                                 <div class="">
-                                    <input type="text"  name="email" placeholder="example@gmail.com" class="form-control input-md"
+                                    <input [(ngModel)]="negocios.correo" type="text"  name="email" placeholder="example@gmail.com" class="form-control input-md"
+                                        required="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class=" control-label">Nit: </label>
+                                <div class="">
+                                    <input [(ngModel)]="negocios.nit" type="text"  name="email" placeholder="NIT:66545465465" class="form-control input-md"
                                         required="">
                                 </div>
                             </div>
@@ -68,7 +92,7 @@
                         el
                         registro
                     </div>
-                    <li role="separator" class="divider"></li>
+                    
                     <div class="alert alert-success" *ngIf="isExito">
                         <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>registro guardado con
                         exito
