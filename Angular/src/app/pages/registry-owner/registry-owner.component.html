@@ -54,12 +54,7 @@
                                     <input type="number" [(ngModel)]="usuario.telefono" name="telefono" placeholder="76592654" class="form-control input-md" required="">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class=" control-label">Foto: </label>
-                                <div class="">
-                                    <input type="file" class="form-control input-md" required="">
-                                </div>
-                            </div>
+                           
                             <!--Email-->
                             <div class="form-group">
                                 <label class=" control-label">Email: </label>
@@ -68,18 +63,24 @@
                                         required="">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class=" control-label">Foto: </label>
+                                <div class="">
+                                    <input type="file" (change)="changeListener($event)" #fileInput name="fileInput" class="form-control input-md" required="">
+                                </div>
+                            </div>
                             <!--Usuario-->
                             <div class="form-group">
                                 <label class=" control-label">Usuario: </label>
                                 <div class="">
-                                    <input type="text"  name="usuario" placeholder="ari365" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="user" name="usuario" placeholder="ari365" class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Contraseña-->
                             <div class="form-group">
                                 <label class=" control-label">Contraseña: </label>
                                 <div class="">
-                                    <input type="text"  name="password" placeholder="ari9867KlP" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="password" name="password" placeholder="ari9867KlP" class="form-control input-md" required="">
                                 </div>
                             </div>
                         </form>
@@ -274,13 +275,13 @@
                             </th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let user of elements, let i=index">
+                            <tr *ngFor="let user of usuarios, let i=index">
                                 <td>{{i+1}}</td>
-                                <td>{{user.nombres}}</td>
+                                <td>{{user.nombre}}</td>
                                 <td>{{user.apellidos}}</td>
                                 <td>{{user.ci}}</td>
                                 <td>{{user.genero}}</td>
-                                <td>{{user.contacto}}</td>
+                                <td>{{user.telefono}}</td>
                                 <td>{{user.email}}</td>
                                 <td class="text-right">
                                     <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>

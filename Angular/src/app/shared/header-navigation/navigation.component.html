@@ -42,7 +42,7 @@
                     <form class="app-search">
                         <input type="text" class="form-control" placeholder="Buscar"> <a class="srh-btn"><i class="ti-search"></i></a> </form>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" *ngIf="usuarioServ.usuarioActual != undefined" >
                     <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class="profile-pic" /></a>
                     <div class="dropdown-menu dropdown-menu-right animated flipInY">
                         <ul class="dropdown-user">
@@ -50,15 +50,15 @@
                                 <div class="dw-user-box">
                                     <div class="u-img"><img src="assets/images/users/1.jpg" alt="user"></div>
                                     <div class="u-text">
-                                        <h4>Ari</h4>
-                                        <p class="text-muted">ari@gmail.com</p><a class="btn btn-rounded btn-danger btn-sm" (click)="exitAdmin()">Ver Perfil</a>
+                                        <h4>{{usuarioServ.usuarioActual.datos.nombre}}</h4>
+                                        <p class="text-muted">{{usuarioServ.usuarioActual.datos.email}}</p><a class="btn btn-rounded btn-danger btn-sm" (click)="exitAdmin()">Ver Perfil</a>
                                     </div>
                                 </div>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/administracion"><i class="ti-user"></i> Editar Perfil</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/login"><i class="fa fa-power-off"></i> Logout</a></li>
+                            <li><a (click)="cerrarCesion()" ><i class="fa fa-power-off"></i> Logout</a></li>
                         </ul>
                     </div>
                 </li>

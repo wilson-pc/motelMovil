@@ -1,6 +1,11 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../services/usuario.service';
+import { SocketConfigService2 } from '../../socket-config.service';
+import * as CryptoJS from 'crypto-js';
+import { clave } from '../../cryptoclave';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'ap-navigation',
@@ -9,7 +14,38 @@ import { Router } from '@angular/router';
 export class NavigationComponent implements AfterViewInit {
     name: string;
 
-    constructor(private rout: Router) { }
+    constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService) {
+        this.conn();
+     }
+
+    cerrarCesion(){
+      
+        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({id:this.usuarioServ.usuarioActual.datos._id}), clave.clave);
+        this.socket.emit("cerrar-secion",ciphertext.toString());
+        
+       }
+
+       conn(){
+        this.respuestaCerrar().subscribe((data:any) => {
+            console.log(data);
+              if(data){
+            localStorage.clear();
+            this.usuarioServ.usuarioActual=undefined;
+            this.rout.navigate(['/inicio']);
+              }else{
+                  console.log("error");
+              }
+            });
+      }
+      respuestaCerrar() {
+        let observable = new Observable(observer => {
+          this.socket.on('respuesta-cerrar', (data) => {
+            observer.next(data);
+          });
+        })
+        return observable;
+        }
+   
 
     exitAdmin() {
         this.rout.navigate(['/administracion']);

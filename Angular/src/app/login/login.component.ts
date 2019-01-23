@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SocketConfigService2 } from '../socket-config.service';
+import { Observable } from 'rxjs';
+import * as CryptoJS from 'crypto-js';
+import { clave } from '../cryptoclave';
+import { UsuarioService } from '../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -7,19 +12,71 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  constructor(private rout: Router) { }
+  isError:boolean=false;
+  isExito:boolean=false;
+  recordar: boolean = false;
+  isRequired:boolean=false;
+  constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService) { 
+    this.conn();
+  }
 
   ngOnInit() {
   }
 
   login(user: string, pass: string){
-    let u="admin";
-    let p="admin";
-    if(u === user && p === pass){
-    this.rout.navigate(['/administracion']);
-    }
+   
+ 
+      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({usuario:user,password:pass}), clave.clave);
+      this.socket.emit("login-usuario",ciphertext.toString());
+//    this.rout.navigate(['/administracion']);
     
-    this.rout.navigate(['/administracion']);
+    
+    //this.rout.navigate(['/administracion']);
   }
+  encryptData(data) {
+
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  conn(){
+    this.respuestaLogin().subscribe((data:any) => {
+		  
+     if(data.token){
+       
+			this.isError = false;
+			this.isRequired = false;
+      this.isExito = false;
+     // this.rout.navigate(['/administracion']);
+      if(this.recordar=true){
+        this.usuarioServ.usuarioActual=data;
+        localStorage.setItem("usuario", this.encryptData(data));
+        this.rout.navigate(['/administracion']);
+        
+       }else{
+        this.usuarioServ.usuarioActual=data;
+        //http://localhost:4200/lista-productos/page/1
+        this.rout.navigate(['/administracion']);
+         
+       }
+		 }
+		 else{
+       console.log("eeeror");
+			this.isError = true;
+			this.isRequired = true;
+      this.isExito = true;
+     
+		 }
+		});
+  }
+  respuestaLogin() {
+    let observable = new Observable(observer => {
+      this.socket.on('respuesta-login', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+	}
 }
