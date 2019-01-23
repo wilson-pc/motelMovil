@@ -25,6 +25,7 @@ export class RegistryOwnerComponent implements OnInit {
 		password:string;
 	 usuario:Usuarios;
 	 usuarios:Usuarios[]=[];
+	 a:any;
 /*	elements: any = [
 		{ apellidos: 'Castillo Rosas', nombres: 'Carla', ci: '96854885', genero: "otro", contacto: "45685222", email: "servicio@gmail.com", }
 		//user, pass
@@ -37,6 +38,11 @@ export class RegistryOwnerComponent implements OnInit {
 		this.usuario=new Usuarios;
 		this.getUsers();
 		this.conn();
+		this.a=1;
+	}
+
+	ejm(){
+		alert("ejemplo");
 	}
 
 	ngOnInit() { 
@@ -91,6 +97,9 @@ export class RegistryOwnerComponent implements OnInit {
 	var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
  this.socket.emit("registrar-usuario",ciphertext.toString());
 	}
+
+	
+	
 
 	update(){
 
