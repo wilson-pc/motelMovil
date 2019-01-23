@@ -31,7 +31,8 @@ module.exports = async function (io) {
           var usuario = new Usuario();
           var params = datos.usuario;
           usuario.nombre = params.nombre;
-          usuario.apellido = params.apellido;
+          usuario.apellido = params.apellidos;
+          usuario.genero=params.genero;
           usuario.ci = params.ci;
           usuario.telefono = params.telefono;
           usuario.email = params.email;
@@ -41,6 +42,7 @@ module.exports = async function (io) {
           usuario.creacion = params.creacion
           usuario.modificacion = params.modificacion;
           usuario.rol = await Rol.findById(params.rol);
+          
           if (params.ci) {
             //encripta el pasword del usuario
             bcrypt.hash(usuario.login.password, null, null, function (error, hash) {
@@ -147,7 +149,7 @@ module.exports = async function (io) {
     });
 
     socket.on('listar-usuario', async (data) => {
-      console.log("f34f3g4");
+      
       Usuario.find({"rol.rol":"Admin","eliminado.estado": false }, function (error, lista) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
@@ -155,7 +157,7 @@ module.exports = async function (io) {
           if (!lista) {
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-            console.log(lista);
+         
             io.emit('respuesta-listado', lista);
           }
         }
@@ -177,7 +179,7 @@ module.exports = async function (io) {
               if (!lista) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-                io.emit('respuesta', dato);
+                io.to(socket.id).emit('respuesta', dato);
 
               }
             }
@@ -204,7 +206,7 @@ module.exports = async function (io) {
               if (!lista) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-                io.emit('respuesta', lista);
+                io.to(socket.id).emit('respuesta', lista);
               }
             }
           });
@@ -254,20 +256,21 @@ module.exports = async function (io) {
 
                       Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
 
-                        io.emit('respuesta-login', { token: token.crearToken(user), datos: user });
+                        io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
                         //  res.status(200).send({ token: token.crearToken(user), datos:user });
                       });
 
 
                     }
                     else {
-                      io.emit('respuesta-login', { mensaje: "error usuario y contraseñ incorrecta" });
+                      io.to(socket.id).emit('respuesta-login', { mensaje: "error usuario y contraseñ incorrecta" });
                       //  res.status(404).send({ mensaje: "usuario o contraseña incorrectas " })
                     }
                   });
 
                 } else {
-                  io.emit('respuesta-login', { mensaje: "error xxxxxxxxx" });
+                
+                  io.to(socket.id).emit('respuesta-login', { mensaje: "error xxxxxxxxx" });
                   //res.status(401).send({ mensaje: "Usuario activo actualmente" })
                 }
               }
@@ -298,14 +301,15 @@ module.exports = async function (io) {
           Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, function (error, lista) {
 
             if (error) {
-              io.emit('respuesta-cerrar', { mensaje:false});
+            //  io.to(socket.id).emit('progreso',{total:image.length,progreso:index+1});
+              io.to(socket.id).emit('respuesta-cerrar', { mensaje:false});
             //  res.status(500).send({ mensaje: "Error desconocido" })
             } else {
               if (!lista) {
-                io.emit('respuesta-cerrar', { mensaje:false});
+                io.to(socket.id).emit('respuesta-cerrar', { mensaje:false});
               //  res.status(404).send({ mensaje: "Error no se  pudo cerrar secion" })
               } else {
-                io.emit('respuesta-cerrar', { mensaje:true});
+                io.to(socket.id).emit('respuesta-cerrar', { mensaje:false});
               }
             }
           });
