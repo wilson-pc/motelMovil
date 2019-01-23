@@ -14,25 +14,38 @@
                     <div class="modal-body">
                         <!--FORMULARIO DE ADMINISTRADORES-->
                         <form>
+                            <div class="form-group">
+                                <label class="control-label">Nombre del negocio: </label>
+                                <input type="text" [(ngModel)]="term" name="buscar" placeholder="Ejm: 'AriStore'"
+                                class="form-control input-md" required="">
+                                <div *ngFor="let item of items | filter:term | slice:0:3 ">
+                                    <p>
+                                        {{item}}
+                                    </p>
+                                </div>
+                            </div>
                             <!--Nombre-->
                             <div class="form-group">
                                 <label class=" control-label">Nombres: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.nombre" name="nombre"  placeholder="Ari" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.nombre" name="nombre" placeholder="Ari"
+                                        class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Apellido-->
                             <div class="form-group">
                                 <label class=" control-label">Apellidos: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" placeholder="Castillo "
+                                        class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Ci-->
                             <div class="form-group">
                                 <label class=" control-label">Ci: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.ci" name="ci" placeholder="1254576CBB" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.ci" name="ci" placeholder="1254576CBB"
+                                        class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Genero-->
@@ -51,36 +64,40 @@
                             <div class="form-group">
                                 <label class=" control-label">Contacto: </label>
                                 <div class="">
-                                    <input type="number" [(ngModel)]="usuario.telefono" name="telefono" placeholder="76592654" class="form-control input-md" required="">
+                                    <input type="number" [(ngModel)]="usuario.telefono" name="telefono" placeholder="76592654"
+                                        class="form-control input-md" required="">
                                 </div>
                             </div>
-                           
+
                             <!--Email-->
                             <div class="form-group">
                                 <label class=" control-label">Email: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.email" name="email" placeholder="example@gmail.com" class="form-control input-md"
-                                        required="">
+                                    <input type="text" [(ngModel)]="usuario.email" name="email" placeholder="example@gmail.com"
+                                        class="form-control input-md" required="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class=" control-label">Foto: </label>
                                 <div class="">
-                                    <input type="file" (change)="changeListener($event)" #fileInput name="fileInput" class="form-control input-md" required="">
+                                    <input type="file" (change)="changeListener($event)" #fileInput name="fileInput"
+                                        class="form-control input-md" required="">
                                 </div>
                             </div>
                             <!--Usuario-->
                             <div class="form-group">
                                 <label class=" control-label">Usuario: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="user" name="usuario" placeholder="ari365" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="user" name="usuario" placeholder="ari365" class="form-control input-md"
+                                        required="">
                                 </div>
                             </div>
                             <!--Contraseña-->
                             <div class="form-group">
                                 <label class=" control-label">Contraseña: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="password" name="password" placeholder="ari9867KlP" class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="password" name="password" placeholder="ari9867KlP"
+                                        class="form-control input-md" required="">
                                 </div>
                             </div>
                         </form>
@@ -91,7 +108,7 @@
                         el
                         registro
                     </div>
-                    
+
                     <div class="alert alert-success" *ngIf="isExito">
                         <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>registro guardado con
                         exito
@@ -171,7 +188,7 @@
                                 <input name="email" type="text" class="form-control input-md" required="">
                             </div>
                         </div>
-        
+
                         <!--Usuario-->
                         <div class="form-group">
                             <label class=" control-label">Usuario: </label>
@@ -236,12 +253,12 @@
                     <!--Usuario-->
                     <div class="form-group">
                         <label class=" control-label">Usuario: </label>
-                        
+
                     </div>
                     <!--Contraseña-->
                     <div class="form-group">
                         <label class=" control-label">Contraseña: </label>
-                        
+
                     </div>
                     <!--fin del toggle ROW-->
                 </div>
