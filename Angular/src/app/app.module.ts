@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
 import { WebComponent } from './web/web.component';
 import { LoginComponent } from './login/login.component';
-import { SocketConfigService } from './socket-config.service';
+import { SocketConfigService, SocketConfigService2 } from './socket-config.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { SocketConfigService } from './socket-config.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [SocketConfigService,
+  providers: [SocketConfigService,SocketConfigService2,
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy
