@@ -9,7 +9,8 @@ export class Negocio {
     public tipo:TipoNegocio;
     public direccion:{ubicaciongps:string,descripcion:string}
     public telefono:string
-    public correo:string
+    public nit:string;
+    public correo:string;
     public eliminado:{estado:Boolean,razon:string}
     public creacion:{usuario:string,fecha:Date};
     public modificacion:{fecha:Date,usuario:string}

@@ -15,5 +15,6 @@ export class Usuarios{
     public eliminado:{estado:Boolean,razon:string};
     public creacion:{usuario:string,fecha:Date};
     public modificacion:{fecha:Date,usuario:string};
+    public negocionit:[string];
 
 }
