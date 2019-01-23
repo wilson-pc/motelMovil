@@ -1,6 +1,6 @@
 "use strict"
 var mongose = require("mongoose");
-var TipoNegocio=require("./tipoNegocio");
+var TipoNegocio=require("./tipoNegocio").schema;
 var Schema = mongose.Schema;
 var NegocioSchema = Schema({
 nombre:String,
