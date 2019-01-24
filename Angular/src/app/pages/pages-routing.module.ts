@@ -4,6 +4,7 @@ import { PageComponent } from './pages.component';
 import { RegistryOwnerComponent } from './registry-owner/registry-owner.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
+import { RegistryUserComponent } from './registry-user/registry-user.component';
 
 const routes: Routes = [
     {
@@ -12,7 +13,8 @@ const routes: Routes = [
         children: [
             { path: 'administracion', loadChildren: './starter/starter.module#StarterModule' },
             { path: 'administracion', loadChildren: './component/component.module#ComponentsModule' },
-            { path: 'registro-usuarios', component: RegistryOwnerComponent },
+            { path: 'registro-dueños', component: RegistryOwnerComponent },
+            { path: 'registro-usuarios', component: RegistryUserComponent },
             { path: 'billetera', component: WalletComponent },
             { path: 'denuncias', component: ComplaintComponent },
         ]
