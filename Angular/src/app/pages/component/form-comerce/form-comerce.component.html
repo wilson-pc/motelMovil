@@ -141,20 +141,18 @@
                                 
                             </thead>
                             <tbody>
-                                <tr *ngFor="let user of elements, let i=index">
+                                <tr *ngFor="let user of ListaNegocio, let i=index">
                                     <td>{{i+1}}</td>
-                                    <td>{{user.negocio}}</td>
-                                    <td>{{user.direccion}}</td>
-                                    <td>{{user.telefono}}</td>
-                                   
-                                    <td>{{user.titular}}</td>
-                                    <td>{{user.email}}</td>
+                                    <td>{{user.nombre}}</td>
+                                    <td>{{user.direccion.descripcion}}</td>
+                                    <td>{{user.telefono}}</td>                            
+                                    <td>{{user.correo}}</td>
                                     <td class="text-right">
                                         <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
                                         <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentAdd)"></i>
                                         <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentAdd)"></i>
                                     </td>
-                                </tr>
+                                </tr> 
                             </tbody>
                         </table>
                     </div>

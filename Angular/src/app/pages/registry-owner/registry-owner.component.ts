@@ -40,7 +40,7 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabeceras de la Tabla
 	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService,private buscador:BuscadorService) {
 
-		this.titulo = "REGISTRO DE ADMINISTRADORES";
+		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
 		this.getUsers();
 		this.conn();
