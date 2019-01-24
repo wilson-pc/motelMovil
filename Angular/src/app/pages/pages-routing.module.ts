@@ -13,8 +13,8 @@ const routes: Routes = [
         children: [
             { path: 'administracion', loadChildren: './starter/starter.module#StarterModule' },
             { path: 'administracion', loadChildren: './component/component.module#ComponentsModule' },
-            { path: 'registro-dueños', component: RegistryOwnerComponent },
-            { path: 'registro-usuarios', component: RegistryUserComponent },
+            { path: 'administradores', component: RegistryOwnerComponent },
+            { path: 'usuarios', component: RegistryUserComponent },
             { path: 'billetera', component: WalletComponent },
             { path: 'denuncias', component: ComplaintComponent },
         ]
