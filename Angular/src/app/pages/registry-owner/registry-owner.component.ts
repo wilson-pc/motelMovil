@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { BuscadorService } from './../../service/buscador.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { Component, OnInit, ɵConsole } from '@angular/core';
@@ -29,6 +30,11 @@ export class RegistryOwnerComponent implements OnInit {
 	usuario: Usuarios;
 	usuarios: Usuarios[] = [];
 	a: any;
+
+
+	dropdownList = [];
+	selectedItems = [];
+	dropdownSettings = {};
 	// Cabeceras de la Tabla
 	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
 
@@ -56,8 +62,36 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-	}
-
+	
+		this.selectedItems = [
+		  
+		];
+		this.dropdownSettings = {
+		  singleSelection: false,
+		  idField: '_id',
+		  textField: 'nombre',
+		  selectAllText: 'Select All',
+		  unSelectAllText: 'UnSelect All',
+		  itemsShowLimit: 3,
+		  allowSearchFilter: true
+		};
+	  }
+	  onItemSelect(item: any) {
+		console.log(item);
+	  }
+	  onSelectAll(items: any) {
+		console.log(items);
+	  }
+	  onFilterChange(item:any){
+		  
+		 if(item.length>1){
+		  let datos= this.negocios.filter(word => word.nombre.includes(item));
+		     if(datos.length>0){
+				 this.dropdownList=datos
+			 }
+		
+		 }
+	  }
 	peticionSocketNegocio() {
 		this.socket3.emit("listar-negocio", { data: "nada" });
 	}
@@ -101,11 +135,14 @@ export class RegistryOwnerComponent implements OnInit {
 		this.isExito = false;
 		//console.log(this.usuario,this.user,this.password);
 		this.usuario.login = { usuario: this.user, password: this.password, estado: false };
-
+       let seleccionados=[];
 		this.usuario.rol = "5c45ef012f230f065ce7d830" as any;
 		this.usuario.creacion = { fecha: date, usuario: this.usuarioServ.usuarioActual.datos._id }
 		this.usuario.modificacion = { fecha: date, usuario: this.usuarioServ.usuarioActual.datos._id };
-		let data = { usuario: this.usuario }
+		this.selectedItems.forEach(element => {
+			seleccionados.push(element._id);
+		});
+		let data = { usuario: this.usuario,negocio:seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket.emit("registrar-usuario", ciphertext.toString());
 	}
@@ -150,8 +187,7 @@ export class RegistryOwnerComponent implements OnInit {
 		this.respuestaCrear().subscribe((data: any) => {
 
 			if (data.usuario) {
-				console.log("correco");
-				console.log(data);
+				
 				this.isError = true;
 				this.isRequired = true;
 				this.isExito = true;
@@ -163,19 +199,22 @@ export class RegistryOwnerComponent implements OnInit {
 				this.isExito = false;
 			}
 		});
+
 		this.respuestaActualizar().subscribe(data => {
 
 		});
 		this.respuestaListar().subscribe((data: any[]) => {
 			this.usuarios = data;
+			console.log(data);
 		});
 		this.respuestaListarNegocio().subscribe((data: any[]) => {
-			console.log("carga al array");
+			console.log(data);
+			this.dropdownList = data.slice(0,3);
 			this.negocios = data;
-			console.log(this.negocios)
+			
 		});
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
-		console.log(data);
+	
 			this.usuarios = data;
 			//console.log(this.negocios)
 		});

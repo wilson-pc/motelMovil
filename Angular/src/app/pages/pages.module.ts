@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RegistryUserComponent } from './registry-user/registry-user.component';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { RegistryUserComponent } from './registry-user/registry-user.component';
         PagesRoutingModule,
         FormsModule,
         Ng2SearchPipeModule,
+        NgMultiSelectDropDownModule.forRoot()
     ],
     declarations: [
         PageComponent,

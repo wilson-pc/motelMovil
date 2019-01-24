@@ -32,7 +32,7 @@ module.exports = async function (io) {
                   
                           //    res.status(500).send({ mensaje: "error al guradar" })
                           } else {
-                            console.log(nuevoNegocio);
+                          
                             io.emit('respuesta-registro-producto',nuevoNegocio);  
                           }
                       })
@@ -62,13 +62,13 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-         // console.log(datos);
+          console.log(datos);
           var usuario = new Usuario();
 
           var params = datos.usuario;
          
           usuario.nombre = params.nombre;
-          usuario.apellido = params.apellidos;
+          usuario.apellidos = params.apellidos;
           usuario.genero=params.genero;
           usuario.ci = params.ci;
           usuario.telefono = params.telefono;
@@ -88,15 +88,22 @@ module.exports = async function (io) {
               if (usuario.login.usuario != null) {
                 //guarda al nuevo usuario en la bd
 
-                usuario.save((error, nuevoUsuario), async  () => {
+                usuario.save( async  (error, nuevoUsuario) => {
                   if (error) {
 
-                    console.log(error);
+                  
                   } else {
-                    var negocio=new Negocio();
-                     negocio.titular=nuevoUsuario._id;
-                  var Nnegocio=  await Negocio.findByIdAndUpdate(usuario.licoreria,negocio);
-                    console.log(nuevoUsuario);
+                     if(datos.negocio){
+                     for (let index = 0; index < datos.negocio.length; index++) {
+                       const element = datos.negocio[index];
+                       var negocio=new Negocio();
+                       negocio._id=element;
+                       negocio.titular=nuevoUsuario._id;
+                    console.log(negocio);
+                       var Nnegocio=  await Negocio.findByIdAndUpdate(element,negocio);
+                     }
+                     }
+                  
                     io.emit('respuesta-crear', {usuario:nuevoUsuario});
                   }
                 })
@@ -190,7 +197,7 @@ module.exports = async function (io) {
 
     socket.on('listar-usuario', async (data) => {
       
-      Usuario.find({"rol.rol":"Admin","eliminado.estado": false }, function (error, lista) {
+      Usuario.find({"rol.rol":"Admin","eliminado.estado": false },{foto:0}, function (error, lista) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
         } else {
@@ -242,7 +249,7 @@ module.exports = async function (io) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
                 console.log(lista);
-                io.emit('respuesta-buscar-usuarios', lista);
+                io.to(socket.id).emit('respuesta-buscar-usuarios', lista);
               }
             }
           });
@@ -270,12 +277,12 @@ module.exports = async function (io) {
           Usuario.findOne({'login.usuario': usuario }, (error, user) => {
 
             if (error) {
-              io.emit('respuesta-login', { mensaje: "error al buscar" });
+              io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
             } else {
 
               if (user == null) {
-                io.emit('respuesta-login', { mensaje: "usuario no exite" });
+                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exite" });
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
@@ -287,7 +294,7 @@ module.exports = async function (io) {
                   usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
 
                   bcrypt.compare(pass, user.login.password, function (error, ok) {
-                    console.log(ok);
+                   
                     if (ok) {
 
                       Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
