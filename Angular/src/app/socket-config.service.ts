@@ -7,16 +7,23 @@ import { RutaServer } from './RutaApi';
 @Injectable({
   providedIn: 'root'
 })
-export class SocketConfigService extends Socket  {
+export class SocketConfigService extends Socket {
   constructor() {
-    super({ url: RutaServer.socket+"productos", options: {} });
-}
+    super({ url: RutaServer.socket + "productos", options: {} });
+  }
 
 }
 
-export class SocketConfigService2 extends Socket  {
+export class SocketConfigService2 extends Socket {
   constructor() {
-    super({ url: RutaServer.socket+"usuarios", options: {} });
+    super({ url: RutaServer.socket + "usuarios", options: {} });
+  }
 }
 
+export class SocketConfigService3 extends Socket {
+  constructor() {
+    super({
+      url: RutaServer.socket + "negocios", options: {}
+    })
+  }
 }
