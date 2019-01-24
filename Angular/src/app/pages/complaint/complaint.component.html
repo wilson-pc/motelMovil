@@ -83,13 +83,13 @@
       <!--Modal Eliminar-->
       <ng-template #contentDelete let-modal>
         <div class="modal-header">
-          <h4 class="modal-title">Eliminar Registro</h4>
+          <h4 class="modal-title">Eliminar Producto</h4>
           <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>¿Desea eliminar el registro?</p>
+          <p>¿Desea eliminar el producto?</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
@@ -108,12 +108,12 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let complaint of elements, let i=index" (click)="openModalView(contentView)"> 
+              <tr *ngFor="let complaint of elements, let i=index"> 
                 <td>{{i+1}}</td>
                 <td>{{complaint.producto}}</td>
                 <td>{{complaint.nombreNegocio}}</td>
                 <td>{{complaint.negocio}}</td>
-                <td>{{complaint.admin}}</td>
+                <td (click)="openModalView(contentView)">{{complaint.admin}}</td>
                 <td>{{complaint.cantidadDenuncias}}</td>
 
                 <td class="text-right">
