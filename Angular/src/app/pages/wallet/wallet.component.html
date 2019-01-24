@@ -3,6 +3,23 @@
     <div class="card">
       <div class="card-header">
         <h4 class="card-title"> {{titulo}}</h4>
+
+        <!--Buscador-->
+       <!-- <div class="container">
+            <div class="row">
+              <div class="col-8">
+                <input type="text" [(ngModel)]="termino" name="buscar" (keydown)="buscar($event)" class="form-control"
+                  placeholder="Buscar"> <a class="srh-btn"></a>
+              </div>
+              <div class="col">
+                <select name="tipo" class="form-control">
+                  <option value="admin">admin</option>
+                  <option value="user">user</option>
+                </select>
+              </div>
+            </div>
+          </div>-->
+
         <!--Modal -->
         <ng-template #contentView let-modal>
           <div class="modal-header">
@@ -106,42 +123,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
-          <button *ngIf="validUser == 'user'" type="button" class="btn btn-danger" (click)="openModalAddMoney(contentAdd)">Agregar</button>
-          <button *ngIf="validUser == 'admin'"type="button" class="btn btn-danger" (click)="openModalLeaveMoney(contentLeave)">Retirar</button>
-        </div>
-      </ng-template>
-
-      <!--Modal Agregar-->
-      <ng-template #contentAdd let-modal>
-        <div class="modal-header">
-          <h4 class="modal-title">Agregar Saldo</h4>
-          <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>¿Desea agregar el saldo?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
-          <button type="button" class="btn btn-danger" (click)="delete()">Agregar</button>
-        </div>
-      </ng-template>
-
-      <!--Modal Retirar-->
-      <ng-template #contentLeave let-modal>
-        <div class="modal-header">
-          <h4 class="modal-title">Retirar Saldo</h4>
-          <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>¿Desea retirar saldo?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
-          <button type="button" class="btn btn-warning" (click)="suspend()">Retirar</button>
+          <button *ngIf="validUser == 'user'" type="button" class="btn btn-danger" (click)="addMoney()">Agregar</button>
+          <button *ngIf="validUser == 'admin'"type="button" class="btn btn-danger" (click)="leaveMoney()">Retirar</button>
         </div>
       </ng-template>
 

@@ -3,6 +3,7 @@
     <div class="card">
       <div class="card-header">
         <h4 class="card-title"> {{titulo}}</h4>
+
         <!--Modal -->
         <ng-template #contentView let-modal>
           <div class="modal-header">
@@ -108,7 +109,7 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let complaint of elements, let i=index"> 
+              <tr *ngFor="let complaint of elements, let i=index">
                 <td>{{i+1}}</td>
                 <td>{{complaint.producto}}</td>
                 <td>{{complaint.nombreNegocio}}</td>

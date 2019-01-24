@@ -44,7 +44,7 @@ export class WalletComponent implements OnInit {
   validUser: string;
 
   constructor(private modalService: NgbModal, private usuarioServ: UsuarioService) {
-    this.titulo = "ADMINISTRACION DE USUARIOS";
+    this.titulo = "BILLETERA ADMINISTRADORES / USUARIOS";
     // Hora actual
     this.hour = formatDate(this.today, 'dd-MM-yyyy hh:mm a', 'en-US');
     this.validUser = '';
@@ -55,18 +55,6 @@ export class WalletComponent implements OnInit {
 
   // ACCIONES DE LOS MODALS
   openModalView(content) {
-    this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
-    this.modal.result.then((e) => {
-    });
-  }
-
-  openModalAddMoney(content) {
-    this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
-    this.modal.result.then((e) => {
-    });
-  }
-
-  openModalLeaveMoney(content) {
     this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
     this.modal.result.then((e) => {
     });
@@ -84,11 +72,11 @@ export class WalletComponent implements OnInit {
   }
 
   // COSUMO DE SERVICIOS
-  delete() {
+  addMoney() {
 
   }
 
-  suspend() {
+  leaveMoney() {
 
   }
 }
