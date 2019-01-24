@@ -9,13 +9,15 @@ import { BreadcrumbComponent } from '../shared/breadcrumb/breadcrumb.component';
 import { RegistryOwnerComponent } from './registry-owner/registry-owner.component';
 import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { WalletComponent } from './wallet/wallet.component';
+import { ComplaintComponent } from './complaint/complaint.component';
 
 @NgModule({
     imports: [
         CommonModule,
         PagesRoutingModule,
         FormsModule,
-        Ng2SearchPipeModule
+        Ng2SearchPipeModule,
     ],
     declarations: [
         PageComponent,
@@ -23,7 +25,9 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
         SidebarComponent,
         BreadcrumbComponent,
         SIDEBAR_TOGGLE_DIRECTIVES,
-        RegistryOwnerComponent
+        RegistryOwnerComponent,
+        WalletComponent,
+        ComplaintComponent
     ]
 })
 export class PagesModule { }

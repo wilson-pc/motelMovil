@@ -8,6 +8,7 @@ import { SocketConfigService2, SocketConfigService3 } from '../../socket-config.
 import { Observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
+import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
 
 @Component({
@@ -28,14 +29,17 @@ export class RegistryOwnerComponent implements OnInit {
 	usuario: Usuarios;
 	usuarios: Usuarios[] = [];
 	a: any;
+	// Cabeceras de la Tabla
+	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
+
 	items: any = []
 	term: string;
 	negocio: Negocio;
 	negocios: Negocio[];
 
 	// Cabeceras de la Tabla
-	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
 	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService,private buscador:BuscadorService) {
+
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
 		this.getUsers();
@@ -46,7 +50,6 @@ export class RegistryOwnerComponent implements OnInit {
 		this.peticionSocketNegocio();
 		this.buscador.lugar="usuarios";
 	}
-
 
 	ejm() {
 		alert("ejemplo");
