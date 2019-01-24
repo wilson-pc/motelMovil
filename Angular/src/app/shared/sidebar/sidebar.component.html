@@ -22,8 +22,18 @@
 
                 
                 <li>
-                    <a routerLink="/registro-usuarios" (click)="addExpandClass('component')" [routerLinkActive]="['router-link-active']"><i
+                    <a routerLink="/registro-usuarios" (click)="addExpandClass('registry-owner')" [routerLinkActive]="['router-link-active']"><i
                             class="mdi mdi-view-carousel"></i><span class="hide-menu">Registro Usuarios</span></a>
+                </li>
+
+                <li>
+                    <a routerLink="/billetera" (click)="addExpandClass('wallet')" [routerLinkActive]="['router-link-active']"><i
+                            class="mdi mdi-view-carousel"></i><span class="hide-menu">Billetera</span></a>
+                </li>
+
+                <li>
+                    <a routerLink="/denuncias" (click)="addExpandClass('complaint')" [routerLinkActive]="['router-link-active']"><i
+                            class="mdi mdi-view-carousel"></i><span class="hide-menu">Denuncias</span></a>
                 </li>
 
                 <!--

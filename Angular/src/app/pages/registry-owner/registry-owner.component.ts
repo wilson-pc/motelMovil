@@ -36,7 +36,11 @@ export class RegistryOwnerComponent implements OnInit {
 	negocio: Negocio;
 	negocios: Negocio[];
 
-	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService) {
+	constructor(private socket: SocketConfigService2, 
+							private socket3: SocketConfigService3, 
+							private modalService: NgbModal, 
+							private usuarioServ: UsuarioService) {
+
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
 		this.getUsers();
