@@ -27,9 +27,11 @@ export class RegistryOwnerComponent implements OnInit {
 	isRequired: boolean = false;
 	user: string;
 	password: string;
+	eliminar:boolean=false;
 	usuario: Usuarios;
 	usuarios: Usuarios[] = [];
 	a: any;
+	idUsuario:string;
 
 
 	dropdownList = [];
@@ -117,7 +119,8 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 	}
 
-	openModalDelete(content) {
+	openModalDelete(content,id) {
+		this.idUsuario=id;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -154,10 +157,19 @@ export class RegistryOwnerComponent implements OnInit {
 
 	}
 
-	delete() {
-
+	delete(razon) {
+		let data = { id: this.idUsuario,razon:razon }
+		
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket.emit("eliminar-usuario", ciphertext.toString());
 	}
-
+	razonEliminar(event,Termino){
+  if(Termino.length>12){
+ this.eliminar=true;
+  }else{
+	this.eliminar=false;
+  }
+	}
 	changeListener($event): void {
 		this.readThis($event.target);
 	}

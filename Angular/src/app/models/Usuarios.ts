@@ -1,7 +1,7 @@
 import { Rol } from "./Rol";
 
 export class Usuarios{
-    public id:string;
+    public _id:string;
     public nombre:string;
     public apellidos:string;
     public rol:Rol;
