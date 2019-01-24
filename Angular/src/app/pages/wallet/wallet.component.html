@@ -1,3 +1,159 @@
-<p>
-  wallet works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> {{titulo}}</h4>
+
+        <!--Buscador-->
+       <!-- <div class="container">
+            <div class="row">
+              <div class="col-8">
+                <input type="text" [(ngModel)]="termino" name="buscar" (keydown)="buscar($event)" class="form-control"
+                  placeholder="Buscar"> <a class="srh-btn"></a>
+              </div>
+              <div class="col">
+                <select name="tipo" class="form-control">
+                  <option value="admin">admin</option>
+                  <option value="user">user</option>
+                </select>
+              </div>
+            </div>
+          </div>-->
+
+        <!--Modal -->
+        <ng-template #contentView let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Perfil</h4>
+            <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <!--FORMULARIO DE USUARIO-->
+            <div class="row">
+              <div class="col-lg-9">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"></h3>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-3"> <img alt="User Pic" src="https://www.socialtools.me/blog/wp-content/uploads/2016/04/foto-de-perfil.jpg"
+                          class="img-circle img-responsive"> </div>
+
+                      <div class=" col-md-9 col-lg-9 ">
+                        <table class="table table-user-information">
+                          <tbody>
+                            <tr>
+                              <td>Department:</td>
+                              <td>Programming</td>
+                            </tr>
+                            <tr>
+                              <td>Hire date:</td>
+                              <td>06/23/2013</td>
+                            </tr>
+                            <tr>
+                              <td>Date of Birth</td>
+                              <td>01/24/1988</td>
+                            </tr>
+
+                            <tr>
+                            <tr>
+                              <td>Gender</td>
+                              <td>Female</td>
+                            </tr>
+                            <tr>
+                              <td>Home Address</td>
+                              <td>Kathmandu,Nepal</td>
+                            </tr>
+                            <tr>
+                              <td>Email</td>
+                              <td><a href="mailto:info@support.com">info@support.com</a></td>
+                            </tr>
+                            <td>Phone Number</td>
+                            <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
+                            </td>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="cancelModal()">Cerrar</button>
+
+          </div>
+        </ng-template>
+        <!--END MODAL-->
+        <pre>{{closeResult}}</pre>
+      </div>
+
+      <!--Modal Form Money-->
+      <ng-template #contentform let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">Billetera</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class=" control-label">Saldo: </label>
+            <div class="">
+              <label>{{saldo}} Bolivianos.</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class=" control-label">Fecha: </label>
+            <div class="">
+              <label>{{hour}}</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class=" control-label">Monto: (Bolivianos)</label>
+            <div class="">
+              <input name="monto" type="text" class="form-control input-md" required="">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
+          <button *ngIf="validUser == 'user'" type="button" class="btn btn-danger" (click)="addMoney()">Agregar</button>
+          <button *ngIf="validUser == 'admin'"type="button" class="btn btn-danger" (click)="leaveMoney()">Retirar</button>
+        </div>
+      </ng-template>
+
+      <!--LISTA USUARIOS-->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th class="hedarTitleTable" *ngFor="let head of headElements">{{head}}</th>
+              <th class="text-right hedarTitleTable">
+                Billetera
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of usuarios, let i=index">
+                <td>{{i+1}}</td>
+                <td (click)="openModalView(contentView)">{{user.nombre}}</td>
+                <td>{{user.apellidos}}</td>
+                <td id="tipo">{{user.tipo}}</td>
+                <td>{{user.saldo}}</td>
+
+                <td class="text-right">
+                  <i class='mdi mdi-google-play btn btn-success' (click)="openModalFormMoney(contentform, user)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
