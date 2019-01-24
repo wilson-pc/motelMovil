@@ -1,3 +1,4 @@
+import { BuscadorService } from './../../service/buscador.service';
 import { Component, AfterViewInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -13,8 +14,8 @@ import { Observable } from 'rxjs';
 })
 export class NavigationComponent implements AfterViewInit {
     name: string;
-
-    constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService) {
+    termino:string="";
+    constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService,private buscador:BuscadorService) {
         this.conn();
      }
 
@@ -45,7 +46,15 @@ export class NavigationComponent implements AfterViewInit {
         })
         return observable;
         }
-   
+        buscar(event) {
+           if(this.termino.length>1){
+            if(event.keyCode == 13) {
+                this.buscador.Buscar(this.termino);
+              }
+           }else{
+            this.socket.emit("listar-usuario", { data: "nada" });
+           }
+          }
 
     exitAdmin() {
         this.rout.navigate(['/administracion']);

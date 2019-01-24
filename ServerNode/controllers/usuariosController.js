@@ -11,10 +11,12 @@ module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
 
-    // var host=socket.handshake.headers.host;
 
+      
+    // var host=socket.handshake.headers.host;
+ console.log(socket.id);
     clients.push(socket.id);
-    console.log("alguien se conecto");
+
     socket.on('registrar-tipo-negocio',async (data) => {
 
       try {
@@ -232,26 +234,22 @@ module.exports = async function (io) {
     });
     socket.on('buscar-usuario', async (data) => {
       try {
-        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
-        if (bytes.toString()) {
-          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-
-          Usuario.find({ "eliminado.estado": false, nombre: datos.termino, apellido: datos.termino }, function (error, lista) {
+          Usuario.find({"eliminado.estado":false,$or:[{nombre: new RegExp(data.termino, 'i')},{apellido: new RegExp(data.termino, 'i')}]}, function (error, lista) {
             if (error) {
               // res.status(500).send({ mensaje: "Error al listar" })
             } else {
               if (!lista) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-                io.to(socket.id).emit('respuesta', lista);
+                console.log(lista);
+                io.emit('respuesta-buscar-usuarios', lista);
               }
             }
           });
 
         }
-        return data;
-      } catch (e) {
+        
+       catch (e) {
         console.log(e);
       }
 
