@@ -4,6 +4,8 @@ var Usuario = require("../schemas/usuario");
 var clave = require("./../variables/claveCrypto");
 var Rol = require("./../schemas/rol");
 var token = require("./../token/token");
+var TipoNegocio = require("../schemas/tipoNegocio");
+var Negocio=require("../schemas/negocio");
 const bcrypt = require('bcrypt-nodejs');
 module.exports = async function (io) {
   var clients = [];
@@ -13,7 +15,38 @@ module.exports = async function (io) {
 
     clients.push(socket.id);
     console.log("alguien se conecto");
+    socket.on('registrar-tipo-negocio',async (data) => {
 
+      try {
+          var tipoNegocio = new TipoNegocio();
+        //  var tipo = new Tipo();
+          var params = data.negocio;
+          tipoNegocio.nombre="SexVago";
+        //  negocio.titular = params.titular;
+          
+             tipoNegocio.save((error, nuevoNegocio) => {
+                          if (error) {
+                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
+                  
+                          //    res.status(500).send({ mensaje: "error al guradar" })
+                          } else {
+                            console.log(nuevoNegocio);
+                            io.emit('respuesta-registro-producto',nuevoNegocio);  
+                          }
+                      })
+              
+        }
+    catch (e) {
+        console.log(e);
+      }
+      
+    
+
+  //console.log(req.body);
+ 
+   
+    
+  });
     socket.on('registrar-usuario', async (data) => {
       // console.log("entra entra");
       // console.log(data);
@@ -27,9 +60,11 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          console.log(datos);
+         // console.log(datos);
           var usuario = new Usuario();
+
           var params = datos.usuario;
+         
           usuario.nombre = params.nombre;
           usuario.apellido = params.apellidos;
           usuario.genero=params.genero;
@@ -45,17 +80,20 @@ module.exports = async function (io) {
           
           if (params.ci) {
             //encripta el pasword del usuario
-            bcrypt.hash(usuario.login.password, null, null, function (error, hash) {
+            bcrypt.hash(usuario.login.password, null, null,async function (error, hash) {
               usuario.login.password = hash;
 
               if (usuario.login.usuario != null) {
                 //guarda al nuevo usuario en la bd
 
-                usuario.save((error, nuevoUsuario) => {
+                usuario.save((error, nuevoUsuario), async  () => {
                   if (error) {
 
                     console.log(error);
                   } else {
+                    var negocio=new Negocio();
+                     negocio.titular=nuevoUsuario._id;
+                  var Nnegocio=  await Negocio.findByIdAndUpdate(usuario.licoreria,negocio);
                     console.log(nuevoUsuario);
                     io.emit('respuesta-crear', {usuario:nuevoUsuario});
                   }
@@ -259,7 +297,6 @@ module.exports = async function (io) {
                         io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
                         //  res.status(200).send({ token: token.crearToken(user), datos:user });
                       });
-
 
                     }
                     else {
