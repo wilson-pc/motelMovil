@@ -24,10 +24,33 @@
                             </div>
                             <!--Direccion-->
                             <div class="form-group">
-                                <label class=" control-label">Direccion</label>
-                                <div class="">
-                                    <input [(ngModel)]="negocios.direccion" type="text"  name="ci" placeholder="1254576CBB" class="form-control input-md" required="">
-                                </div>
+
+
+                                    <p>
+                                            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+                                                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                                              Direccion
+                                            </button>
+                                          </p>
+                                          <div id="collapseExample" [ngbCollapse]="isCollapsed">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                    <label class=" control-label">Direccion de coordenadas</label>
+                                                    <div class="">
+                                                        <!--{ubicaciongps:string,descripcion:string}-->
+                                                        <input [(ngModel)]="ubicaciongps" type="text"  name="gps" placeholder="1.345345435, -2.342342432" class="form-control input-md" required="">
+                                                    </div>
+
+                                                    <label class=" control-label">Descripcion de la ubicacion</label>
+                                                    <div class="">
+                                                        <input [(ngModel)]="descripcion" type="text"  name="des" placeholder="Av. C Nro. 1003" class="form-control input-md" required="">
+                                                    </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                
+
+                                
                             </div>
                             
                             
@@ -59,9 +82,9 @@
                                 <div>
                                     <select [(ngModel)]="negocios.tipo" name="genero" class="form-control" id="selectTipo">
                                         <option value="Elegir una opcion"></option>
-                                        <option value="Motel">Motel</option>
-                                        <option value="Licoreria">Licoreria</option>
-                                        <option value="Sexshop">Sex Shop</option>
+                                        <option value="5c48958b734dbc052c531a0a">Motel</option>
+                                        <option value="5c4884160a1ca42b68044bc6">Licoreria</option>
+                                        <option value="5c4895b7577cc931d01645ff">Sex Shop</option>
                                     </select>
                                 </div>
                             </div>
@@ -103,7 +126,7 @@
                     <!--btnCancelar / btnGuardar-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
-                        <button type="button" class="btn btn-success" (click)="add()">Guardar</button>
+                        <button type="button" class="btn btn-success" (click)="add(negocios)">Guardar</button>
                     </div>
                 </ng-template>
 

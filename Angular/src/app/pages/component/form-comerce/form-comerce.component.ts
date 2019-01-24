@@ -7,7 +7,7 @@ import { getBase64, resizeBase64 } from 'base64js-es6';
 import { UsuarioService } from '../../../services/usuario.service';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../../cryptoclave';
-import { SocketConfigService2 } from '../../../socket-config.service';
+import { SocketConfigService3 } from '../../../socket-config.service';
  
 @Component({
   selector: 'app-form-comerce',
@@ -16,7 +16,11 @@ import { SocketConfigService2 } from '../../../socket-config.service';
 })
 export class FormComerceComponent implements OnInit {
 
-  titulo: string;
+	titulo: string;
+	ubicaciongps:string;
+	descripcion:string;
+
+
 	public isCollapsed = true;
 	modal: NgbModalRef;
 	closeResult: string;
@@ -31,9 +35,10 @@ export class FormComerceComponent implements OnInit {
 	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Titular', 'Email', 'Opciones'];
-  constructor(private socket:SocketConfigService2,private modalService: NgbModal, private usuarioServ:UsuarioService) { 
+  constructor(private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService) { 
     this.titulo = "Registrar Negocios";
 		this.negocios=new Negocio;
+		
 	}
 	
 	changeListener($event): void {
@@ -91,15 +96,24 @@ export class FormComerceComponent implements OnInit {
 
 	// COSUMO DE SERVICIOS
 	add(){
+
+		console.log(this.descripcion);
+		console.log(this.ubicaciongps);
+		
+		
+		
+			
 		var date= new Date().toUTCString();
 		this.isError=false;
 		this.isRequired=false;
-		this.isExito=false;
+		this.isExito=false;		
 
+		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
 		this.negocios.creacion={usuario:this.usuarioServ.usuarioActual.datos._id,fecha:date};
 		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
 
-		let data={usuario:this.negocios}
+		
+		let data={negocio:this.negocios}
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
 		this.socket.emit("registrar-negocio",ciphertext.toString());
 		console.log(this.negocios);

@@ -12,17 +12,20 @@ var clients = [];
 
     socket.on('registrar-negocio',async (data) => {
 
+      console.log("entro");
+
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
-          datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          var negocio = new Producto();
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var negocio = new Negocio();
         //  var tipo = new Tipo();
+        console.log(datos)
           var params = datos.negocio;
           negocio.nombre=params.nombre;
         //  negocio.titular = params.titular;
           negocio.foto=params.foto;
-          negocio.tipo=await TipoNegocio.findById(params.tiponegocio);
+          negocio.tipo=await TipoNegocio.findById(params.tipo);
           negocio.direccion=params.direccion;
           negocio.telefono=params.telefono;
           negocio.correo=params.correo;
@@ -33,6 +36,8 @@ var clients = [];
       
                       negocio.save((error, nuevoProducto) => {
                           if (error) {
+
+                            console.log(error)
                             io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
                   
                           //    res.status(500).send({ mensaje: "error al guradar" })
@@ -87,8 +92,8 @@ var clients = [];
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
-          datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          var negocio = new Producto();
+         var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var negocio = new Negocio();
         //  var tipo = new Tipo();
           var params = datos.negocio;
           negocio.nombre=params.nombre;
