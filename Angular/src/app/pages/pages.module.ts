@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesRoutingModule } from './pages-routing.module';
 import { PageComponent } from './pages.component';
@@ -32,6 +32,7 @@ import { RegistryUserComponent } from './registry-user/registry-user.component';
         WalletComponent,
         ComplaintComponent,
         RegistryUserComponent
-    ]
+    ],
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class PagesModule { }
