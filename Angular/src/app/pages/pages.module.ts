@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
+import { RegistryUserComponent } from './registry-user/registry-user.component';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { ComplaintComponent } from './complaint/complaint.component';
         SIDEBAR_TOGGLE_DIRECTIVES,
         RegistryOwnerComponent,
         WalletComponent,
-        ComplaintComponent
+        ComplaintComponent,
+        RegistryUserComponent
     ]
 })
 export class PagesModule { }
