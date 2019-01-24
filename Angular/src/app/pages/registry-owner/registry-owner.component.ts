@@ -1,3 +1,4 @@
+import { BuscadorService } from './../../service/buscador.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { Component, OnInit, ɵConsole } from '@angular/core';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -36,7 +37,9 @@ export class RegistryOwnerComponent implements OnInit {
 	negocio: Negocio;
 	negocios: Negocio[];
 
-	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService) {
+	// Cabeceras de la Tabla
+	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService,private buscador:BuscadorService) {
+
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
 		this.getUsers();
@@ -45,6 +48,7 @@ export class RegistryOwnerComponent implements OnInit {
 		// Model Negocios
 		this.negocio = new Negocio;
 		this.peticionSocketNegocio();
+		this.buscador.lugar="usuarios";
 	}
 
 	ejm() {
@@ -170,6 +174,11 @@ export class RegistryOwnerComponent implements OnInit {
 			this.negocios = data;
 			console.log(this.negocios)
 		});
+		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
+		console.log(data);
+			this.usuarios = data;
+			//console.log(this.negocios)
+		});
 	}
 	respuestaCrear() {
 		let observable = new Observable(observer => {
@@ -197,6 +206,15 @@ export class RegistryOwnerComponent implements OnInit {
 		return observable;
 	}
 
+	respuestaBuscarUsuario() {
+		let observable = new Observable(observer => {
+			this.socket.on('respuesta-buscar-usuarios', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
+	//respuesta-buscar-usuarios
 	respuestaListarNegocio() {
 		let observable = new Observable(observer => {
 			this.socket3.on('respuesta-listar-negocio', (data) => {
