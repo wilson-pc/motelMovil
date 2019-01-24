@@ -15,52 +15,13 @@ module.exports = async function (io) {
 
     clients.push(socket.id);
     console.log("alguien se conecto");
-
-    socket.on('registrar-negocio',async (data) => { 
-      console.log(data);
-      try {
-        
-          var negocio = new Negocio();
-        //  var tipo = new Tipo();
-        //  var params = datos.negocio;
-          negocio.nombre="canario";
-        //  negocio.titular = params.titular;
-        // negocio.foto=params.foto;
-          negocio.tipo=await TipoNegocio.findById("5c4884160a1ca42b68044bc6");
-      //    negocio.direccion="vvvvvvv";
-          negocio.telefono="fdgrthtytyht";
-          negocio.correo="wilson@gmail.com"
-          negocio.nit="5553746645656565";
-          negocio.eliminado={estado:false,razon:""};
-         // negocio.creacion=params.creacion
-          //negocio.modificacion=params.modificacion;
-      
-                      negocio.save((error, nuevoProducto) => {
-                          if (error) {
-                            console.log(error);
-                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
-                  
-                          //    res.status(500).send({ mensaje: "error al guradar" })
-                          } else {
-                            console.log(nuevoProducto);
-                            io.emit('respuesta-registro-producto',nuevoProducto);  
-                          }
-                      })
-              
-        }
-        catch (e) {
-        console.log(e);
-      }
-    });
-
-
     socket.on('registrar-tipo-negocio',async (data) => {
 
       try {
           var tipoNegocio = new TipoNegocio();
         //  var tipo = new Tipo();
           var params = data.negocio;
-          tipoNegocio.nombre="Licoreria";
+          tipoNegocio.nombre="SexVago";
         //  negocio.titular = params.titular;
           
              tipoNegocio.save((error, nuevoNegocio) => {
@@ -80,6 +41,7 @@ module.exports = async function (io) {
       }
       
     
+
   //console.log(req.body);
  
    
@@ -98,9 +60,11 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          console.log(datos);
+         // console.log(datos);
           var usuario = new Usuario();
+
           var params = datos.usuario;
+         
           usuario.nombre = params.nombre;
           usuario.apellido = params.apellidos;
           usuario.genero=params.genero;
@@ -116,17 +80,20 @@ module.exports = async function (io) {
           
           if (params.ci) {
             //encripta el pasword del usuario
-            bcrypt.hash(usuario.login.password, null, null, function (error, hash) {
+            bcrypt.hash(usuario.login.password, null, null,async function (error, hash) {
               usuario.login.password = hash;
 
               if (usuario.login.usuario != null) {
                 //guarda al nuevo usuario en la bd
 
-                usuario.save((error, nuevoUsuario) => {
+                usuario.save((error, nuevoUsuario), async  () => {
                   if (error) {
 
                     console.log(error);
                   } else {
+                    var negocio=new Negocio();
+                     negocio.titular=nuevoUsuario._id;
+                  var Nnegocio=  await Negocio.findByIdAndUpdate(usuario.licoreria,negocio);
                     console.log(nuevoUsuario);
                     io.emit('respuesta-crear', {usuario:nuevoUsuario});
                   }
@@ -330,7 +297,6 @@ module.exports = async function (io) {
                         io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
                         //  res.status(200).send({ token: token.crearToken(user), datos:user });
                       });
-
 
                     }
                     else {

@@ -7,8 +7,6 @@ import { SocketConfigService2 } from '../../socket-config.service'
 import { Observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
-import { FormControl } from '@angular/forms';
-import { Negocio } from '../../models/Negocio';
 
 @Component({
   selector: 'app-registry-owner',
@@ -35,21 +33,12 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
 
-  items : any = []
-	term: string;
-	negocio: Negocio;
-	negocios: Negocio[];
-
 	constructor(private socket:SocketConfigService2,private modalService: NgbModal,private usuarioServ:UsuarioService) {
 		this.titulo = "Usuarios Administradores";
 		this.usuario=new Usuarios;
 		this.getUsers();
 		this.conn();
 		this.a=1;
-		this.items = ["Kyle","Eric","Bailey", "Deborah", "Glenn", "Jaco", "Joni", "Gigi"]
-		// Model Negocios
-		this.negocio = new Negocio;
-		this.getCommerce();
 	}
 
 	ejm(){
@@ -61,13 +50,9 @@ export class RegistryOwnerComponent implements OnInit {
 		this.getAdmin();
 	}
 
-	getCommerce(){
-		this.socket.emit("listar-negocio", {data: "nada"});
-	}
-
-	getUsers(){
-		this.socket.emit("listar-usuario",{data:"nada"});
-	}
+	  getUsers(){
+			this.socket.emit("listar-usuario",{data:"nada"});
+		}
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
@@ -98,19 +83,19 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// COSUMO DE SERVICIOS
 	add(){
-	// 	var date = new Date().toUTCString();
-	// 	this.isError = false;
-  //   this.isRequired = false;
-  //   this.isExito = false;
-	// //console.log(this.usuario,this.user,this.password);
-	// this.usuario.login={usuario:this.user,password:this.password,estado:false};
+		var date = new Date().toUTCString();
+		this.isError = false;
+    this.isRequired = false;
+    this.isExito = false;
+	//console.log(this.usuario,this.user,this.password);
+	this.usuario.login={usuario:this.user,password:this.password,estado:false};
 
-	// this.usuario.rol="5c45ef012f230f065ce7d830" as any;
-	// this.usuario.creacion = {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id} 
-	// this.usuario.modificacion= {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
-	// let data ={usuario:this.usuario}
-	// var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
- this.socket.emit("registrar-negocio",{data:"l"});
+	this.usuario.rol="5c45ef012f230f065ce7d830" as any;
+	this.usuario.creacion = {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id} 
+	this.usuario.modificacion= {fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+	let data ={usuario:this.usuario}
+	var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+ this.socket.emit("registrar-usuario",ciphertext.toString());
 	}
 
 	
