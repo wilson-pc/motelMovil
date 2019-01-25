@@ -31,7 +31,10 @@ var clients = [];
           negocio.nit=params.nit;
           negocio.eliminado={estado:false,razon:""};
           negocio.creacion=params.creacion
+          negocio.productos=0;
           negocio.modificacion=params.modificacion;
+
+          console.log(negocio);
       
                       negocio.save((error, nuevonegocio) => {
                           if (error) {
@@ -43,6 +46,7 @@ var clients = [];
                             
                           //    res.status(500).send({ mensaje: "error al guradar" })
                           } else {
+                            console.log(nuevonegocio);
                             console.log("Se guardo el negocio correctamente");
                             io.emit('respuesta-registro-negocio',{datos:nuevonegocio});  
                             
@@ -106,6 +110,7 @@ var clients = [];
           negocio.direccion=params.direccion;
           negocio.telefono=params.telefono;
           negocio.nit=params.nit;
+          
           negocio.correo=params.correo;
           negocio.modificacion=params.modificacion;
       
@@ -195,7 +200,26 @@ var clients = [];
         });
         });
        
-     
+        socket.on('listar-negocio2', async (data) => {
+	        Negocio.find({"eliminado.estado":false,titular:{ $exists: false }},{foto:0}, function (error, lista){
+	          if (error) {
+	            console.log(error);
+	            io.to(socket.id).emit('respuesta-listar-negocio2',{error: "No se pudo listar los negocios"})
+	             // res.status(500).send({ mensaje: "Error al listar" })
+	          } else {
+	              if (!lista) {
+	              //  console.log(nada);
+	                io.to(socket.id).emit('respuesta-listar-negocio2',{error: "aun no hay negocios en registrados"})
+	               //   res.status(404).send({ mensaje: "Error al listar" })
+	              } else {
+	               
+	                io.to(socket.id).emit('respuesta-listar-negocio2',lista);  
+	              }  
+	          }
+	        });
+	        });
+	
+
       socket.on('sacar-negocio', async (data) => {
         try {
             const bytes = CryptoJS.AES.decrypt(data, clave.clave);
