@@ -67,16 +67,17 @@ export class FormComerceComponent implements OnInit {
 		
 	}
 	peticionSocketNegocio() {
+		var tit= this.route.snapshot.paramMap.get('negocio');
 
-		if(this.servicioflag.nivelCommerce==1){
+		if(tit=='moteles'){
 			this.socket3.emit("listar-negocio", { termino:'Motel'});
 			this.negocios.tipo= "5c48958b734dbc052c531a0a" as any;
 		}
-		if(this.servicioflag.nivelCommerce==2){
-			this.socket3.emit("listar-negocio", { termino:'Licorerias'});
+		if(tit=='licorerias'){
+			this.socket3.emit("listar-negocio", { termino:'Licoreria'});
 			this.negocios.tipo="5c4884160a1ca42b68044bc6" as any;
 		}
-		if(this.servicioflag.nivelCommerce==3){
+		if(tit=='sexshops'){
 			this.socket3.emit("listar-negocio", { termino:'SexShop'});
 			this.negocios.tipo="5c4895b7577cc931d01645ff" as any;
 		}		
@@ -149,7 +150,7 @@ export class FormComerceComponent implements OnInit {
 	// COSUMO DE SERVICIOS
 	add(){
 
-		console.log(this.descripcion);
+		/*console.log(this.descripcion);
 		console.log(this.ubicaciongps);
 		var date= new Date().toUTCString();
 		this.isError=false;
@@ -169,7 +170,8 @@ export class FormComerceComponent implements OnInit {
 		 	console.log("Entraste a respuesta");
 		 	console.log(data);
 		 });
-		console.log(this.negocios);
+		console.log(this.negocios);*/
+		console.log(this.isExito);
 
 	}
 
@@ -178,12 +180,23 @@ export class FormComerceComponent implements OnInit {
 	{
 		this.negocios=new Negocio;
 		this.descripcion="";
-		this.ubicaciongps="";	
-		this.isError=false;
-		this.isExito=false;
-		this.isRequired=false;
-		
-		
+		this.ubicaciongps="";		
+	}
+	limpiarMensajes(){
+		this.isError = false;
+				this.isRequired = false;
+				this.isExito = true;
+				console.log(this.isExito);
+				setTimeout(this.mostrarmsj,3000);
+				
+	}
+	mostrarmsj(){
+		this.isError = false;
+		this.isRequired = false;
+		this.isExito = false;
+		console.log(this.isExito);
+		console.log("mensaje");
+		console.log(this.isExito);
 	}
 
 	conn() {
@@ -201,6 +214,8 @@ export class FormComerceComponent implements OnInit {
 				this.ListaNegocio.push(data.datos);
 				this.limpiarCampos();
 				
+				
+				//setTimeout(this.limpiarMensajes,3000);				
 			}
 			else {
 				this.isError = true;
