@@ -165,6 +165,19 @@
                                 <input name="ci" [(ngModel)]="usuarioActualizado.ci" type="text" class="form-control input-md" required="">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label">Nuevo Negocio: </label>
+                            <ng-multiselect-dropdown name="multi"
+[placeholder]="'custom placeholder'"
+[data]="dropdownList"
+[(ngModel)]="selectedItems"
+[settings]="dropdownSettings"
+(onSelect)="onItemSelect($event)"
+(onSelectAll)="onSelectAll($event)"
+(onFilterChange)="onFilterChange($event)"
+>
+</ng-multiselect-dropdown>
+                        </div>
                         <!--Genero-->
                         <div class="form-group">
                             <label class=" control-label">Genero: </label>

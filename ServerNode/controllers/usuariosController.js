@@ -50,13 +50,7 @@ module.exports = async function (io) {
     
   });
     socket.on('registrar-usuario', async (data) => {
-      // console.log("entra entra");
-      // console.log(data);
-      // var rol = new Rol();
-      // rol.rol="Cliente";
-      // rol.save((error,nuevo)=>{
-      //     console.log(nuevo);
-      // });
+     
 
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
@@ -139,16 +133,29 @@ module.exports = async function (io) {
           usuario.telefono = params.telefono;
           usuario.email = params.email;
           usuario.login = params.login;
-          usuario.foto = par.foto;
+          usuario.foto = params.foto;
           usuario.modificacion = params.modificacion;
-
+          
           //guarda al nuevo usuario en la bd
 
-          Usuario.findByIdAndUpdate(params.id, usuario, { new: true }, (error, actualizado) => {
+          Usuario.findByIdAndUpdate(params._id,usuario, { new: true },async (error, actualizado) => {
             if (error) {
               io.to(socket.id).emit('respuesta-actualizar-usuario', {mensaje:"error al actualizar usuario"});
               // res.status(500).send({ mensaje: "error al guradar" })
             } else {
+            
+              if(datos.negocio){
+                for (let index = 0; index < datos.negocio.length; index++) {
+                  const element = datos.negocio[index];
+                  var negocio=new Negocio();
+                  negocio._id=element;
+                  negocio.titular=actualizado._id;
+              
+                  var Nnegocio=  await Negocio.findByIdAndUpdate(element,negocio);
+                }
+                }
+
+                console.log(actualizado);
               io.emit('respuesta-actualizar-usuario', actualizado);
             }
           })

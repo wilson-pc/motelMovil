@@ -159,9 +159,9 @@ var clients = [];
           }
         
       });
-
+//{"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0}
       socket.on('listar-negocio', async (data) => {
-      Negocio.find({"eliminado.estado":false}, function (error, lista){
+      Negocio.find({"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0}, function (error, lista){
         if (error) {
           io.to(socket.id).emit('respuesta-listar-negocio',{error: "No se pudo listar los negocios"})
            // res.status(500).send({ mensaje: "Error al listar" })
