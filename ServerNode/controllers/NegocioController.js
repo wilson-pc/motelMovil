@@ -3,6 +3,7 @@ var CryptoJS = require("crypto-js");
 var Negocio = require("../schemas/negocio");
 var TipoNegocio = require("../schemas/tipoNegocio");
 var clave=require("../variables/claveCrypto");
+const mongoose = require('mongoose');
 module.exports = async function(io) {
 var clients = [];
   io.on('connection', async function (socket) {
@@ -166,6 +167,25 @@ var clients = [];
       });
       });
      
+      socket.on('listar-negocio2', async (data) => {
+        Negocio.find({"eliminado.estado":false,titular:{ $exists: false }},{foto:0}, function (error, lista){
+          if (error) {
+            console.log(error);
+            io.to(socket.id).emit('respuesta-listar-negocio2',{error: "No se pudo listar los negocios"})
+             // res.status(500).send({ mensaje: "Error al listar" })
+          } else {
+              if (!lista) {
+              //  console.log(nada);
+                io.to(socket.id).emit('respuesta-listar-negocio2',{error: "aun no hay negocios en registrados"})
+               //   res.status(404).send({ mensaje: "Error al listar" })
+              } else {
+                console.log(lista);
+                io.to(socket.id).emit('respuesta-listar-negocio2',lista);  
+              }  
+          }
+        });
+        });
+       
       
       socket.on('sacar-negocio', async (data) => {
         try {
