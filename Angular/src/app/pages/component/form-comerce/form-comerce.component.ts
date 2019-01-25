@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 export class FormComerceComponent implements OnInit {
 
 	titulo: string;
+	tituloregistro:string;
 	ubicaciongps:string;
 	descripcion:string;
 
@@ -45,14 +46,16 @@ export class FormComerceComponent implements OnInit {
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Email', 'Opciones'];
   constructor(private route:ActivatedRoute,private servicioflag:UsuarioService,private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService,private socket3: SocketConfigService3) { 
-    this.titulo = "Registrar Negocios";
+	var tit= this.route.snapshot.paramMap.get('negocio');
+	this.titulo = "Registrar"+ tit;
+	this.tituloregistro= "Registro de"+this.route.snapshot.paramMap.get('negocio');
 		this.negocios=new Negocio;
 		this.ListaNegocio=[];
 		this.getNegocios();
 		this.conn();
 		this.flag=0;		
 		this.peticionSocketNegocio();	
-		console.log(this.route.snapshot.paramMap.get('negocio'));
+		//console.log(this.route.snapshot.paramMap.get('negocio'));
 	}
 
 	ngOnInit() {
@@ -175,7 +178,11 @@ export class FormComerceComponent implements OnInit {
 	{
 		this.negocios=new Negocio;
 		this.descripcion="";
-		this.ubicaciongps="";
+		this.ubicaciongps="";	
+		this.isError=false;
+		this.isExito=false;
+		this.isRequired=false;
+		
 		
 	}
 
@@ -232,8 +239,6 @@ export class FormComerceComponent implements OnInit {
 		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
 		
 		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
-
-		
 	}
 
 	delete(){

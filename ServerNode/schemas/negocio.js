@@ -4,7 +4,7 @@ var TipoNegocio=require("./tipoNegocio").schema;
 var Schema = mongose.Schema;
 var NegocioSchema = Schema({
 nombre:String,
-
+titular:String,
 foto:String,
 tipo:TipoNegocio,
 direccion:{ubicaciongps:String,descripcion:String},
