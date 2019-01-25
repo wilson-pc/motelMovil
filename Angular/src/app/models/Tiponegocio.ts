@@ -1,4 +1,4 @@
 export class TipoNegocio{
-    public id:string;
+    public _id:string;
     public nombre:string;
 }

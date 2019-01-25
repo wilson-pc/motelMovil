@@ -65,7 +65,7 @@ export class RegistryOwnerComponent implements OnInit {
 	ejm() {
 		alert("ejemplo");
 	}
-
+          //Llenar el ng-select
 	ngOnInit() {
 
 		this.selectedItems = [
@@ -117,6 +117,7 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 	}
 	openModalUpdate(content,usuario) {
+		this.selectedItems=[];
 		this.usuarioActualizado=usuario;
 
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
@@ -153,7 +154,15 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 		let data = { usuario: this.usuario, negocio: seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-		this.socket.emit("registrar-usuario", ciphertext.toString());
+
+		if(this.usuario.nombre!=undefined && this.usuario.apellidos!=undefined && this.user!=undefined && this.selectedItems.length>0 && this.usuario.email!=undefined){
+			this.socket.emit("registrar-usuario", ciphertext.toString());
+			
+		}
+		else{
+		this.isRequired=true;
+		}
+		
 	}
 
 
@@ -163,9 +172,14 @@ export class RegistryOwnerComponent implements OnInit {
 		var fecha=new Date().toUTCString();
 
 		this.usuarioActualizado.modificacion={fecha:fecha,usuario:this.usuarioServ.usuarioActual.datos._id};
-		let data = { usuario: this.usuarioActualizado }
+		
+		let seleccionados=[];
+		this.selectedItems.forEach(element => {
+			seleccionados.push(element._id);
+		});
+		let data = { usuario: this.usuarioActualizado,negocio: seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-	   console.log(this.usuarioActualizado);
+		
 	   
 	   	this.socket.emit("actualizar-usuario", ciphertext.toString());
 	}
@@ -183,6 +197,7 @@ export class RegistryOwnerComponent implements OnInit {
 			this.eliminar = false;
 		}
 	}
+	//funcion para buscar imagen dentro de la maquina
 	changeListener($event): void {
 		this.readThis($event.target);
 	}
@@ -205,7 +220,7 @@ export class RegistryOwnerComponent implements OnInit {
 		myReader.readAsDataURL(file);
 	}
 
-	//
+	//Metodo para ejecutar los evenListener de socket
 	conn() {
 		this.negocios = [];
 		this.respuestaCrear().subscribe((data: any) => {
@@ -217,6 +232,9 @@ export class RegistryOwnerComponent implements OnInit {
 				this.isExito = true;
 				this.usuarios.push(data.usuario);
 				this.usuario=new Usuarios();
+				this.user="";
+				this.password="";
+				this.selectedItems=[];
 			}
 			else {
 				this.isError = true;
@@ -228,6 +246,7 @@ export class RegistryOwnerComponent implements OnInit {
 		this.respuestaActualizar().subscribe((data:any) => {
 
 		this.usuarios.filter(word => word._id==data._id)[0]=data;
+		this.modal.close();
       
 		});
 		this.respuestaListar().subscribe((data: any[]) => {
@@ -252,7 +271,8 @@ export class RegistryOwnerComponent implements OnInit {
 		   let fila= this.usuarios.filter(word => word._id==data._id)[0];
 
 		var index = this.usuarios.indexOf(fila);
-	    this.usuarios.splice(index,1);
+		this.usuarios.splice(index,1);
+		this.modal.close();
 		//	this.usuarios = data;
 			//console.log(this.negocios)
 		});
@@ -265,6 +285,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
+	//respuesta-actualizar-usuarios
 	respuestaActualizar() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-actualizar-usuario', (data) => {
@@ -273,7 +294,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-
+//respuesta-listar-usuarios
 	respuestaListar() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-listado', (data) => {
@@ -282,7 +303,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-
+//respuesta-buscar-usuario
 	respuestaBuscarUsuario() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-buscar-usuarios', (data) => {
@@ -291,7 +312,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-	//respuesta-buscar-usuarios
+	//respuesta-buscar-negocio
 	respuestaListarNegocio() {
 		let observable = new Observable(observer => {
 			this.socket3.on('respuesta-listar-negocio2', (data) => {

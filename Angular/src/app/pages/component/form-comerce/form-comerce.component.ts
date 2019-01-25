@@ -96,7 +96,17 @@ export class FormComerceComponent implements OnInit {
     this.modal.result.then((e) => {
     });  
 	}
-	openModalUpdate(content) {
+	openModalUpdate(content,negocio:Negocio) {
+
+		
+		this.negocios=negocio;
+		this.negocios.tipo=negocio.tipo._id as any;
+		this.descripcion=negocio.direccion.descripcion;
+		this.ubicaciongps=negocio.direccion.ubicaciongps;
+		
+		console.log(this.negocios );
+	
+		
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
     this.modal.result.then((e) => {
     });  
@@ -107,6 +117,7 @@ export class FormComerceComponent implements OnInit {
     this.modal.result.then((e) => {
     });  
 	}
+	
 
 	cancelModal() {
 		this.modal.close();
@@ -139,20 +150,32 @@ export class FormComerceComponent implements OnInit {
 	}
 
 
+	limpiarCampos()
+	{
+		this.negocios=new Negocio;
+		this.descripcion="";
+		this.ubicaciongps="";
+		
+	}
+
 	conn() {
 		this.ListaNegocio = [];
 		this.respuestaCrear().subscribe((data: any) => {
 
-			if (data.negocio) {
+			console.log("entro conn");
+			
+			if (data.datos) {
 				console.log("correco");
 				console.log(data);
-				this.isError = true;
-				this.isRequired = true;
+				this.isError = false;
+				this.isRequired = false;
 				this.isExito = true;
-				this.ListaNegocio.push(data.negocio);
+				this.ListaNegocio.push(data.datos);
+				this.limpiarCampos();
+				
 			}
 			else {
-				this.isError = false;
+				this.isError = true;
 				this.isRequired = false;
 				this.isExito = false;
 			}
@@ -189,10 +212,11 @@ export class FormComerceComponent implements OnInit {
 
 	respuestaCrear() {
 		let observable = new Observable(observer => {
-			this.socket.on('respuesta-crear', (data) => {
+			this.socket.on('respuesta-registro-negocio', (data) => {
 				observer.next(data);
 			});
 		})
+		console.log("entro respuesta crear");
 		return observable;
 	}
 	respuestaActualizar() {

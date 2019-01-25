@@ -3,7 +3,6 @@ var CryptoJS = require("crypto-js");
 var Negocio = require("../schemas/negocio");
 var TipoNegocio = require("../schemas/tipoNegocio");
 var clave=require("../variables/claveCrypto");
-const mongoose = require('mongoose');
 module.exports = async function(io) {
 var clients = [];
   io.on('connection', async function (socket) {
@@ -33,15 +32,20 @@ var clients = [];
           negocio.creacion=params.creacion
           negocio.modificacion=params.modificacion;
       
-                      negocio.save((error, nuevoProducto) => {
+                      negocio.save((error, nuevonegocio) => {
                           if (error) {
 
                             console.log(error)
-                            io.to(socket.id).emit('respuesta-registro-producto',{error:"error no se pudo guardar el negocio"});
-                  
+                            io.to(socket.id).emit('respuesta-registro-negocio',{error:"error no se pudo guardar el negocio"}
+
+                            );
+                            
                           //    res.status(500).send({ mensaje: "error al guradar" })
                           } else {
-                            io.emit('respuesta-registro-producto',nuevoProducto);  
+                            console.log("Se guardo el negocio correctamente");
+                            io.emit('respuesta-registro-negocio',{datos:nuevonegocio});  
+                            
+
                           }
                       })
               
@@ -155,9 +159,9 @@ var clients = [];
           }
         
       });
-
+//{"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0}
       socket.on('listar-negocio', async (data) => {
-      Negocio.find({"eliminado.estado":false}, function (error, lista){
+      Negocio.find({"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0}, function (error, lista){
         if (error) {
           io.to(socket.id).emit('respuesta-listar-negocio',{error: "No se pudo listar los negocios"})
            // res.status(500).send({ mensaje: "Error al listar" })
@@ -172,25 +176,6 @@ var clients = [];
       });
       });
      
-      socket.on('listar-negocio2', async (data) => {
-        Negocio.find({"eliminado.estado":false,titular:{ $exists: false }},{foto:0}, function (error, lista){
-          if (error) {
-            console.log(error);
-            io.to(socket.id).emit('respuesta-listar-negocio2',{error: "No se pudo listar los negocios"})
-             // res.status(500).send({ mensaje: "Error al listar" })
-          } else {
-              if (!lista) {
-              //  console.log(nada);
-                io.to(socket.id).emit('respuesta-listar-negocio2',{error: "aun no hay negocios en registrados"})
-               //   res.status(404).send({ mensaje: "Error al listar" })
-              } else {
-                console.log(lista);
-                io.to(socket.id).emit('respuesta-listar-negocio2',lista);  
-              }  
-          }
-        });
-        });
-       
       
       socket.on('sacar-negocio', async (data) => {
         try {
