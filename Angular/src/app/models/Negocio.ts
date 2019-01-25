@@ -8,12 +8,12 @@ export class Negocio {
     public foto:string;
     public tipo:TipoNegocio;
     public direccion:{ubicaciongps:string,descripcion:string}
-    public telefono:string
-    public nit:string;
-    public correo:string;
+    public telefono:string//ok
+    public nit:string;//ok
+    public correo:string;//ok
     public eliminado:{estado:Boolean,razon:string}
-    public creacion:{usuario:string,fecha:Date};
-    public modificacion:{fecha:Date,usuario:string}
+    public creacion:{usuario:string,fecha:string};
+    public modificacion:{fecha:string,usuario:string}
 }
 
 /**

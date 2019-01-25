@@ -14,47 +14,94 @@
                     <div class="modal-body">
                         <!--FORMULARIO DE ADMINISTRADORES-->
                         <form>
-                            <!--Nombre-->
-                            <div class="form-group">
-                                <label class=" control-label">Nro </label>
-                                <div class="">
-                                    <input type="text"  name="nombre"  placeholder="Ari" class="form-control input-md" required="">
-                                </div>
-                            </div>
-                            <!--Apellido-->
+                           
+                            <!--Nombre negocio-->
                             <div class="form-group">
                                 <label class=" control-label">Nombres del Negocio: </label>
                                 <div class="">
-                                    <input type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.nombre" type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
                                 </div>
                             </div>
-                            <!--Ci-->
+                            <!--Direccion-->
                             <div class="form-group">
-                                <label class=" control-label">Direccion</label>
-                                <div class="">
-                                    <input type="text"  name="ci" placeholder="1254576CBB" class="form-control input-md" required="">
-                                </div>
+
+
+                                    <p>
+                                            <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+                                                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                                              Direccion
+                                            </button>
+                                          </p>
+                                          <div id="collapseExample" [ngbCollapse]="isCollapsed">
+                                            <div class="card">
+                                              <div class="card-body">
+                                                    <label class=" control-label">Direccion de coordenadas</label>
+                                                    <div class="">
+                                                        <!--{ubicaciongps:string,descripcion:string}-->
+                                                        <input [(ngModel)]="ubicaciongps" type="text"  name="gps" placeholder="1.345345435, -2.342342432" class="form-control input-md" required="">
+                                                    </div>
+
+                                                    <label class=" control-label">Descripcion de la ubicacion</label>
+                                                    <div class="">
+                                                        <input [(ngModel)]="descripcion" type="text"  name="des" placeholder="Av. C Nro. 1003" class="form-control input-md" required="">
+                                                    </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                
+
+                                
                             </div>
                             
                             
-                            <!--Contacto-->
+                            <!--Telefono-->
                             <div class="form-group">
                                 <label class=" control-label">Telefono: </label>
                                 <div class="">
-                                    <input type="number"  name="telefono" placeholder="76592654" class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.telefono" type="number"  name="telefono" placeholder="76592654" class="form-control input-md" required="">
                                 </div>
                             </div>
+                            <!--Titular-->
                             <div class="form-group">
                                 <label class=" control-label">Titular</label>
                                 <div class="">
-                                    <input type="file" class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.titular" type="text" name="titular" placeholder="Propietario(a)" class="form-control input-md" required="">
                                 </div>
                             </div>
+
+                            <!--Foto-->
+                            <div class="form-group">
+                                <label class=" control-label">Foto: </label>
+                                <div class="">
+                                    <input  type="file" (change)="changeListener($event)"  name="fileInput" class="form-control input-md" required="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Tipos de Negocio</label>
+                                <div>
+                                    <select [(ngModel)]="negocios.tipo" name="genero" class="form-control" id="selectTipo">
+                                        <option value="Elegir una opcion"></option>
+                                        <option value="5c48958b734dbc052c531a0a">Motel</option>
+                                        <option value="5c4884160a1ca42b68044bc6">Licoreria</option>
+                                        <option value="5c4895b7577cc931d01645ff">Sex Shop</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!--Email-->
                             <div class="form-group">
                                 <label class=" control-label">Correo(s): </label>
                                 <div class="">
-                                    <input type="text"  name="email" placeholder="example@gmail.com" class="form-control input-md"
+                                    <input [(ngModel)]="negocios.correo" type="text"  name="email" placeholder="example@gmail.com" class="form-control input-md"
+                                        required="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class=" control-label">Nit: </label>
+                                <div class="">
+                                    <input [(ngModel)]="negocios.nit" type="text"  name="email" placeholder="NIT:66545465465" class="form-control input-md"
                                         required="">
                                 </div>
                             </div>
@@ -68,7 +115,7 @@
                         el
                         registro
                     </div>
-                    <li role="separator" class="divider"></li>
+                    
                     <div class="alert alert-success" *ngIf="isExito">
                         <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>registro guardado con
                         exito
@@ -79,7 +126,7 @@
                     <!--btnCancelar / btnGuardar-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
-                        <button type="button" class="btn btn-success" (click)="add()">Guardar</button>
+                        <button type="button" class="btn btn-success" (click)="add(negocios)">Guardar</button>
                     </div>
                 </ng-template>
 
@@ -94,20 +141,18 @@
                                 
                             </thead>
                             <tbody>
-                                <tr *ngFor="let user of elements, let i=index">
+                                <tr *ngFor="let user of ListaNegocio, let i=index">
                                     <td>{{i+1}}</td>
-                                    <td>{{user.negocio}}</td>
-                                    <td>{{user.direccion}}</td>
-                                    <td>{{user.telefono}}</td>
-                                   
-                                    <td>{{user.titular}}</td>
-                                    <td>{{user.email}}</td>
+                                    <td>{{user.nombre}}</td>
+                                    <td>{{user.direccion.descripcion}}</td>
+                                    <td>{{user.telefono}}</td>                            
+                                    <td>{{user.correo}}</td>
                                     <td class="text-right">
                                         <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
                                         <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentAdd)"></i>
                                         <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentAdd)"></i>
                                     </td>
-                                </tr>
+                                </tr> 
                             </tbody>
                         </table>
                     </div>
