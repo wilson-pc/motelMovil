@@ -5,7 +5,7 @@ var Visitante=require("./visitante").schema;
 var Schema = mongose.Schema;
 var NegocioSchema = Schema({
 nombre:String,
-titular:{type: Schema.ObjectId, ref: "Usuarios"},
+
 foto:String,
 tipo:TipoNegocio,
 direccion:{ubicaciongps:String,descripcion:String},

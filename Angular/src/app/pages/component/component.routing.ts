@@ -9,24 +9,44 @@ export const ComponentsRoutes: Routes = [
     path: '',
     children: [
       {
-        path: 'negocio',
+        path: ':tipo',
         component: ListCommerceComponent,
         data: {
-          title: 'negocio',
+          title: '',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
+      
+      //Sub Division de hijos URL
       {
-        path: 'negocio/lista-productos',
+        path: 'moteles/:nombreNeg',
         component: ListProductComponent,
         data: {
-          title: 'lista-productos',
+          title: '',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
 
       {
-        path: 'formulario-negocios',
+        path: 'licorerias/:nombreNeg',
+        component: ListProductComponent,
+        data: {
+          title: '',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+
+      {
+        path: 'sexshops/:nombreNeg',
+        component: ListProductComponent,
+        data: {
+          title: '',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+
+      {
+        path: 'formulario/:negocio',
         component: FormComerceComponent,
         data: {
           title: 'Formularios de Negocios',

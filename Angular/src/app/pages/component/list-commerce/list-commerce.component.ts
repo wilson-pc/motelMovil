@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { StarterComponent } from '../../starter/starter.component';
+import { Negocio } from '../../../models/Negocio';
+import { SocketConfigService3 } from '../../../socket-config.service';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-list-commerce',
@@ -7,37 +12,66 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-commerce.component.css']
 })
 export class ListCommerceComponent implements OnInit {
+  tipoNegocio: string = '';
+  listCommerce: Negocio[];
+  closeResult: string;
+  isError: boolean = false;
+  isExito: boolean = false;
+  isRequired: boolean = false;
+  negocios: Negocio;
 
-  elements: any = [
-    { nombre: 'Licoreria Castillo', 
-      cantidadProductos: 'Carla', 
-      valoracion: '5',
-      cantidadReportes: '10', 
-      cantidadVisitas: "1200",
-      montoTotal: "3600", 
-      montoMesPasado: "3000", 
-      montoActual: "600"
-    }
-    //user, pass
-  ];
   // Cabezeras de los elementos
   headElements = ['Nro', 'Nombre', 'Cantidad Productos', 'Valoracion', 'Reportes', 'Visitas', 'Monto Total', 'Monto Mes Pasado', 'Monto Actual'];
 
-  constructor(private rout: Router) {
+  constructor(private rout: Router, private route: ActivatedRoute, private socketNegocio: SocketConfigService3) {
+    this.tipoNegocio = this.route.snapshot.paramMap.get('tipo');
+    this.listCommerce = [];
+    this.conn();
+    this.getCommerces();
   }
 
   ngOnInit() {
-    // funcion para cargar datos en la lista
-    this.getAdmin();
   }
-
 
   // COSUMO DE SERVICIOS
-  getAdmin() {
-
+  getCommerces() {
+    if (this.tipoNegocio === 'moteles') {
+      this.socketNegocio.emit("listar-negocio", { termino: "Motel" });
+    }
+    if (this.tipoNegocio === 'licorerias') {
+      this.socketNegocio.emit("listar-negocio", { termino: "Licorerias" });
+    }
+    if (this.tipoNegocio === 'sexshops') {
+      this.socketNegocio.emit("listar-negocio", { termino: "SexShop" });
+    }
   }
 
-  openListProducts(){
-		this.rout.navigate(['/administracion/negocio/lista-productos']);
+  conn() {
+    this.listCommerce = [];
+    this.respuestaListarNegocio().subscribe((data: any[]) => {
+      this.listCommerce = data;
+    });
+  }
+
+  respuestaListarNegocio() {
+    let observable = new Observable(observer => {
+      this.socketNegocio.on('respuesta-listar-negocio', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
+
+  // REDIRECCION A RUTAS SEGUN EVENTO
+  openListProducts(commerce: any) {
+    if (this.tipoNegocio === 'moteles') {
+      this.rout.navigate(['/administracion/moteles/' + commerce.nombre]);
+    }
+    if (this.tipoNegocio === 'licorerias') {
+      this.rout.navigate(['/administracion/licorerias/' + commerce.nombre]);
+    }
+    if (this.tipoNegocio === 'sexshops') {
+      this.rout.navigate(['/administracion/sexshops/' + commerce.nombre]);
+    }
   }
 }
