@@ -159,13 +159,13 @@ export class FormComerceComponent implements OnInit {
 
 
 		
-		// let data={negocio:this.negocios}
-		// var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
-		// this.socket.emit("registrar-negocio",ciphertext.toString());
-		// this.socket.on('respuesta-registro-negocio',(data)=>{
-		// 	console.log("Entraste a respuesta");
-		// 	console.log(data);
-		// });
+		let data={negocio:this.negocios}
+		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
+		 this.socket.emit("registrar-negocio",ciphertext.toString());
+		 this.socket.on('respuesta-registro-negocio',(data)=>{
+		 	console.log("Entraste a respuesta");
+		 	console.log(data);
+		 });
 		console.log(this.negocios);
 
 	}
