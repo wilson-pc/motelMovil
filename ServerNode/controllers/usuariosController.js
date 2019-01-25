@@ -208,6 +208,35 @@ module.exports = async function (io) {
       }
 
     });
+    socket.on('correo-recuperacion', async (data) => {
+          
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          
+      Usuario.findById({_id:datos.id,"eliminado.estado": false },{foto:0}, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+         
+        //    io.emit('respuesta-correo-recuperacion', lista);
+          }
+        }
+      });
+        }
+        else {
+            
+        }
+      } catch (e) {
+        console.log(e);
+      }
+  
+    });
 
     socket.on('listar-usuario', async (data) => {
       

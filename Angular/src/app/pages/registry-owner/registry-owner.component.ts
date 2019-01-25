@@ -1,3 +1,4 @@
+import { SocketConfigService } from './../../socket-config.service';
 import { element } from 'protractor';
 import { BuscadorService } from './../../service/buscador.service';
 import { UsuarioService } from './../../services/usuario.service';
@@ -47,7 +48,7 @@ export class RegistryOwnerComponent implements OnInit {
 	negocios: Negocio[];
 
 	// Cabeceras de la Tabla
-	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
+	constructor(private socketProducto:SocketConfigService,private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
@@ -106,6 +107,8 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto:"da"}), clave.clave);
+		this.socketProducto.emit("registrar-producto", ciphertext.toString());
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});

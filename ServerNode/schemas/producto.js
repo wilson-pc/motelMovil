@@ -5,7 +5,7 @@ var Tipo=require("./tipo").schema;
 var ProductoSchema = Schema({
 nombre:String,
 negocio:{type: Schema.ObjectId, ref: "Negocios"},
-precio:{precio:Number,moneda:String},
+precio:Number,
 disponibilidad:String,
 cantidad:Number,
 tipo:Tipo,

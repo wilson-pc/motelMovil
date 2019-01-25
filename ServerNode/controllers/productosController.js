@@ -1,6 +1,7 @@
 "use strict"
 var CryptoJS = require("crypto-js");
 var Producto = require("../schemas/producto");
+var Negocio= require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 module.exports = async function (io) {
@@ -41,8 +42,7 @@ module.exports = async function (io) {
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
           var producto = new Producto();
-          //  var tipo = new Tipo();
-          var params = datos.producto;
+      /*    var params = datos.producto;
           producto.nombre = params.nombre;
           producto.negocio = params.negocio;
           producto.precio = params.precio;
@@ -53,13 +53,28 @@ module.exports = async function (io) {
           usuario.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           producto.creacion = params.creacion
-          producto.modificacion = params.modificacion;
-          producto.save((error, nuevoProducto) => {
+          producto.modificacion = params.modificacion;*/
+          //  var tipo = new Tipo();
+          var params = datos.producto;
+          producto.nombre ="Cocacola";
+          producto.negocio ="5c4b4ce6d0ceac1fd4342e35";
+          producto.precio =13.5;
+          producto.disponibilidad = "Disponible";
+          producto.cantidad = 12;
+          producto.tipo = await Tipo.findById("5c4b4ce6d0ceac1fd4342e35");
+          producto.foto = "";
+          //usuario.eliminado = {usuario:"",};
+          producto.descripcion = "Vevida refrescante";
+       //   producto.creacion =cion
+         // producto.modificacion = icacion;
+          producto.save(async (error, nuevoProducto) => {
             if (error) {
-
-              res.status(500).send({ mensaje: "error al guradar" })
+                 console.log(error);
+             // res.status(500).send({ mensaje: "error al guradar" })
             } else {
-              io.emit('respuesta', nuevoProducto);
+              console.log(nuevoProducto);
+              var negocio= await Negocio.findByIdAndUpdate();
+              io.emit('respuesta-producto', nuevoProducto);
             }
           })
 
@@ -78,7 +93,45 @@ module.exports = async function (io) {
 
     socket.on('registrar-tipos', async (data) => {
 
-      io.emit('respuesta-registrar-tipos', { user: socket.nickname, event: 'left' });
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var tipo = new Tipo();
+      /*    var params = datos.producto;
+          producto.nombre = params.nombre;
+          producto.negocio = params.negocio;
+          producto.precio = params.precio;
+          producto.disponibilidad = params.disponibilidad;
+          producto.cantidad = params.cantidad;
+          producto.tipo = await Tipo.findById(params.tito);
+          producto.foto = params.foto;
+          usuario.eliminado = { estado: false, razon: "" };
+          producto.descripcion = params.descripcion;
+          producto.creacion = params.creacion
+          producto.modificacion = params.modificacion;*/
+          //  var tipo = new Tipo();
+          var params = datos.tipo;
+          tipo.nombre ="Gaseosa";
+         
+          tipo.save((error, nuevoTipo) => {
+            if (error) {
+                 console.log(error);
+              //res.status(500).send({ mensaje: "error al guradar" })
+            } else {
+              //console.log("Negocio");
+              console.log(nuevoTipo);
+              io.emit('respuesta-registrar-tipos', nuevoTipo);
+            }
+          })
+
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+   
     });
 
     socket.on('registrar-producto', async (data) => {
