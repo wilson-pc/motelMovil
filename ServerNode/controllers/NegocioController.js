@@ -2,6 +2,7 @@
 var CryptoJS = require("crypto-js");
 var Negocio = require("../schemas/negocio");
 var TipoNegocio = require("../schemas/tipoNegocio");
+var Productos=require("../schemas/producto");
 var clave=require("../variables/claveCrypto");
 module.exports = async function(io) {
 var clients = [];
@@ -138,6 +139,7 @@ var clients = [];
               var negocio = new Negocio();
               var params = datos.negocio;
               negocio._id=params._id;
+              negocio.productos=0;
               negocio.eliminado={estado:true,razon:params.razon},
                           //guarda al nuevo usuario en la bd
                       
@@ -175,8 +177,25 @@ var clients = [];
         }
       });
       });
+
+      socket.on('listar-negocio-detallado', async (data) => {
+        Negocio.find({"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0},async function (error, lista){
+          if (error) {
+            io.to(socket.id).emit('respuesta-listar-negocio-detallado',{error: "No se pudo listar los negocios"})
+             // res.status(500).send({ mensaje: "Error al listar" })
+          } else {
+              if (!lista) {
+                io.to(socket.id).emit('respuesta-listar-negocio-detallado',{error: "aun no hay negocios en registrados"})
+               //   res.status(404).send({ mensaje: "Error al listar" })
+              } else {
+                 
+                  io.emit('respuesta-listar-negocio-detallado',lista);  
+              }  
+          }
+        });
+        });
+       
      
-      
       socket.on('sacar-negocio', async (data) => {
         try {
             const bytes = CryptoJS.AES.decrypt(data, clave.clave);
