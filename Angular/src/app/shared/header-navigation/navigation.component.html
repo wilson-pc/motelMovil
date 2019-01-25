@@ -51,12 +51,10 @@
                                     <div class="u-img"><img src="assets/images/users/1.jpg" alt="user"></div>
                                     <div class="u-text">
                                         <h4>{{usuarioServ.usuarioActual.datos.nombre}}</h4>
-                                        <p class="text-muted">{{usuarioServ.usuarioActual.datos.email}}</p><a class="btn btn-rounded btn-danger btn-sm" (click)="exitAdmin()">Ver Perfil</a>
+                                        <p class="text-muted">{{usuarioServ.usuarioActual.datos.email}}</p>
                                     </div>
                                 </div>
                             </li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/administracion"><i class="ti-user"></i> Editar Perfil</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a (click)="cerrarCesion()" ><i class="fa fa-power-off"></i> Logout</a></li>
                         </ul>

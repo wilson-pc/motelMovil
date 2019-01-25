@@ -165,29 +165,36 @@ module.exports = async function (io) {
     });
 
     socket.on('eliminar-usuario', async (data) => {
-
+    
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
           var usuario = new Usuario();
-          var params = datos.usuario;
-          usuario._id = params._id;
-          usuario.eliminado = { estado: true, razon: params.razon },
-            //guarda al nuevo usuario en la bd
-
-            Usuario.findByIdAndUpdate(params.id, usuario, { new: true }, (error, actualizado) => {
+        
+          usuario._id = datos.id;
+          usuario.eliminado = { estado: true, razon:datos.razon };
+           var dat=await Negocio.find({titular:datos.id});
+           
+             console.log(dat);
+          Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, async (error, actualizado) => {
               if (error) {
-
-                // res.status(500).send({ mensaje: "error al guradar" })
+                console.log(error);
+                io.emit('respuesta-eliminar-usuario', {error:"Ocurrio un error en ls eliminacion"});
+                
               } else {
-                io.emit('respuesta', actualizado);
+                 
+                    await Negocio.update({titular:datos.id},{eliminado:{estado:true,razon:"eliminado por borrado de usuario"}});
+                    
+                  
+                io.emit('respuesta-eliminar-usuario', actualizado);
               }
             })
 
         }
         else {
-
+            
         }
       } catch (e) {
         console.log(e);
