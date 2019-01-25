@@ -9,18 +9,55 @@ export const ComponentsRoutes: Routes = [
     path: '',
     children: [
       {
-        path: 'negocio',
+        path: ':tipo',
         component: ListCommerceComponent,
         data: {
-          title: 'negocio',
+          title: 'MOTELES',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
+
       {
-        path: 'negocio/lista-productos',
+        path: ':tipo',
+        component: ListCommerceComponent,
+        data: {
+          title: 'LICORERIAS',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+
+      {
+        path: ':tipo',
+        component: ListCommerceComponent,
+        data: {
+          title: 'SEXSHOPS',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+      //Sub Division de hijos URL
+      {
+        path: 'moteles/:nombreNeg',
         component: ListProductComponent,
         data: {
-          title: 'lista-productos',
+          title: '',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+
+      {
+        path: 'licorerias/:nombreNeg',
+        component: ListProductComponent,
+        data: {
+          title: '',
+          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
+        }
+      },
+
+      {
+        path: 'sexshops/:nombreNeg',
+        component: ListProductComponent,
+        data: {
+          title: '',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },

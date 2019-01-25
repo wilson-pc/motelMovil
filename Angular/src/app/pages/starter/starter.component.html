@@ -1,55 +1,45 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-        
-                <h4 class="card-title"> {{titulo}}</h4>
-                
-                <!--Inicio de Tarjetas vista-->
+            <h4 class="card-title"> {{titulo}}</h4>
 
-                <div class="row">
+            <!--Inicio de Tarjetas vista-->
+            <div class="row">
 
-                    <div class="col-sm">
-                      <div class="card bg-dark text-white tarjeta" (click)="openCommerceMotel()" >
-                            <img src="../../../assets/images/logoLove.png"  class="card-img-top" alt="qwe">
+                <div class="col-sm">
+                    <div class="card bg-dark text-white tarjeta" (click)="openCommerceMotel()">
+                        <img src="../../../assets/images/logoLove.png" class="card-img-top">
                         <div class="card-img-overlay">
-         
-                          </div>
-                      </div>
-                      <div class="btnregistrar">
-                            <i class='mdi mdi-plus btn btn-info' (click)="OpenFormCommerce()"></i>
-                            </div>
-                    
-                             
+                        </div>
                     </div>
+                    <div class="btnregistrar">
+                        <i class='mdi mdi-plus btn btn-info' (click)="OpenFormCommerce()"></i>
+                    </div>
+                </div>
 
-                    <div class="col-sm">
-                          <div class="card bg-dark text-white tarjeta">
-                            <img src="../../../assets/images/bar.jpg" (click)="openCommerceMotel()" class="card-img-top" alt="qwe">
+                <div class="col-sm">
+                    <div class="card bg-dark text-white tarjeta" (click)="openCommerceLicor()">
+                        <img src="../../../assets/images/bar.jpg" class="card-img-top">
                         <div class="card-img-overlay">
-                           </div>
-                      </div>
-
-                      <div class="btnregistrar">
-                            <i class='mdi mdi-plus btn btn-info' (click)="OpenFormCommerce()"></i>
                         </div>
                     </div>
 
-
-                    <div class="col-sm">
-                      <div class="card bg-dark text-white tarjeta">
-                        <img src="../../../assets/images/logo-sexshop-sexuale.jpg" (click)="openCommerceMotel()" class="card-img-top" alt="qwe">
-                    <div class="card-img-overlay">
-                      
+                    <div class="btnregistrar">
+                        <i class='mdi mdi-plus btn btn-info' (click)="OpenFormCommerce()"></i>
                     </div>
-                  </div>
+                </div>
 
-                  <div class="btnregistrar">
-                  <i class='mdi mdi-plus btn btn-info' (click)="OpenFormCommerce()"></i>
-                  </div>
-                  </div><!--Fin de tarjetas vista-->
+                <div class="col-sm">
+                    <div class="card bg-dark text-white tarjeta" (click)="openCommerceSex()">
+                        <img src="../../../assets/images/logo-sexshop-sexuale.jpg" class="card-img-top">
+                        <div class="card-img-overlay">
+                        </div>
+                    </div>
 
-
-                <!-- Modal Administradores -->
+                    <div class="btnregistrar">
+                        <i class='mdi mdi-plus btn btn-info' (click)="OpenFormCommerce()"></i>
+                    </div>
+                </div>
             </div>
+        </div>
     </div>
-</div>

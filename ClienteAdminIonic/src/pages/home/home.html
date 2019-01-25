@@ -5,16 +5,8 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      <strong>Ionic 3</strong> Start Theme
+      <strong>Negocios</strong>
     </ion-title>
-    <ion-buttons end>
-      <button ion-button tappable (click)="presentNotifications($event)">
-        <ion-icon name="notifications"></ion-icon>
-      </button>
-      <button ion-button tappable (click)="goToAccount()">
-        <ion-icon name="cog"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -32,4 +24,11 @@
     </div>
   </div>
 
+  <div *ngFor="let negocio ">
+    <ion-card>
+      <ion-card-content>
+        <!-- Add card content here! -->
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

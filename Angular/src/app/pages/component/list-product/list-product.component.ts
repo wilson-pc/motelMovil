@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list-product',
@@ -7,7 +8,7 @@ import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./list-product.component.css']
 })
 export class ListProductComponent implements OnInit {
-  titulo: string;
+	nombreNegocio: string = '';
 	public isCollapsed = true;
 	modal: NgbModalRef;
 	closeResult: string;
@@ -19,8 +20,8 @@ export class ListProductComponent implements OnInit {
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre', 'cantidad'];
 
-	constructor(private modalService: NgbModal) {
-		this.titulo = "administracion de productos"
+	constructor(private modalService: NgbModal, private route:ActivatedRoute) {
+		this.nombreNegocio = this.route.snapshot.paramMap.get('nombreNeg');
 	}
 
 	ngOnInit() { 

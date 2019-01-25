@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { StarterComponent } from '../../starter/starter.component';
+
 
 @Component({
   selector: 'app-list-commerce',
@@ -7,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-commerce.component.css']
 })
 export class ListCommerceComponent implements OnInit {
-
+  private tipoNegocio: string = '';
   elements: any = [
     { nombre: 'Licoreria Castillo', 
       cantidadProductos: 'Carla', 
@@ -16,14 +18,15 @@ export class ListCommerceComponent implements OnInit {
       cantidadVisitas: "1200",
       montoTotal: "3600", 
       montoMesPasado: "3000", 
-      montoActual: "600"
+      montoActual: "600",
     }
     //user, pass
   ];
   // Cabezeras de los elementos
   headElements = ['Nro', 'Nombre', 'Cantidad Productos', 'Valoracion', 'Reportes', 'Visitas', 'Monto Total', 'Monto Mes Pasado', 'Monto Actual'];
 
-  constructor(private rout: Router) {
+  constructor(private rout: Router, private route:ActivatedRoute) {
+    this.tipoNegocio = this.route.snapshot.paramMap.get('tipo');
   }
 
   ngOnInit() {
@@ -37,7 +40,16 @@ export class ListCommerceComponent implements OnInit {
 
   }
 
-  openListProducts(){
-		this.rout.navigate(['/administracion/negocio/lista-productos']);
+  openListProducts(commerce: any){
+
+    if(this.tipoNegocio === 'moteles'){
+      this.rout.navigate(['/administracion/moteles/' + commerce.nombre]);
+    }
+    if(this.tipoNegocio === 'licorerias'){
+      this.rout.navigate(['/administracion/licorerias/' + commerce.nombre]);
+    }
+    if(this.tipoNegocio === 'sexshops'){
+      this.rout.navigate(['/administracion/sexshops/' + commerce.nombre]);
+    }
   }
 }

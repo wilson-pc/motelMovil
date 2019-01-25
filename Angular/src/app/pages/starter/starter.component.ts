@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 	styleUrls: ['./starter.component.css']
 })
 export class StarterComponent implements AfterViewInit {
-	
 
 	constructor(private rout: Router) {
 	}
@@ -16,22 +15,22 @@ export class StarterComponent implements AfterViewInit {
 	ngAfterViewInit() { 
 	}
 
-	// COSUMO DE SERVICIOS
-
-
 	// Acciones de filtracion segun tipo de negocio
 	openCommerceMotel(){
-		this.rout.navigate(['/administracion/negocio']);
+		this.rout.navigate(['/administracion/moteles']);
 	}
 
 	openCommerceLicor(){
-		this.rout.navigate(['/administracion/negocio']);
+		this.rout.navigate(['/administracion/licorerias']);
 	}
 
 	openCommerceSex(){
-		this.rout.navigate(['/administracion/negocio']);
+		this.rout.navigate(['/administracion/sexshops']);
 	}
 	OpenFormCommerce(){
 		this.rout.navigate(['/administracion/formulario-negocios'])
 	}
+
+	// COSUMO DE SERVICIOS
+
 }
