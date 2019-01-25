@@ -107,8 +107,8 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
-		//var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto:"da"}), clave.clave);
-		//this.socketProducto.emit("registrar-producto", ciphertext.toString());
+	//	var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto:"da"}), clave.clave);
+	//	this.socketProducto.emit("registrar-producto", ciphertext.toString());
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -121,7 +121,9 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 	openModalUpdate(content,usuario) {
 		this.selectedItems=[];
-		this.usuarioActualizado=usuario;
+
+		 
+		this.usuarioActualizado=this.usuarios.filter(word => word._id==usuario._id)[0];
 
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
@@ -258,7 +260,7 @@ export class RegistryOwnerComponent implements OnInit {
 	
 		});
 		this.respuestaListarNegocio().subscribe((data: any[]) => {
-
+            console.log(data);
 			this.dropdownList = data.slice(0, 3);
 			this.negocios = data;
 

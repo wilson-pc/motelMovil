@@ -73,7 +73,7 @@ module.exports = async function (io) {
              // res.status(500).send({ mensaje: "error al guradar" })
             } else {
               console.log(nuevoProducto);
-              var negocio= await Negocio.findByIdAndUpdate();
+              var negocio= await Negocio.findByIdAndUpdate("5c460057fd5e2c00e83d4462",{ $inc: { productos: 1 } });
               io.emit('respuesta-producto', nuevoProducto);
             }
           })
