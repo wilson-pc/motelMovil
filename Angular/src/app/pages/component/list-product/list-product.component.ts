@@ -13,10 +13,6 @@ export class ListProductComponent implements OnInit {
 	modal: NgbModalRef;
 	closeResult: string;
 
-	elements: any = [
-		{  nombre: 'Carla', cantidad: '968' }
-		//user, pass
-	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre', 'cantidad'];
 

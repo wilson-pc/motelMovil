@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./list-commerce.component.css']
 })
 export class ListCommerceComponent implements OnInit {
-  private tipoNegocio: string = '';
+  tipoNegocio: string = '';
   listCommerce: Negocio[];
   closeResult: string;
   isError: boolean = false;
@@ -20,46 +20,36 @@ export class ListCommerceComponent implements OnInit {
   isRequired: boolean = false;
   negocios: Negocio;
 
-
-  elements: any = [
-    {
-      nombre: 'Licoreria Castillo',
-      cantidadProductos: 'Carla',
-      valoracion: '5',
-      cantidadReportes: '10',
-      cantidadVisitas: "1200",
-      montoTotal: "3600",
-      montoMesPasado: "3000",
-      montoActual: "600",
-    }
-    //user, pass
-  ];
   // Cabezeras de los elementos
   headElements = ['Nro', 'Nombre', 'Cantidad Productos', 'Valoracion', 'Reportes', 'Visitas', 'Monto Total', 'Monto Mes Pasado', 'Monto Actual'];
 
   constructor(private rout: Router, private route: ActivatedRoute, private socketNegocio: SocketConfigService3) {
     this.tipoNegocio = this.route.snapshot.paramMap.get('tipo');
     this.listCommerce = [];
+    this.conn();
     this.getCommerces();
   }
 
   ngOnInit() {
-    console.log("Array");
-    console.log(this.listCommerce);
   }
-
 
   // COSUMO DE SERVICIOS
   getCommerces() {
-    this.socketNegocio.emit("listar-negocio", { data: "nada" });
+    if (this.tipoNegocio === 'moteles') {
+      this.socketNegocio.emit("listar-negocio", { termino: "Motel" });
+    }
+    if (this.tipoNegocio === 'licorerias') {
+      this.socketNegocio.emit("listar-negocio", { termino: "Licorerias" });
+    }
+    if (this.tipoNegocio === 'sexshops') {
+      this.socketNegocio.emit("listar-negocio", { termino: "SexShop" });
+    }
   }
 
   conn() {
     this.listCommerce = [];
     this.respuestaListarNegocio().subscribe((data: any[]) => {
-      console.log("carga al array de negocios");
       this.listCommerce = data;
-      console.log(this.negocios)
     });
   }
 
@@ -74,7 +64,6 @@ export class ListCommerceComponent implements OnInit {
 
   // REDIRECCION A RUTAS SEGUN EVENTO
   openListProducts(commerce: any) {
-
     if (this.tipoNegocio === 'moteles') {
       this.rout.navigate(['/administracion/moteles/' + commerce.nombre]);
     }

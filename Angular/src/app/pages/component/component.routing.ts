@@ -12,28 +12,11 @@ export const ComponentsRoutes: Routes = [
         path: ':tipo',
         component: ListCommerceComponent,
         data: {
-          title: 'MOTELES',
+          title: '',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       },
-
-      {
-        path: ':tipo',
-        component: ListCommerceComponent,
-        data: {
-          title: 'LICORERIAS',
-          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
-        }
-      },
-
-      {
-        path: ':tipo',
-        component: ListCommerceComponent,
-        data: {
-          title: 'SEXSHOPS',
-          urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
-        }
-      },
+      
       //Sub Division de hijos URL
       {
         path: 'moteles/:nombreNeg',
