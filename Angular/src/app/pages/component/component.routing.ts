@@ -46,7 +46,7 @@ export const ComponentsRoutes: Routes = [
       },
 
       {
-        path: 'formulario-negocios',
+        path: 'formulario/:negocio',
         component: FormComerceComponent,
         data: {
           title: 'Formularios de Negocios',

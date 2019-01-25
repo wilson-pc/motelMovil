@@ -4,7 +4,7 @@ import { TipoNegocio } from "./TipoNegocio";
 export class Negocio {
     public _id:string;
     public nombre:string;
-    public titular:string;
+   
     public foto:string;
     public tipo:TipoNegocio;
     public direccion:{ubicaciongps:string,descripcion:string}

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuarios } from '../../../models/Usuarios';
 import { Negocio } from '../../../models/Negocio';
@@ -21,6 +21,7 @@ export class FormComerceComponent implements OnInit {
 	ubicaciongps:string;
 	descripcion:string;
 
+	flag=0;
 	
 
 	ListaNegocio:Negocio[]=[];
@@ -32,7 +33,10 @@ export class FormComerceComponent implements OnInit {
 	isError:boolean=false;
 	isExito:boolean=false;
 	isRequired:boolean=false;
-	 negocios:Negocio;
+	negocios:Negocio;
+	
+
+
 	 
 	elements: any = [
 		{ negocio: 'Las tres hermanas', direccion: 'Av. Heroinas Nro 100', telefono: '96854885', titular: "Sir Angel", email: "servicio@gmail.com", }
@@ -40,23 +44,39 @@ export class FormComerceComponent implements OnInit {
 	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Email', 'Opciones'];
-  constructor(private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService,private socket3: SocketConfigService3) { 
+  constructor(private route:ActivatedRoute,private servicioflag:UsuarioService,private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService,private socket3: SocketConfigService3) { 
     this.titulo = "Registrar Negocios";
 		this.negocios=new Negocio;
 		this.ListaNegocio=[];
 		this.getNegocios();
 		this.conn();
-		
+		this.flag=0;		
 		this.peticionSocketNegocio();	
+		console.log(this.route.snapshot.paramMap.get('negocio'));
 	}
 
+	ngOnInit() {
+		console.log(this.servicioflag.nivelCommerce);
+	}
 
 	getNegocios() {
-		this.socket.emit("listar-usuario", { data: "nada" });
+		this.socket.emit("listar-usuario", { data:'nada'});
 		
 	}
 	peticionSocketNegocio() {
-		this.socket3.emit("listar-negocio", { data: "nada" });
+
+		if(this.servicioflag.nivelCommerce==1){
+			this.socket3.emit("listar-negocio", { termino:'Motel'});
+			this.negocios.tipo= "5c48958b734dbc052c531a0a" as any;
+		}
+		if(this.servicioflag.nivelCommerce==2){
+			this.socket3.emit("listar-negocio", { termino:'Licorerias'});
+			this.negocios.tipo="5c4884160a1ca42b68044bc6" as any;
+		}
+		if(this.servicioflag.nivelCommerce==3){
+			this.socket3.emit("listar-negocio", { termino:'SexShop'});
+			this.negocios.tipo="5c4895b7577cc931d01645ff" as any;
+		}		
 	}
 	
 	changeListener($event): void {
@@ -82,10 +102,10 @@ export class FormComerceComponent implements OnInit {
 		
   }
 
-  ngOnInit() {
-  }
+ 
 
-  openFromRegistry(content) {
+  openFromRegistry(content,anyflag) {
+	  this.flag=anyflag;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
     this.modal.result.then((e) => {
     });  
@@ -96,9 +116,9 @@ export class FormComerceComponent implements OnInit {
     this.modal.result.then((e) => {
     });  
 	}
-	openModalUpdate(content,negocio:Negocio) {
+	openModalUpdate(content,negocio:Negocio,anyflag) {
 
-		
+		this.flag=anyflag;
 		this.negocios=negocio;
 		this.negocios.tipo=negocio.tipo._id as any;
 		this.descripcion=negocio.direccion.descripcion;
@@ -137,14 +157,15 @@ export class FormComerceComponent implements OnInit {
 		this.negocios.creacion={usuario:this.usuarioServ.usuarioActual.datos._id,fecha:date};
 		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
 
+
 		
-		let data={negocio:this.negocios}
-		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
-		this.socket.emit("registrar-negocio",ciphertext.toString());
-		this.socket.on('respuesta-registro-negocio',(data)=>{
-			console.log("Entraste a respuesta");
-			console.log(data);
-		});
+		// let data={negocio:this.negocios}
+		// var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
+		// this.socket.emit("registrar-negocio",ciphertext.toString());
+		// this.socket.on('respuesta-registro-negocio',(data)=>{
+		// 	console.log("Entraste a respuesta");
+		// 	console.log(data);
+		// });
 		console.log(this.negocios);
 
 	}
@@ -201,6 +222,17 @@ export class FormComerceComponent implements OnInit {
 	}
 
 	update(){
+		console.log(this.descripcion);
+		console.log(this.ubicaciongps);
+		var date= new Date().toUTCString();
+		this.isError=false;
+		this.isRequired=false;
+		this.isExito=false;		
+
+		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
+		
+		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+
 		
 	}
 
