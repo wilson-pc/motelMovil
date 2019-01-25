@@ -146,10 +146,10 @@ module.exports = async function (io) {
 
           Usuario.findByIdAndUpdate(params.id, usuario, { new: true }, (error, actualizado) => {
             if (error) {
-
+              io.to(socket.id).emit('respuesta-actualizar-usuario', {mensaje:"error al actualizar usuario"});
               // res.status(500).send({ mensaje: "error al guradar" })
             } else {
-              io.emit('respuesta', actualizado);
+              io.emit('respuesta-actualizar-usuario', actualizado);
             }
           })
 
