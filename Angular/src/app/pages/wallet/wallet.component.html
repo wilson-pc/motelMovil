@@ -114,7 +114,7 @@
               <label>{{hour}}</label>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" *ngIf="validUser == 'user'">
             <label class=" control-label">Monto: (Bolivianos)</label>
             <div class="">
               <input name="monto" type="text" class="form-control input-md" required="">

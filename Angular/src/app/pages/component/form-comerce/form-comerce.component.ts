@@ -130,6 +130,10 @@ export class FormComerceComponent implements OnInit {
 		let data={negocio:this.negocios}
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
 		this.socket.emit("registrar-negocio",ciphertext.toString());
+		this.socket.on('respuesta-registro-negocio',(data)=>{
+			console.log("Entraste a respuesta");
+			console.log(data);
+		});
 		console.log(this.negocios);
 
 	}
@@ -139,13 +143,13 @@ export class FormComerceComponent implements OnInit {
 		this.ListaNegocio = [];
 		this.respuestaCrear().subscribe((data: any) => {
 
-			if (data.usuario) {
+			if (data.negocio) {
 				console.log("correco");
 				console.log(data);
 				this.isError = true;
 				this.isRequired = true;
 				this.isExito = true;
-				this.ListaNegocio.push(data.usuario);
+				this.ListaNegocio.push(data.negocio);
 			}
 			else {
 				this.isError = false;

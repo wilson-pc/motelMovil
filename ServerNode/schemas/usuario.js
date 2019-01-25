@@ -4,7 +4,7 @@ var Schema = mongose.Schema;
 var Rol= require("./rol").schema;
 var UsuarioSchema = Schema({
 nombre:String,
-apellido:String,
+apellidos:String,
 ci:String,
 rol:Rol,
 genero:String,
