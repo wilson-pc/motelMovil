@@ -6,7 +6,7 @@ import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuarios } from '../../models/Usuarios';
 import { getBase64, resizeBase64 } from 'base64js-es6';
 import { SocketConfigService2, SocketConfigService3 } from '../../socket-config.service'
-import { Observable } from 'rxjs';
+import { Observable, observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
 import { FormControl } from '@angular/forms';
@@ -27,9 +27,11 @@ export class RegistryOwnerComponent implements OnInit {
 	isRequired: boolean = false;
 	user: string;
 	password: string;
+	eliminar: boolean = false;
 	usuario: Usuarios;
 	usuarios: Usuarios[] = [];
 	a: any;
+	idUsuario: string;
 
 
 	dropdownList = [];
@@ -44,7 +46,7 @@ export class RegistryOwnerComponent implements OnInit {
 	negocios: Negocio[];
 
 	// Cabeceras de la Tabla
-	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService,private buscador:BuscadorService) {
+	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 
 		this.titulo = "REGISTRO DE ADMINISTRADORES";
 		this.usuario = new Usuarios;
@@ -54,7 +56,7 @@ export class RegistryOwnerComponent implements OnInit {
 		// Model Negocios
 		this.negocio = new Negocio;
 		this.peticionSocketNegocio();
-		this.buscador.lugar="usuarios";
+		this.buscador.lugar = "usuarios";
 	}
 
 	ejm() {
@@ -62,38 +64,38 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-	
+
 		this.selectedItems = [
-		  
+
 		];
 		this.dropdownSettings = {
-		  singleSelection: false,
-		  idField: '_id',
-		  textField: 'nombre',
-		  selectAllText: 'Select All',
-		  unSelectAllText: 'UnSelect All',
-		  itemsShowLimit: 3,
-		  allowSearchFilter: true
+			singleSelection: false,
+			idField: '_id',
+			textField: 'nombre',
+			selectAllText: 'Select All',
+			unSelectAllText: 'UnSelect All',
+			itemsShowLimit: 3,
+			allowSearchFilter: true
 		};
-	  }
-	  onItemSelect(item: any) {
+	}
+	onItemSelect(item: any) {
 		console.log(item);
-	  }
-	  onSelectAll(items: any) {
+	}
+	onSelectAll(items: any) {
 		console.log(items);
-	  }
-	  onFilterChange(item:any){
-		  
-		 if(item.length>1){
-		  let datos= this.negocios.filter(word => word.nombre.includes(item));
-		     if(datos.length>0){
-				 this.dropdownList=datos
-			 }
-		
-		 }
-	  }
+	}
+	onFilterChange(item: any) {
+
+		if (item.length > 1) {
+			let datos = this.negocios.filter(word => word.nombre.includes(item));
+			if (datos.length > 0) {
+				this.dropdownList = datos
+			}
+
+		}
+	}
 	peticionSocketNegocio() {
-		this.socket3.emit("listar-negocio", { data: "nada" });
+		this.socket3.emit("listar-negocio2", { data: "nada" });
 	}
 
 	getUsers() {
@@ -117,7 +119,8 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 	}
 
-	openModalDelete(content) {
+	openModalDelete(content, id) {
+		this.idUsuario = id;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -135,14 +138,14 @@ export class RegistryOwnerComponent implements OnInit {
 		this.isExito = false;
 		//console.log(this.usuario,this.user,this.password);
 		this.usuario.login = { usuario: this.user, password: this.password, estado: false };
-       let seleccionados=[];
+		let seleccionados = [];
 		this.usuario.rol = "5c45ef012f230f065ce7d830" as any;
 		this.usuario.creacion = { fecha: date, usuario: this.usuarioServ.usuarioActual.datos._id }
 		this.usuario.modificacion = { fecha: date, usuario: this.usuarioServ.usuarioActual.datos._id };
 		this.selectedItems.forEach(element => {
 			seleccionados.push(element._id);
 		});
-		let data = { usuario: this.usuario,negocio:seleccionados }
+		let data = { usuario: this.usuario, negocio: seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket.emit("registrar-usuario", ciphertext.toString());
 	}
@@ -154,10 +157,19 @@ export class RegistryOwnerComponent implements OnInit {
 
 	}
 
-	delete() {
+	delete(razon) {
+		let data = { id: this.idUsuario, razon: razon }
 
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket.emit("eliminar-usuario", ciphertext.toString());
 	}
-
+	razonEliminar(event, Termino) {
+		if (Termino.length > 12) {
+			this.eliminar = true;
+		} else {
+			this.eliminar = false;
+		}
+	}
 	changeListener($event): void {
 		this.readThis($event.target);
 	}
@@ -165,7 +177,6 @@ export class RegistryOwnerComponent implements OnInit {
 	//funcion que sirve para buscar la foto en la maquina y convertirlo a base64
 	readThis(inputValue: any): void {
 		var file: File = inputValue.files[0];
-		console.log(inputValue.files[0]);
 		//this.docente.perfil = { tipo: inputValue.files[0].type, foto: ""};
 		var myReader: FileReader = new FileReader();
 
@@ -187,7 +198,7 @@ export class RegistryOwnerComponent implements OnInit {
 		this.respuestaCrear().subscribe((data: any) => {
 
 			if (data.usuario) {
-				
+
 				this.isError = true;
 				this.isRequired = true;
 				this.isExito = true;
@@ -205,17 +216,28 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 		this.respuestaListar().subscribe((data: any[]) => {
 			this.usuarios = data;
-			console.log(data);
+	
 		});
 		this.respuestaListarNegocio().subscribe((data: any[]) => {
-			console.log(data);
-			this.dropdownList = data.slice(0,3);
+		
+			this.dropdownList = data.slice(0, 3);
 			this.negocios = data;
-			
+
 		});
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
-	
+
 			this.usuarios = data;
+			//console.log(this.negocios)
+		});
+		this.respuestaEliminarUsuario().subscribe((data: any) => {
+			
+
+
+		   let fila= this.usuarios.filter(word => word._id==data._id)[0];
+
+		var index = this.usuarios.indexOf(fila);
+	    this.usuarios.splice(index,1);
+		//	this.usuarios = data;
 			//console.log(this.negocios)
 		});
 	}
@@ -256,7 +278,16 @@ export class RegistryOwnerComponent implements OnInit {
 	//respuesta-buscar-usuarios
 	respuestaListarNegocio() {
 		let observable = new Observable(observer => {
-			this.socket3.on('respuesta-listar-negocio', (data) => {
+			this.socket3.on('respuesta-listar-negocio2', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
+	respuestaEliminarUsuario() {
+		let observable = new Observable(observer => {
+			//respuesta-eliminar-usuario
+			this.socket.on('respuesta-eliminar-usuario', (data) => {
 				observer.next(data);
 			});
 		})

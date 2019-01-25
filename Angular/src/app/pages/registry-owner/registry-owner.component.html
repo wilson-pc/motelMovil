@@ -287,11 +287,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Desea eliminar el registro?</p>
+                    <p>¿Desea eliminar el registro? especifique la razon</p>
+                    <input #termino (keydown)="razonEliminar($event,termino.value)" name="razon" type="text" class="form-control input-md" required="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
-                    <button type="button" class="btn btn-danger" (click)="delete()">Eliminar</button>
+                    <button type="button" [disabled]="!eliminar" class="btn btn-danger" (click)="delete(termino.value)">Eliminar</button>
                 </div>
             </ng-template>
 
@@ -317,7 +318,7 @@
                                 <td class="text-right">
                                     <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
                                     <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentUpdate)"></i>
-                                    <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete)"></i>
+                                    <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user._id)"></i>
                                 </td>
                             </tr>
                         </tbody>
