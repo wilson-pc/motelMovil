@@ -32,8 +32,9 @@ export class RegistryOwnerComponent implements OnInit {
 	usuarios: Usuarios[] = [];
 	a: any;
 	idUsuario: string;
-
-
+	usuarioActualizado:Usuarios;
+	loginusuario:string;
+	loginpassword:string;
 	dropdownList = [];
 	selectedItems = [];
 	dropdownSettings = {};
@@ -48,13 +49,15 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabeceras de la Tabla
 	constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 
-		this.titulo = "REGISTRO DE ADMINISTRADORES";
+		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
+		
 		this.getUsers();
 		this.conn();
 		this.a = 1;
 		// Model Negocios
 		this.negocio = new Negocio;
+		this.usuarioActualizado=new Usuarios
 		this.peticionSocketNegocio();
 		this.buscador.lugar = "usuarios";
 	}
@@ -113,7 +116,9 @@ export class RegistryOwnerComponent implements OnInit {
 		this.modal.result.then((e) => {
 		});
 	}
-	openModalUpdate(content) {
+	openModalUpdate(content,usuario) {
+		this.usuarioActualizado=usuario;
+
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -127,6 +132,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	cancelModal() {
+		this.idUsuario=undefined;
 		this.modal.close();
 	}
 
@@ -154,7 +160,14 @@ export class RegistryOwnerComponent implements OnInit {
 
 
 	update() {
+		var fecha=new Date().toUTCString();
 
+		this.usuarioActualizado.modificacion={fecha:fecha,usuario:this.usuarioServ.usuarioActual.datos._id};
+		let data = { usuario: this.usuarioActualizado }
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+	   console.log(this.usuarioActualizado);
+	   
+	   	this.socket.emit("actualizar-usuario", ciphertext.toString());
 	}
 
 	delete(razon) {
@@ -199,20 +212,23 @@ export class RegistryOwnerComponent implements OnInit {
 
 			if (data.usuario) {
 
-				this.isError = true;
-				this.isRequired = true;
+				this.isError =false;
+				this.isRequired = false;
 				this.isExito = true;
 				this.usuarios.push(data.usuario);
+				this.usuario=new Usuarios();
 			}
 			else {
-				this.isError = false;
+				this.isError = true;
 				this.isRequired = false;
 				this.isExito = false;
 			}
 		});
 
-		this.respuestaActualizar().subscribe(data => {
+		this.respuestaActualizar().subscribe((data:any) => {
 
+		this.usuarios.filter(word => word._id==data._id)[0]=data;
+      
 		});
 		this.respuestaListar().subscribe((data: any[]) => {
 			this.usuarios = data;
@@ -251,7 +267,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 	respuestaActualizar() {
 		let observable = new Observable(observer => {
-			this.socket.on('respuesta-actualizar', (data) => {
+			this.socket.on('respuesta-actualizar-usuario', (data) => {
 				observer.next(data);
 			});
 		})
