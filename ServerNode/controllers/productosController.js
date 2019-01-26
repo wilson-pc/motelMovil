@@ -10,7 +10,20 @@ module.exports = async function (io) {
     // var host=socket.handshake.headers.host;
     clients.push(socket.id);
 
-
+    socket.on('listar-tipos', async (data) => {
+      
+      Tipo.find({}, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+            io.emit('respuesta-listado-tipos', lista);
+          }
+        }
+      });
+    });
     socket.on('registrar-tipo-producto', async (data) => {
 
       try {
@@ -42,7 +55,7 @@ module.exports = async function (io) {
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
           var producto = new Producto();
-      /*    var params = datos.producto;
+          var params = datos.producto;
           producto.nombre = params.nombre;
           producto.negocio = params.negocio;
           producto.precio = params.precio;
@@ -53,18 +66,18 @@ module.exports = async function (io) {
           usuario.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           producto.creacion = params.creacion
-          producto.modificacion = params.modificacion;*/
+          producto.modificacion = params.modificacion;
           //  var tipo = new Tipo();
-          var params = datos.producto;
+      /*    var params = datos.producto;
           producto.nombre ="Cocacola";
-          producto.negocio ="5c4b4ce6d0ceac1fd4342e35";
+          producto.negocio ="5c4b64eb9d43c514ec0f0957";
           producto.precio =13.5;
           producto.disponibilidad = "Disponible";
           producto.cantidad = 12;
-          producto.tipo = await Tipo.findById("5c4b4ce6d0ceac1fd4342e35");
+          producto.tipo = await Tipo.findById("5c4884160a1ca42b68044bc6");
           producto.foto = "";
           //usuario.eliminado = {usuario:"",};
-          producto.descripcion = "Vevida refrescante";
+          producto.descripcion = "Vevida refrescante";*/
        //   producto.creacion =cion
          // producto.modificacion = icacion;
           producto.save(async (error, nuevoProducto) => {
@@ -73,7 +86,7 @@ module.exports = async function (io) {
              // res.status(500).send({ mensaje: "error al guradar" })
             } else {
               console.log(nuevoProducto);
-              var negocio= await Negocio.findByIdAndUpdate("5c460057fd5e2c00e83d4462",{ $inc: { productos: 1 } });
+              var negocio= await Negocio.findByIdAndUpdate("5c4b64eb9d43c514ec0f0957",{ $inc: { productos: 1 } });
               io.emit('respuesta-producto', nuevoProducto);
             }
           })

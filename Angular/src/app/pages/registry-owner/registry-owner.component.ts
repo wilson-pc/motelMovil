@@ -108,7 +108,7 @@ export class RegistryOwnerComponent implements OnInit {
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
 	//	var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto:"da"}), clave.clave);
-	//	this.socketProducto.emit("registrar-producto", ciphertext.toString());
+	//	this.socket.emit("validar-token", ciphertext.toString());
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});

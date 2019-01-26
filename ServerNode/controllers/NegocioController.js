@@ -34,6 +34,8 @@ var clients = [];
           negocio.productos=0;
           negocio.modificacion=params.modificacion;
 
+              var contador=await Negocio.countDocuments({"negocio.nit":params.nit});
+              if(cantidad<1){
           console.log(negocio);
       
                       negocio.save((error, nuevonegocio) => {
@@ -52,7 +54,10 @@ var clients = [];
                             
 
                           }
-                      })
+                      });
+                    }else{
+                      io.to(socket.id).emit('respuesta-registro-negocio',{error:"Ya existe un negocio registrado con este nit"}); 
+                    }
               
         }
         return data;
@@ -177,7 +182,8 @@ var clients = [];
               io.to(socket.id).emit('respuesta-listar-negocio',{error: "aun no hay negocios en registrados"})
              //   res.status(404).send({ mensaje: "Error al listar" })
             } else {
-                io.emit('respuesta-listar-negocio',lista);  
+              console.log(lista);
+                io.to(socket.id).emit('respuesta-listar-negocio',lista);  
             }  
         }
       });
@@ -194,7 +200,7 @@ var clients = [];
                //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
                  
-                  io.emit('respuesta-listar-negocio-detallado',lista);  
+                  io.to(socket.id).emit('respuesta-listar-negocio-detallado',lista);  
               }  
           }
         });
@@ -213,7 +219,7 @@ var clients = [];
 	               //   res.status(404).send({ mensaje: "Error al listar" })
 	              } else {
 	               
-	                io.to(socket.id).emit('respuesta-listar-negocio2',lista);  
+	                io.to(socket.id).to(socket.id).emit('respuesta-listar-negocio2',lista);  
 	              }  
 	          }
 	        });
@@ -236,7 +242,7 @@ var clients = [];
                   io.to(socket.id).emit('respuesta-sacar-negocio',{error: "no se pudo encontrar al negocio"})
                  //   res.status(404).send({ mensaje: "Error al listar" })
                 } else {
-                    io.emit('respuesta',dato);  
+                    io.to(socket.id).emit('respuesta',dato);  
 
                 }
             }
@@ -265,7 +271,7 @@ var clients = [];
                       io.to(socket.id).emit('respuesta-buscar-negocio',{error: "aun no hay negocios en registrados"})
                      //   res.status(404).send({ mensaje: "Error al listar" })
                     } else {
-                        io.emit('respuesta-buscar-negocio',lista);  
+                        io.to(socket.id).emit('respuesta-buscar-negocio',lista);  
                     }
                 }
               });
