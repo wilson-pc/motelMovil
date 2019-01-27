@@ -22,6 +22,10 @@ export class FormComerceComponent implements OnInit {
 	ubicaciongps:string;
 	descripcion:string;
 
+	listaMoteles:Negocio[]=[];
+	listaLicorerias:Negocio[]=[];
+	listaSexshop:Negocio[]=[];
+
 	flag=0;
 	
 
@@ -45,13 +49,14 @@ export class FormComerceComponent implements OnInit {
 	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Email', 'Opciones'];
-  constructor(private route:ActivatedRoute,private servicioflag:UsuarioService,private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService,private socket3: SocketConfigService3) { 
+  constructor(private route:ActivatedRoute,private servicioflag:UsuarioService,private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService) { 
 	var tit= this.route.snapshot.paramMap.get('negocio');
-	this.titulo = "Registrar"+ tit;
-	this.tituloregistro= "Registro de"+this.route.snapshot.paramMap.get('negocio');
+	this.titulo = "registro de "+ tit;
+	this.tituloregistro="Formulario de Registro de "+tit;
 		this.negocios=new Negocio;
 		this.ListaNegocio=[];
 		this.getNegocios();
+		this.limpiarMensajes();
 		this.conn();
 		this.flag=0;		
 		this.peticionSocketNegocio();	
@@ -63,22 +68,21 @@ export class FormComerceComponent implements OnInit {
 	}
 
 	getNegocios() {
-		this.socket.emit("listar-usuario", { data:'nada'});
-		
+		this.socket.emit("listar-usuario", { data:'nada'});	
 	}
 	peticionSocketNegocio() {
 		var tit= this.route.snapshot.paramMap.get('negocio');
 
 		if(tit=='moteles'){
-			this.socket3.emit("listar-negocio", { termino:'Motel'});
+			this.socket.emit("listar-negocio", { termino:'Motel'});
 			this.negocios.tipo= "5c48958b734dbc052c531a0a" as any;
 		}
 		if(tit=='licorerias'){
-			this.socket3.emit("listar-negocio", { termino:'Licoreria'});
+			this.socket.emit("listar-negocio", { termino:'Licoreria'});
 			this.negocios.tipo="5c4884160a1ca42b68044bc6" as any;
 		}
 		if(tit=='sexshops'){
-			this.socket3.emit("listar-negocio", { termino:'SexShop'});
+			this.socket.emit("listar-negocio", { termino:'SexShop'});
 			this.negocios.tipo="5c4895b7577cc931d01645ff" as any;
 		}		
 	}
@@ -150,8 +154,6 @@ export class FormComerceComponent implements OnInit {
 	// COSUMO DE SERVICIOS
 	add(){
 
-		/*console.log(this.descripcion);
-		console.log(this.ubicaciongps);
 		var date= new Date().toUTCString();
 		this.isError=false;
 		this.isRequired=false;
@@ -160,8 +162,6 @@ export class FormComerceComponent implements OnInit {
 		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
 		this.negocios.creacion={usuario:this.usuarioServ.usuarioActual.datos._id,fecha:date};
 		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
-
-
 		
 		let data={negocio:this.negocios}
 		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
@@ -170,9 +170,7 @@ export class FormComerceComponent implements OnInit {
 		 	console.log("Entraste a respuesta");
 		 	console.log(data);
 		 });
-		console.log(this.negocios);*/
-		console.log(this.isExito);
-
+		
 	}
 
 
@@ -182,40 +180,78 @@ export class FormComerceComponent implements OnInit {
 		this.descripcion="";
 		this.ubicaciongps="";		
 	}
-	limpiarMensajes(){
-		this.isError = false;
-				this.isRequired = false;
-				this.isExito = true;
-				console.log(this.isExito);
-				setTimeout(this.mostrarmsj,3000);
+	limpiarMensajes(){						
+
+		this.ListaNegocio=[];
+		
+		
+		var tit= this.route.snapshot.paramMap.get('negocio');
+
+		if(tit=='moteles'){
+			this.socket.emit("listar-negocio", { termino:'Motel'});
+			this.negocios.tipo= "5c48958b734dbc052c531a0a" as any;
+			this.respuestaListarNegocio().subscribe((data: any[]) => {
+				console.log("carga al array");
+				this.ListaNegocio=data;
+				//this.ListaNegocio=this.listaMoteles
+				console.log(data);			
+			
+			});
+		}
+		else{
+			if(tit=='licorerias'){
+				this.socket.emit("listar-negocio", { termino:'Licoreria'});		
+				this.respuestaListarNegocio().subscribe((data: any[]) => {
+					console.log("carga al array");
+					this.ListaNegocio=data;
+					console.log(data);			
+				
+				});
+			}else
+			{
+				if(tit=='sexshops'){
+					this.socket.emit("listar-negocio", { termino:'SexShop'});
+					this.respuestaListarNegocio().subscribe((data: any[]) => {
+						console.log("carga al array");
+						this.ListaNegocio=data;
+						console.log(data);			
+					
+					});
+				}		
+			}
+			
+
+		}
+		
+
+		
+		//console.log(this.ListaNegocio);	
 				
 	}
-	mostrarmsj(){
-		this.isError = false;
-		this.isRequired = false;
-		this.isExito = false;
-		console.log(this.isExito);
-		console.log("mensaje");
-		console.log(this.isExito);
-	}
+	// mostrarmsj(){
+	// 	this.isError = false;
+	// 	this.isRequired = false;
+	// 	this.isExito = false;
+	// 	console.log(this.isExito);
+	// 	console.log("mensaje");
+	// 	console.log(this.isExito);
+	// }
 
 	conn() {
 		this.ListaNegocio = [];
-		this.respuestaCrear().subscribe((data: any) => {
-
-			console.log("entro conn");
+		this.respuestaCrear().subscribe((data: any) => {		
 			
 			if (data.datos) {
-				console.log("correco");
-				console.log(data);
+				
 				this.isError = false;
 				this.isRequired = false;
 				this.isExito = true;
-				this.ListaNegocio.push(data.datos);
-				this.limpiarCampos();
-				
-				
-				//setTimeout(this.limpiarMensajes,3000);				
+				this.limpiarMensajes();
+				this.negocios = new Negocio;
+				//this.ListaNegocio.push(data.datos);			
+				setTimeout(()=>{
+					this.cancelModal();
+				},2000);				
 			}
 			else {
 				this.isError = true;
@@ -226,16 +262,12 @@ export class FormComerceComponent implements OnInit {
 		this.respuestaActualizar().subscribe(data => {
 
 		});
-		this.respuestaListar().subscribe((data: any[]) => {
-			this.ListaNegocio = data;
-			//console.log("Este es la lista");
-			console.log(this.ListaNegocio);
-		});
-		this.respuestaListarNegocio().subscribe((data: any[]) => {
-			console.log("carga al array");
-			this.ListaNegocio = data;
-			console.log(this.negocios)
-		});
+		
+		// this.respuestaListarNegocio().subscribe((data: any[]) => {
+		// 	console.log("carga al array");
+		// 	this.ListaNegocio=data;
+		// 	console.log(this.negocios)
+		// });
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 		console.log(data);
 			this.ListaNegocio = data;
@@ -280,15 +312,6 @@ export class FormComerceComponent implements OnInit {
 		return observable;
 	}
 
-	respuestaListar() {
-		let observable = new Observable(observer => {
-			this.socket.on('respuesta-listar-negocio', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
-	}
-
 	respuestaBuscarUsuario() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-buscar-usuarios', (data) => {
@@ -300,7 +323,7 @@ export class FormComerceComponent implements OnInit {
 	//respuesta-buscar-usuarios
 	respuestaListarNegocio() {
 		let observable = new Observable(observer => {
-			this.socket3.on('respuesta-listar-negocio', (data) => {
+			this.socket.on('respuesta-listar-negocio', (data) => {
 				observer.next(data);
 			});
 		})

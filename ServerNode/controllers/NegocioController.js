@@ -35,7 +35,7 @@ var clients = [];
           negocio.modificacion=params.modificacion;
 
               var contador=await Negocio.countDocuments({"negocio.nit":params.nit});
-              if(cantidad<1){
+              if(contador<1){
           console.log(negocio);
       
                       negocio.save((error, nuevonegocio) => {
@@ -50,8 +50,7 @@ var clients = [];
                           } else {
                             console.log(nuevonegocio);
                             console.log("Se guardo el negocio correctamente");
-                            io.emit('respuesta-registro-negocio',{datos:nuevonegocio});  
-                            
+                            io.emit('respuesta-registro-negocio',{datos:nuevonegocio});                         
 
                           }
                       });

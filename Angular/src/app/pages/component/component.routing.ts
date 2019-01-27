@@ -1,8 +1,11 @@
-import { Routes } from '@angular/router';
+import { Routes, ActivatedRoute } from '@angular/router';
 
 import { ListCommerceComponent } from './list-commerce/list-commerce.component';
 import { ListProductComponent } from './list-product/list-product.component';
 import { FormComerceComponent } from './form-comerce/form-comerce.component';
+
+
+
 
 export const ComponentsRoutes: Routes = [
   {
@@ -49,7 +52,7 @@ export const ComponentsRoutes: Routes = [
         path: 'formulario/:negocio',
         component: FormComerceComponent,
         data: {
-          title: 'Formularios de Negocios',
+          title: 'Formulario de Registro',
           urls: [{ title: 'Dashboard', url: '/dashboard' }, { title: 'ngComponent' }, { title: 'Pagination' }]
         }
       }]
