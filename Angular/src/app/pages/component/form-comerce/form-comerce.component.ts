@@ -1,3 +1,4 @@
+import { BuscadorService } from './../../../service/buscador.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -51,9 +52,12 @@ export class FormComerceComponent implements OnInit {
 	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Email', 'Opciones'];
-  constructor(private route:ActivatedRoute,private servicioflag:UsuarioService,private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService) { 
+  constructor(private buscador:BuscadorService,private route:ActivatedRoute,private servicioflag:UsuarioService,private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService) { 
 	var tit= this.route.snapshot.paramMap.get('negocio');
 	this.titulo = "registro de "+ tit;
+
+	this.buscador.lugar="negocios";
+	this.buscador.termino=tit;
 	this.tituloregistro="Formulario de Registro de "+tit;
 		this.negocios=new Negocio;
 		this.ListaNegocio=[];
@@ -424,7 +428,7 @@ export class FormComerceComponent implements OnInit {
 		// 	this.ListaNegocio=data;
 		// 	console.log(this.negocios)
 		// });
-		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
+		this.respuestaBuscarNegocio().subscribe((data: any[]) => {
 		console.log(data);
 			this.ListaNegocio = data;
 			//console.log(this.negocios)
@@ -460,15 +464,6 @@ export class FormComerceComponent implements OnInit {
 		})
 		return observable;
 	}
-
-	respuestaBuscarUsuario() {
-		let observable = new Observable(observer => {
-			this.socket.on('respuesta-buscar-usuarios', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
-	}
 	//respuesta-buscar-usuarios
 	respuestaListarNegocio() {
 		let observable = new Observable(observer => {
@@ -478,5 +473,14 @@ export class FormComerceComponent implements OnInit {
 		})
 		return observable;
 	}
+	respuestaBuscarNegocio() {
+		let observable = new Observable(observer => {
+			this.socket.on('respuesta-buscar-negocios', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
 
 }
+//respuesta-buscar-negocios

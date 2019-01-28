@@ -231,7 +231,8 @@ var clients = [];
 
           socket.on('buscar-negocio', async (data) => {
             try {
-              Usuario.find({ "eliminado.estado": false, $or: [{ nombre: new RegExp(data.termino, 'i') }, { apellido: new RegExp(data.termino, 'i') }] }, function (error, lista) {
+              console.log(data);
+              Negocio.find({ "eliminado.estado": false,"tipo.nombre":data.tipo, nombre: new RegExp(data.termino, 'i') }, function (error, lista) {
                 if (error) {
                   // res.status(500).send({ mensaje: "Error al listar" })
                 } else {
@@ -239,7 +240,7 @@ var clients = [];
                     //   res.status(404).send({ mensaje: "Error al listar" })
                   } else {
                     console.log(lista);
-                    io.to(socket.id).emit('respuesta-buscar-usuarios', lista);
+                    io.to(socket.id).emit('respuesta-buscar-negocios', lista);
                   }
                 }
               });
