@@ -142,6 +142,10 @@ export class RegistryOwnerComponent implements OnInit {
 		this.idUsuario = undefined;
 		this.modal.close();
 	}
+	validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
+	}
 
 	// COSUMO DE SERVICIOS
 	add() {
@@ -160,7 +164,7 @@ export class RegistryOwnerComponent implements OnInit {
 		let data = { usuario: this.usuario, negocio: seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 
-		if (this.usuario.nombre != undefined && this.usuario.apellidos != undefined && this.user != undefined && this.selectedItems.length > 0 && this.usuario.email != undefined) {
+		if (this.usuario.nombre != undefined && this.usuario.apellidos != undefined && this.user != undefined && this.selectedItems.length > 0 && this.validateEmail(this.usuario.email)) {
 			this.socket.emit("registrar-usuario", ciphertext.toString());
 
 		}
@@ -326,6 +330,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
+	
 	respuestaEliminarUsuario() {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario
