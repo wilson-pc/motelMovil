@@ -25,9 +25,8 @@ export class FormComerceComponent implements OnInit {
 
 	razonBorrado:string;
 
-	listaMoteles:Negocio[]=[];
-	listaLicorerias:Negocio[]=[];
-	listaSexshop:Negocio[]=[];
+
+	
 
 	flag=0;
 	
@@ -154,6 +153,37 @@ export class FormComerceComponent implements OnInit {
 
 	cancelModal() {
 		this.modal.close();
+		this.negocios=new Negocio;
+		this.limpiarMensajes();
+	}
+
+	verificaciondeCampos(){
+
+		var bool = (this.negocios.nombre!=undefined && this.ubicaciongps!=undefined && this.descripcion!=undefined &&
+					this.negocios.telefono!=undefined && this.negocios.foto!=undefined && this.negocios.correo);
+					 if(bool){
+						var aux= this.validateEmail(this.negocios.correo)
+
+						if(aux){
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+
+					 }
+					
+	}
+
+	validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
+		
+	}
+
+	ver(){
+		console.log(this.validateEmail(this.negocios.correo));
 	}
 
 	// COSUMO DE SERVICIOS
@@ -162,25 +192,38 @@ export class FormComerceComponent implements OnInit {
 		var date= new Date().toUTCString();
 		this.isError=false;
 		this.isRequired=false;
-		this.isExito=false;		
+		this.isExito=false;	
+	
+			this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
+			this.negocios.creacion={usuario:this.usuarioServ.usuarioActual.datos._id,fecha:date};
+			this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+		var response=this.verificaciondeCampos();
+			if(response)
+			{
+				let data={negocio:this.negocios}
+				var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
+				this.socket.emit("registrar-negocio",ciphertext.toString());
+				this.socket.on('respuesta-registro-negocio',(data)=>{
+				console.log("Entraste a respuesta");
+				console.log(data);
+				});	
 
-		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
-		this.negocios.creacion={usuario:this.usuarioServ.usuarioActual.datos._id,fecha:date};
-		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
-		
-		let data={negocio:this.negocios}
-		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
-		 this.socket.emit("registrar-negocio",ciphertext.toString());
-		 this.socket.on('respuesta-registro-negocio',(data)=>{
-		 	console.log("Entraste a respuesta");
-		 	console.log(data);
-		 });
-		
+			}
+			else{
+				this.isRequired=true;
+				this.isError=false;
+				this.isExito=false;
+				setTimeout(()=>{
+					this.isRequired=false;
+					
+				},4000);	
+
+			}
+		 	
 	}
 
 	update(){
-		console.log(this.descripcion);
-		console.log(this.ubicaciongps);
+		
 		var date= new Date().toUTCString();
 		this.isError=false;
 		this.isRequired=false;
@@ -190,7 +233,10 @@ export class FormComerceComponent implements OnInit {
 		
 		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
 
-		console.log(this.negocios);
+		var response=this.verificaciondeCampos();
+		if(response)
+		{
+		
 
 		let data={negocio:this.negocios}
 		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
@@ -198,9 +244,19 @@ export class FormComerceComponent implements OnInit {
 
 
 		 this.socket.on('respuesta-actualizar-negocio',(data)=>{
-		 	console.log("Entraste a respuesta");
-		 	console.log(data);
+		 	
 		 });
+		}
+		else{
+			this.isRequired=true;
+			this.isError=false;
+			this.isExito=false;
+			setTimeout(()=>{
+				this.isRequired=false;
+				
+			},4000);	
+		}
+
 	}
 
 	delete(){
@@ -215,16 +271,30 @@ export class FormComerceComponent implements OnInit {
 		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
 		this.negocios.eliminado={estado:true,razon:this.razonBorrado};
 
-		this.datanew=this.negocios;
-
 		
-		let data={negocio:this.datanew}
+		if(this.negocios.eliminado.razon!=undefined)
+		{
+			this.datanew=this.negocios;
+			let data={negocio:this.datanew}
 		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
 		 this.socket.emit("eliminar-negocio",ciphertext.toString());
 		 this.socket.on('respuesta-elimina-negocio',(data)=>{
 		 	console.log("Entraste a respuesta eliminar");
 		 	console.log(data);
 		 });
+		}
+		else{
+			this.isRequired=true;
+			this.isError=false;
+			this.isExito=false;
+			setTimeout(()=>{
+				this.isRequired=false;
+				
+			},4000);	
+		}
+
+		
+		
 
 
 	}

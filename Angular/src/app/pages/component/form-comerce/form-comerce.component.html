@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <label class=" control-label">Nombres del Negocio: </label>
                                 <div class="">
-                                    <input [(ngModel)]="negocios.nombre" type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.nombre" type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="campo reqierodp">
                                 </div>
                             </div>
                             <!--Direccion-->
@@ -61,13 +61,7 @@
                                     <input [(ngModel)]="negocios.telefono" type="number"  name="telefono" placeholder="76592654" class="form-control input-md" required="">
                                 </div>
                             </div>
-                            <!--Titular-->
-                            <!-- <div class="form-group">
-                                <label class=" control-label">Titular</label>
-                                <div class="">
-                                    <input [(ngModel)]="negocios.titular" type="text" name="titular" placeholder="Propietario(a)" class="form-control input-md" required="">
-                                </div>
-                            </div> -->
+                            
 
                             <!--Foto-->
                             <div class="form-group">
@@ -121,14 +115,14 @@
                         exito
                     </div>
                     <div class="alert alert-danger" *ngIf="isRequired">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Datos incorrectos, posiblemente esten vacios, llene todos los campos.
                     </div>
                     <!--btnCancelar / btnGuardar-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
                         <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="add(negocios)">Guardar</button>
                         <button *ngIf="flag==1" type="button" class="btn btn-success" (click)="update(negocios)">Actualizar</button>
-                        <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="limpiarMensajes()">CLICKME</button>
+                         <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="ver()">CLICKME</button> 
                      
                     </div>
                 </ng-template>
@@ -163,7 +157,7 @@
                         exito
                     </div>
                     <div class="alert alert-danger" *ngIf="isRequired">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Dato(s) invalidos, ingrese la razon por la cual esta siendo borrado
                     </div>
                             
                             <div class="modal-footer">
