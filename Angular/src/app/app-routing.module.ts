@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { WebComponent } from './web/web.component';
 import { LoginComponent } from './login/login.component';
-import { Error404Component } from './pages/error404/error404.component';
 
 const routes: Routes = [
     {
@@ -24,8 +23,7 @@ const routes: Routes = [
         path: '',
         loadChildren: './pages/pages.module#PagesModule'
     },
-    { path: 'login', component: LoginComponent },
-    { path: '/*path', component: Error404Component}
+    { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
