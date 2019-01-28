@@ -13,7 +13,6 @@ import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RegistryUserComponent } from './registry-user/registry-user.component';
-import { Error404Component } from './error404/error404.component';
 
 @NgModule({
     imports: [
@@ -32,8 +31,7 @@ import { Error404Component } from './error404/error404.component';
         RegistryOwnerComponent,
         WalletComponent,
         ComplaintComponent,
-        RegistryUserComponent,
-        Error404Component
+        RegistryUserComponent
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -190,7 +190,7 @@
                                     <td class="text-right">
                                         <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
                                         <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentAdd,user,1)"></i>
-                                        <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user)"></i>
+                                        <i *ngIf="user.titular == undefind" class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user)"></i>
                                     </td>
                                 </tr> 
                             </tbody>

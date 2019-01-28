@@ -19,8 +19,7 @@ const routes: Routes = [
             { path: 'billetera', component: WalletComponent },
             { path: 'denuncias', component: ComplaintComponent },
         ]
-    },
-    { path: '/*path', component: Error404Component}
+    }
 ];
 
 @NgModule({
