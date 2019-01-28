@@ -23,7 +23,7 @@ export class FormComerceComponent implements OnInit {
 	ubicaciongps:string;
 	descripcion:string;
 	datanew={};
-
+	eliminar: boolean = false;
 	razonBorrado:string;
 
 
@@ -116,6 +116,14 @@ export class FormComerceComponent implements OnInit {
 		
   }
 
+  razonEliminar(event, Termino) {
+		if (Termino.length > 12) {
+			this.eliminar = true;
+		} else {
+			this.eliminar = false;
+		}
+	}
+
  
 
   openFromRegistry(content,anyflag) {
@@ -125,7 +133,12 @@ export class FormComerceComponent implements OnInit {
     });  
 	}
 
-	openModalView(content) {
+	openModalView(content,negocio:Negocio) {
+		this.negocios=negocio;
+		
+		this.negocios.tipo=negocio.tipo._id as any;
+		this.descripcion=negocio.direccion.descripcion;
+		this.ubicaciongps=negocio.direccion.ubicaciongps;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
     this.modal.result.then((e) => {
     });  
@@ -159,6 +172,8 @@ export class FormComerceComponent implements OnInit {
 		this.modal.close();
 		this.negocios=new Negocio;
 		this.limpiarMensajes();
+		this.razonBorrado="";
+		this.eliminar = false;
 	}
 
 	verificaciondeCampos(){
@@ -177,6 +192,9 @@ export class FormComerceComponent implements OnInit {
 						}
 
 					 }
+					 else{
+						 return false;
+					 }
 					
 	}
 
@@ -186,9 +204,7 @@ export class FormComerceComponent implements OnInit {
 		
 	}
 
-	ver(){
-		console.log(this.validateEmail(this.negocios.correo));
-	}
+	
 
 	// COSUMO DE SERVICIOS
 	add(){

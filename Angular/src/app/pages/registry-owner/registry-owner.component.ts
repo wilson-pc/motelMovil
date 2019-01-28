@@ -42,6 +42,7 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabeceras de la Tabla
 	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
 	profileUser: Usuarios;
+	negociosUsuario: Negocio;
 	contentUserID: string;
 
 	items: any = []
@@ -126,6 +127,9 @@ export class RegistryOwnerComponent implements OnInit {
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
+		//Obtener listado de negocios
+		this.negocioActualPorEvento(this.usuarioActualizado._id);
+		console.log(this.usuarioActualizado);
 	}
 
 	openModalDelete(content, id) {
@@ -133,6 +137,9 @@ export class RegistryOwnerComponent implements OnInit {
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
+
+		//Obtener listado de negocios antes de eliminar
+		this.negocioActualPorEvento(id);
 	}
 
 	cancelModal() {
@@ -198,6 +205,7 @@ export class RegistryOwnerComponent implements OnInit {
 		let data = { id: this.contentUserID}
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket.emit("sacar-usuario", ciphertext.toString());
+		this.verificarNegocioUsuario();
 	}
 
 	razonEliminar(event, Termino) {
@@ -208,6 +216,17 @@ export class RegistryOwnerComponent implements OnInit {
 		}
 	}
 
+	verificarNegocioUsuario(){
+		let data = { id: this.contentUserID, tipo: "negocios"}
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket3.emit("listar-negocios-de-usuario", ciphertext.toString());
+	}
+
+	negocioActualPorEvento(id){
+		let data = { id: id, tipo: "negocios"}
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket3.emit("listar-negocios-de-usuario", ciphertext.toString());
+	}
 	//funcion para buscar imagen dentro de la maquina
 	changeListener($event): void {
 		this.readThis($event.target);
@@ -283,6 +302,12 @@ export class RegistryOwnerComponent implements OnInit {
 		this.respuestaSacarUsuario().subscribe((data: any) => {
 			this.profileUser = data;
 		});
+
+		// verificar negocio
+		this.respuestaVerificarNegocio().subscribe((data: any) => {
+			this.negociosUsuario = data;
+			console.log(this.negociosUsuario)
+		});
 	}
 	respuestaCrear() {
 		let observable = new Observable(observer => {
@@ -342,6 +367,14 @@ export class RegistryOwnerComponent implements OnInit {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario
 			this.socket.on('respuesta-sacar-usuario', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
+	respuestaVerificarNegocio(){
+		let observable = new Observable(observer => {
+			this.socket3.on('respuesta-listar-negocio-de-usuario', (data) => {
 				observer.next(data);
 			});
 		})

@@ -18,31 +18,32 @@
                                 <label class="control-label">Nombre del negocio: </label>
                                 <ng-multiselect-dropdown name="multi" [placeholder]="'seleccionar'" [data]="dropdownList"
                                     [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
-                                    (onSelectAll)="onSelectAll($event)" (onFilterChange)="onFilterChange($event)" required>
+                                    (onSelectAll)="onSelectAll($event)" (onFilterChange)="onFilterChange($event)"
+                                    required>
                                 </ng-multiselect-dropdown>
                             </div>
                             <!--Nombre-->
                             <div class="form-group">
                                 <label class=" control-label">Nombres: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.nombre" name="nombre"
-                                        class="form-control input-md" required>
+                                    <input type="text" [(ngModel)]="usuario.nombre" name="nombre" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
                             <!--Apellido-->
                             <div class="form-group">
                                 <label class=" control-label">Apellidos: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos"
-                                        class="form-control input-md" required=>
+                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
                             <!--Ci-->
                             <div class="form-group">
                                 <label class=" control-label">Ci: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.ci" name="ci" 
-                                        class="form-control input-md" required>
+                                    <input type="text" [(ngModel)]="usuario.ci" name="ci" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
                             <!--Genero-->
@@ -60,8 +61,8 @@
                             <div class="form-group">
                                 <label class=" control-label">Contacto: </label>
                                 <div class="">
-                                    <input type="number" [(ngModel)]="usuario.telefono" name="telefono" 
-                                        class="form-control input-md" required>
+                                    <input type="number" [(ngModel)]="usuario.telefono" name="telefono" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
 
@@ -69,8 +70,8 @@
                             <div class="form-group">
                                 <label class=" control-label">Email: </label>
                                 <div class="">
-                                    <input type="email" [(ngModel)]="usuario.email" name="email" 
-                                        class="form-control input-md" [required]="true">
+                                    <input type="email" [(ngModel)]="usuario.email" name="email" class="form-control input-md"
+                                        [required]="true">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -92,8 +93,8 @@
                             <div class="form-group">
                                 <label class=" control-label">Contraseña: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="password" name="password" 
-                                        class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="password" name="password" class="form-control input-md"
+                                        required="">
                                 </div>
                             </div>
                         </form>
@@ -158,6 +159,14 @@
                                     required="">
                             </div>
                         </div>
+                        <!--Negocios Actules-->
+                        <div class="form-group">
+                            <label class="text-dark control-label">Negocios Actuales: </label>
+                            <div *ngFor="let negocio of negociosUsuario, let i=index">
+                                <label class="text-white bg-dark control-label">{{negocio.nombre}}</label>
+                            </div>
+                        </div>
+                        <!--NUevos Negocios-->
                         <div class="form-group">
                             <label class="control-label">Nuevo Negocio: </label>
                             <ng-multiselect-dropdown name="multi" [placeholder]="'custom placeholder'" [data]="dropdownList"
@@ -219,8 +228,10 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <img *ngIf="profileUser.foto != undefind" alt="User Pic" [src]="profileUser.foto" class="img-circle img-responsive">
-                                            <img *ngIf="profileUser.foto == undefind" alt="User Pic" src="../../../assets/images/fotoPerfil.png" class="img-circle img-responsive">
+                                            <img *ngIf="profileUser.foto != undefind" alt="User Pic" [src]="profileUser.foto"
+                                                class="img-circle img-responsive">
+                                            <img *ngIf="profileUser.foto == undefind" alt="User Pic" src="../../../assets/images/fotoPerfil.png"
+                                                class="img-circle img-responsive">
                                         </div>
 
                                         <div class=" col-md-9 col-lg-9 ">
@@ -261,6 +272,15 @@
                                                         <td>{{profileUser.modificacion.fecha | date: 'dd/MM/yyyy
                                                             hh:mm'}}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <h3><b>NEGOCIOS</b></h3>
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngFor="let negocio of negociosUsuario, let i=index">
+                                                        <td>{{negocio.tipo.nombre}}:</td>
+                                                        <td class="text-white bg-dark">"{{negocio.nombre}}"</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -276,15 +296,19 @@
             <!--Modal Eliminar-->
             <ng-template #contentDelete let-modal>
                 <div class="modal-header">
-                    <h4 class="modal-title">¿Desea eliminar el registro?</h4>
+                    <h4 class="modal-title">¿Desea eliminar este administrador?</h4>
                     <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <label class="text-danger">Al eliminar se borraran toda la informacion de los siguientes negocios anexados:</label>
+                    <div *ngFor="let negocio of negociosUsuario, let i=index">
+                        <label class="text-danger">- {{negocio.nombre}}</label>
+                    </div>
                     <p>Describe la razon (minímo de 14 caracteres):</p>
                     <input #termino (keydown)="razonEliminar($event,termino.value)" name="razon" type="text" class="form-control input-md"
-                      required="">
+                        required="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
