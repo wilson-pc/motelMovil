@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
@@ -12,7 +13,7 @@ export class ListProductComponent implements OnInit {
 	public isCollapsed = true;
 	modal: NgbModalRef;
 	closeResult: string;
-
+elements:any;
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre', 'cantidad'];
 

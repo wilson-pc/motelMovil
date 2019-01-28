@@ -1,7 +1,7 @@
 "use strict"
 var express = require("express");
 var app = express();
-
+var path = require('path');
 // middleware para permitir o denegar acceso a pagias usar la API
 app.use(function (req, res, next) {
 
@@ -32,5 +32,10 @@ app.use(function (req, res, next) {
     // Pase a la siguiente capa de middleware
     next();
 });
+app.use(express.static(path.join(__dirname, 'views')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/index.html'));
+  //  app.use(express.static(path.join(__dirname, 'dist')));
+  });
 
 module.exports = app;
