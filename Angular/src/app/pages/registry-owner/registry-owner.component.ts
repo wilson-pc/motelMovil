@@ -65,9 +65,6 @@ export class RegistryOwnerComponent implements OnInit {
 		this.buscador.lugar = "usuarios";
 	}
 
-	ejm() {
-		alert("ejemplo");
-	}
 	//Llenar el ng-select
 	ngOnInit() {
 
@@ -78,9 +75,9 @@ export class RegistryOwnerComponent implements OnInit {
 			singleSelection: false,
 			idField: '_id',
 			textField: 'nombre',
-			selectAllText: 'Select All',
-			unSelectAllText: 'UnSelect All',
-			itemsShowLimit: 3,
+			selectAllText: 'Seleccionar Negocios',
+			unSelectAllText: 'Descelecionar Negocios',
+			itemsShowLimit: 5,
 			allowSearchFilter: true
 		};
 	}
@@ -141,6 +138,7 @@ export class RegistryOwnerComponent implements OnInit {
 	cancelModal() {
 		this.idUsuario = undefined;
 		this.modal.close();
+		this.eliminar = false;
 	}
 	validateEmail(email) {
 		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -166,7 +164,6 @@ export class RegistryOwnerComponent implements OnInit {
 
 		if (this.usuario.nombre != undefined && this.usuario.apellidos != undefined && this.user != undefined && this.selectedItems.length > 0 && this.validateEmail(this.usuario.email)) {
 			this.socket.emit("registrar-usuario", ciphertext.toString());
-
 		}
 		else {
 			this.isRequired = true;
@@ -280,6 +277,7 @@ export class RegistryOwnerComponent implements OnInit {
 			var index = this.usuarios.indexOf(fila);
 			this.usuarios.splice(index, 1);
 			this.modal.close();
+			this.eliminar = false;
 		});
 		//Sacar Usuario
 		this.respuestaSacarUsuario().subscribe((data: any) => {
