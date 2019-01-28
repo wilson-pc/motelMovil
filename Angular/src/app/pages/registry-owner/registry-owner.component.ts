@@ -110,8 +110,6 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
-		//	var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto:"da"}), clave.clave);
-		//	this.socket.emit("validar-token", ciphertext.toString());
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -151,7 +149,6 @@ export class RegistryOwnerComponent implements OnInit {
 		this.isError = false;
 		this.isRequired = false;
 		this.isExito = false;
-		//console.log(this.usuario,this.user,this.password);
 		this.usuario.login = { usuario: this.user, password: this.password, estado: false };
 		let seleccionados = [];
 		this.usuario.rol = "5c45ef012f230f065ce7d830" as any;
@@ -261,7 +258,6 @@ export class RegistryOwnerComponent implements OnInit {
 
 		});
 		this.respuestaListar().subscribe((data: any[]) => {
-			//console.log(data);
 			this.usuarios = data;
 
 		});
@@ -271,9 +267,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 		});
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
-
 			this.usuarios = data;
-			//console.log(this.negocios)
 		});
 		this.respuestaEliminarUsuario().subscribe((data: any) => {
 
@@ -282,15 +276,10 @@ export class RegistryOwnerComponent implements OnInit {
 			var index = this.usuarios.indexOf(fila);
 			this.usuarios.splice(index, 1);
 			this.modal.close();
-			//	this.usuarios = data;
-			//console.log(this.negocios)
 		});
 		//Sacar Usuario
 		this.respuestaSacarUsuario().subscribe((data: any) => {
-			
-			console.log("Obtener filtrado de sacar");
 			this.profileUser = data;
-			console.log(this.profileUser);
 		});
 	}
 	respuestaCrear() {
