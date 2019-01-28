@@ -67,23 +67,11 @@ module.exports = async function (io) {
           producto.descripcion = params.descripcion;
           producto.creacion = params.creacion
           producto.modificacion = params.modificacion;
-          //  var tipo = new Tipo();
-      /*    var params = datos.producto;
-          producto.nombre ="Cocacola";
-          producto.negocio ="5c4b64eb9d43c514ec0f0957";
-          producto.precio =13.5;
-          producto.disponibilidad = "Disponible";
-          producto.cantidad = 12;
-          producto.tipo = await Tipo.findById("5c4884160a1ca42b68044bc6");
-          producto.foto = "";
-          //usuario.eliminado = {usuario:"",};
-          producto.descripcion = "Vevida refrescante";*/
-       //   producto.creacion =cion
-         // producto.modificacion = icacion;
+         
           producto.save(async (error, nuevoProducto) => {
             if (error) {
                  console.log(error);
-             // res.status(500).send({ mensaje: "error al guradar" })
+          
             } else {
               console.log(nuevoProducto);
               var negocio= await Negocio.findByIdAndUpdate("5c4b64eb9d43c514ec0f0957",{ $inc: { productos: 1 } });
@@ -111,29 +99,15 @@ module.exports = async function (io) {
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
           var tipo = new Tipo();
-      /*    var params = datos.producto;
-          producto.nombre = params.nombre;
-          producto.negocio = params.negocio;
-          producto.precio = params.precio;
-          producto.disponibilidad = params.disponibilidad;
-          producto.cantidad = params.cantidad;
-          producto.tipo = await Tipo.findById(params.tito);
-          producto.foto = params.foto;
-          usuario.eliminado = { estado: false, razon: "" };
-          producto.descripcion = params.descripcion;
-          producto.creacion = params.creacion
-          producto.modificacion = params.modificacion;*/
-          //  var tipo = new Tipo();
           var params = datos.tipo;
-          tipo.nombre ="Gaseosa";
+          tipo.nombre =datos.tipos.nombre;
          
           tipo.save((error, nuevoTipo) => {
             if (error) {
                  console.log(error);
-              //res.status(500).send({ mensaje: "error al guradar" })
+              
             } else {
-              //console.log("Negocio");
-              console.log(nuevoTipo);
+             
               io.emit('respuesta-registrar-tipos', nuevoTipo);
             }
           })
@@ -147,9 +121,78 @@ module.exports = async function (io) {
    
     });
 
-    socket.on('registrar-producto', async (data) => {
+    socket.on('actualizar-producto',async (data)=>{
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var producto = new Producto();
+          var params = datos.producto;
+          producto.nombre = params.nombre;
+          producto.negocio = params.negocio;
+          producto.precio = params.precio;
+          producto.disponibilidad = params.disponibilidad;
+          producto.cantidad = params.cantidad;
+          producto.tipo = await Tipo.findById(params.tito);
+          producto.foto = params.foto;
+         // usuario.eliminado = { estado: false, razon: "" };
+          producto.descripcion = params.descripcion;
+        //  producto.creacion = params.creacion
+          producto.modificacion = params.modificacion;
+         
+          producto.findByIdAndUpdate(params._id,producto,{ new: true }, async (error, productoActualizado) => {
+            if (error) {
+              io.to(socket.id).emit('respuesta-actualizar-producto', {error:"ocurio un error al crear el producto"});
+            } else {
+             
+              io.emit('respuesta-actualizar-producto', productoActualizado);
+            }
+          })
 
-      io.emit('respuesta', { user: socket.nickname, event: 'left' });
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+    })
+
+    socket.on('listar-producto', async (data) => {
+                     
+      Producto.find({ "tipo.nombre": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listado-producto', {error:"ocurrio un error al listar productos"});
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listado-producto', {error:"no hay productos en la base de datos"});
+          } else {
+             console.log(lista);
+            io.to(socket.id).emit('respuesta-listado-producto', lista);
+          }
+        }
+      });
+     // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
+    });
+
+    socket.on('buscar-producto', async (data) => {
+                     
+      Producto.find({ "tipo.nombre": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listado-producto', {error:"ocurrio un error al listar productos"});
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listado-producto', {error:"no hay productos en la base de datos"});
+          } else {
+             console.log(lista);
+            io.to(socket.id).emit('respuesta-listado-producto', lista);
+          }
+        }
+      });
+     // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
     });
 
   })

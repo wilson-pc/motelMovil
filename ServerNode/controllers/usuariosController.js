@@ -338,7 +338,7 @@ module.exports = async function (io) {
 
     socket.on('listar-usuario', async (data) => {
 
-      Usuario.find({ "rol.rol": "AdminAdmi", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
+      Usuario.find({ "rol.rol": "Admin", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
         } else {
