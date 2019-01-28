@@ -20,7 +20,8 @@ const routes: Routes = [
             { path: 'denuncias', component: ComplaintComponent },
         ]
     },
-    { path: '/*path', component: Error404Component}
+    { path: '404',component: Error404Component},
+    { path: '**',redirectTo: '/404'}
 ];
 
 @NgModule({
