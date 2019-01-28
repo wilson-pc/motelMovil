@@ -22,7 +22,7 @@ export class FormComerceComponent implements OnInit {
 	ubicaciongps:string;
 	descripcion:string;
 	datanew={};
-
+	eliminar: boolean = false;
 	razonBorrado:string;
 
 
@@ -112,6 +112,14 @@ export class FormComerceComponent implements OnInit {
 		
   }
 
+  razonEliminar(event, Termino) {
+		if (Termino.length > 12) {
+			this.eliminar = true;
+		} else {
+			this.eliminar = false;
+		}
+	}
+
  
 
   openFromRegistry(content,anyflag) {
@@ -160,6 +168,8 @@ export class FormComerceComponent implements OnInit {
 		this.modal.close();
 		this.negocios=new Negocio;
 		this.limpiarMensajes();
+		this.razonBorrado="";
+		this.eliminar = false;
 	}
 
 	verificaciondeCampos(){

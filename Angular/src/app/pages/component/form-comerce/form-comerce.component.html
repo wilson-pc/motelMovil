@@ -137,9 +137,9 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label class=" control-label">Razon de Borrado: </label>
+                                <label class=" control-label">Razon de Borrado (Minimo 12 caracteres en el campo) </label>
                                 <div class="">
-                                    <input [(ngModel)]="razonBorrado" type="text"  name="razonbr" placeholder="Ingrese razon para ser borrado" class="form-control input-md"
+                                    <input  #termino (keydown)="razonEliminar($event,termino.value)" [(ngModel)]="razonBorrado" type="text"  name="razonbr" class="form-control input-md"
                                         required="">
                                 </div>
                             </div>
@@ -161,7 +161,7 @@
                             
                             <div class="modal-footer">
                               <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
-                              <button type="button" class="btn btn-danger" (click)="delete()">Eliminar</button>
+                              <button type="button" [disabled]="!eliminar" class="btn btn-danger" (click)="delete()">Eliminar</button>
                             </div>
                         </form>
                     </div>
