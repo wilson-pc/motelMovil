@@ -39,7 +39,7 @@ export class ListCommerceComponent implements OnInit {
       this.socketNegocio.emit("listar-negocio", { termino: "Motel" });
     }
     if (this.tipoNegocio === 'licorerias') {
-      this.socketNegocio.emit("listar-negocio", { termino: "Licorerias" });
+      this.socketNegocio.emit("listar-negocio", { termino: "Licoreria" });
     }
     if (this.tipoNegocio === 'sexshops') {
       this.socketNegocio.emit("listar-negocio", { termino: "SexShop" });
