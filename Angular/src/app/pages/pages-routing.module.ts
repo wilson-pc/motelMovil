@@ -5,6 +5,7 @@ import { RegistryOwnerComponent } from './registry-owner/registry-owner.componen
 import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { RegistryUserComponent } from './registry-user/registry-user.component';
+import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
     {
@@ -18,7 +19,8 @@ const routes: Routes = [
             { path: 'billetera', component: WalletComponent },
             { path: 'denuncias', component: ComplaintComponent },
         ]
-    }
+    },
+    { path: '/*path', component: Error404Component}
 ];
 
 @NgModule({
