@@ -21,6 +21,9 @@ export class FormComerceComponent implements OnInit {
 	tituloregistro:string;
 	ubicaciongps:string;
 	descripcion:string;
+	datanew={};
+
+	razonBorrado:string;
 
 	listaMoteles:Negocio[]=[];
 	listaLicorerias:Negocio[]=[];
@@ -140,7 +143,9 @@ export class FormComerceComponent implements OnInit {
     });  
 	}
 
-	openModalDelete(content) {
+	openModalDelete(content,negocio:Negocio) {
+	
+		this.negocios._id=negocio._id;	
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
     this.modal.result.then((e) => {
     });  
@@ -171,6 +176,57 @@ export class FormComerceComponent implements OnInit {
 		 	console.log(data);
 		 });
 		
+	}
+
+	update(){
+		console.log(this.descripcion);
+		console.log(this.ubicaciongps);
+		var date= new Date().toUTCString();
+		this.isError=false;
+		this.isRequired=false;
+		this.isExito=false;		
+
+		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
+		
+		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+
+		console.log(this.negocios);
+
+		let data={negocio:this.negocios}
+		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
+		 this.socket.emit("actualizar-negocio",ciphertext.toString());
+
+
+		 this.socket.on('respuesta-actualizar-negocio',(data)=>{
+		 	console.log("Entraste a respuesta");
+		 	console.log(data);
+		 });
+	}
+
+	delete(){
+
+		var date= new Date().toUTCString();
+		this.isError=false;
+		this.isRequired=false;
+		this.isExito=false;		
+
+		
+		
+		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+		this.negocios.eliminado={estado:true,razon:this.razonBorrado};
+
+		this.datanew=this.negocios;
+
+		
+		let data={negocio:this.datanew}
+		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
+		 this.socket.emit("eliminar-negocio",ciphertext.toString());
+		 this.socket.on('respuesta-elimina-negocio',(data)=>{
+		 	console.log("Entraste a respuesta eliminar");
+		 	console.log(data);
+		 });
+
+
 	}
 
 
@@ -228,15 +284,7 @@ export class FormComerceComponent implements OnInit {
 		//console.log(this.ListaNegocio);	
 				
 	}
-	// mostrarmsj(){
-	// 	this.isError = false;
-	// 	this.isRequired = false;
-	// 	this.isExito = false;
-	// 	console.log(this.isExito);
-	// 	console.log("mensaje");
-	// 	console.log(this.isExito);
-	// }
-
+	
 	conn() {
 		this.ListaNegocio = [];
 		this.respuestaCrear().subscribe((data: any) => {		
@@ -250,6 +298,7 @@ export class FormComerceComponent implements OnInit {
 				this.negocios = new Negocio;
 				//this.ListaNegocio.push(data.datos);			
 				setTimeout(()=>{
+					this.isExito=false;
 					this.cancelModal();
 				},2000);				
 			}
@@ -259,9 +308,46 @@ export class FormComerceComponent implements OnInit {
 				this.isExito = false;
 			}
 		});
-		this.respuestaActualizar().subscribe(data => {
+		this.respuestaActualizar().subscribe((data:any) => {
 
+			if (data.datos) {
+				
+				this.isError = false;
+				this.isRequired = false;
+				this.isExito = true;
+				this.limpiarMensajes();
+				this.negocios = new Negocio;
+				//this.ListaNegocio.push(data.datos);			
+				setTimeout(()=>{
+					this.isExito=false;
+					this.cancelModal();
+				},2000);				
+			}
+			else {
+				this.isError = true;
+				this.isRequired = false;
+				this.isExito = false;
+			}
 		});
+		this.respuestaBorrar().subscribe((data:any)=>{
+			if (data.datos){
+				this.isError=false;
+				this.isRequired=false;
+				this.isExito=true;
+				this.limpiarMensajes();
+				this.negocios=new Negocio
+				setTimeout(()=>{
+					this.isExito=false;
+					this.cancelModal();
+				},2000);				
+			}
+			else{
+				this.isError = true;
+				this.isRequired = false;
+				this.isExito = false;
+			}
+			
+		})
 		
 		// this.respuestaListarNegocio().subscribe((data: any[]) => {
 		// 	console.log("carga al array");
@@ -275,25 +361,6 @@ export class FormComerceComponent implements OnInit {
 		});
 	}
 
-	update(){
-		console.log(this.descripcion);
-		console.log(this.ubicaciongps);
-		var date= new Date().toUTCString();
-		this.isError=false;
-		this.isRequired=false;
-		this.isExito=false;		
-
-		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
-		
-		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
-	}
-
-	delete(){
-
-	}
-	
-
-
 	respuestaCrear() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-registro-negocio', (data) => {
@@ -303,9 +370,21 @@ export class FormComerceComponent implements OnInit {
 		console.log("entro respuesta crear");
 		return observable;
 	}
+
+
+	respuestaBorrar(){
+		let observable= new Observable(observer => {
+			this.socket.on('respuesta-elimina-negocio',(data)=>{
+				observer.next(data);
+			});
+		});
+
+		return observable;
+	}
+
 	respuestaActualizar() {
 		let observable = new Observable(observer => {
-			this.socket.on('respuesta-actualizar', (data) => {
+			this.socket.on('respuesta-actualizar-negocio', (data) => {
 				observer.next(data);
 			});
 		})
