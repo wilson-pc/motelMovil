@@ -227,6 +227,68 @@ var clients = [];
 	          }
 	        });
 	        });
+
+
+          socket.on('buscar-negocio', async (data) => {
+            try {
+              Usuario.find({ "eliminado.estado": false, $or: [{ nombre: new RegExp(data.termino, 'i') }, { apellido: new RegExp(data.termino, 'i') }] }, function (error, lista) {
+                if (error) {
+                  // res.status(500).send({ mensaje: "Error al listar" })
+                } else {
+                  if (!lista) {
+                    //   res.status(404).send({ mensaje: "Error al listar" })
+                  } else {
+                    console.log(lista);
+                    io.to(socket.id).emit('respuesta-buscar-usuarios', lista);
+                  }
+                }
+              });
+      
+            }
+      
+            catch (e) {
+              console.log(e);
+            }
+      
+          });
+      
+                 
+        socket.on('listar-negocios-de-usuario', async (data) => {
+
+          try {
+            const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+            if (bytes.toString()) {
+             var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+             if(datos.tipo=="negocios"){
+              Negocio.find({"eliminado.estado":false,titular:datos.id},{foto:0}, function (error, lista){
+                if (error) {
+                  console.log(error);
+                  io.to(socket.id).emit('respuesta-listar-negocio-de-usuario',{error: "No se pudo listar los negocios"})
+                   // res.status(500).send({ mensaje: "Error al listar" })
+                } else {
+                    if (!lista) {
+                    //  console.log(nada);
+                      io.to(socket.id).emit('respuesta-listar-negocio-de-usuario',{error: "error no se listar negocios"})
+                     //   res.status(404).send({ mensaje: "Error al listar" })
+                    } else {
+                     
+                      io.to(socket.id).emit('respuesta-listar-negocio-de-usuario',lista);  
+                    }  
+                }
+              });
+             }else{
+                  var cantidad = await Negocio.countDocuments({titular:datos.id});
+                  io.to(socket.id).emit('respuesta-listar-negocio-de-usuario',cantidad);
+             }
+             
+
+            }
+            return data;
+          } catch (e) {
+            console.log(e);
+          }   
+	     
+	        });
 	
 
       socket.on('sacar-negocio', async (data) => {
