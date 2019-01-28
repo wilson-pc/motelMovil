@@ -20,6 +20,11 @@ export class SocketConfigService2 extends Socket {
   }
 }
 
+export class SocketConfigHomeService extends Socket {
+  constructor() {
+    super({ url: RutaServer.socket + "home", options: {} });
+  }
+}
 export class SocketConfigService3 extends Socket {
   constructor() {
     super({
