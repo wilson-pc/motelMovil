@@ -16,16 +16,10 @@
                         <form>
                             <div class="form-group">
                                 <label class="control-label">Nombre del negocio: </label>
-                                <ng-multiselect-dropdown name="multi"
-  [placeholder]="'custom placeholder'"
-  [data]="dropdownList"
-  [(ngModel)]="selectedItems"
-  [settings]="dropdownSettings"
-  (onSelect)="onItemSelect($event)"
-  (onSelectAll)="onSelectAll($event)"
-  (onFilterChange)="onFilterChange($event)"
->
-</ng-multiselect-dropdown>
+                                <ng-multiselect-dropdown name="multi" [placeholder]="'custom placeholder'" [data]="dropdownList"
+                                    [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)" (onFilterChange)="onFilterChange($event)">
+                                </ng-multiselect-dropdown>
                             </div>
                             <!--Nombre-->
                             <div class="form-group">
@@ -77,7 +71,7 @@
                                 <label class=" control-label">Email: </label>
                                 <div class="">
                                     <input type="email" [(ngModel)]="usuario.email" name="email" placeholder="example@gmail.com"
-                                        class="form-control input-md"  [required]="true">
+                                        class="form-control input-md" [required]="true">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -137,7 +131,7 @@
             <!--FORMULARIO DE ACTUALIZACION-->
             <ng-template #contentUpdate let-modal>
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modal-basic-title">ACTUALIZAR DATOS DEL DOCENTE</h4>
+                    <h4 class="modal-title" id="modal-basic-title">ACTUALIZAR DATOS DEL ADINISTRADOR</h4>
                     <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -148,35 +142,32 @@
                         <div class="form-group">
                             <label class=" control-label">Nombres: </label>
                             <div class="">
-                                <input type="text" [(ngModel)]="usuarioActualizado.nombre" name="nombre" class="form-control input-md" required="">
+                                <input type="text" [(ngModel)]="usuarioActualizado.nombre" name="nombre" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                         <!--Apellido-->
                         <div class="form-group">
                             <label class=" control-label">Apellidos: </label>
                             <div class="">
-                                <input type="text" [(ngModel)]="usuarioActualizado.apellidos" name="apellidos" class="form-control input-md" required="">
+                                <input type="text" [(ngModel)]="usuarioActualizado.apellidos" name="apellidos" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                         <!--Ci-->
                         <div class="form-group">
                             <label class=" control-label">Ci: </label>
                             <div class="">
-                                <input name="ci" [(ngModel)]="usuarioActualizado.ci" type="text" class="form-control input-md" required="">
+                                <input name="ci" [(ngModel)]="usuarioActualizado.ci" type="text" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Nuevo Negocio: </label>
-                            <ng-multiselect-dropdown name="multi"
-[placeholder]="'custom placeholder'"
-[data]="dropdownList"
-[(ngModel)]="selectedItems"
-[settings]="dropdownSettings"
-(onSelect)="onItemSelect($event)"
-(onSelectAll)="onSelectAll($event)"
-(onFilterChange)="onFilterChange($event)"
->
-</ng-multiselect-dropdown>
+                            <ng-multiselect-dropdown name="multi" [placeholder]="'custom placeholder'" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)" (onFilterChange)="onFilterChange($event)">
+                            </ng-multiselect-dropdown>
                         </div>
                         <!--Genero-->
                         <div class="form-group">
@@ -194,14 +185,16 @@
                         <div class="form-group">
                             <label class="control-label">Contacto: </label>
                             <div class="">
-                                <input [(ngModel)]="usuarioActualizado.telefono" name="conatco" type="number" class="form-control input-md" required="">
+                                <input [(ngModel)]="usuarioActualizado.telefono" name="conatco" type="number" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                         <!--Email-->
                         <div class="form-group">
                             <label class=" control-label">Email: </label>
                             <div class="">
-                                <input name="email" [(ngModel)]="usuarioActualizado.email" type="text" class="form-control input-md" required="">
+                                <input name="email" [(ngModel)]="usuarioActualizado.email" type="text" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                     </form>
@@ -215,7 +208,7 @@
             <!--MODAL DE VIEW INFO-->
             <ng-template #contentModelView let-modal>
                 <div class="modal-header">
-                    <h4 class="modal-title">Informacion del Admonistrador</h4>
+                    <h4 class="modal-title">Informacion del Administrador</h4>
                     <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -223,55 +216,52 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-9">
-                          <div class="panel panel-info">
-                            <div class="panel-heading">
-                              <h3 class="panel-title"></h3>
-                            </div>
-                            <div class="panel-body">
-                              <div class="row">
-                                <div class="col-md-3"> <img alt="User Pic" src="https://www.socialtools.me/blog/wp-content/uploads/2016/04/foto-de-perfil.jpg"
-                                    class="img-circle img-responsive"> </div>
-          
-                                <div class=" col-md-9 col-lg-9 ">
-                                  <table class="table table-user-information">
-                                    <tbody>
-                                      <tr>
-                                        <td>Nombre:</td>
-                                        <td>Programming</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Apellidos:</td>
-                                        <td>06/23/2013</td>
-                                      </tr>
-                                      <tr>
-                                        <td>CI</td>
-                                        <td>01/24/1988</td>
-                                      </tr>
-          
-                                      <tr>
-                                      <tr>
-                                        <td>Genero</td>
-                                        <td>Female</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Contacto</td>
-                                        <td>Kathmandu,Nepal</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Email</td>
-                                        <td><a href="mailto:info@support.com">info@support.com</a></td>
-                                      </tr>
-                                      <td>Fecha de registro</td>
-                                      <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
-                                      </td>
-                                    </tbody>
-                                  </table>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"></h3>
                                 </div>
-                              </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3"> <img alt="User Pic" src="https://www.socialtools.me/blog/wp-content/uploads/2016/04/foto-de-perfil.jpg"
+                                                class="img-circle img-responsive"> </div>
+
+                                        <div class=" col-md-9 col-lg-9 ">
+                                            <table class="table table-user-information">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Nombre:</td>
+                                                        <td>{{profileUser.nombre}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Apellidos:</td>
+                                                        <td>{{profileUser.apellidos}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>CI</td>
+                                                        <td>{{profileUser.ci}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                    <tr>
+                                                        <td>Genero</td>
+                                                        <td>{{profileUser.genero}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Contacto</td>
+                                                        <td>{{profileUser.telefono}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Email</td>
+                                                        <td>{{profileUser.email}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </ng-template>
 
@@ -286,7 +276,8 @@
                 </div>
                 <div class="modal-body">
                     <p>¿Desea eliminar el registro? especifique la razon</p>
-                    <input #termino (keydown)="razonEliminar($event,termino.value)" name="razon" type="text" class="form-control input-md" required="">
+                    <input #termino (keydown)="razonEliminar($event,termino.value)" name="razon" type="text" class="form-control input-md"
+                        required="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
@@ -307,14 +298,13 @@
                         <tbody>
                             <tr *ngFor="let user of usuarios, let i=index">
                                 <td>{{i+1}}</td>
-                                <td>{{user.nombre}}</td>
+                                <td (click)="openModalView(contentModelView, user._id)">{{user.nombre}}</td>
                                 <td>{{user.apellidos}}</td>
                                 <td>{{user.ci}}</td>
                                 <td>{{user.genero}}</td>
                                 <td>{{user.telefono}}</td>
                                 <td>{{user.email}}</td>
                                 <td class="text-right">
-                                    <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
                                     <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentUpdate,user)"></i>
                                     <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user._id)"></i>
                                 </td>

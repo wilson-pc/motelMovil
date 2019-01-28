@@ -326,10 +326,8 @@ module.exports = async function (io) {
           // res.status(500).send({ mensaje: "Error al listar" })
         } else {
           if (!lista) {
-            console.log(lista);
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-             console.log(lista);
             io.to(socket.id).emit('respuesta-validar-token', lista);
           }
         }
@@ -345,7 +343,6 @@ module.exports = async function (io) {
           if (!lista) {
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-             console.log(lista);
             io.to(socket.id).emit('respuesta-listado', lista);
           }
         }
@@ -359,15 +356,15 @@ module.exports = async function (io) {
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-
+          console.log(datos);
           Usuario.findOne({ _id: datos.id, "eliminado.estado": false }, function (error, dato) {
             if (error) {
               // res.status(500).send({ mensaje: "Error al listar" })
             } else {
-              if (!lista) {
+              if (!dato) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-                io.to(socket.id).to(socket.id).emit('respuesta', dato);
+                io.to(socket.id).emit('respuesta-sacar-usuario', dato);
 
               }
             }
