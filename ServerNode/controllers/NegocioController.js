@@ -100,7 +100,7 @@ var clients = [];
 
       socket.on('actualizar-negocio', async (data) => {
      
-        
+        console.log(data);
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
@@ -108,6 +108,7 @@ var clients = [];
           var negocio = new Negocio();
         //  var tipo = new Tipo();
           var params = datos.negocio;
+          negocio._id=params._id;
           negocio.nombre=params.nombre;
           negocio.titular = params.titular;
           negocio.foto=params.foto;
@@ -117,13 +118,15 @@ var clients = [];
           
           negocio.correo=params.correo;
           negocio.modificacion=params.modificacion;
+
+          console.log("LLEGO A ACTUALIZAR");
       
-                      Negocio.findByIdAndUpdate(params.id,negocio,{new: true},(error, actualizado) => {
+                      Negocio.findOneAndUpdate({_id:params._id},negocio,{new: true},(error, actualizado) => {
                           if (error) {
                             io.to(socket.id).emit('respuesta-actualizar-negocio',{error: "error al guradar nuevos datos"});
                           //    res.status(500).send({ mensaje: "error al guradar" })
                           } else {
-                            io.emit('respuesta-actualizar-negocio',actualizado);  
+                            io.emit('respuesta-actualizar-negocio',{datos:actualizado});  
                           }
                       })
               
@@ -150,14 +153,15 @@ var clients = [];
               negocio._id=params._id;
               negocio.productos=0;
               negocio.eliminado={estado:true,razon:params.razon},
+              negocio.modificacion=params.modificacion;
                           //guarda al nuevo usuario en la bd
                       
-                          Negocio.findByIdAndUpdate(params.id,negocio,{new: true},(error, actualizado) => {
+                          Negocio.findOneAndUpdate({_id:params._id},negocio,{new: true},(error, actualizado) => {
                               if (error) {
                                 io.to(socket.id).emit('respuesta-elimina-negocio',{error: "error no se pudo guardar"})
                                  // res.status(500).send({ mensaje: "error al guradar" })
                               } else {
-                                io.emit('respuesta-elimina-negocio',actualizado);  
+                                io.emit('respuesta-elimina-negocio',{datos:actualizado});  
                               }
                           })
                     
