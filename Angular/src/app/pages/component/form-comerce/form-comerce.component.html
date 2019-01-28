@@ -47,8 +47,7 @@
                                                     </div>
                                               </div>
                                             </div>
-                                          </div>
-                                
+                                          </div>                               
 
                                 
                             </div>
@@ -115,14 +114,14 @@
                         exito
                     </div>
                     <div class="alert alert-danger" *ngIf="isRequired">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Datos incorrectos, posiblemente esten vacios, llene todos los campos.
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Datos incorrectos, posiblemente esten vacios o correo invalido, llene todos los campos.
                     </div>
                     <!--btnCancelar / btnGuardar-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
                         <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="add(negocios)">Guardar</button>
                         <button *ngIf="flag==1" type="button" class="btn btn-success" (click)="update(negocios)">Actualizar</button>
-                         <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="ver()">CLICKME</button> 
+                         <!-- <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="ver()">CLICKME</button>  -->
                      
                     </div>
                 </ng-template>
@@ -170,6 +169,57 @@
                    
                   </ng-template>
 
+                  <!--VISTA DE CONTENIDOS-->
+                  <ng-template #contentModelView let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Informacion del Administrador</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"></h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">                   
+    
+                                            <div class=" col-md-9 col-lg-9 ">
+                                                <table class="table table-user-information">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Nombre:</td>
+                                                            <td>{{negocios.nombre}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Direccion:</td>
+                                                            <td>{{negocios.direccion.descripcion}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Telefono</td>
+                                                            <td>{{negocios.telefono}}</td>
+                                                        </tr>
+    
+                                                        <tr>
+                                                        <tr>
+                                                            <td>Correo</td>
+                                                            <td>{{negocios.correo}}</td>
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
                 <i class='mdi mdi-account-multiple-plus btn btn-info' (click)="openFromRegistry(contentAdd,0)"></i>
               </div>
 
@@ -188,9 +238,9 @@
                                     <td>{{user.telefono}}</td>                            
                                     <td>{{user.correo}}</td>
                                     <td class="text-right">
-                                        <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
+                                        <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView,user)"></i>
                                         <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentAdd,user,1)"></i>
-                                        <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user)"></i>
+                                        <i *ngIf="negocio.titular" class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user)"></i>
                                     </td>
                                 </tr> 
                             </tbody>

@@ -121,7 +121,12 @@ export class FormComerceComponent implements OnInit {
     });  
 	}
 
-	openModalView(content) {
+	openModalView(content,negocio:Negocio) {
+		this.negocios=negocio;
+		
+		this.negocios.tipo=negocio.tipo._id as any;
+		this.descripcion=negocio.direccion.descripcion;
+		this.ubicaciongps=negocio.direccion.ubicaciongps;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
     this.modal.result.then((e) => {
     });  
@@ -173,6 +178,9 @@ export class FormComerceComponent implements OnInit {
 						}
 
 					 }
+					 else{
+						 return false;
+					 }
 					
 	}
 
@@ -182,9 +190,7 @@ export class FormComerceComponent implements OnInit {
 		
 	}
 
-	ver(){
-		console.log(this.validateEmail(this.negocios.correo));
-	}
+	
 
 	// COSUMO DE SERVICIOS
 	add(){
