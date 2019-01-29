@@ -51,7 +51,7 @@ var clients = [];
                             console.log(nuevonegocio);
                             console.log("Se guardo el negocio correctamente");
                             io.to(socket.id).emit('respuesta-registro-negocio',{datos:nuevonegocio});                         
-                           // io.to(socket.id).emit('respuesta-registro-negocio-todos',{datos:nuevonegocio});  
+                           io.emit('respuesta-registro-negocio-todos',{datos:nuevonegocio});  
                           }
                       });
                     }else{

@@ -122,9 +122,7 @@ export class FormComerceComponent implements OnInit {
 		} else {
 			this.eliminar = false;
 		}
-	}
-
- 
+	} 
 
   openFromRegistry(content,anyflag) {
 	  this.flag=anyflag;
@@ -223,8 +221,9 @@ export class FormComerceComponent implements OnInit {
 				let data={negocio:this.negocios}
 				var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
 				this.socket.emit("registrar-negocio",ciphertext.toString());
+				
 				this.socket.on('respuesta-registro-negocio',(data)=>{
-				console.log("Entraste a respuesta");
+				console.log("Entraste a respuesta y estoy funcionando");
 				console.log(data);
 				});	
 
@@ -379,8 +378,7 @@ export class FormComerceComponent implements OnInit {
 		this.ListaNegocio = [];
 		this.respuestaCrear().subscribe((data: any) => {		
 			
-			if (data.datos) {
-				
+			if (data.datos) {				
 				this.isError = false;
 				this.isRequired = false;
 				this.isExito = true;
@@ -453,7 +451,7 @@ export class FormComerceComponent implements OnInit {
 
 	respuestaCrear() {
 		let observable = new Observable(observer => {
-			this.socket.on('respuesta-registro-negocio', (data) => {
+			this.socket.on('respuesta-registro-negocio-todos', (data) => {
 				observer.next(data);
 			});
 		})
