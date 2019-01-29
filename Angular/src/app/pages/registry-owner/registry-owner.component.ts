@@ -1,3 +1,4 @@
+
 import { SocketConfigService } from './../../socket-config.service';
 import { element } from 'protractor';
 import { BuscadorService } from './../../service/buscador.service';
@@ -12,6 +13,7 @@ import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
 import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
+import { Socket } from 'net';
 
 @Component({
 	selector: 'app-registry-owner',
@@ -54,7 +56,7 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabeceras de la Tabla
 	constructor(private socketProducto: SocketConfigService, private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 		this.profileUser = new Usuarios;
-		console.log(socket);
+		
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
   this.errorMensaje="Error no se pudo guardar el registro."
@@ -66,8 +68,8 @@ export class RegistryOwnerComponent implements OnInit {
 		this.usuarioActualizado = new Usuarios
 		this.peticionSocketNegocio();
 		this.buscador.lugar = "usuarios";
+		
 	}
-
 	//Llenar el ng-select
 	ngOnInit() {
 
@@ -202,6 +204,7 @@ export class RegistryOwnerComponent implements OnInit {
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket.emit("eliminar-usuario", ciphertext.toString());
 	}
+	
 
 	viewUser(){
 		let data = { id: this.contentUserID}
@@ -298,15 +301,7 @@ export class RegistryOwnerComponent implements OnInit {
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 			this.usuarios = data;
 		});
-		this.respuestaEliminarUsuario().subscribe((data: any) => {
-
-			let fila = this.usuarios.filter(word => word._id == data._id)[0];
-
-			var index = this.usuarios.indexOf(fila);
-			this.usuarios.splice(index, 1);
-			this.modal.close();
-			this.eliminar = false;
-		});
+		
 		//Sacar Usuario
 		this.respuestaSacarUsuario().subscribe((data: any) => {
 			this.profileUser = data;
@@ -321,6 +316,29 @@ export class RegistryOwnerComponent implements OnInit {
 		this.respuestaVerificarNegocio().subscribe((data: any) => {
 			this.negociosUsuario = data;
 			console.log(this.negociosUsuario)
+		});
+		this.respuestaEliminarUsuario().subscribe((data: any) => {
+			if(data.exito){
+			this.modal.close();
+			this.eliminar = false;}
+			else{
+
+			}
+		});
+
+		this.socket.on('respuesta-eliminar-usuario-todos', (data) => {
+			let fila = this.usuarios.filter(word => word._id == data._id)[0];
+
+			var index = this.usuarios.indexOf(fila);
+			this.usuarios.splice(index, 1);
+		});
+
+		this.socket.on('respuesta-actualizar-usuario-todos', (data) => {
+			
+		   let fila=this.usuarios.filter(word => word._id == data._id)[0];
+		   var index = this.usuarios.indexOf(fila);
+		   this.usuarios[index]=data;
+			console.log(this.usuarios);
 		});
 	}
 	respuestaCrear() {
@@ -340,6 +358,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
+
 	//respuesta-listar-usuarios
 	respuestaListar() {
 		let observable = new Observable(observer => {

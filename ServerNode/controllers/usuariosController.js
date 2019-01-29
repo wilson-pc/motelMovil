@@ -199,7 +199,9 @@ module.exports = async function (io) {
               }
 
               console.log(actualizado);
-              io.emit('respuesta-actualizar-usuario', actualizado);
+              io.to(socket.id).emit('respuesta-actualizar-usuario', {exito:"actualizado con exito"});
+
+              io.emit('respuesta-actualizar-usuario-todos', actualizado);
             }
           })
 
@@ -231,14 +233,15 @@ module.exports = async function (io) {
           Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, async (error, actualizado) => {
             if (error) {
               console.log(error);
-              io.emit('respuesta-eliminar-usuario', { error: "Ocurrio un error en ls eliminacion" });
+              io.to(socket.id).emit('respuesta-eliminar-usuario', { error: "Ocurrio un error en ls eliminacion" });
 
             } else {
 
               await Negocio.update({ titular: datos.id }, { eliminado: { estado: true, razon: "eliminado por borrado de usuario" } });
 
 
-              io.emit('respuesta-eliminar-usuario', actualizado);
+              io.to(socket.id).emit('respuesta-eliminar-usuario',{exito:"eliminado con exito"});
+              io.emit('respuesta-eliminar-usuario-todos', actualizado);
             }
           })
 

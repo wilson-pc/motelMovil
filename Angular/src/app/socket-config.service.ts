@@ -9,6 +9,7 @@ import { RutaServer } from './RutaApi';
 })
 export class SocketConfigService extends Socket {
   constructor() {
+
     super({ url: RutaServer.socket + "productos", options: {} });
   }
 
