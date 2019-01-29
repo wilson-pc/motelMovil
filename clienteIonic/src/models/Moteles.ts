@@ -1,4 +1,4 @@
-import { Footer } from "ionic-angular";
+
 import { Habitacion } from "./Habitacion";
 import { Usuarios } from "./Usuarios";
 
