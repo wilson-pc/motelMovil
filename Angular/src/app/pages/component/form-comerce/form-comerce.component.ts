@@ -477,7 +477,7 @@ export class FormComerceComponent implements OnInit {
 
 	respuestaTodos(){
 		let observable= new Observable(observer => {
-			this.socket.on('respuesta-elimina-negocio-todos',(data)=>{
+			this.socket.on('respuesta-registro-negocio-todos',(data)=>{
 				observer.next(data);
 			});
 		});
