@@ -332,6 +332,8 @@ export class FormComerceComponent implements OnInit {
 		
 		var tit= this.route.snapshot.paramMap.get('negocio');
 
+		
+
 		if(tit=='moteles'){
 			this.socket.emit("listar-negocio", { termino:'Motel'});
 			this.negocios.tipo= "5c48958b734dbc052c531a0a" as any;
@@ -396,6 +398,19 @@ export class FormComerceComponent implements OnInit {
 				this.isExito = false;
 			}
 		});
+
+
+		this.respuestaTodos().subscribe((data: any) => {		
+			
+			if (data.datos) {				
+				
+				this.limpiarMensajes();				
+				//this.ListaNegocio.push(data.datos);			
+				
+			}
+			
+		});
+
 		this.respuestaActualizar().subscribe((data:any) => {
 
 			if (data.datos) {
@@ -457,6 +472,16 @@ export class FormComerceComponent implements OnInit {
 			});
 		})
 		console.log("entro respuesta crear");
+		return observable;
+	}
+
+	respuestaTodos(){
+		let observable= new Observable(observer => {
+			this.socket.on('respuesta-elimina-negocio-todos',(data)=>{
+				observer.next(data);
+			});
+		});
+
 		return observable;
 	}
 
