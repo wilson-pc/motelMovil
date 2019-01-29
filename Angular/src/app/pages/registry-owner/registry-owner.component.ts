@@ -67,9 +67,13 @@ export class RegistryOwnerComponent implements OnInit {
 		// Model Negocios
 		this.negocio = new Negocio;
 		this.usuarioActualizado = new Usuarios
-		this.peticionSocketNegocio();
+	
 		this.buscador.lugar = "usuarios";
 		
+	}
+	
+	cargarDrow(){
+		this.peticionSocketNegocio();
 	}
 	
 	//Llenar el ng-select
@@ -105,11 +109,11 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	peticionSocketNegocio() {
-		console.log("Gatos");
 		this.socket3.emit("listar-negocio2", { data: "nada" });
 		this.socket3.on('respuesta-listar-negocio2', (data) => {
-	      console.log(data);
-			console.log("soy el mejor");
+			this.dropdownList = data.slice(0, 3);
+			this.negocios = data;
+			this.selectedItems=[];
 		});
 	}
 
@@ -119,7 +123,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
-		this.peticionSocketNegocio();
+		
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -320,11 +324,7 @@ export class RegistryOwnerComponent implements OnInit {
 			this.negociosUsuario = data;
 			console.log(this.negociosUsuario)
 		});
-		this.respuestaListarNegocio().subscribe((data: any[]) => {
-			this.dropdownList = data.slice(0, 3);
-			this.negocios = data;
-
-		});
+		
 		this.respuestaEliminarUsuario().subscribe((data: any) => {
 			console.log("hjvhv");
 			console.log(data);
@@ -387,16 +387,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-	//respuesta-buscar-negocio
-	respuestaListarNegocio() {
-		let observable = new Observable(observer => {
-			this.socket3.on('respuesta-listar-negocio2', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
-	}
-	
+
 	respuestaEliminarUsuario() {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario
