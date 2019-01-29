@@ -260,11 +260,10 @@ export class FormComerceComponent implements OnInit {
 		let data={negocio:this.negocios}
 		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
 		 this.socket.emit("actualizar-negocio",ciphertext.toString());
-
-
-		 this.socket.on('respuesta-actualizar-negocio',(data)=>{
-		 	
-		 });
+		 this.socket.on('respuesta-actualizar-negocio-todos',(data)=>{
+			console.log("Entraste a respuesta y estoy funcionando");
+			console.log(data);
+			});	
 		}
 		else{
 			this.isRequired=true;
@@ -297,7 +296,7 @@ export class FormComerceComponent implements OnInit {
 			let data={negocio:this.datanew}
 		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
 		 this.socket.emit("eliminar-negocio",ciphertext.toString());
-		 this.socket.on('respuesta-elimina-negocio',(data)=>{
+		 this.socket.on('respuesta-elimina-negocio-todos',(data)=>{
 		 	console.log("Entraste a respuesta eliminar");
 		 	console.log(data);
 		 });
@@ -331,6 +330,8 @@ export class FormComerceComponent implements OnInit {
 		
 		
 		var tit= this.route.snapshot.paramMap.get('negocio');
+
+		
 
 		if(tit=='moteles'){
 			this.socket.emit("listar-negocio", { termino:'Motel'});
@@ -396,6 +397,37 @@ export class FormComerceComponent implements OnInit {
 				this.isExito = false;
 			}
 		});
+
+
+		this.respuestaTodosCrear().subscribe((data: any) => {		
+			
+			if (data.datos) {				
+				
+				this.limpiarMensajes();				
+				//this.ListaNegocio.push(data.datos);					
+			}		
+		});
+
+		this.respuestaTodosActualizar().subscribe((data: any) => {		
+			
+			if (data.datos) {				
+				
+				this.limpiarMensajes();				
+				//this.ListaNegocio.push(data.datos);					
+			}			
+		});
+
+		this.respuestaTodosBorrar().subscribe((data: any) => {		
+			
+			if (data.datos) {			
+				
+				this.limpiarMensajes();				
+				//this.ListaNegocio.push(data.datos);					
+			}			
+		});
+
+		
+
 		this.respuestaActualizar().subscribe((data:any) => {
 
 			if (data.datos) {
@@ -457,6 +489,34 @@ export class FormComerceComponent implements OnInit {
 			});
 		})
 		console.log("entro respuesta crear");
+		return observable;
+	}
+
+	respuestaTodosCrear(){
+		let observable= new Observable(observer => {
+			this.socket.on('respuesta-registro-negocio-todos',(data)=>{
+				observer.next(data);
+			});
+		});
+
+		return observable;
+	}
+
+	respuestaTodosActualizar(){
+		let observable= new Observable(observer => {
+			this.socket.on('respuesta-actualizar-negocio-todos',(data)=>{
+				observer.next(data);
+			});
+		});
+		return observable;
+	}
+
+	respuestaTodosBorrar(){
+		let observable= new Observable(observer => {
+			this.socket.on('respuesta-elimina-negocio-todos',(data)=>{
+				observer.next(data);
+			});
+		});
 		return observable;
 	}
 
