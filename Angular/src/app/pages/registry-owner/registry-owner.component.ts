@@ -14,6 +14,7 @@ import { clave } from '../../cryptoclave';
 import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
 import { Socket } from 'net';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
 	selector: 'app-registry-owner',
@@ -70,6 +71,7 @@ export class RegistryOwnerComponent implements OnInit {
 		this.buscador.lugar = "usuarios";
 		
 	}
+	
 	//Llenar el ng-select
 	ngOnInit() {
 
@@ -103,7 +105,12 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	peticionSocketNegocio() {
+		console.log("Gatos");
 		this.socket3.emit("listar-negocio2", { data: "nada" });
+		this.socket3.on('respuesta-listar-negocio2', (data) => {
+	      console.log(data);
+			console.log("soy el mejor");
+		});
 	}
 
 	getUsers() {
@@ -112,6 +119,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
+		this.peticionSocketNegocio();
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -293,11 +301,6 @@ export class RegistryOwnerComponent implements OnInit {
 			this.usuarios = data;
 
 		});
-		this.respuestaListarNegocio().subscribe((data: any[]) => {
-			this.dropdownList = data.slice(0, 3);
-			this.negocios = data;
-
-		});
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 			this.usuarios = data;
 		});
@@ -317,7 +320,14 @@ export class RegistryOwnerComponent implements OnInit {
 			this.negociosUsuario = data;
 			console.log(this.negociosUsuario)
 		});
+		this.respuestaListarNegocio().subscribe((data: any[]) => {
+			this.dropdownList = data.slice(0, 3);
+			this.negocios = data;
+
+		});
 		this.respuestaEliminarUsuario().subscribe((data: any) => {
+			console.log("hjvhv");
+			console.log(data);
 			if(data.exito){
 			this.modal.close();
 			this.eliminar = false;}
