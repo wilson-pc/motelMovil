@@ -161,8 +161,16 @@
                         <!--Negocios Actules-->
                         <div class="form-group">
                             <label class="text-dark control-label">Negocios Actuales: </label>
-                            <div *ngFor="let negocio of negociosUsuario, let i=index">
-                                <label class="text-white bg-dark control-label">{{negocio.nombre}}</label>
+
+                            <div class=" col-md-9 col-lg-9 ">
+                                <table class="table table-user-information">
+                                    <tbody>
+                                        <tr *ngFor="let negocio of negociosUsuario, let i=index">
+                                            <td><label class="text-white bg-dark control-label">{{negocio.nombre}}</label></td>
+                                            <td><i class='mdi mdi-delete btn btn-danger' (click)="removeCommerceTitular(negocio)"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <!--NUevos Negocios-->
@@ -301,7 +309,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <label class="text-danger">Al eliminar se borraran toda la informacion de los siguientes negocios anexados:</label>
+                    <label class="text-danger">Al eliminar se borraran toda la informacion de los siguientes negocios
+                        anexados:</label>
                     <div *ngFor="let negocio of negociosUsuario, let i=index">
                         <label class="text-danger">- {{negocio.nombre}}</label>
                     </div>

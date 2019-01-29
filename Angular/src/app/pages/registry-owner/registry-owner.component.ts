@@ -34,7 +34,7 @@ export class RegistryOwnerComponent implements OnInit {
 	usuario: Usuarios;
 	usuarios: Usuarios[] = [];
 	a: any;
-	errorMensaje:string;
+	errorMensaje: string;
 	idUsuario: string;
 	usuarioActualizado: Usuarios;
 	loginusuario: string;
@@ -45,7 +45,7 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabeceras de la Tabla
 	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
 	profileUser: Usuarios;
-	negociosUsuario: Negocio;
+	negociosUsuario: Negocio[] = [];
 	contentUserID: string;
 
 	items: any = []
@@ -56,10 +56,10 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabeceras de la Tabla
 	constructor(private socketProducto: SocketConfigService, private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 		this.profileUser = new Usuarios;
-		
+
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
-  this.errorMensaje="Error no se pudo guardar el registro."
+		this.errorMensaje = "Error no se pudo guardar el registro."
 		this.getUsers();
 		this.conn();
 		this.a = 1;
@@ -68,7 +68,7 @@ export class RegistryOwnerComponent implements OnInit {
 		this.usuarioActualizado = new Usuarios
 		this.peticionSocketNegocio();
 		this.buscador.lugar = "usuarios";
-		
+
 	}
 	//Llenar el ng-select
 	ngOnInit() {
@@ -133,7 +133,6 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 		//Obtener listado de negocios
 		this.negocioActualPorEvento(this.usuarioActualizado._id);
-		console.log(this.usuarioActualizado);
 	}
 
 	openModalDelete(content, id) {
@@ -204,10 +203,10 @@ export class RegistryOwnerComponent implements OnInit {
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket.emit("eliminar-usuario", ciphertext.toString());
 	}
-	
 
-	viewUser(){
-		let data = { id: this.contentUserID}
+
+	viewUser() {
+		let data = { id: this.contentUserID }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket.emit("sacar-usuario", ciphertext.toString());
 		this.verificarNegocioUsuario();
@@ -221,17 +220,33 @@ export class RegistryOwnerComponent implements OnInit {
 		}
 	}
 
-	verificarNegocioUsuario(){
-		let data = { id: this.contentUserID, tipo: "negocios"}
+	verificarNegocioUsuario() {
+		let data = { id: this.contentUserID, tipo: "negocios" }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket3.emit("listar-negocios-de-usuario", ciphertext.toString());
 	}
 
-	negocioActualPorEvento(id){
-		let data = { id: id, tipo: "negocios"}
+	negocioActualPorEvento(id) {
+		let data = { id: id, tipo: "negocios" }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.socket3.emit("listar-negocios-de-usuario", ciphertext.toString());
 	}
+
+	removeCommerceTitular(negocio) {
+
+		let fechaUTC = new Date().toUTCString();
+		let usarioActualSesion = this.usuarioServ.usuarioActual.datos._id;
+		let data = {
+			negocio: {
+				_id: negocio._id, eliminado: { estado: true, razon: "" },
+				modificacion: { fecha: fechaUTC, usuario: usarioActualSesion }
+			}
+		}
+
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket3.emit("eliminar-negocio", ciphertext.toString());
+	}
+
 	//funcion para buscar imagen dentro de la maquina
 	changeListener($event): void {
 		this.readThis($event.target);
@@ -257,7 +272,7 @@ export class RegistryOwnerComponent implements OnInit {
 	conn() {
 		this.negocios = [];
 		this.respuestaCrear().subscribe((data: any) => {
-        
+
 			if (data.exito) {
 
 				console.log(data);
@@ -268,19 +283,18 @@ export class RegistryOwnerComponent implements OnInit {
 				this.usuario = new Usuarios();
 				this.user = "";
 				this.password = "";
-				
+
 				this.selectedItems = [];
-			}else
-			if(data.mensaje){
-				this.isError = true;
-				this.errorMensaje="Este usuario ya esta registrado"
-			}else
-			 {
-				this.isError = true;
-				this.isRequired = false;
-				this.isExito = false;
-				this.errorMensaje="Error no se pudo crear el registro";
-			}
+			} else
+				if (data.mensaje) {
+					this.isError = true;
+					this.errorMensaje = "Este usuario ya esta registrado"
+				} else {
+					this.isError = true;
+					this.isRequired = false;
+					this.isExito = false;
+					this.errorMensaje = "Error no se pudo crear el registro";
+				}
 		});
 
 		this.respuestaActualizar().subscribe((data: any) => {
@@ -301,14 +315,13 @@ export class RegistryOwnerComponent implements OnInit {
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 			this.usuarios = data;
 		});
-		
+
 		//Sacar Usuario
 		this.respuestaSacarUsuario().subscribe((data: any) => {
 			this.profileUser = data;
 		});
 
 		this.respuestaNuevousuario().subscribe((data: any) => {
-	  console.log(data);
 			this.usuarios.push(data.usuario)
 		});
 
@@ -318,12 +331,22 @@ export class RegistryOwnerComponent implements OnInit {
 			console.log(this.negociosUsuario)
 		});
 		this.respuestaEliminarUsuario().subscribe((data: any) => {
-			if(data.exito){
-			this.modal.close();
-			this.eliminar = false;}
-			else{
+			if (data.exito) {
+				this.modal.close();
+				this.eliminar = false;
+			}
+			else {
 
 			}
+		});
+		//eliminar negocio del panel de edicion
+		this.repuestaEliminarNegocio().subscribe((data: any) => {
+			
+			console.log(this.negociosUsuario.length);
+			let fila = this.negociosUsuario.filter(negocio => negocio._id == data._id)[0];
+			var index = this.negociosUsuario.indexOf(fila);
+			this.negociosUsuario.splice(index, 1);
+			console.log(index);
 		});
 
 		this.socket.on('respuesta-eliminar-usuario-todos', (data) => {
@@ -334,13 +357,14 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 
 		this.socket.on('respuesta-actualizar-usuario-todos', (data) => {
-			
-		   let fila=this.usuarios.filter(word => word._id == data._id)[0];
-		   var index = this.usuarios.indexOf(fila);
-		   this.usuarios[index]=data;
+
+			let fila = this.usuarios.filter(word => word._id == data._id)[0];
+			var index = this.usuarios.indexOf(fila);
+			this.usuarios[index] = data;
 			console.log(this.usuarios);
 		});
 	}
+
 	respuestaCrear() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-crear', (data) => {
@@ -386,7 +410,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-	
+
 	respuestaEliminarUsuario() {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario
@@ -396,7 +420,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-	respuestaSacarUsuario(){
+	respuestaSacarUsuario() {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario
 			this.socket.on('respuesta-sacar-usuario', (data) => {
@@ -405,7 +429,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-	respuestaVerificarNegocio(){
+	respuestaVerificarNegocio() {
 		let observable = new Observable(observer => {
 			this.socket3.on('respuesta-listar-negocio-de-usuario', (data) => {
 				observer.next(data);
@@ -413,9 +437,18 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-	respuestaNuevousuario(){
+	respuestaNuevousuario() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-crear-todos', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
+
+	repuestaEliminarNegocio() {
+		let observable = new Observable(observer => {
+			this.socket3.on('respuesta-elimina-negocio', (data) => {
 				observer.next(data);
 			});
 		})
