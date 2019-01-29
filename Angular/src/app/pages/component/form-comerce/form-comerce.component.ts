@@ -222,7 +222,7 @@ export class FormComerceComponent implements OnInit {
 				var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
 				this.socket.emit("registrar-negocio",ciphertext.toString());
 				
-				this.socket.on('respuesta-registro-negocio',(data)=>{
+				this.socket.on('respuesta-registro-negocio-todos',(data)=>{
 				console.log("Entraste a respuesta y estoy funcionando");
 				console.log(data);
 				});	
@@ -451,7 +451,8 @@ export class FormComerceComponent implements OnInit {
 
 	respuestaCrear() {
 		let observable = new Observable(observer => {
-			this.socket.on('respuesta-registro-negocio-todos', (data) => {
+			
+			this.socket.on('respuesta-registro-negocio', (data) => {
 				observer.next(data);
 			});
 		})
