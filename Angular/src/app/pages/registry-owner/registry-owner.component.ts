@@ -54,6 +54,7 @@ export class RegistryOwnerComponent implements OnInit {
 	// Cabeceras de la Tabla
 	constructor(private socketProducto: SocketConfigService, private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 		this.profileUser = new Usuarios;
+		console.log(socket);
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
   this.errorMensaje="Error no se pudo guardar el registro."
@@ -253,19 +254,20 @@ export class RegistryOwnerComponent implements OnInit {
 	conn() {
 		this.negocios = [];
 		this.respuestaCrear().subscribe((data: any) => {
-          console.log(data);
-			if (data.usuario) {
+        
+			if (data.exito) {
 
+				console.log(data);
 				this.isError = false;
 				this.isRequired = false;
 				this.isExito = true;
-				this.usuarios.push(data.usuario);
+				//this.usuarios.push(data.usuario);
 				this.usuario = new Usuarios();
 				this.user = "";
 				this.password = "";
 				
 				this.selectedItems = [];
-			}
+			}else
 			if(data.mensaje){
 				this.isError = true;
 				this.errorMensaje="Este usuario ya esta registrado"
@@ -311,6 +313,7 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 
 		this.respuestaNuevousuario().subscribe((data: any) => {
+	  console.log(data);
 			this.usuarios.push(data.usuario)
 		});
 
@@ -393,7 +396,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 	respuestaNuevousuario(){
 		let observable = new Observable(observer => {
-			this.socket3.on('respuesta-crear-todos', (data) => {
+			this.socket.on('respuesta-crear-todos', (data) => {
 				observer.next(data);
 			});
 		})

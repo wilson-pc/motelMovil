@@ -102,7 +102,7 @@ module.exports = async function (io) {
                       }
                     }
 
-                    io.to(socket.id).emit('respuesta-crear', { usuario: nuevoUsuario });
+                    io.to(socket.id).emit('respuesta-crear', { exito:"registro guardado con exito" });
                     io.emit('respuesta-crear-todos',{ usuario: nuevoUsuario});
                   }
                 })

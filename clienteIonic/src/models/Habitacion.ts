@@ -1,4 +1,4 @@
-import { Footer } from "ionic-angular";
+
 import { Tipo } from "./TipoProducto";
 
 export class Habitacion {
