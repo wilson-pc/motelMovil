@@ -14,6 +14,7 @@ import { clave } from '../../cryptoclave';
 import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
 import { Socket } from 'net';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
 	selector: 'app-registry-owner',
@@ -66,10 +67,15 @@ export class RegistryOwnerComponent implements OnInit {
 		// Model Negocios
 		this.negocio = new Negocio;
 		this.usuarioActualizado = new Usuarios
-		this.peticionSocketNegocio();
+	
 		this.buscador.lugar = "usuarios";
 
 	}
+	
+	cargarDrow(){
+		this.peticionSocketNegocio();
+	}
+	
 	//Llenar el ng-select
 	ngOnInit() {
 
@@ -104,6 +110,11 @@ export class RegistryOwnerComponent implements OnInit {
 
 	peticionSocketNegocio() {
 		this.socket3.emit("listar-negocio2", { data: "nada" });
+		this.socket3.on('respuesta-listar-negocio2', (data) => {
+			this.dropdownList = data.slice(0, 3);
+			this.negocios = data;
+			this.selectedItems=[];
+		});
 	}
 
 	getUsers() {
@@ -112,6 +123,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
+		
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -307,11 +319,6 @@ export class RegistryOwnerComponent implements OnInit {
 			this.usuarios = data;
 
 		});
-		this.respuestaListarNegocio().subscribe((data: any[]) => {
-			this.dropdownList = data.slice(0, 3);
-			this.negocios = data;
-
-		});
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 			this.usuarios = data;
 		});
@@ -330,23 +337,24 @@ export class RegistryOwnerComponent implements OnInit {
 			this.negociosUsuario = data;
 			console.log(this.negociosUsuario)
 		});
+		
 		this.respuestaEliminarUsuario().subscribe((data: any) => {
-			if (data.exito) {
-				this.modal.close();
-				this.eliminar = false;
-			}
-			else {
+			console.log("hjvhv");
+			console.log(data);
+			if(data.exito){
+			this.modal.close();
+			this.eliminar = false;}
+			else{
 
 			}
 		});
 		//eliminar negocio del panel de edicion
 		this.repuestaEliminarNegocio().subscribe((data: any) => {
 			
-			console.log(this.negociosUsuario.length);
 			let fila = this.negociosUsuario.filter(negocio => negocio._id == data._id)[0];
 			var index = this.negociosUsuario.indexOf(fila);
 			this.negociosUsuario.splice(index, 1);
-			console.log(index);
+			console.log(this.negociosUsuario[1]._id + " - " + data._id + "//" + fila._id);
 		});
 
 		this.socket.on('respuesta-eliminar-usuario-todos', (data) => {

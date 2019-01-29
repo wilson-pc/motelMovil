@@ -8,6 +8,7 @@ module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
     // var host=socket.handshake.headers.host;
+    console.log("Hola soy ionic");
     clients.push(socket.id);
 
     socket.on('listar-tipos', async (data) => {
