@@ -17,8 +17,11 @@ export class BuscadorService {
     if(this.lugar=="negocios"){
       if(this.termino=="licorerias"){
       this.socketnegocio.emit("buscar-negocio",{termino:terminos,tipo:"Licoreria"});
-      }else{
-        
+      }else
+      if(this.termino=="sexshops"){
+        this.socketnegocio.emit("buscar-negocio",{termino:terminos,tipo:"SexShop"});
+      }if(this.termino=="moteles"){
+        this.socketnegocio.emit("buscar-negocio",{termino:terminos,tipo:"Motel"});
       }
     }
   }

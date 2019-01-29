@@ -50,8 +50,8 @@ var clients = [];
                           } else {
                             console.log(nuevonegocio);
                             console.log("Se guardo el negocio correctamente");
-                            io.emit('respuesta-registro-negocio',{datos:nuevonegocio});                         
-
+                            io.to(socket.id).emit('respuesta-registro-negocio',{datos:nuevonegocio});                         
+                           // io.to(socket.id).emit('respuesta-registro-negocio-todos',{datos:nuevonegocio});  
                           }
                       });
                     }else{
@@ -328,7 +328,7 @@ var clients = [];
                  var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
                    
                     
-            Negocio.find({"eliminado.estado":false,nombre:datos.termino,nit:datos.termino}, function (error, lista){
+            Negocio.find({"eliminado.estado":false,nombre:datos.termino,nit:datos.termino},{foto:0}, function (error, lista){
                 if (error) {
                   io.to(socket.id).emit('respuesta-buscar-negocio',{error: "aun no hay negocios en registrados"})
                    // res.status(500).send({ mensaje: "Error al listar" })

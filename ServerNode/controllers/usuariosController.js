@@ -88,7 +88,7 @@ module.exports = async function (io) {
 
                 usuario.save(async (error, nuevoUsuario) => {
                   if (error) {
-
+                    io.to(socket.id).emit('respuesta-crear', { error:"Error no se pudo crear el registro"});
 
                   } else {
                     if (datos.negocio) {
@@ -102,7 +102,8 @@ module.exports = async function (io) {
                       }
                     }
 
-                    io.emit('respuesta-crear', { usuario: nuevoUsuario });
+                    io.to(socket.id).emit('respuesta-crear', { usuario: nuevoUsuario });
+                    io.emit('respuesta-crear-todos',{ usuario: nuevoUsuario});
                   }
                 })
               }
@@ -111,7 +112,8 @@ module.exports = async function (io) {
           }
          }
          else{
-           console.log("usuario existe");
+          io.to(socket.id).emit('respuesta-crear', { mensaje:"este usuario ya esta registrado"});
+           //console.log("usuario existe");
          }
 
          /* if (params.ci) {

@@ -32,6 +32,7 @@ export class RegistryOwnerComponent implements OnInit {
 	usuario: Usuarios;
 	usuarios: Usuarios[] = [];
 	a: any;
+	errorMensaje:string;
 	idUsuario: string;
 	usuarioActualizado: Usuarios;
 	loginusuario: string;
@@ -55,7 +56,7 @@ export class RegistryOwnerComponent implements OnInit {
 		this.profileUser = new Usuarios;
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
-
+  this.errorMensaje="Error no se pudo guardar el registro."
 		this.getUsers();
 		this.conn();
 		this.a = 1;
@@ -252,7 +253,7 @@ export class RegistryOwnerComponent implements OnInit {
 	conn() {
 		this.negocios = [];
 		this.respuestaCrear().subscribe((data: any) => {
-
+          console.log(data);
 			if (data.usuario) {
 
 				this.isError = false;
@@ -262,12 +263,18 @@ export class RegistryOwnerComponent implements OnInit {
 				this.usuario = new Usuarios();
 				this.user = "";
 				this.password = "";
+				
 				this.selectedItems = [];
 			}
-			else {
+			if(data.mensaje){
+				this.isError = true;
+				this.errorMensaje="Este usuario ya esta registrado"
+			}else
+			 {
 				this.isError = true;
 				this.isRequired = false;
 				this.isExito = false;
+				this.errorMensaje="Error no se pudo crear el registro";
 			}
 		});
 
@@ -301,6 +308,10 @@ export class RegistryOwnerComponent implements OnInit {
 		//Sacar Usuario
 		this.respuestaSacarUsuario().subscribe((data: any) => {
 			this.profileUser = data;
+		});
+
+		this.respuestaNuevousuario().subscribe((data: any) => {
+			this.usuarios.push(data.usuario)
 		});
 
 		// verificar negocio
@@ -380,4 +391,14 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
+	respuestaNuevousuario(){
+		let observable = new Observable(observer => {
+			this.socket3.on('respuesta-crear-todos', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
 }
+
+//

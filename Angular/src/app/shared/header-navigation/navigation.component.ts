@@ -47,6 +47,7 @@ export class NavigationComponent implements AfterViewInit {
         return observable;
         }
         buscar(event) {
+            
            if(this.termino.length>1){
             if(event.keyCode == 13) {
                 this.buscador.Buscar(this.termino);
@@ -55,12 +56,19 @@ export class NavigationComponent implements AfterViewInit {
               // console.log(this.termino);
              //  console.log(this.buscador.lugar);
            if(this.buscador.lugar=="usuarios"){
-            console.log("entra a usu");
+           
             this.socket.emit("listar-usuario", { data: "nada" });
            }else
-           if(this.buscador.lugar=="licorerias"){
+           if(this.buscador.termino=="licorerias"){
                console.log("entra a lico");
             this.socketNegocio.emit("listar-negocio", { termino:'Licoreria'});
+           }else
+           //sexshops
+           if(this.buscador.termino=="sexshops"){
+           	this.socketNegocio.emit("listar-negocio", { termino:'SexShop'});
+           }else
+           if(this.buscador.termino=="moteles"){
+	this.socketNegocio.emit("listar-negocio", { termino:'Motel'});
            }
            }
           }

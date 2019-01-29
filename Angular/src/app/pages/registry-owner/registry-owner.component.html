@@ -101,8 +101,7 @@
                     </div>
                     <!--Notificaciones-->
                     <div class="alert alert-danger" *ngIf="isError">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Error no se pudo guardar
-                        el registro.
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a> {{errorMensaje}}
                     </div>
                     <div class="alert alert-success" *ngIf="isExito">
                         <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Registro guardado con
