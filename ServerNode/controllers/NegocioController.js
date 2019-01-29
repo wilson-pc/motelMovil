@@ -126,7 +126,9 @@ var clients = [];
                             io.to(socket.id).emit('respuesta-actualizar-negocio',{error: "error al guradar nuevos datos"});
                           //    res.status(500).send({ mensaje: "error al guradar" })
                           } else {
-                            io.emit('respuesta-actualizar-negocio',{datos:actualizado});  
+                            io.to(socket.id).emit('respuesta-actualizar-negocio',{datos:actualizado});  
+                            io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                            
                           }
                       })
               
@@ -161,7 +163,8 @@ var clients = [];
                                 io.to(socket.id).emit('respuesta-elimina-negocio',{error: "error no se pudo guardar"})
                                  // res.status(500).send({ mensaje: "error al guradar" })
                               } else {
-                                io.emit('respuesta-elimina-negocio',{datos:actualizado});  
+                                io.to(socket.id).emit('respuesta-elimina-negocio',{datos:actualizado});
+                                io.emit('respuesta-elimina-negocio-todos',{datos:actualizado});  
                               }
                           })
                     
