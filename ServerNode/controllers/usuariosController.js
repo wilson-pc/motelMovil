@@ -494,7 +494,7 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-cerrar', { mensaje: false });
                 //  res.status(404).send({ mensaje: "Error no se  pudo cerrar secion" })
               } else {
-                io.to(socket.id).emit('respuesta-cerrar', { mensaje: false });
+                io.to(socket.id).emit('respuesta-cerrar', { mensaje: true });
               }
             }
           });

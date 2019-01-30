@@ -113,6 +113,7 @@ export class RegistryOwnerComponent implements OnInit {
 	peticionSocketNegocio() {
 		console.log("dfrr");
 		this.socket3.emit("listar-negocio2", { data: "nada" });
+	  
 		this.socket3.on('respuesta-listar-negocio2', (data) => {
 			this.dropdownList = data.slice(0, 3);
 			this.negocios = data;
@@ -283,7 +284,7 @@ export class RegistryOwnerComponent implements OnInit {
 		myReader.onloadend = (e) => {
 			// this.docente.perfil.foto = myReader.result.toString();
 			// console.log(myReader.result.toString());
-			resizeBase64(myReader.result, 400, 500).then((result) => {
+			resizeBase64(myReader.result, 90, 100).then((result) => {
 				this.usuario.foto = result;
 			});
 		}
@@ -354,8 +355,7 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 		
 		this.respuestaEliminarUsuario().subscribe((data: any) => {
-			console.log("hjvhv");
-			console.log(data);
+			
 			if(data.exito){
 			this.modal.close();
 			this.eliminar = false;}
@@ -365,11 +365,8 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 		//eliminar negocio del panel de edicion
 		this.repuestaEliminarNegocio().subscribe((data: any) => {
-			
-			let fila = this.negociosUsuario.filter(negocio => negocio._id == data._id)[0];
-			var index = this.negociosUsuario.indexOf(fila);
-			this.negociosUsuario.splice(index, 1);
-			console.log(this.negociosUsuario[1]._id + " - " + data._id + "//" + fila._id);
+			 console.log("vjutruhngh 54 i4h5");
+			this.peticionSocketNegocio();
 		});
 
 		this.socket.on('respuesta-eliminar-usuario-todos', (data) => {

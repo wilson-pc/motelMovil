@@ -106,7 +106,7 @@ export class FormComerceComponent implements OnInit {
     myReader.onloadend = (e) => {
 		 // this.docente.perfil.foto = myReader.result.toString();
 		// console.log(myReader.result.toString());
-      resizeBase64(myReader.result, 400, 500).then((result) => {
+      resizeBase64(myReader.result, 200, 300).then((result) => {
 				this.negocios.foto = result;	
 				
        
