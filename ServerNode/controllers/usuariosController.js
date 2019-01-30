@@ -101,7 +101,7 @@ module.exports = async function (io) {
                         var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                       }
                     }
-
+        console.log(nuevoUsuario);
                     io.to(socket.id).emit('respuesta-crear', { exito:"registro guardado con exito" });
                     io.emit('respuesta-crear-todos',{ usuario: nuevoUsuario});
                   }
@@ -229,7 +229,7 @@ module.exports = async function (io) {
           usuario.eliminado = { estado: true, razon: datos.razon };
           var dat = await Negocio.find({ titular: datos.id });
 
-          console.log(dat);
+        
           Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, async (error, actualizado) => {
             if (error) {
               console.log(error);
@@ -237,9 +237,9 @@ module.exports = async function (io) {
 
             } else {
 
-              await Negocio.update({ titular: datos.id }, { eliminado: { estado: true, razon: "eliminado por borrado de usuario" } });
+              await Negocio.updateMany({ titular: datos.id }, { eliminado: { estado: true, razon: "eliminado por borrado de usuario" } });
 
-
+                   
               io.to(socket.id).emit('respuesta-eliminar-usuario',{exito:"eliminado con exito"});
               io.emit('respuesta-eliminar-usuario-todos', actualizado);
             }

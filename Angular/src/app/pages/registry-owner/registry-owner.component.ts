@@ -48,6 +48,7 @@ export class RegistryOwnerComponent implements OnInit {
 	profileUser: Usuarios;
 	negociosUsuario: Negocio[] = [];
 	contentUserID: string;
+	buttons:boolean=true;
 
 	items: any = []
 	term: string;
@@ -73,6 +74,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 	
 	cargarDrow(){
+		console.log("nuevoi");
 		this.peticionSocketNegocio();
 	}
 	
@@ -109,6 +111,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	peticionSocketNegocio() {
+		console.log("dfrr");
 		this.socket3.emit("listar-negocio2", { data: "nada" });
 		this.socket3.on('respuesta-listar-negocio2', (data) => {
 			this.dropdownList = data.slice(0, 3);
@@ -123,7 +126,9 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
-		
+		this.selectedItems=[];
+		this.peticionSocketNegocio();
+		this.buttons=true;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
@@ -131,6 +136,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 	openModalView(content, id: string) {
 		this.contentUserID = id;
+		
 		this.viewUser();
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
@@ -138,6 +144,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	openModalUpdate(content, usuario) {
+		this.peticionSocketNegocio();
 		this.selectedItems = [];
 		this.usuarioActualizado = this.usuarios.filter(word => word._id == usuario._id)[0];
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
@@ -169,6 +176,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 	// COSUMO DE SERVICIOS
 	add() {
+
 		var date = new Date().toUTCString();
 		this.isError = false;
 		this.isRequired = false;
@@ -185,6 +193,7 @@ export class RegistryOwnerComponent implements OnInit {
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 
 		if (this.usuario.nombre != undefined && this.usuario.apellidos != undefined && this.user != undefined && this.selectedItems.length > 0 && this.validateEmail(this.usuario.email)) {
+			this.buttons=false;
 			this.socket.emit("registrar-usuario", ciphertext.toString());
 		}
 		else {
@@ -213,6 +222,7 @@ export class RegistryOwnerComponent implements OnInit {
 		let data = { id: this.idUsuario, razon: razon }
 
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.eliminar=false;
 		this.socket.emit("eliminar-usuario", ciphertext.toString());
 	}
 
@@ -291,20 +301,24 @@ export class RegistryOwnerComponent implements OnInit {
 				this.isError = false;
 				this.isRequired = false;
 				this.isExito = true;
-				//this.usuarios.push(data.usuario);
+				this.buttons=true;
 				this.usuario = new Usuarios();
 				this.user = "";
 				this.password = "";
 
-				this.selectedItems = [];
+			
 			} else
 				if (data.mensaje) {
 					this.isError = true;
+					this.buttons=true;
+
 					this.errorMensaje = "Este usuario ya esta registrado"
 				} else {
 					this.isError = true;
 					this.isRequired = false;
 					this.isExito = false;
+					this.buttons=true;
+
 					this.errorMensaje = "Error no se pudo crear el registro";
 				}
 		});
@@ -329,6 +343,7 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 
 		this.respuestaNuevousuario().subscribe((data: any) => {
+			console.log(data);
 			this.usuarios.push(data.usuario)
 		});
 
@@ -362,6 +377,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 			var index = this.usuarios.indexOf(fila);
 			this.usuarios.splice(index, 1);
+			
 		});
 
 		this.socket.on('respuesta-actualizar-usuario-todos', (data) => {
