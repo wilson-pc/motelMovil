@@ -6,7 +6,7 @@
         <form class="form-signin">
           <div class="form-group">
             <label for="">Usuario:</label>
-            <input #user type="text" #user class="form-control" placeholder="admin" required autofocus>
+            <input #user type="text" class="form-control" placeholder="admin" required autofocus>
           </div>
 
           <div class="form-group">
@@ -26,6 +26,11 @@
             <input type="checkbox" [(ngModel)]="recordar" name="recordar">
             <label>Recordarme</label>
           </div>
+
+          <div class="form-group">
+            <button class="btn btn-lg btn-block" type="submit" (click)="login(user.value, pass.value)">INICIAR SESION</button>
+          </div>
+
         </form>
       </div>
     </div>

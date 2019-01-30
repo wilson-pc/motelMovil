@@ -146,16 +146,20 @@ var clients = [];
       //
       socket.on('eliminar-negocio', async (data) => {
      
+        console.log("Entro a la peticion")
         try {
+          console.log("Entro a la peticion y try")
             const bytes = CryptoJS.AES.decrypt(data, clave.clave);
             if (bytes.toString()) {
              var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+             console.log(datos);
               var negocio = new Negocio();
               var params = datos.negocio;
               negocio._id=params._id;
               negocio.productos=0;
               negocio.eliminado={estado:true,razon:params.razon},
               negocio.modificacion=params.modificacion;
+              
                           //guarda al nuevo usuario en la bd
                       
                           Negocio.findOneAndUpdate({_id:params._id},negocio,{new: true},(error, actualizado) => {
