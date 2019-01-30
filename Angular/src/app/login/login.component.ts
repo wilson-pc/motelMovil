@@ -23,10 +23,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  crearAdminlevel0(){
+
+  }
+
   login(user: string, pass: string){
    
  
-      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({usuario:user,password:pass}), clave.clave);
+      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({usuario:user,password:pass,tipo:"AdminAdmi"}), clave.clave);
       this.socket.emit("login-usuario",ciphertext.toString());
 //    this.rout.navigate(['/administracion']);
     

@@ -146,16 +146,20 @@ var clients = [];
       //
       socket.on('eliminar-negocio', async (data) => {
      
+        console.log("Entro a la peticion")
         try {
+          console.log("Entro a la peticion y try")
             const bytes = CryptoJS.AES.decrypt(data, clave.clave);
             if (bytes.toString()) {
              var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+             console.log(datos);
               var negocio = new Negocio();
               var params = datos.negocio;
               negocio._id=params._id;
               negocio.productos=0;
               negocio.eliminado={estado:true,razon:params.razon},
               negocio.modificacion=params.modificacion;
+              
                           //guarda al nuevo usuario en la bd
                       
                           Negocio.findOneAndUpdate({_id:params._id},negocio,{new: true},(error, actualizado) => {
@@ -177,6 +181,47 @@ var clients = [];
           }
         
       });
+
+
+
+      socket.on('eliminar-negocio-de-usuarios', async (data) => {
+     
+        console.log("Entro a la peticion")
+        try {
+          console.log("Entro a la peticion y try")
+            const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+            if (bytes.toString()) {
+             var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+            
+              var negocio = new Negocio();
+              var params = datos.negocio;
+              negocio._id=params._id;
+              negocio.productos=0;
+              negocio.eliminado={estado:true,razon:params.razon},
+              negocio.modificacion=params.modificacion;
+              
+                          //guarda al nuevo usuario en la bd
+                      
+                          Negocio.findOneAndUpdate({_id:params._id},negocio,{new: true},(error, actualizado) => {
+                              if (error) {
+                                io.to(socket.id).emit('respuesta-elimina-negocio-de-usuario',{error: "error no se pudo guardar"})
+                                 // res.status(500).send({ mensaje: "error al guradar" })
+                              } else {
+                                io.to(socket.id).emit('respuesta-elimina-negocio-de-usuario',actualizado);
+                               
+                              }
+                          })
+                    
+            }
+           else{
+
+           }
+          } catch (e) {
+            console.log(e);
+          }
+        
+      });
+
 //{"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0}
       socket.on('listar-negocio', async (data) => {
       Negocio.find({"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0}, function (error, lista){
@@ -256,7 +301,6 @@ var clients = [];
       
           });
       
-                 
         socket.on('listar-negocios-de-usuario', async (data) => {
 
           try {

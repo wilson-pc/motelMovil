@@ -101,7 +101,7 @@ module.exports = async function (io) {
                         var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                       }
                     }
-
+        console.log(nuevoUsuario);
                     io.to(socket.id).emit('respuesta-crear', { exito:"registro guardado con exito" });
                     io.emit('respuesta-crear-todos',{ usuario: nuevoUsuario});
                   }
@@ -115,38 +115,7 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-crear', { mensaje:"este usuario ya esta registrado"});
            //console.log("usuario existe");
          }
-
-         /* if (params.ci) {
-            //encripta el pasword del usuario
-            bcrypt.hash(usuario.login.password, null, null, async function (error, hash) {
-              usuario.login.password = hash;
-
-              if (usuario.login.usuario != null) {
-                //guarda al nuevo usuario en la bd
-
-                usuario.save(async (error, nuevoUsuario) => {
-                  if (error) {
-
-
-                  } else {
-                    if (datos.negocio) {
-                      for (let index = 0; index < datos.negocio.length; index++) {
-                        const element = datos.negocio[index];
-                        var negocio = new Negocio();
-                        negocio._id = element;
-                        negocio.titular = nuevoUsuario._id;
-                        console.log(negocio);
-                        var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
-                      }
-                    }
-
-                    io.emit('respuesta-crear', { usuario: nuevoUsuario });
-                  }
-                })
-              }
-
-            });
-          }*/
+        
         }
         return data;
       } catch (e) {
@@ -154,9 +123,6 @@ module.exports = async function (io) {
       }
 
       //console.log(req.body);
-
-
-
     });
 
 
@@ -229,7 +195,7 @@ module.exports = async function (io) {
           usuario.eliminado = { estado: true, razon: datos.razon };
           var dat = await Negocio.find({ titular: datos.id });
 
-          console.log(dat);
+        
           Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, async (error, actualizado) => {
             if (error) {
               console.log(error);
@@ -237,9 +203,9 @@ module.exports = async function (io) {
 
             } else {
 
-              await Negocio.update({ titular: datos.id }, { eliminado: { estado: true, razon: "eliminado por borrado de usuario" } });
+              await Negocio.updateMany({ titular: datos.id }, { eliminado: { estado: true, razon: "eliminado por borrado de usuario" } });
 
-
+                   
               io.to(socket.id).emit('respuesta-eliminar-usuario',{exito:"eliminado con exito"});
               io.emit('respuesta-eliminar-usuario-todos', actualizado);
             }
@@ -416,9 +382,81 @@ module.exports = async function (io) {
           var params = datos;
           var usuario = params.usuario;
           var pass = params.password;
+          var tipo=params.tipo;
 
+          Usuario.findOne({ 'login.usuario': usuario,'rol.rol':tipo}, (error, user) => {
+
+            if (error) {
+              io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
+              //  res.status(500).send({ mensaje: "Error al buscar usuario" })
+            } else {
+
+              if (user == null) {
+                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exite" });
+                //alert("Usuario o Contraseña incorrecta");
+                //    res.status(404).send({ mensaje: "usuario no existe " })
+              } else {
+
+                // res.status(200).send({ user });
+                if (user.login.estado != true) {
+                  var usuario = new Usuario();
+                  usuario._id = user._id;
+                  usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
+
+                  bcrypt.compare(pass, user.login.password, function (error, ok) {
+
+                    if (ok) {
+
+                      Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
+
+                        io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
+                        //  res.status(200).send({ token: token.crearToken(user), datos:user });
+                      });
+
+                    }
+                    else {
+                      io.to(socket.id).emit('respuesta-login', { mensaje: "error usuario y contraseñ incorrecta" });
+                      //  res.status(404).send({ mensaje: "usuario o contraseña incorrectas " })
+                    }
+                  });
+
+                } else {
+
+                  io.to(socket.id).emit('respuesta-login', { mensaje: "error xxxxxxxxx" });
+                  //res.status(401).send({ mensaje: "Usuario activo actualmente" })
+                }
+              }
+            }
+          });
+
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    })
+
+
+    socket.on('login-usuario-clientes', async (data) => {
+      // console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          //  console.log(datos);
+
+          var params = datos;
+          var usuario = params.usuario;
+          var pass = params.password;
+          var tipo=params.tipo;
+
+<<<<<<< HEAD
           Usuario.findOne({ 'login.usuario': usuario }, (error, user) => {
           
+=======
+          Usuario.findOne({ 'login.usuario': usuario,'rol.rol':tipo}, (error, user) => {
+
+>>>>>>> c5363e7ead0a0071666f564791d58dcc9ba15e5f
             if (error) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
