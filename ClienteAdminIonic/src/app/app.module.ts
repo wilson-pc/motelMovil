@@ -30,8 +30,9 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { AuthProvider } from '../providers/auth/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
-import { SocketConfigService, SocketConfigService2, SocketConfigService3, SocketConfigHomeService } from '../providers/socket-config/socket-config';
 import { CommercePage } from '../pages/commerce/commerce';
+import { SocketServiceCommerce, SocketServiceHomeService, SocketServiceProduct, SocketServiceUser } from '../providers/socket-config/socket-config';
+import { UserOnlyProvider } from '../providers/user-only/user-only';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -100,11 +101,15 @@ export const firebaseConfig = {
     TripService,
     WeatherProvider,
     FileChooser,
-    SocketConfigService,SocketConfigService2,SocketConfigService3,SocketConfigHomeService,
+    SocketServiceCommerce,
+    SocketServiceHomeService,
+    SocketServiceProduct,
+    SocketServiceUser,
     SplashScreen,
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
+    UserOnlyProvider,
   ]
 })
 export class AppModule {}

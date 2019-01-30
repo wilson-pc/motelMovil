@@ -1,52 +1,69 @@
-import {Component} from "@angular/core";
-import {NavController, AlertController, ToastController, MenuController} from "ionic-angular";
-import {HomePage} from "../home/home";
-import {RegisterPage} from "../register/register";
+import { Component } from "@angular/core";
+import { NavController, AlertController, ToastController, MenuController } from "ionic-angular";
+import { HomePage } from "../home/home";
+import { Usuarios } from "../../models/Usuarios";
+import { SocketServiceUser } from "../../providers/socket-config/socket-config";
+import * as CryptoJS from 'crypto-js';
+import { clave } from "../../app/cryptoclave";
+import { Observable } from "rxjs";
+import { UserOnlyProvider } from "../../providers/user-only/user-only";
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
+  // Variables de recuperacion HTML
+  userInput: string;
+  passInput: string;
+  // Variables Internas
+  userSesion: Usuarios;
 
-  constructor(public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
+  constructor(
+    public nav: NavController,
+    public forgotCtrl: AlertController,
+    public menu: MenuController,
+    public toastCtrl: ToastController,
+    public userSocket: SocketServiceUser,
+    public userOnlyProvider: UserOnlyProvider) {
+    // Inicializacion
     this.menu.swipeEnable(false);
+    this.connectionBackendSocket();
   }
 
-  // go to register page
-  register() {
-    this.nav.setRoot(RegisterPage);
-  }
-
-  // login and go to home page
+  // Iniciar sesión e ir a la página de inicio
   login() {
-    this.nav.setRoot(HomePage);
+    // Consulta de validacion de usuario
+    var ciphertext = CryptoJS.AES.encrypt(
+      JSON.stringify({ usuario: this.userInput, password: this.passInput }), clave.clave);
+    this.userSocket.emit("login-usuario", ciphertext.toString());
   }
 
+  // Modal recuperacion de contraseña
   forgotPass() {
     let forgot = this.forgotCtrl.create({
-      title: 'Forgot Password?',
-      message: "Enter you email address to send a reset link password.",
+      title: 'Se te olvido tu contraseña?',
+      message: "Ingrese su dirección de correo electrónico para enviar una contraseña de enlace de restablecimiento.",
       inputs: [
         {
           name: 'email',
-          placeholder: 'Email',
+          placeholder: 'Correo Electronico',
           type: 'email'
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           handler: data => {
-            console.log('Cancel clicked');
+            console.log('Cancelar clicked');
           }
         },
         {
-          text: 'Send',
+          text: 'Enviar',
           handler: data => {
-            console.log('Send clicked');
+            console.log('Enviar clicked');
             let toast = this.toastCtrl.create({
-              message: 'Email was sended successfully',
+              message: 'El correo electrónico fue enviado exitosamente',
               duration: 3000,
               position: 'top',
               cssClass: 'dark-trans',
@@ -61,4 +78,34 @@ export class LoginPage {
     forgot.present();
   }
 
+  // Encriptacion de para localStorage
+  encryptData(data) {
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // Conexion con en Backend
+  connectionBackendSocket() {
+    this.respuestaLogin().subscribe((data: any) => {
+      this.userSesion = data;
+      // Guardado en localStorage
+      localStorage.setItem("usuario", this.encryptData(data));
+      console.log("Guardando informacion en local storage");
+      // Redireccion a la Pagina Principal
+      this.nav.setRoot(HomePage);
+      this.userOnlyProvider.userSesion = this.userSesion;
+    });
+  }
+
+  respuestaLogin() {
+    let observable = new Observable(observer => {
+      this.userSocket.on('respuesta-login', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
 }

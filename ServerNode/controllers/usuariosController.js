@@ -418,7 +418,7 @@ module.exports = async function (io) {
           var pass = params.password;
 
           Usuario.findOne({ 'login.usuario': usuario }, (error, user) => {
-
+          
             if (error) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
@@ -481,7 +481,7 @@ module.exports = async function (io) {
           var usuario = new Usuario();
           usuario._id = datos.id;
           usuario.login = { usuario: usuario2.login.usuario, password: usuario2.login.password, estado: false };
-          console.log(usuario);
+          
           // console.log(lista);
           Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, function (error, lista) {
 
@@ -494,7 +494,7 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-cerrar', { mensaje: false });
                 //  res.status(404).send({ mensaje: "Error no se  pudo cerrar secion" })
               } else {
-                io.to(socket.id).emit('respuesta-cerrar', { mensaje: false });
+                io.to(socket.id).emit('respuesta-cerrar', { mensaje: true });
               }
             }
           });
