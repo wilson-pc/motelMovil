@@ -450,13 +450,8 @@ module.exports = async function (io) {
           var pass = params.password;
           var tipo=params.tipo;
 
-<<<<<<< HEAD
-          Usuario.findOne({ 'login.usuario': usuario }, (error, user) => {
-          
-=======
           Usuario.findOne({ 'login.usuario': usuario,'rol.rol':tipo}, (error, user) => {
 
->>>>>>> c5363e7ead0a0071666f564791d58dcc9ba15e5f
             if (error) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
