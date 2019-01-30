@@ -31,6 +31,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { SocketConfigService, SocketConfigService2, SocketConfigService3, SocketConfigHomeService } from '../providers/socket-config/socket-config';
+import { CommercePage } from '../pages/commerce/commerce';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -55,7 +56,8 @@ export const firebaseConfig = {
     SearchLocationPage,
     TripDetailPage,
     TripsPage,
-    RegisterRoomPage
+    RegisterRoomPage,
+    CommercePage
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,8 @@ export const firebaseConfig = {
     SearchLocationPage,
     TripDetailPage,
     TripsPage,
-    RegisterRoomPage
+    RegisterRoomPage,
+    CommercePage
   ],
   providers: [
     StatusBar,
