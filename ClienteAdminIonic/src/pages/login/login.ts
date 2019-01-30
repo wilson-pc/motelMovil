@@ -16,8 +16,6 @@ export class LoginPage {
   // Variables de recuperacion HTML
   userInput: string;
   passInput: string;
-  // Variables Internas
-  userSesion: Usuarios;
 
   constructor(
     public nav: NavController,
@@ -35,7 +33,7 @@ export class LoginPage {
   login() {
     // Consulta de validacion de usuario
     var ciphertext = CryptoJS.AES.encrypt(
-      JSON.stringify({ usuario: this.userInput, password: this.passInput }), clave.clave);
+      JSON.stringify({ usuario: this.userInput, password: this.passInput, tipo: "Admin" }), clave.clave);
     this.userSocket.emit("login-usuario", ciphertext.toString());
   }
 
@@ -90,13 +88,17 @@ export class LoginPage {
   // Conexion con en Backend
   connectionBackendSocket() {
     this.respuestaLogin().subscribe((data: any) => {
-      this.userSesion = data;
-      // Guardado en localStorage
-      localStorage.setItem("usuario", this.encryptData(data));
-      console.log("Guardando informacion en local storage");
-      // Redireccion a la Pagina Principal
-      this.nav.setRoot(HomePage);
-      this.userOnlyProvider.userSesion = this.userSesion;
+      if (data.token) {
+        // Guardado en localStorage
+        localStorage.setItem("usuario", this.encryptData(data));
+        console.log("Guardando informacion en local storage");
+        // Redireccion a la Pagina Principal
+        this.nav.setRoot(HomePage);
+        this.userOnlyProvider.userSesion = data;
+      }
+      else {
+        console.log("error");
+      }
     });
   }
 
