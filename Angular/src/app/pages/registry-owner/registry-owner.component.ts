@@ -267,7 +267,7 @@ export class RegistryOwnerComponent implements OnInit {
 		}
 
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-		this.socket3.emit("eliminar-negocio", ciphertext.toString());
+		this.socket3.emit("eliminar-negocio-de-usuarios", ciphertext.toString());
 	}
 
 	//funcion para buscar imagen dentro de la maquina
@@ -365,8 +365,13 @@ export class RegistryOwnerComponent implements OnInit {
 		});
 		//eliminar negocio del panel de edicion
 		this.repuestaEliminarNegocio().subscribe((data: any) => {
-			 console.log("vjutruhngh 54 i4h5");
-			this.peticionSocketNegocio();
+			console.log(data);
+			let fila = this.negociosUsuario.filter(word => word._id == data._id)[0];
+
+			var index = this.negociosUsuario.indexOf(fila);
+			console.log(index);
+			this.negociosUsuario.splice(index, 1);
+			//this.peticionSocketNegocio();
 		});
 
 		this.socket.on('respuesta-eliminar-usuario-todos', (data) => {
@@ -469,7 +474,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 	repuestaEliminarNegocio() {
 		let observable = new Observable(observer => {
-			this.socket3.on('respuesta-elimina-negocio', (data) => {
+			this.socket3.on('respuesta-elimina-negocio-de-usuario', (data) => {
 				observer.next(data);
 			});
 		})
