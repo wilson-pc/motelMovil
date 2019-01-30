@@ -260,7 +260,6 @@ var clients = [];
       
           });
       
-                 
         socket.on('listar-negocios-de-usuario', async (data) => {
 
           try {
