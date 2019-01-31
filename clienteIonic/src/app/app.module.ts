@@ -34,6 +34,8 @@ import { TopsPage } from '../pages/tops/tops';
 import { MotelPage } from '../pages/motel/motel';
 import { SexShopPage } from '../pages/sex-shop/sex-shop';
 import { CercaDeMiPage } from '../pages/cerca-de-mi/cerca-de-mi';
+import { TabsPage } from '../pages/tabs/tabs';
+
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -64,6 +66,8 @@ export const firebaseConfig = {
     MotelPage,
     SexShopPage,
     CercaDeMiPage,
+    TabsPage
+
   ],
   imports: [
     BrowserModule,
@@ -100,6 +104,8 @@ export const firebaseConfig = {
     MotelPage,
     SexShopPage,
     CercaDeMiPage,
+    TabsPage
+  
   ],
   providers: [
     StatusBar,

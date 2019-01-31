@@ -9,28 +9,67 @@ import { LocalWeatherPage } from '../pages/local-weather/local-weather';
 import { LoginPage } from '../pages/login/login';
 import { RegisterRoomPage } from '../pages/register-room/register-room';
 
+import { TabsPage } from '../pages/tabs/tabs';
+import { AuthProvider } from '../providers/auth/auth';
+
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = TabsPage;
 
-  pages: Array<{title: string, component: any}>;
+  moteles: Array<{title: string, component: any}>;
+  licorerias: Array<{title: string, component: any}>;
+  sexshops: Array<{title: string, component: any}>;
+  mapas: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  verificacion:any=0;
+
+  constructor(private proveedordata:AuthProvider,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
+    console.log("este es el proveedor");
+    console.log(proveedordata.auxflag);
+    this.verificacion=proveedordata.auxflag;
 
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Inicio', component: HomePage },
+    this.moteles = [
+      
       { title: 'Lista de Compras', component: ListPage },
       { title: 'Lista de Favoritos', component: ListPage },
       { title: 'Lista de Deseos', component: ListPage },
       { title: 'Billetera', component: LocalWeatherPage},
-      { title: 'Registrar Habitaciones', component: RegisterRoomPage}
+      { title: 'Reservar Habitacion(es)', component: RegisterRoomPage}
     ];
+
+    this.licorerias = [
+      
+      { title: 'Lista de Compras', component: ListPage },
+      { title: 'Lista de Favoritos', component: ListPage },
+      { title: 'Lista de Deseos', component: ListPage },
+      { title: 'Billetera', component: LocalWeatherPage},
+      { title: 'Reservar Bebida(s)', component: RegisterRoomPage}
+    ];
+
+    this.sexshops = [
+      
+      { title: 'Lista de Compras', component: ListPage },
+      { title: 'Lista de Favoritos', component: ListPage },
+      { title: 'Lista de Deseos', component: ListPage },
+      { title: 'Billetera', component: LocalWeatherPage},
+      { title: 'Reservar Producto(s)', component: RegisterRoomPage}
+    ];
+
+    this.mapas = [
+      
+      { title: 'Lugares cercanos', component: ListPage },
+      { title: 'Lugares mas visitados', component: ListPage },
+      { title: 'Lugares con puntuacion alta', component: ListPage },
+      
+    ];
+
 
   }
 

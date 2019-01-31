@@ -10,6 +10,8 @@ import * as firebase from 'firebase/app';
 */
 @Injectable()
 export class AuthProvider {
+auxflag=0;
+
 
   constructor(
     
