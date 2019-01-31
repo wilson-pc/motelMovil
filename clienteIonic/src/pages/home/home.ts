@@ -25,12 +25,14 @@ export class HomePage {
   sexShop: any;
   map: any;
 
+  
+
   constructor(private storage: Storage, public nav: NavController, public popoverCtrl: PopoverController) {
-    this.top = TopsPage;
-    this.motel = MotelPage;
-    this.bar = LicoreriaPage;
-    this.sexShop = SexShopPage;
-    this.map = CercaDeMiPage;
+    // this.top = TopsPage;
+    // this.motel = MotelPage;
+    // this.bar = LicoreriaPage;
+    // this.sexShop = SexShopPage;
+    // this.map = CercaDeMiPage;
   }
 
   // search condition

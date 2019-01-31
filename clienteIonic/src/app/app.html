@@ -37,8 +37,27 @@
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+    <!--Listar en el menu derecho la lista moteles-->
+    <ion-list *ngIf="verificacion==0">
+      <button menuClose ion-item *ngFor="let p of moteles" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+    </ion-list>
+    <!--Listar en el menu derecho la lista licorerias-->
+    <ion-list *ngIf="verificacion==1">
+      <button menuClose ion-item *ngFor="let p of licorerias" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+    </ion-list>
+    <!--Listar en el menu derecho la lista sexshop-->
+    <ion-list *ngIf="verificacion==2">
+      <button menuClose ion-item *ngFor="let p of sexshops" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+    </ion-list>
+    <!--Listar en el menu derecho la lista cerca de ti-->
+    <ion-list *ngIf="verificacion==3">
+      <button menuClose ion-item *ngFor="let p of mapas" (click)="openPage(p)">
         {{p.title}}
       </button>
     </ion-list>
