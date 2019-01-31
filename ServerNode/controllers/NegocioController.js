@@ -274,6 +274,35 @@ var clients = [];
 	              }  
 	          }
 	        });
+          });
+              
+        socket.on('listar-negocio-de-usuario-completo', async (data) => {
+          try {
+            const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+            if (bytes.toString()) {
+             var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          
+              Negocio.find({"eliminado.estado":false,titular:datos.id}, function (error, lista){
+                if (error) {
+                  console.log(error);
+                  io.to(socket.id).emit('listar-negocio-de-usuario-completo',{error: "No se pudo listar los negocios"})
+                   // res.status(500).send({ mensaje: "Error al listar" })
+                } else {
+                    if (!lista) {
+                    //  console.log(nada);
+                      io.to(socket.id).emit('listar-negocio-de-usuario-completo',{error: "error no se listar negocios"})
+                     //   res.status(404).send({ mensaje: "Error al listar" })
+                    } else {
+                     
+                      io.to(socket.id).emit('listar-negocio-de-usuario-completo',lista);  
+                    }  
+                }
+              });
+            }
+            return data;
+          } catch (e) {
+            console.log(e);
+          }   
 	        });
 
 
@@ -301,6 +330,7 @@ var clients = [];
       
           });
       
+
         socket.on('listar-negocios-de-usuario', async (data) => {
 
           try {
