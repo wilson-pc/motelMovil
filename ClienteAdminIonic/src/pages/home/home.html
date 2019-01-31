@@ -10,13 +10,18 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding >
-  <ion-card >
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-card *ngFor="let commerce of listCommerce">
     <ion-card-header>
-      Header
+      {{commerce.tipo.nombre}}
     </ion-card-header>
     <ion-card-content>
-      The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+      {{commerce.nombre}}
     </ion-card-content>
   </ion-card>
 </ion-content>
