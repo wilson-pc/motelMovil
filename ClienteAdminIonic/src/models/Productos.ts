@@ -7,7 +7,6 @@ export class Productos{
     public negocio:Negocio;
     public precio:Number;  
     public precioReserva:Number;
-    public disponibilidad:string;
     public cantidad:Number;
     public tipo:Tipo;
     public foto:{normal:string,miniatura:string};
