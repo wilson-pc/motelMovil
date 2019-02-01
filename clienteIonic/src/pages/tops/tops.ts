@@ -18,6 +18,12 @@ export class TopsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
+  openModal(characterNum) {
+
+    let modal = this.modalCtrl.create(ModalContentPage, characterNum);
+    modal.present();
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad TopsPage');
   }
