@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { DescripcionProductoPage } from '../descripcion-producto/descripcion-producto';
 
 /**
  * Generated class for the TopsPage page.
@@ -15,15 +16,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TopsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController) {
   }
 
-  openModal(characterNum) {
-
-    let modal = this.modalCtrl.create(ModalContentPage, characterNum);
+  presentModal() {
+    const modal = this.modalCtrl.create(DescripcionProductoPage);
     modal.present();
   }
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad TopsPage');
   }
