@@ -39,6 +39,7 @@ import { MapsPage } from '../pages/maps/maps';
 import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
 import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
+import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
 
 
 export const firebaseConfig = {
@@ -74,7 +75,8 @@ export const firebaseConfig = {
     MapsPage,
     ListaDeseosPage,
     ListaReservasPage,
-    ListaFavoritosPage
+    ListaFavoritosPage,
+    DescripcionProductoPage
 
   ],
   imports: [
@@ -116,7 +118,8 @@ export const firebaseConfig = {
     MapsPage,
     ListaDeseosPage,
     ListaReservasPage,
-    ListaFavoritosPage
+    ListaFavoritosPage,
+    DescripcionProductoPage
   
   ],
   providers: [

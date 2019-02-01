@@ -18,20 +18,21 @@
 
     <ion-item>
       <ion-label floating>Usuario</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input #usuario type="text"></ion-input>
     </ion-item>
   
     <ion-item>
       <ion-label floating>Contraseña</ion-label>
-      <ion-input type="password"></ion-input>
+      <ion-input #pass1 type="password"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Repetir Contraseña</ion-label>
-      <ion-input type="password"></ion-input>
+      <ion-input #pass2 type="password"></ion-input>
     </ion-item>
   
   </ion-list>
-  <div padding>
-    <button block>Guardar</button>
+  <P style="color: red"> {{mensaje}}</P>
+  <div  padding>
+    <button ion-button (click)="guardarCambios(usuario.value,pass1.value,pass2.value)"  block>Guardar</button>
   </div>
 </ion-content>

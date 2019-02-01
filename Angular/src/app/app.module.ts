@@ -14,14 +14,15 @@ import { WebComponent } from './web/web.component';
 import { LoginComponent } from './login/login.component';
 import { SocketConfigService, SocketConfigService2, SocketConfigService3, SocketConfigHomeService } from './socket-config.service';
 import { Error404Component } from './pages/error404/error404.component';
-
+import { RecuperacionComponent } from './recuperacion/recuperacion.component';
 @NgModule({
   declarations: [
     AppComponent, 
     SpinnerComponent,
     WebComponent,
     LoginComponent,
-    Error404Component
+    Error404Component,
+    RecuperacionComponent
   ],
   imports: [
     SocketIoModule,
