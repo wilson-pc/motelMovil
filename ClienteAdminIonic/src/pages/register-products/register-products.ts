@@ -78,12 +78,6 @@ export class RegisterProductsPage {
     this.viewCtrl.dismiss();
   }
 
-
-  registerProduct() {
-    console.log("producto registrado: -> ", this.product);
-    //this.viewCtrl.dismiss();
-  }
-
   // Carga de la foto
   changeListener($event): void {
     this.readThis($event.target);
@@ -116,6 +110,19 @@ export class RegisterProductsPage {
     console.log(this.typeProduct);
     this.productService.emit("registrar-tipo-producto", data);
   }
+  
+  registerProduct() {
+    console.log("producto registrado: -> ", this.product);
+    // Guardar producto
+    var date = new Date().toUTCString();
+    this.product.negocio = this.commerceOnly._id as any;
+    this.product.creacion = { fecha: date };
+		this.product.modificacion = { fecha: date };
+    let data = this.product;
+    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto: data}), clave.clave);
+    this.productService.emit("registrar-producto", ciphertext.toString());
+    this.viewCtrl.dismiss();
+  }
 
   // Conexion con el Backend
   connectionBackendSocket() {
@@ -130,6 +137,11 @@ export class RegisterProductsPage {
       console.log("exito Guardado", data);
       this.listTypeProduct.push(data);
     });
+
+    // agregar producto
+    this.respuestaRegistrarProducto().subscribe((data: any) => {
+      console.log("registro exitoso", data);
+    });
   }
 
   respuestaTipoProducto() {
@@ -141,6 +153,14 @@ export class RegisterProductsPage {
     return observable;
   }
   respuestaRegistrarTipoProducto() {
+    let observable = new Observable(observer => {
+      this.productService.on('respuesta-registro-tipoproducto', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  } 
+  respuestaRegistrarProducto() {
     let observable = new Observable(observer => {
       this.productService.on('respuesta-registro-tipoproducto', (data) => {
         observer.next(data);

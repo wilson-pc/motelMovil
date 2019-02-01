@@ -72,18 +72,19 @@ module.exports = async function (io) {
 
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+       
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          console.log("|-> ", datos);
           var producto = new Producto();
           var params = datos.producto;
           producto.nombre = params.nombre;
           producto.negocio = params.negocio;
           producto.precio = params.precio;
-          producto.disponibilidad = params.disponibilidad;
           producto.cantidad = params.cantidad;
-          producto.tipo = await Tipo.findById(params.tito);
+          producto.tipo = await Tipo.findById(params.tipo);
           producto.foto = params.foto;
-          usuario.eliminado = { estado: false, razon: "" };
+          producto.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           producto.creacion = params.creacion
           producto.modificacion = params.modificacion;
@@ -199,7 +200,7 @@ module.exports = async function (io) {
     socket.on('listar-producto-negocio', async (data) => {
                      
       console.log("dentro de la consulta", data);
-      Producto.find({ "tipo.nombre": data.termino, "eliminado.estado": false, "_id": data._id}, { "foto.normal": 0 }, function (error, lista) {
+      Producto.find({ negocio: data.termino, "eliminado.estado": false}, { "foto.normal": 0 }, function (error, lista) {
 
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
@@ -214,7 +215,6 @@ module.exports = async function (io) {
           }
         }
       });
-     // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
     });
 
     socket.on('buscar-producto', async (data) => {
