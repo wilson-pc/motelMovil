@@ -13,8 +13,8 @@ tipo:Tipo,
 foto:{normal:String,miniatura:String},
 descripcion:String,
 eliminado:{estado:Boolean,razon:String},
-creacion: {usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date },
-modificacion:{fecha:Date,usuario:{ type: Schema.ObjectId, ref: "Usuarios" }}
+creacion: {fecha:Date },
+modificacion:{fecha:Date}
 })
 
 module.exports = mongose.model("Productos", ProductoSchema)

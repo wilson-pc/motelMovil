@@ -25,14 +25,32 @@ module.exports = async function (io) {
         }
       });
     });
+
+
+    socket.on('listar-tiposproductos-negocio', async (data) => {
+      
+      Tipo.find({tiponegocio: data.tipo}, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+            io.emit('respuesta-listar-tiposproductos-negocio', lista);
+          }
+        }
+      });
+    });
+
+
     socket.on('registrar-tipo-producto', async (data) => {
 
       try {
         var tipo = new Tipo();
         //  var tipo = new Tipo();
-        var params = data.negocio;
-        tipo.tipo = params.tipo;
-        tipo.nombre = params.nombre;
+        tipo.tipo = data.tipo;
+        tipo.nombre = data.nombre;
+        tipo.tiponegocio = data.negocio;
         //  negocio.titular = params.titular;
 
         tipo.save((error, nuevoTipo) => {

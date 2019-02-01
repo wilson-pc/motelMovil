@@ -13,8 +13,8 @@ export class Productos{
     public foto:{normal:string,miniatura:string};
     public descripcion:string;
     public eliminado:{estado:Boolean,razon:string};
-    public creacion:{estado:Boolean,razon:string};
-    public modificacion:{fecha:Date,usuario:string};
+    public creacion:{fecha:Date};
+    public modificacion:{fecha:Date};
 
 }
 /**
