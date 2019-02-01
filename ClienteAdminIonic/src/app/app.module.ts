@@ -1,3 +1,4 @@
+import { EditLoginPage } from './../pages/edit-login/edit-login';
 import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -57,6 +58,7 @@ export const firebaseConfig = {
     SearchLocationPage,
     TripDetailPage,
     TripsPage,
+    EditLoginPage,
     RegisterRoomPage,
     CommercePage
   ],
@@ -92,6 +94,7 @@ export const firebaseConfig = {
     TripDetailPage,
     TripsPage,
     RegisterRoomPage,
+    EditLoginPage,
     CommercePage
   ],
   providers: [

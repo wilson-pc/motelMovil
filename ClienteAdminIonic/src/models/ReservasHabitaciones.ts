@@ -7,4 +7,5 @@ export class ReservasHabitaciones{
     public negocio:string;
     public tiempo:TiempoReservadoHabitacion;
     public habitacion:Habitacion;
+    public estado:String;
 }

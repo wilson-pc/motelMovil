@@ -5,7 +5,8 @@ var Tipo=require("./tipo").schema;
 var HabitacionSchema = Schema({
 nombre:String,
 negocio:{type: Schema.ObjectId, ref: "Negocios"},
-precio:{precio:Number,moneda:String},
+precio:Number,
+precioReserva:Number,
 estado:String,
 tipo:Tipo,
 foto:{portada:String,interior:[String]},

@@ -6,6 +6,7 @@ var ProductoSchema = Schema({
 nombre:String,
 negocio:{type: Schema.ObjectId, ref: "Negocios"},
 precio:Number,
+precioReserva:Number,
 disponibilidad:String,
 cantidad:Number,
 tipo:Tipo,

@@ -5,7 +5,8 @@ export class Productos{
     public id:string;
     public nombre:string;   
     public negocio:Negocio;
-    public precio:{precio:Number,moneda:string}    
+    public precio:Number;  
+    public precioReserva:Number;
     public disponibilidad:string;
     public cantidad:Number;
     public tipo:Tipo;

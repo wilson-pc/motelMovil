@@ -160,7 +160,7 @@ module.exports = async function (io) {
 
     socket.on('listar-producto', async (data) => {
                      
-      Producto.find({ "tipo.nombre": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
+      Producto.find({"tipo.nombre": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-producto', {error:"ocurrio un error al listar productos"});

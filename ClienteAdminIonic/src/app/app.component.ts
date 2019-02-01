@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -15,6 +15,7 @@ import { clave } from './cryptoclave';
 import { SocketServiceUser } from '../providers/socket-config/socket-config';
 import { Observable } from 'rxjs';
 import { ngControlStatusHost } from '@angular/forms/src/directives/ng_control_status';
+import { EditLoginPage } from '../pages/edit-login/edit-login';
 
 
 @Component({
@@ -29,7 +30,6 @@ export class MyApp {
 
   // variables locales
   userOnly: any;
-
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
@@ -38,7 +38,7 @@ export class MyApp {
     public userSocket: SocketServiceUser) {
     //Inicializacion
     this.initializeApp();
-
+    
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Inicio', component: HomePage },
@@ -48,8 +48,11 @@ export class MyApp {
     // Valid route
     this.validUserLocalStorage();
     this.connectionBackendSocket();
+    
   }
-
+  editLogin(){
+  this.nav.push(EditLoginPage);
+  }
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -81,6 +84,7 @@ export class MyApp {
     if (cache != undefined) {
       let data = this.decryptData(cache);
       this.userOnlyProvider.userSesion = data;
+     
       console.log("Usuario Activo");
       console.log("es ->", this.userOnlyProvider.userSesion)
       // Redireccion de pagina
@@ -104,7 +108,6 @@ export class MyApp {
       console.log(e);
     }
   }
-
   // Consumo de servicios en el Backend
   connectionBackendSocket() {
     this.respuestaCerrar().subscribe((data: any) => {
