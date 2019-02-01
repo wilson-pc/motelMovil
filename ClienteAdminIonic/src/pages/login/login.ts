@@ -59,16 +59,36 @@ export class LoginPage {
         {
           text: 'Enviar',
           handler: data => {
-            console.log('Enviar clicked');
-            let toast = this.toastCtrl.create({
-              message: 'El correo electrónico fue enviado exitosamente',
-              duration: 3000,
-              position: 'top',
-              cssClass: 'dark-trans',
-              closeButtonText: 'OK',
-              showCloseButton: true
-            });
-            toast.present();
+               var fecha=new Date().toUTCString();
+            var ciphertext = CryptoJS.AES.encrypt(
+              JSON.stringify({ email: data.email, fecha:fecha}), clave.clave);
+                 this.userSocket.emit("correo-recuperacion",ciphertext.toString());
+                 this.userSocket.on("respuesta-cambiar-login",(data) => {
+                  if(!data.error){
+                 
+                    let toast = this.toastCtrl.create({
+                      message: 'El correo electrónico fue enviado exitosamente',
+                      duration: 3000,
+                      position: 'top',
+                      cssClass: 'dark-trans',
+                      closeButtonText: 'OK',
+                      showCloseButton: true
+                    });
+                    toast.present();
+                  }else{
+                    let toast = this.toastCtrl.create({
+                      message: data.error,
+                      duration: 3000,
+                      position: 'top',
+                      cssClass: 'dark-trans',
+                      closeButtonText: 'OK',
+                      showCloseButton: true
+                    });
+                    toast.present();
+                  
+                  }
+                 });
+           
           }
         }
       ]
