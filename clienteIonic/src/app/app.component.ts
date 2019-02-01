@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -7,66 +7,48 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LocalWeatherPage } from '../pages/local-weather/local-weather';
 import { LoginPage } from '../pages/login/login';
-import { RegisterRoomPage } from '../pages/register-room/register-room';
+
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { AuthProvider } from '../providers/auth/auth';
+
+
+import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
+import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
+import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
 
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
+
+ 
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = TabsPage;
 
-  moteles: Array<{title: string, component: any}>;
-  licorerias: Array<{title: string, component: any}>;
-  sexshops: Array<{title: string, component: any}>;
-  mapas: Array<{title: string, component: any}>;
+  menu: Array<{title: string, component: any}>;
+  
 
   verificacion:any=0;
+  content;
+  navCtrl: any;
 
-  constructor(private proveedordata:AuthProvider,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+
+
+  constructor(public proveedordata:AuthProvider,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+       
     this.initializeApp();
-    console.log("este es el proveedor");
-    console.log(proveedordata.auxflag);
-    this.verificacion=proveedordata.auxflag;
-
+    
     // used for an example of ngFor and navigation
-    this.moteles = [
+    this.menu = [
       
-      { title: 'Lista de Compras', component: ListPage },
-      { title: 'Lista de Favoritos', component: ListPage },
-      { title: 'Lista de Deseos', component: ListPage },
+      { title: 'Inicio ', component: TabsPage },
+      { title: 'Mis Reservas ', component: ListaReservasPage },
+      { title: 'Mis Favoritos', component: ListaFavoritosPage },
+      { title: 'Deseos', component: ListaDeseosPage },
       { title: 'Billetera', component: LocalWeatherPage},
-      { title: 'Reservar Habitacion(es)', component: RegisterRoomPage}
-    ];
-
-    this.licorerias = [
-      
-      { title: 'Lista de Compras', component: ListPage },
-      { title: 'Lista de Favoritos', component: ListPage },
-      { title: 'Lista de Deseos', component: ListPage },
-      { title: 'Billetera', component: LocalWeatherPage},
-      { title: 'Reservar Bebida(s)', component: RegisterRoomPage}
-    ];
-
-    this.sexshops = [
-      
-      { title: 'Lista de Compras', component: ListPage },
-      { title: 'Lista de Favoritos', component: ListPage },
-      { title: 'Lista de Deseos', component: ListPage },
-      { title: 'Billetera', component: LocalWeatherPage},
-      { title: 'Reservar Producto(s)', component: RegisterRoomPage}
-    ];
-
-    this.mapas = [
-      
-      { title: 'Lugares cercanos', component: ListPage },
-      { title: 'Lugares mas visitados', component: ListPage },
-      { title: 'Lugares con puntuacion alta', component: ListPage },
       
     ];
 
@@ -74,6 +56,15 @@ export class MyApp {
   }
 
   initializeApp() {
+
+  this.content=document.getElementsByTagName('ion-menu');
+  if(this.content)
+  {
+    console.log("se abrio");
+  }    
+
+    this.verificacion= this.proveedordata.auxflag;
+    console.log("entro app");
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -85,6 +76,9 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
+    this.verificacion=this.proveedordata.auxflag;
+    console.log(this.verificacion);
+
     this.nav.setRoot(page.component);
   }
   logout() {

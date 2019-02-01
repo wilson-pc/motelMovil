@@ -34,6 +34,9 @@ import { AngularFireModule } from 'angularfire2';
 import { CommercePage } from '../pages/commerce/commerce';
 import { SocketServiceCommerce, SocketServiceHomeService, SocketServiceProduct, SocketServiceUser } from '../providers/socket-config/socket-config';
 import { UserOnlyProvider } from '../providers/user-only/user-only';
+import { ListProductsPage } from '../pages/list-products/list-products';
+import { CommerceProvider } from '../providers/commerce/commerce';
+import { RegisterProductsPage } from '../pages/register-products/register-products';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -60,7 +63,9 @@ export const firebaseConfig = {
     TripsPage,
     EditLoginPage,
     RegisterRoomPage,
-    CommercePage
+    CommercePage,
+    ListProductsPage,
+    RegisterProductsPage
   ],
   imports: [
     BrowserModule,
@@ -95,7 +100,9 @@ export const firebaseConfig = {
     TripsPage,
     RegisterRoomPage,
     EditLoginPage,
-    CommercePage
+    CommercePage,
+    ListProductsPage,
+    RegisterProductsPage
   ],
   providers: [
     StatusBar,
@@ -113,6 +120,7 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     UserOnlyProvider,
+    CommerceProvider,
   ]
 })
 export class AppModule {}

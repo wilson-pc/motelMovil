@@ -21,7 +21,7 @@ export class HomePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public userOnlyProvider: UserOnlyProvider,
-    public productService: SocketServiceCommerce) {
+    public commerceService: SocketServiceCommerce) {
       //Inicializacion
     this.connectionBackendSocket();
     this.getAllCommerce();
@@ -43,23 +43,22 @@ export class HomePage {
 
   //Consumos de Servicios
   getAllCommerce() {
-    // Consulta cantidad de negocios
+    // Consulta todos los negocios de un usuario
     let data = { id: this.userOnlyProvider.userSesion.datos._id, tipo: "negocios" }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-		this.productService.emit("listar-negocios-de-usuario", ciphertext.toString());
+		this.commerceService.emit("listar-negocios-de-usuario", ciphertext.toString());
   }
 
   // Conexion con el Backend
   connectionBackendSocket() {
     this.respuestaVerificarNegocio().subscribe((data: any) => {
       this.listCommerce = data;
-			console.log("Negocios: ", this.listCommerce);
 		});
   }
 
   respuestaVerificarNegocio() {
 		let observable = new Observable(observer => {
-			this.productService.on('respuesta-listar-negocio-de-usuario', (data) => {
+			this.commerceService.on('respuesta-listar-negocio-de-usuario', (data) => {
 				observer.next(data);
 			});
 		})

@@ -35,6 +35,11 @@ import { MotelPage } from '../pages/motel/motel';
 import { SexShopPage } from '../pages/sex-shop/sex-shop';
 import { CercaDeMiPage } from '../pages/cerca-de-mi/cerca-de-mi';
 import { TabsPage } from '../pages/tabs/tabs';
+import { MapsPage } from '../pages/maps/maps';
+import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
+import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
+import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
+import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
 
 
 export const firebaseConfig = {
@@ -66,7 +71,12 @@ export const firebaseConfig = {
     MotelPage,
     SexShopPage,
     CercaDeMiPage,
-    TabsPage
+    TabsPage,
+    MapsPage,
+    ListaDeseosPage,
+    ListaReservasPage,
+    ListaFavoritosPage,
+    DescripcionProductoPage
 
   ],
   imports: [
@@ -104,7 +114,12 @@ export const firebaseConfig = {
     MotelPage,
     SexShopPage,
     CercaDeMiPage,
-    TabsPage
+    TabsPage,
+    MapsPage,
+    ListaDeseosPage,
+    ListaReservasPage,
+    ListaFavoritosPage,
+    DescripcionProductoPage
   
   ],
   providers: [
