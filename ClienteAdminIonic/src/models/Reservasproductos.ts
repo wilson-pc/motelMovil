@@ -7,4 +7,5 @@ export class ReservasProductos{
     public negocio:string;
     public tiempo:TiempoReservaProducto;
     public producto:Productos;
+    public estado:String;
 }
