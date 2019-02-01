@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" >
   <ion-header>
     <ion-toolbar class="user-profile">
 
@@ -36,34 +36,20 @@
     </ion-toolbar>
   </ion-header>
 
+ 
+
   <ion-content>
     <!--Listar en el menu derecho la lista moteles-->
-    <ion-list *ngIf="verificacion==0">
-      <button menuClose ion-item *ngFor="let p of moteles" (click)="openPage(p)">
+    <ion-list >
+      <button menuClose ion-item *ngFor="let p of menu" (click)="openPage(p)">
         {{p.title}}
       </button>
     </ion-list>
-    <!--Listar en el menu derecho la lista licorerias-->
-    <ion-list *ngIf="verificacion==1">
-      <button menuClose ion-item *ngFor="let p of licorerias" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
-    <!--Listar en el menu derecho la lista sexshop-->
-    <ion-list *ngIf="verificacion==2">
-      <button menuClose ion-item *ngFor="let p of sexshops" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
-    <!--Listar en el menu derecho la lista cerca de ti-->
-    <ion-list *ngIf="verificacion==3">
-      <button menuClose ion-item *ngFor="let p of mapas" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
+    
   </ion-content>
+    
 
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
-<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
+<ion-nav [root]="rootPage" #content></ion-nav>

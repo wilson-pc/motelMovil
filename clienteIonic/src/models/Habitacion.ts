@@ -6,6 +6,8 @@ export class Habitacion {
     public nombre: string;
     public descripcion : string;
     public tipo:Tipo;
+    public valoracion:Number;
+    public reportes:Number;
     public seccionubicacion:string;    
     public foto:{imagen:string,miniatura:string,tipo:string};    
     public precio:string;    
