@@ -8,12 +8,12 @@ module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
     // var host=socket.handshake.headers.host;
-    console.log("Hola soy ionic");
+    console.log("Hola soy ionic Productos");
     clients.push(socket.id);
 
     socket.on('listar-tipos', async (data) => {
       
-      Tipo.find({}, function (error, lista) {
+      Tipo.find({tipo: data.tipo}, function (error, lista) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
         } else {
@@ -31,6 +31,7 @@ module.exports = async function (io) {
         var tipo = new Tipo();
         //  var tipo = new Tipo();
         var params = data.negocio;
+        tipo.tipo = params.tipo;
         tipo.nombre = params.nombre;
         //  negocio.titular = params.titular;
 
@@ -171,6 +172,27 @@ module.exports = async function (io) {
           } else {
              console.log(lista);
             io.to(socket.id).emit('respuesta-listado-producto', lista);
+          }
+        }
+      });
+     // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
+    });
+
+    socket.on('listar-producto-negocio', async (data) => {
+                     
+      console.log("dentro de la consulta", data);
+      Producto.find({ "tipo.nombre": data.termino, "eliminado.estado": false, "_id": data._id}, { "foto.normal": 0 }, function (error, lista) {
+
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listado-producto-negocio', {error:"ocurrio un error al listar productos"});
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listado-producto-negocio', {error:"no hay productos en la base de datos"});
+          } else {
+             console.log("lista =>: ",lista);
+            io.to(socket.id).emit('respuesta-listado-producto-negocio', lista);
           }
         }
       });

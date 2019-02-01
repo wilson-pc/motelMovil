@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <strong>Lista de Productos</strong>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-card class="full-width" no-margin margin-bottom>
+    <ion-card-content no-padding>
+      <ion-item>
+        <ion-label class="text-1x bold">Negocio: </ion-label>
+        <ion-select [(ngModel)]="commerce" (ionChange)="getProducts(commerce)">
+          <ion-option *ngFor="let commerce of listCommerce" [value]="commerce">{{ commerce.nombre }}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list *ngIf="commerceName != undefind">
+    <button ion-button (click)="addProduct()">Agregar</button>
+    <br><br>
+    <ion-title>
+      {{commerceName}}
+    </ion-title>
+    <ion-item *ngFor="let product of listProducts; let i=index">product.nombre</ion-item>
+  </ion-list>
+
+</ion-content>
