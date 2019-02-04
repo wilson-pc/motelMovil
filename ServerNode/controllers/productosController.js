@@ -209,7 +209,7 @@ module.exports = async function (io) {
 
     socket.on('listar-producto', async (data) => {
                      
-      Producto.find({"tipo.nombre": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
+      Producto.find({"tipo.nombre": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }).paginate(data.parte,10,function(error,lista,total){
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-producto', {error:"ocurrio un error al listar productos"});
@@ -250,7 +250,7 @@ module.exports = async function (io) {
                      
       Producto.find({ "tipo.tiponegocio": data.tipo, "eliminado.estado": false, 
                   $or: [{ nombre: new RegExp(data.termino, 'i') }, { descripcion: new RegExp(data.termino, 'i') }, 
-                  { 'tipo.tipo': new RegExp(data.termino, 'i') }] }, { "foto.normal": 0 }).paginate(data.parte,10,function(error,lista,total){
+                  { 'tipo.tipo': new RegExp(data.termino, 'i') }] }, { "foto.normal": 0 },function(error,lista){
                     if (error) {
                       // res.status(500).send({ mensaje: "Error al listar" })
                       io.to(socket.id).emit('respuesta-listado-producto', {error:"ocurrio un error al listar productos"});
