@@ -11,6 +11,7 @@ export class Habitacion {
     public seccionubicacion:string;    
     public foto:{imagen:string,miniatura:string,tipo:string};    
     public precio:string;    
+    public precioReserva:Number;
     public estado:string;
     public eliminado:{estado:Boolean,razon:string};
     public creacion:{usuario:string,fecha:Date}
