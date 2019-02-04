@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Habitacion } from '../../models/Habitacion';
+import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
+import { Productos } from '../../models/Productos';
 
 /**
  * Generated class for the MotelPage page.
@@ -18,9 +20,13 @@ export class MotelPage {
   searchQuery: string = '';
   items: string[];
   habitaciones:Habitacion;
+  producto:Productos;
+  listProductos:Productos[];
+  listauxProductos:Productos[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private provedorProductos: ProviderProductosProvider) {
     this.initializeItems();
+    this.getDatosProductos();    
   }
 
   ionViewDidLoad() {
@@ -29,13 +35,9 @@ export class MotelPage {
     console.log('ionViewDidLoad MotelPage');
   }
 
-  initializeItems() {
-    this.items = [
-      'Amsterdam',
-      'Bogota',
-      'otros',
-      'Batman'
-    ];  
+  async initializeItems() {
+    this.listauxProductos = this.listProductos;
+    console.log("lista aux" + this.listauxProductos);
   }
 
   getItems(ev: any) {
@@ -47,14 +49,24 @@ export class MotelPage {
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.items = this.items.filter((item) => {
-        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      this.listauxProductos = this.listauxProductos.filter((item) => {
+        return (item.nombre.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }
 
   //FUNCIONES BASE DE DATOS
-  getDatosProductos(){
+   getDatosProductos(){
+    let data="Licoreria";
     
+    this.provedorProductos.obtenerdatosProductos(data);
+    this.provedorProductos.respuestaProductosNegocio().subscribe((data:any[])=>{
+      console.log(data);
+      this.listProductos=data;   
+      this.listauxProductos=data;  
+    })    
+
+    
+   
   }
 }

@@ -41,6 +41,7 @@ import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
 import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
 import { ProviderProductosProvider } from '../providers/provider-productos/provider-productos';
+import { SocketConfigService } from '../services/socket-config.service';
 
 
 export const firebaseConfig = {
@@ -120,7 +121,8 @@ export const firebaseConfig = {
     ListaDeseosPage,
     ListaReservasPage,
     ListaFavoritosPage,
-    DescripcionProductoPage
+    DescripcionProductoPage,
+
   
   ],
   providers: [
@@ -134,6 +136,7 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     ProviderProductosProvider,
+    SocketConfigService
   ]
 })
 export class AppModule {}
