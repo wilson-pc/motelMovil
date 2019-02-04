@@ -116,15 +116,15 @@ module.exports = async function (io) {
     socket.on('eliminar-producto', async (data) => {
   try {
     var datos=await Crypto.Desincryptar(data);
+    console.log("back Product ->", datos);
     if(!datos.error){
       var producto = new Producto();
-
           producto._id = datos.id;
           producto.eliminado = { estado: true, razon: datos.razon };
-          producto.findByIdAndUpdate(datos.id, producto, { new: true }, async (error, actualizado) => {
+          Producto.findByIdAndUpdate(datos.id, producto, { new: true }, async (error, actualizado) => {
             if (error) {
               console.log(error);
-              io.to(socket.id).emit('respuesta-eliminar-producto', { error: "Ocurrio un error en ls eliminacion" });
+              io.to(socket.id).emit('respuesta-eliminar-producto', { error: "Ocurrio un error en la eliminacion" });
 
             } else {
               io.to(socket.id).emit('respuesta-eliminar-producto',{exito:"eliminado con exito"});
@@ -248,20 +248,23 @@ module.exports = async function (io) {
 
     socket.on('buscar-producto', async (data) => {
                      
-      Producto.find({ "tipo.nombre": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
-        if (error) {
-          // res.status(500).send({ mensaje: "Error al listar" })
-          io.to(socket.id).emit('respuesta-listado-producto', {error:"ocurrio un error al listar productos"});
-        } else {
-          if (!lista) {
-            //   res.status(404).send({ mensaje: "Error al listar" })
-            io.to(socket.id).emit('respuesta-listado-producto', {error:"no hay productos en la base de datos"});
-          } else {
-             console.log(lista);
-            io.to(socket.id).emit('respuesta-listado-producto', lista);
-          }
-        }
-      });
+      Producto.find({ "tipo.tiponegocio": data.tipo, "eliminado.estado": false, 
+                  $or: [{ nombre: new RegExp(data.termino, 'i') }, { descripcion: new RegExp(data.termino, 'i') }, 
+                  { 'tipo.tipo': new RegExp(data.termino, 'i') }] }, { "foto.normal": 0 }).paginate(data.parte,10,function(error,lista,total){
+                    if (error) {
+                      // res.status(500).send({ mensaje: "Error al listar" })
+                      io.to(socket.id).emit('respuesta-listado-producto', {error:"ocurrio un error al listar productos"});
+                    } else {
+                      if (!lista) {
+                        //   res.status(404).send({ mensaje: "Error al listar" })
+                        io.to(socket.id).emit('respuesta-listado-producto', {error:"no hay productos en la base de datos"});
+                      } else {
+                         console.log(lista);
+                        io.to(socket.id).emit('respuesta-listado-producto', lista);
+                      }
+                    }
+
+                  });
      // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
     });
 

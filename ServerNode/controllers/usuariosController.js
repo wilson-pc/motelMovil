@@ -8,14 +8,23 @@ var token2 = require("./../token/tokenRequest");
 var TipoNegocio = require("../schemas/tipoNegocio");
 var Negocio = require("../schemas/negocio");
 const bcrypt = require('bcrypt-nodejs');
+var token55 = require("jwt-simple");
 var nodemailer = require('nodemailer');
 var generator = require('generate-password');
+var moment = require("moment");
+
+function sumarDias(fecha, dias){
+  fecha.setDate(fecha.getDate() + dias);
+  return fecha;
+}
+
 
 module.exports = async function (io) {
   var clients = [];
+  
   io.on('connection', async function (socket) {
 
-
+      
 
     // var host=socket.handshake.headers.host;
     console.log(socket.id);
@@ -229,7 +238,7 @@ module.exports = async function (io) {
           
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
             var email=datos.email;
-            var fecha=datos.fecha;
+            var fecha= new Date();
             var usuario=await Usuario.findOne({email:email,"eliminado.estado": false});
             if(usuario){
             var transporter = nodemailer.createTransport({
@@ -247,7 +256,7 @@ module.exports = async function (io) {
           });
             console.log(password);
            var hash= token2.crearToken(password);
-           
+              
             var mailOptions = {
               from:'"Triservice" <wilson-pc@yandex.com>',
               to: email,
@@ -270,7 +279,8 @@ module.exports = async function (io) {
               if (error) {
                 io.to(socket.id).emit('correo-recuperacion', { error: "Ocurrio un error no se pudo enviar el correo de recuperacion" });
               } else {
-                Usuario.findOneAndUpdate({email:"wilverhidalgo@outlook.com"},{tokenrecuperacion:{token:hash,fecha:fecha}},{new: true }, async (error, actualizado) => {
+                var vencimiento=sumarDias(fecha,1);
+                Usuario.findOneAndUpdate({email:email},{tokenrecuperacion:{token:hash,fecha:fecha,vencimiento:vencimiento}},{new: true }, async (error, actualizado) => {
                   io.to(socket.id).emit('correo-recuperacion', { error: "Revise su correo para ver el enlace de recuperacion" });
      });
               }
@@ -291,8 +301,20 @@ module.exports = async function (io) {
 
 
     socket.on('validar-token', async (data) => {
-          console.log(data);
+      var claveSecreta = "nuevaclave";
+     // var hash= token2.crearToken("rjireubitrwmhcngfrefrur");
+     // console.log(hash);
        var token=data;
+       try {
+        var loadToken = token55.decode(token, claveSecreta);
+      
+        if(loadToken.exp <= moment().unix()){
+  
+          io.to(socket.id).emit('respuesta-validar-token', {error:"token invalido"});
+  
+        }else{
+          console.log(loadToken);
+             
       Usuario.findOne({"tokenrecuperacion.token": token, "eliminado.estado": false }, { foto: 0 }, function (error, dato) {
         if (error) {
        
@@ -303,10 +325,19 @@ module.exports = async function (io) {
             io.to(socket.id).emit('respuesta-validar-token', {error:"token invalido"});
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
+              console.log(dato);
             io.to(socket.id).emit('respuesta-validar-token', dato);
           }
         }
       });
+
+        }
+         
+       } catch (error) {
+        io.to(socket.id).emit('respuesta-validar-token', {error:"token invalido"});
+       }
+      
+     
     });
 
     socket.on('listar-usuario', async (data) => {
@@ -424,7 +455,7 @@ module.exports = async function (io) {
           var usuario=new Usuario();
               usuario._id=datos.id;
               usuario.login={usuario:datos.usuario,password:hash,estado:false};
-              usuario.tokenrecuperacion=undefined;
+              usuario.tokenrecuperacion=null;
           Usuario.findByIdAndUpdate(usuario._id,usuario,{ new: true }, function (error, dato) {
             if (error) {
              
@@ -436,7 +467,7 @@ module.exports = async function (io) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
                 
-                io.to(socket.id).emit('respuesta-recuperar-login', dato);
+                io.to(socket.id).emit('respuesta-recuperar-login', {exito:"credenciales cambiados con exito, inicie cesion en la aplicacion con los nuevos credenciales"});
 
               }
             }
@@ -477,7 +508,7 @@ module.exports = async function (io) {
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
-                console.log(user);
+              
                 // res.status(200).send({ user });
                 if (user.login.estado != true) {
                   var usuario = new Usuario();

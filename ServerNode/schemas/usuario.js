@@ -16,7 +16,7 @@ login:{usuario:String,password:String,estado:Boolean},
 eliminado:{estado:Boolean,razon:String},
 creacion: {usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date },
 modificacion:{fecha:Date,usuario:{ type: Schema.ObjectId, ref: "Usuarios" }},
-tokenrecuperacion:{token:String,fecha:String}
+tokenrecuperacion:{token:String,fecha:Date,vencimiento:Date}
 })
 
 module.exports = mongose.model("Usuarios", UsuarioSchema)
