@@ -32,7 +32,21 @@
     <ion-title>
       {{commerceName}}
     </ion-title>
-    <ion-item *ngFor="let product of listProducts; let i=index">product.nombre</ion-item>
+
+    <ion-label *ngIf="listProducts.length == 0"> Registre un Producto</ion-label>
+    <ion-grid *ngIf="listProducts.length > 0">
+      <ion-row>
+        <ion-col col-2><b>N°</b></ion-col>
+        <ion-col col-6><b>Nombre</b></ion-col>
+        <ion-col col-4><b>Cantidad</b></ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let product of listProducts; let i=index">
+        <ion-col col-2>{{i+1}}</ion-col>
+        <ion-col col-6>{{product.nombre}}</ion-col>
+        <ion-col col-4>{{product.cantidad}}</ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-list>
 
 </ion-content>

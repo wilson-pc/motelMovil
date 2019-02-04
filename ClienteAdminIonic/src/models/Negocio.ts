@@ -2,7 +2,7 @@ import { Usuarios } from "./Usuarios";
 import { TipoNegocio } from "./TipoNegocio";
 
 export class Negocio {
-    public id:string;
+    public _id:string;
     public nombre:string;
     public titular:string;
     public foto:string;

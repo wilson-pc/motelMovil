@@ -18,9 +18,9 @@ export class ListProductsPage {
 
   // variables de acceso interno y externo
   listCommerce: Negocio[] = [];
-  listProducts: Productos [] = [];
+  listProducts: Productos[] = [];
   commerceName: string;
-  
+
   // variables internas
   productOnly: Productos;
   commerceOnly: Negocio;
@@ -64,57 +64,39 @@ export class ListProductsPage {
     this.commerceName = commerce.nombre;
     this.commerceOnly = commerce;
     console.log("Carga de productos del negocio: => ", commerce);
-    // Consulta cantidad de productos
-    let data = { termino: commerce.tipo.nombre, eliminado: commerce.eliminado.estado, id: this.userOnlyProvider.userSesion.datos._id}
+    let data = { termino: commerce._id }
     //var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
     //this.productService.emit("listar-producto-negocio", ciphertext.toString());
-    
+
     this.productService.emit("listar-producto-negocio", data);
   }
 
-  addProduct(){
+  addProduct() {
     console.log("Producto para guardar => ", this.commerceOnly);
-    let modal = this.modalCtrl.create(RegisterProductsPage, {negocio: this.commerceOnly});
+    let modal = this.modalCtrl.create(RegisterProductsPage, { negocio: this.commerceOnly });
     modal.present();
   }
 
-  registryProduct(){
-   /* console.log("Guardar producto => ", this.productOnly);
-    // Consulta cantidad de productos
-    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(this.productOnly), clave.clave);
-    this.productService.emit("registrar-producto", ciphertext.toString());
-    */
-    //this.productService.emit("listar-producto-negocio", data);
+  getAllProduct() {
+
   }
 
   // Conexion con el Backend
   connectionBackendSocket() {
     // negocios de un usuario
-    this.respuestaVerificarNegocio().subscribe((data: any) => {
+    this.respuestaNegociosUsuario().subscribe((data: any) => {
       this.listCommerce = data;
     });
 
-    // nproductos de un negocio
+    // productos de un negocio
     this.respuestaProductosNegocio().subscribe((data: any) => {
-      
-      console.log("Products List: ", data);
+      this.listProducts = data;
+      console.log("Products of List: ", this.listProducts);
     });
 
-    //agregar producto
-    this.respuestaAgregarProducto().subscribe((data: any) => {
-      console.log("Producto: ", data);
-    });
   }
 
-  respuestaAgregarProducto() {
-    let observable = new Observable(observer => {
-      this.commerceService.on('respuesta-listar-negocio-de-usuario', (data) => {
-        observer.next(data);
-      });
-    })
-    return observable;
-  }
-  respuestaVerificarNegocio() {
+  respuestaNegociosUsuario() {
     let observable = new Observable(observer => {
       this.commerceService.on('respuesta-listar-negocio-de-usuario', (data) => {
         observer.next(data);
