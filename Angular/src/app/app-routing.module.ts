@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { WebComponent } from './web/web.component';
 import { LoginComponent } from './login/login.component';
 import { Error404Component } from './pages/error404/error404.component';
+import { RecuperacionComponent } from './recuperacion/recuperacion.component';
 
 const routes: Routes = [
     {
@@ -25,6 +26,7 @@ const routes: Routes = [
         loadChildren: './pages/pages.module#PagesModule'
     },
     { path: 'login', component: LoginComponent },
+    { path: 'recuperacion/:token', component: RecuperacionComponent },
     { path: '404', component: Error404Component},
     { path: '**', redirectTo: '/404'}
 ];

@@ -4,6 +4,7 @@ var Producto = require("../schemas/producto");
 var Negocio= require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
+var Crypto=require("../variables/desincryptar");
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -72,18 +73,19 @@ module.exports = async function (io) {
 
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+       
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          console.log("|-> ", datos);
           var producto = new Producto();
           var params = datos.producto;
           producto.nombre = params.nombre;
           producto.negocio = params.negocio;
           producto.precio = params.precio;
-          producto.disponibilidad = params.disponibilidad;
           producto.cantidad = params.cantidad;
-          producto.tipo = await Tipo.findById(params.tito);
+          producto.tipo = await Tipo.findById(params.tipo);
           producto.foto = params.foto;
-          usuario.eliminado = { estado: false, razon: "" };
+          producto.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           producto.creacion = params.creacion
           producto.modificacion = params.modificacion;
@@ -111,6 +113,34 @@ module.exports = async function (io) {
 
     });
 
+    socket.on('eliminar-producto', async (data) => {
+  try {
+    var datos=await Crypto.Desincryptar(data);
+    if(!datos.error){
+      var producto = new Producto();
+
+          producto._id = datos.id;
+          producto.eliminado = { estado: true, razon: datos.razon };
+          producto.findByIdAndUpdate(datos.id, producto, { new: true }, async (error, actualizado) => {
+            if (error) {
+              console.log(error);
+              io.to(socket.id).emit('respuesta-eliminar-producto', { error: "Ocurrio un error en ls eliminacion" });
+
+            } else {
+              io.to(socket.id).emit('respuesta-eliminar-producto',{exito:"eliminado con exito"});
+              
+            }
+          })
+
+    }else{
+
+    }
+      
+  } catch (error) {
+    console.log(error);
+  }
+
+    });
 
     socket.on('registrar-tipos', async (data) => {
 
@@ -199,7 +229,7 @@ module.exports = async function (io) {
     socket.on('listar-producto-negocio', async (data) => {
                      
       console.log("dentro de la consulta", data);
-      Producto.find({ "tipo.nombre": data.termino, "eliminado.estado": false, "_id": data._id}, { "foto.normal": 0 }, function (error, lista) {
+      Producto.find({ negocio: data.termino, "eliminado.estado": false}, { "foto.normal": 0 }, function (error, lista) {
 
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
@@ -214,7 +244,6 @@ module.exports = async function (io) {
           }
         }
       });
-     // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
     });
 
     socket.on('buscar-producto', async (data) => {

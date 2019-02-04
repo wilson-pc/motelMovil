@@ -50,7 +50,7 @@ export class MyApp {
     
   }
   editLogin(){
-  this.nav.push(EditLoginPage);
+  this.nav.setRoot(EditLoginPage);
   }
   initializeApp() {
     this.platform.ready().then(() => {

@@ -228,7 +228,8 @@ module.exports = async function (io) {
         if (bytes.toString()) {
           
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-            var email="wilverhidalgo@outlook.com";
+            var email=datos.email;
+            var fecha=datos.fecha;
             var usuario=await Usuario.findOne({email:email,"eliminado.estado": false});
             if(usuario){
             var transporter = nodemailer.createTransport({
@@ -246,19 +247,19 @@ module.exports = async function (io) {
           });
             console.log(password);
            var hash= token2.crearToken(password);
-           console.log(hash);
+           
             var mailOptions = {
               from:'"Triservice" <wilson-pc@yandex.com>',
-              to: 'wilverhidalgobarja74757@gmail.com',
-              subject: 'Sending Email using js',
-              text: 'That was easy!',
+              to: email,
+              subject: 'correo de recuperacion',
+              text: 'Recupera tu correo',
               html: '<div> <table cellspacing="0" cellpadding="0" border="0"><tbody><tr width="100%"><td valign="top" align="left" style="background:#f0f0f0; font:15px"><table style="border:none; padding:0 18px; margin:50px auto; width:500px">'+
                  '<tbody><tr width="100%" height="57"> <td valign="top" align="left" style="border-top-left-radius:4px; border-top-right-radius:4px; background:#0079BF; padding:12px 18px; text-align:center"> <h2  style="font-weight:bold; font-size:18px; color:#fff; vertical-align:top"> Tri service</h2>'+
                   '</td> </tr><tr width="100%"> <td valign="top" align="left" style="border-bottom-left-radius:4px; border-bottom-right-radius:4px; background:#fff; padding:18px"><h1 style="font-size:20px; margin:0; color:#333">Buenas: </h1>'+
-                 ' <p style="font:15px/1.25em,Arial,Helvetica; color:#333">Hemos notado que esta tratando de recuperar su usuario y contraseña de triservice.</p><p style="font:15px/1.25em, Arial,Helvetica; color:#333"><strong>Fecha y hora:</strong> 25 de enero de 2019 a las 20:07 HEOS<br>'+
-                  '<strong>Dirección IP :</strong> 190.129.127.18 </p><p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si no es usted verifique que a quien presto su dispositivo la en las fecha indicadas</p>'+
-                 ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si es usted as click en la direccion url de abajo para poder crear sus nuevos credenciales,<a href="http://localhost:4200/recuperacion/'+hash+'" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">'+
-                  ' cambie la contraseña</a> de inmediato. </p></td></tr></tbody></table> </td></tr> </tbody> </div>'
+                 ' <p style="font:15px/1.25em,Arial,Helvetica; color:#333">Hemos notado que esta tratando de recuperar su usuario y contraseña de triservice.</p><p style="font:15px/1.25em, Arial,Helvetica; color:#333"><strong>Fecha y hora:</strong>'+ fecha+'<br>'+
+                 '<p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si no es usted ignore este correo</p>'+
+                 ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si es usted as click <a href="http://localhost:4200/recuperacion/'+hash+'" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> '+
+                  'aqui</a> para poder crear sus nuevos creenciales </p></td></tr></tbody></table> </td></tr> </tbody> </div>'
             };
             
         /*   Usuario.findOneAndUpdate({email:email},{tokenrecuperacion:{token:hash,fecha:"12-12-12"}},{new: true }, async (error, actualizado) => {
@@ -267,18 +268,19 @@ module.exports = async function (io) {
             
          transporter.sendMail(mailOptions, async function(error, info){
               if (error) {
-                console.log(error);
+                io.to(socket.id).emit('correo-recuperacion', { error: "Ocurrio un error no se pudo enviar el correo de recuperacion" });
               } else {
-                Usuario.findOneAndUpdate({email:"wilverhidalgo@outlook.com"},{tokenrecuperacion:{token:hash,fecha:"12-12-12"}},{new: true }, async (error, actualizado) => {
-                  console.log(actualizado);
+                Usuario.findOneAndUpdate({email:"wilverhidalgo@outlook.com"},{tokenrecuperacion:{token:hash,fecha:fecha}},{new: true }, async (error, actualizado) => {
+                  io.to(socket.id).emit('correo-recuperacion', { error: "Revise su correo para ver el enlace de recuperacion" });
      });
               }
             });
           }else{
-            console.log("sin resultado");
+            console.log("Este correo no esta registrado utilise el correo con la que registro la cuenta");
+            io.to(socket.id).emit('correo-recuperacion', { error: "Este correo no esta registrado utilise el correo con la que registro la cuenta" });
           }
         }else{
-          console.log("heg7hougoheh");
+          io.to(socket.id).emit('correo-recuperacion', { error: "Este ocurrio un error de encriptado" });
         }
       
       } catch (e) {
@@ -289,17 +291,19 @@ module.exports = async function (io) {
 
 
     socket.on('validar-token', async (data) => {
-      console.log("ifnuhu4hg94h8mh98");
-       var token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJoYXNoIjoiUGVyekJ4M1QwRllLcVhua0VZbFEiLCJub3ciOjE1NDg0NzQyMDksImV4cCI6MTU1MTA2NjIwOX0.MY3UpKsmHqLn5n9pfgxsFKQOYM3WdQu-U6CcZD9Zjm8";
-      Usuario.findOne({"tokenrecuperacion.token": token, "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
+          console.log(data);
+       var token=data;
+      Usuario.findOne({"tokenrecuperacion.token": token, "eliminado.estado": false }, { foto: 0 }, function (error, dato) {
         if (error) {
-          console.log(error);
+       
+          io.to(socket.id).emit('respuesta-validar-token', {error:"token invalido"});
           // res.status(500).send({ mensaje: "Error al listar" })
         } else {
-          if (!lista) {
+          if (!dato) {
+            io.to(socket.id).emit('respuesta-validar-token', {error:"token invalido"});
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-            io.to(socket.id).emit('respuesta-validar-token', lista);
+            io.to(socket.id).emit('respuesta-validar-token', dato);
           }
         }
       });
@@ -320,6 +324,43 @@ module.exports = async function (io) {
       });
     });
 
+    socket.on('cambiar-login', async (data) => {
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+            
+          bcrypt.hash(datos.usuario.password, null, null, async function (error, hash) {
+         
+
+          var usuario=new Usuario();
+              usuario._id=datos.usuario.id;
+              usuario.login={usuario:datos.usuario.usuario,password:hash,estado:false}
+          Usuario.findByIdAndUpdate(usuario._id,usuario,{ new: true }, function (error, dato) {
+            if (error) {
+              console.log(error);
+              io.to(socket.id).emit('respuesta-cambiar-login', {error:"Error no se pudo cambiar los datos"});
+              // res.status(500).send({ mensaje: "Error al listar" })
+            } else {
+              if (!dato) {
+                io.to(socket.id).emit('respuesta-cambiar-login',{error:"Error no se pudo cambiar los datos"});
+                //   res.status(404).send({ mensaje: "Error al listar" })
+              } else {
+                console.log(dato);
+                io.to(socket.id).emit('respuesta-cambiar-login', dato);
+
+              }
+            }
+          
+          });
+        })
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+    });
 
     socket.on('sacar-usuario', async (data) => {
       try {
@@ -371,6 +412,46 @@ module.exports = async function (io) {
 
     });
 
+    socket.on('recuperar-login', async (data) => {
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+            
+          bcrypt.hash(datos.password, null, null, async function (error, hash) {
+         
+
+          var usuario=new Usuario();
+              usuario._id=datos.id;
+              usuario.login={usuario:datos.usuario,password:hash,estado:false};
+              usuario.tokenrecuperacion=undefined;
+          Usuario.findByIdAndUpdate(usuario._id,usuario,{ new: true }, function (error, dato) {
+            if (error) {
+             
+              io.to(socket.id).emit('respuesta-recuperar-login', {error:"Error no se pudo cambiar los datos"});
+              // res.status(500).send({ mensaje: "Error al listar" })
+            } else {
+              if (!dato) {
+                io.to(socket.id).emit('respuesta-recuperar-login',{error:"Error no se pudo cambiar los datos"});
+                //   res.status(404).send({ mensaje: "Error al listar" })
+              } else {
+                
+                io.to(socket.id).emit('respuesta-recuperar-login', dato);
+
+              }
+            }
+          
+          });
+        })
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+    });
+
+
     socket.on('login-usuario', async (data) => {
       // console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
       try {
@@ -396,7 +477,7 @@ module.exports = async function (io) {
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
-
+                console.log(user);
                 // res.status(200).send({ user });
                 if (user.login.estado != true) {
                   var usuario = new Usuario();
@@ -456,13 +537,13 @@ module.exports = async function (io) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
             } else {
-
+                   
               if (user == null) {
                 io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exite" });
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
-
+                     console.log(user);
                 // res.status(200).send({ user });
                 if (user.login.estado != true) {
                   var usuario = new Usuario();

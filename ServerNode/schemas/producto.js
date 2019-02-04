@@ -14,8 +14,8 @@ tipo:Tipo,
 foto:{normal:String,miniatura:String},
 descripcion:String,
 eliminado:{estado:Boolean,razon:String},
-creacion: {fecha:Date },
-modificacion:{fecha:Date}
+creacion: {fecha:String },
+modificacion:{fecha:String}
 })
 
 module.exports = mongose.model("Productos", ProductoSchema)
