@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { CommerceProvider } from '../../providers/commerce/commerce';
 import { UserOnlyProvider } from '../../providers/user-only/user-only';
 import { SocketServiceCommerce, SocketServiceProduct } from '../../providers/socket-config/socket-config';
@@ -17,6 +17,7 @@ import { RegisterProductsPage } from '../register-products/register-products';
 export class ListProductsPage {
 
   // variables de acceso interno y externo
+  space: string = "   ";
   listCommerce: Negocio[] = [];
   listProducts: Productos[] = [];
   commerceName: string;
@@ -32,10 +33,11 @@ export class ListProductsPage {
     public commerceProvider: CommerceProvider,
     public commerceService: SocketServiceCommerce,
     public productService: SocketServiceProduct,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController) {
     //Inicializacion
     this.connectionBackendSocket();
-    this.getAllCommerce();
+    this.getAllCommerce();    
   }
 
   ionViewDidLoad() {
@@ -46,7 +48,7 @@ export class ListProductsPage {
     //this.getAllCommerce();
     setTimeout(() => {
       console.log('La operación asíncrona ha finalizado');
-      this.getAllCommerce();
+      this.getProductsCommerce();
       event.complete();
     }, 2000);
   }
@@ -59,28 +61,61 @@ export class ListProductsPage {
     this.commerceService.emit("listar-negocios-de-usuario", ciphertext.toString());
   }
 
-  //Consumos de Servicios
   getProducts(commerce) {
     this.commerceName = commerce.nombre;
     this.commerceOnly = commerce;
     console.log("Carga de productos del negocio: => ", commerce);
     let data = { termino: commerce._id }
-    //var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-    //this.productService.emit("listar-producto-negocio", ciphertext.toString());
-
     this.productService.emit("listar-producto-negocio", data);
+  }
+
+  getProductsCommerce(){
+      let data = { termino: this.commerceOnly._id }
+      this.productService.emit("listar-producto-negocio", data);
   }
 
   addProduct() {
     console.log("Producto para guardar => ", this.commerceOnly);
     let modal = this.modalCtrl.create(RegisterProductsPage, { negocio: this.commerceOnly });
     modal.present();
+    this.getProductsCommerce();
+    /*
+    modal.onDidDismiss( recarga => {
+      let data = { termino: this.commerceOnly._id }
+      this.productService.emit("listar-producto-negocio", data);
+    })*/
   }
 
-  getAllProduct() {
 
+  deleteProduct(product) {
+    const prompt = this.alertCtrl.create({
+      title: 'Eliminar Producto',
+      message: "Ingrese la razon por el cual esta eliminando este producto.",
+      inputs: [
+        {
+          name: 'razon',
+          placeholder: ''
+        },
+      ],
+      buttons: [
+        {
+          text: 'cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: data => {
+
+            console.log('Saved clicked', );
+            console.log("Eliminar -> ",product);
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
-
   // Conexion con el Backend
   connectionBackendSocket() {
     // negocios de un usuario
@@ -91,7 +126,6 @@ export class ListProductsPage {
     // productos de un negocio
     this.respuestaProductosNegocio().subscribe((data: any) => {
       this.listProducts = data;
-      console.log("Products of List: ", this.listProducts);
     });
 
   }

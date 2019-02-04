@@ -34,7 +34,9 @@
     </ion-title>
 
     <ion-label *ngIf="listProducts.length == 0"> Registre un Producto</ion-label>
-    <ion-grid *ngIf="listProducts.length > 0">
+
+    <!--<ion-grid *ngIf="listProducts.length > 0">
+
       <ion-row>
         <ion-col col-2><b>N°</b></ion-col>
         <ion-col col-6><b>Nombre</b></ion-col>
@@ -46,7 +48,37 @@
         <ion-col col-6>{{product.nombre}}</ion-col>
         <ion-col col-4>{{product.cantidad}}</ion-col>
       </ion-row>
-    </ion-grid>
+    </ion-grid>-->
+
+    <ion-list-header>
+        <ion-label>N°</ion-label>
+        <ion-label item-right>Nombre</ion-label>
+        <ion-label item-right>Producto</ion-label>
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let product of listProducts; let i=index" (ionDrag)="actionProduct($event,product)">
+      <ion-item>
+        <!--<ion-avatar item-start (click)="play(animal)">
+          <img [src]="animal.imagen" alt="">
+        </ion-avatar>-->
+        
+        <ion-label>{{i+1}}</ion-label>
+        <ion-label item-right>{{product.nombre}}</ion-label>
+        <ion-label item-right>{{product.cantidad}}</ion-label>
+      </ion-item>
+
+      <ion-item-options side="left">
+        <button danger>
+          <ion-icon trash></ion-icon> Eliminar
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button>
+          <ion-icon info></ion-icon> Editar
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
   </ion-list>
 
 </ion-content>
