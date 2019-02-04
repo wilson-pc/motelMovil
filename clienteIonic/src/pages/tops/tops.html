@@ -9,9 +9,11 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
-      <strong>Ionic 3</strong> Start Theme
-    </ion-title>
+    
+        <p style="color:white;">
+            Welcome to<strong>Triservice App</strong>
+        </p>
+    
     <ion-buttons end>
       <button ion-button tappable (click)="presentNotifications($event)">
         <ion-icon name="notifications"></ion-icon>
@@ -23,8 +25,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-Bienvenido
+<ion-content>
+
 <div padding>
     <ion-segment [(ngModel)]="pet">
       <ion-segment-button value="kittens">
@@ -43,190 +45,116 @@ Bienvenido
   
   <div [ngSwitch]="pet">
     <ion-list *ngSwitchCase="'puppies'">
-      <ion-item>
-        <ion-thumbnail item-start>
-            <ion-card><!--Inicio de card con estrella-->
-
-              <img style="width:100%" src="../../assets/imgs/marty-avatar.png"/>
-          
-              <ion-card-content>               
-                <p>
-                  The most popular industrial group ever, and largely responsible for bringing the music to a mass audience.
-                </p>
-              </ion-card-content>
-          
-              <ion-col no-padding>
-                  <ion-row>
-                    <ion-col>
-                      <button ion-button clear small color="danger" icon-start>
-                        <ion-icon name='star'></ion-icon>
-                        399 Visitas
-                      </button>
-                    </ion-col>
-                </ion-row>
-        
-                  <ion-row>
-                    <ion-col>
-                      <button ion-button icon-start clear small color="danger">
-                        <ion-icon name="thumbs-up"></ion-icon>
-                        <div>100</div>
-                      </button>
-                    </ion-col>
-                  </ion-row>
-        
-                    <ion-row>
-                        <ion-col>
-                            <button ion-button icon-start clear small color="danger">
-                                <ion-icon ios="ios-thumbs-down" md="md-thumbs-down"></ion-icon>
-                              <div>10</div>
-                            </button>
-                          </ion-col>
-                    </ion-row>
-                    
-                    </ion-col>          
-        
-        
-                  <ion-row>
-                  <ion-col text-right>
-                    <button ion-button clear small color="danger" icon-start (click)="presentModal()">
-                        <ion-icon ios="ios-book" md="md-book"></ion-icon>
-                      Mas
-                    </button>
-                  </ion-col>
-                </ion-row>
-          
-            </ion-card><!--Fin de card con estrella-->
-        </ion-thumbnail>
-        <h2>Ruby</h2>
-      </ion-item>     
+  
+       <ion-item>
+          <ion-thumbnail item-start>
+            
+             <img src="../../assets/imgs/habitacion.jpg"/>
+            
+          </ion-thumbnail>
+  
+          <ion-col>  
+            <ion-row>
+              <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+            </ion-row>   
+                                      
+            <ion-row>              
+              <button ion-button clear small color="default" icon-start>
+                <ion-icon name='star'></ion-icon>
+                399 Visitas
+              </button>    
+              <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                  <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                Mas
+              </button>      
+            </ion-row>
+                        
+          </ion-col>   
+        </ion-item> 
     </ion-list>
   
     <ion-list *ngSwitchCase="'kittens'">
       <ion-item>
         <ion-thumbnail item-start>
-            <ion-card><!--Inicio de card con estrella-->
-
-              <img src="../../assets/imgs/marty-avatar.png"/>
+           <!--TODO-->
+           <img src="../../assets/imgs/licor.jpg"/>
           
-              <ion-card-content>
-                <ion-card-title>
-                  Licor: Ron Abuelo
-                </ion-card-title>
-              
-              </ion-card-content>
-          
-              <ion-col no-padding>
-                  <ion-row>
-                    <ion-col>
-                      <button ion-button clear small color="danger" icon-start>
-                        <ion-icon name='star'></ion-icon>
-                        399 Visitas
-                      </button>
-                    </ion-col>
-                </ion-row>
-        
-                  <ion-row>
-                    <ion-col>
-                      <button ion-button icon-start clear small color="danger">
-                        <ion-icon name="thumbs-up"></ion-icon>
-                        <div>100</div>
-                      </button>
-                    </ion-col>
-                  </ion-row>
-        
-                    <ion-row>
-                        <ion-col>
-                            <button ion-button icon-start clear small color="danger">
-                                <ion-icon ios="ios-thumbs-down" md="md-thumbs-down"></ion-icon>
-                              <div>10</div>
-                            </button>
-                          </ion-col>
-                    </ion-row>
-                    
-                    </ion-col>          
-        
-        
-                  <ion-row>
-                  <ion-col text-right>
-                    <button ion-button clear small color="danger" icon-start>
-                        <ion-icon ios="ios-book" md="md-book"></ion-icon>
-                      Mas
-                    </button>
-                  </ion-col>
-                </ion-row>
-          
-            </ion-card><!--Fin de card con estrella-->
         </ion-thumbnail>
-        
-      </ion-item>      
+
+        <ion-col>
+
+          <ion-row>
+            <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+          </ion-row>               
+          <ion-row>              
+              <button ion-button clear small color="default" icon-start>
+                <ion-icon name='star'></ion-icon>
+                399 Visitas
+              </button>    
+              <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                  <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                Mas
+              </button>      
+            </ion-row>
+        </ion-col>   
+      </ion-item>    
+      
+      <ion-item>
+          <ion-thumbnail item-start>
+             <!--TODO-->
+             <img src="../../assets/imgs/habitacion.jpg"/>
+            
+          </ion-thumbnail>
+  
+          <ion-col>
+  
+            <ion-row>
+              <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+            </ion-row>               
+            <ion-row>              
+                <button ion-button clear small color="default" icon-start>
+                  <ion-icon name='star'></ion-icon>
+                  399 Visitas
+                </button>    
+                <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                    <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                  Mas
+                </button>      
+              </ion-row>
+          </ion-col>   
+  
+        </ion-item>         
     </ion-list>
 
     <ion-list *ngSwitchCase="'otro'">
-        <ion-item>
+
+       <!--Nuevo item-->
+       <ion-item>
           <ion-thumbnail item-start>
-              <ion-card><!--Inicio de card con estrella-->
-
-                <img src="../../assets/imgs/marty-avatar.png"/>
             
-                <ion-card-content>
-                  <ion-card-title>
-                    Nine Inch Nails Live
-                  </ion-card-title>
-                  <p>
-                    The most popular industrial group ever, and largely responsible for bringing the music to a mass audience.
-                  </p>
-                </ion-card-content>
+             <img  src="../../assets/imgs/licor.jpg"/>
             
-                <ion-col no-padding>
-                    <ion-row>
-                      <ion-col>
-                        <button ion-button clear small color="danger" icon-start>
-                          <ion-icon name='star'></ion-icon>
-                          399 Visitas
-                        </button>
-                      </ion-col>
-                  </ion-row>
-          
-                    <ion-row>
-                      <ion-col>
-                        <button ion-button icon-start clear small color="danger">
-                          <ion-icon name="thumbs-up"></ion-icon>
-                          <div>100</div>
-                        </button>
-                      </ion-col>
-                    </ion-row>
-          
-                      <ion-row>
-                          <ion-col>
-                              <button ion-button icon-start clear small color="danger">
-                                  <ion-icon ios="ios-thumbs-down" md="md-thumbs-down"></ion-icon>
-                                <div>10</div>
-                              </button>
-                            </ion-col>
-                      </ion-row>
-                      
-                      </ion-col>          
-          
-          
-                    <ion-row>
-                    <ion-col text-right>
-                      <button ion-button clear small color="danger" icon-start>
-                          <ion-icon ios="ios-book" md="md-book"></ion-icon>
-                        Mas
-                      </button>
-                    </ion-col>
-                  </ion-row>
-            
-              </ion-card><!--Fin de card con estrella-->
           </ion-thumbnail>
-          <h2>Luna</h2>
-        </ion-item>        
+  
+          <ion-col>
+
+          <ion-row>
+            <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+          </ion-row>               
+          <ion-row>              
+              <button ion-button clear small color="default" icon-start>
+                <ion-icon name='star'></ion-icon>
+                399 Visitas
+              </button>    
+              <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                  <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                Mas
+              </button>      
+            </ion-row>
+        </ion-col>   
+
+        </ion-item>         
       </ion-list>
-  </div>
-
-
-    
-
-   
+  </div>  
 
 </ion-content>

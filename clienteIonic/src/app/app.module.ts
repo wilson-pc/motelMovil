@@ -40,6 +40,7 @@ import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
 import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
 import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
+import { ProviderProductosProvider } from '../providers/provider-productos/provider-productos';
 
 
 export const firebaseConfig = {
@@ -132,6 +133,7 @@ export const firebaseConfig = {
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
+    ProviderProductosProvider,
   ]
 })
 export class AppModule {}
