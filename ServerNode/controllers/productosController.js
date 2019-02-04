@@ -4,6 +4,7 @@ var Producto = require("../schemas/producto");
 var Negocio= require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
+var Crypto=require("../variables/desincryptar");
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -111,6 +112,34 @@ module.exports = async function (io) {
 
     });
 
+    socket.on('eliminar-producto', async (data) => {
+  try {
+    var datos=await Crypto.Desincryptar(data);
+    if(!datos.error){
+      var producto = new Producto();
+
+          producto._id = datos.id;
+          producto.eliminado = { estado: true, razon: datos.razon };
+          producto.findByIdAndUpdate(datos.id, producto, { new: true }, async (error, actualizado) => {
+            if (error) {
+              console.log(error);
+              io.to(socket.id).emit('respuesta-eliminar-producto', { error: "Ocurrio un error en ls eliminacion" });
+
+            } else {
+              io.to(socket.id).emit('respuesta-eliminar-producto',{exito:"eliminado con exito"});
+              
+            }
+          })
+
+    }else{
+
+    }
+      
+  } catch (error) {
+    console.log(error);
+  }
+
+    });
 
     socket.on('registrar-tipos', async (data) => {
 
