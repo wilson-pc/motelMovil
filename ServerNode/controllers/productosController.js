@@ -124,7 +124,7 @@ module.exports = async function (io) {
           producto.findByIdAndUpdate(datos.id, producto, { new: true }, async (error, actualizado) => {
             if (error) {
               console.log(error);
-              io.to(socket.id).emit('respuesta-eliminar-producto', { error: "Ocurrio un error en ls eliminacion" });
+              io.to(socket.id).emit('respuesta-eliminar-producto', { error: "Ocurrio un error en la eliminacion" });
 
             } else {
               io.to(socket.id).emit('respuesta-eliminar-producto',{exito:"eliminado con exito"});
