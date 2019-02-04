@@ -56,7 +56,7 @@
         <ion-label item-right>Producto</ion-label>
     </ion-list-header>
 
-    <ion-item-sliding *ngFor="let product of listProducts; let i=index" (ionDrag)="actionProduct($event,product)">
+    <ion-item-sliding *ngFor="let product of listProducts; let i=index">
       <ion-item>
         <!--<ion-avatar item-start (click)="play(animal)">
           <img [src]="animal.imagen" alt="">
@@ -68,12 +68,12 @@
       </ion-item>
 
       <ion-item-options side="left">
-        <button danger>
+        <button danger (click)="deleteProduct(product)">
           <ion-icon trash></ion-icon> Eliminar
         </button>
       </ion-item-options>
       <ion-item-options side="right">
-        <button>
+        <button (click)="updateProduct(product)">
           <ion-icon info></ion-icon> Editar
         </button>
       </ion-item-options>

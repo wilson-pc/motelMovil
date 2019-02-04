@@ -116,12 +116,12 @@ module.exports = async function (io) {
     socket.on('eliminar-producto', async (data) => {
   try {
     var datos=await Crypto.Desincryptar(data);
+    console.log("back Product ->", datos);
     if(!datos.error){
       var producto = new Producto();
-
           producto._id = datos.id;
           producto.eliminado = { estado: true, razon: datos.razon };
-          producto.findByIdAndUpdate(datos.id, producto, { new: true }, async (error, actualizado) => {
+          Producto.findByIdAndUpdate(datos.id, producto, { new: true }, async (error, actualizado) => {
             if (error) {
               console.log(error);
               io.to(socket.id).emit('respuesta-eliminar-producto', { error: "Ocurrio un error en ls eliminacion" });

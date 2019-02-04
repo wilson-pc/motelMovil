@@ -37,7 +37,7 @@ export class ListProductsPage {
     public alertCtrl: AlertController) {
     //Inicializacion
     this.connectionBackendSocket();
-    this.getAllCommerce();    
+    this.getAllCommerce();
   }
 
   ionViewDidLoad() {
@@ -64,14 +64,14 @@ export class ListProductsPage {
   getProducts(commerce) {
     this.commerceName = commerce.nombre;
     this.commerceOnly = commerce;
-    console.log("Carga de productos del negocio: => ", commerce);
     let data = { termino: commerce._id }
     this.productService.emit("listar-producto-negocio", data);
   }
 
-  getProductsCommerce(){
-      let data = { termino: this.commerceOnly._id }
-      this.productService.emit("listar-producto-negocio", data);
+  // Metodo para actualizar lista despues de alguna accion
+  getProductsCommerce() {
+    let data = { termino: this.commerceOnly._id }
+    this.productService.emit("listar-producto-negocio", data);
   }
 
   addProduct() {
@@ -79,13 +79,15 @@ export class ListProductsPage {
     let modal = this.modalCtrl.create(RegisterProductsPage, { negocio: this.commerceOnly });
     modal.present();
     this.getProductsCommerce();
-    /*
-    modal.onDidDismiss( recarga => {
-      let data = { termino: this.commerceOnly._id }
-      this.productService.emit("listar-producto-negocio", data);
-    })*/
   }
 
+  infoProduct() {
+
+  }
+
+  updateProduct(product) {
+
+  }
 
   deleteProduct(product) {
     const prompt = this.alertCtrl.create({
@@ -101,15 +103,17 @@ export class ListProductsPage {
         {
           text: 'cancelar',
           handler: data => {
-            console.log('Cancel clicked');
+            //console.log('Cancel clicked');
           }
         },
         {
           text: 'Eliminar',
           handler: data => {
-
-            console.log('Saved clicked', );
-            console.log("Eliminar -> ",product);
+            product.eliminado.razon = data.razon;
+            let datos = { id: product._id, razon: product.eliminado.razon }
+            var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(datos), clave.clave);
+            this.productService.emit("eliminar-producto", ciphertext.toString());
+            this.getProductsCommerce();
           }
         }
       ]
@@ -128,6 +132,11 @@ export class ListProductsPage {
       this.listProducts = data;
     });
 
+    // Eliminar producto
+    this.respuestaEliminarProductoNegocio().subscribe((data: any) => {
+      console.log("estado eliminado: ", data);
+    });
+
   }
 
   respuestaNegociosUsuario() {
@@ -141,6 +150,30 @@ export class ListProductsPage {
   respuestaProductosNegocio() {
     let observable = new Observable(observer => {
       this.productService.on('respuesta-listado-producto-negocio', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
+  respuestaVerProductoNegocio() {
+    let observable = new Observable(observer => {
+      this.productService.on('respuesta-listado-producto-negocio', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
+  respuestaEditarProductoNegocio() {
+    let observable = new Observable(observer => {
+      this.productService.on('respuesta-listado-producto-negocio', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
+  respuestaEliminarProductoNegocio() {
+    let observable = new Observable(observer => {
+      this.productService.on('respuesta-eliminar-producto', (data) => {
         observer.next(data);
       });
     })
