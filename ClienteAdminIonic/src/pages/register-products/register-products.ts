@@ -18,7 +18,7 @@ export class RegisterProductsPage {
   // variables global para .ts y HTML
   commerceOnly: Negocio;
   product: Productos;
-  listTypeProduct: Tipo []=[]
+  listTypeProduct: Tipo []=[];
   typeProduct: Tipo;
 
   constructor(
@@ -33,8 +33,6 @@ export class RegisterProductsPage {
     this.getCommerceOnly();
     this.connectionBackendSocket();
     this.getTypeProducts();
-
-    console.log(this.listTypeProduct);
   }
 
   ionViewDidLoad() {
@@ -107,8 +105,8 @@ export class RegisterProductsPage {
     this.typeProduct.tipo = typeNameProduct;
     this.typeProduct.negocio = this.commerceOnly.tipo.nombre;
     let data = this.typeProduct;
-    console.log(this.typeProduct);
     this.productService.emit("registrar-tipo-producto", data);
+    this.getTypeProducts();
   }
   
   registerProduct() {
@@ -121,6 +119,7 @@ export class RegisterProductsPage {
     let data = this.product;
     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto: data}), clave.clave);
     this.productService.emit("registrar-producto", ciphertext.toString());
+    // cerrar MODAL
     this.viewCtrl.dismiss();
   }
 
@@ -134,8 +133,7 @@ export class RegisterProductsPage {
 
     // agregar tipos de producto
     this.respuestaRegistrarTipoProducto().subscribe((data: any) => {
-      console.log("exito Guardado", data);
-      this.listTypeProduct.push(data);
+      console.log("exito tipo producto Guardado", data);
     });
 
     // agregar producto
