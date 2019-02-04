@@ -24,7 +24,7 @@ module.exports = async function (io) {
   
   io.on('connection', async function (socket) {
 
-
+      
 
     // var host=socket.handshake.headers.host;
     console.log(socket.id);
