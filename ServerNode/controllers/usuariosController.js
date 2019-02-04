@@ -21,14 +21,7 @@ function sumarDias(fecha, dias){
 
 module.exports = async function (io) {
   var clients = [];
-  io.use((socket, next) => {
-    let tokend = socket.handshake.query.token;
-    console.log(tokend);
-    if(tokend) {
-      return next();
-    }
-    return next(new Error('authentication error'));
-  });
+  
   io.on('connection', async function (socket) {
 
 

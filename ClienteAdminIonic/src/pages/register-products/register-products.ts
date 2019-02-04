@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { resizeBase64 } from 'base64js-es6';
 import { Negocio } from '../../models/Negocio';
 import { Productos } from '../../models/Productos';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { Tipo } from '../../models/TipoProducto';
 import { SocketServiceProduct } from '../../providers/socket-config/socket-config';
 import * as CryptoJS from 'crypto-js';
@@ -14,10 +14,11 @@ import { clave } from '../../app/cryptoclave';
   templateUrl: 'register-products.html',
 })
 export class RegisterProductsPage {
-
+  @ViewChild('fileInput') fileInput: ElementRef;
   // variables global para .ts y HTML
   commerceOnly: Negocio;
   product: Productos;
+  nombreimagen: string = "selecciona una foto";
   listTypeProduct: Tipo []=[];
   typeProduct: Tipo;
 
@@ -37,7 +38,9 @@ export class RegisterProductsPage {
 
   ionViewDidLoad() {
   }
-
+  filechoosser() {
+    this.fileInput.nativeElement.click();
+  }
   addTypeProduct() {
     const prompt = this.alertCtrl.create({
       title: 'Crear Tipo',
@@ -77,20 +80,35 @@ export class RegisterProductsPage {
   }
 
   // Carga de la foto
-  changeListener($event): void {
-    this.readThis($event.target);
-  }
-  readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    console.log(inputValue.files[0]);
-    var myReader: FileReader = new FileReader();
-
-    myReader.onloadend = (e) => {
-      resizeBase64(myReader.result, 200, 300).then((result) => {
-        this.product.foto = result;
+  async fileChange(event) {
+    // alert(event.srcElement.files[0].name);
+    this.readFile(event.srcElement.files[0]).subscribe(data => {
+      resizeBase64(data, 90, 60).then((result) => {
+        this.product.foto={miniatura:result,normal:""}
+       
+       
       });
-    }
-    myReader.readAsDataURL(file);
+      resizeBase64(data, 90, 60).then((result) => {
+        this.product.foto.normal=result;
+        console.log(this.product);
+       
+      });
+      this.nombreimagen=event.srcElement.files[0].name;
+      //   alert(dec.substring(0, 10));
+
+    });
+  }
+
+  public readFile(fileToRead: File): Observable<MSBaseReader> {
+    let base64Observable = new ReplaySubject<MSBaseReader>(1);
+
+    let fileReader = new FileReader();
+    fileReader.onload = event => {
+      base64Observable.next(fileReader.result);
+    };
+    fileReader.readAsDataURL(fileToRead);
+
+    return base64Observable;
   }
 
   //Consumos de Servicios
