@@ -291,15 +291,15 @@ module.exports = async function (io) {
 
 
     socket.on('validar-token', async (data) => {
-     
-       var token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJoYXNoIjoiUGVyekJ4M1QwRllLcVhua0VZbFEiLCJub3ciOjE1NDg0NzQyMDksImV4cCI6MTU1MTA2NjIwOX0.MY3UpKsmHqLn5n9pfgxsFKQOYM3WdQu-U6CcZD9Zjm8";
+          console.log(data);
+       var token=data;
       Usuario.findOne({"tokenrecuperacion.token": token, "eliminado.estado": false }, { foto: 0 }, function (error, dato) {
         if (error) {
        
           io.to(socket.id).emit('respuesta-validar-token', {error:"token invalido"});
           // res.status(500).send({ mensaje: "Error al listar" })
         } else {
-          if (!lista) {
+          if (!dato) {
             io.to(socket.id).emit('respuesta-validar-token', {error:"token invalido"});
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
@@ -411,6 +411,46 @@ module.exports = async function (io) {
       }
 
     });
+
+    socket.on('recuperar-login', async (data) => {
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+            
+          bcrypt.hash(datos.password, null, null, async function (error, hash) {
+         
+
+          var usuario=new Usuario();
+              usuario._id=datos.id;
+              usuario.login={usuario:datos.usuario,password:hash,estado:false};
+              usuario.tokenrecuperacion=undefined;
+          Usuario.findByIdAndUpdate(usuario._id,usuario,{ new: true }, function (error, dato) {
+            if (error) {
+             
+              io.to(socket.id).emit('respuesta-recuperar-login', {error:"Error no se pudo cambiar los datos"});
+              // res.status(500).send({ mensaje: "Error al listar" })
+            } else {
+              if (!dato) {
+                io.to(socket.id).emit('respuesta-recuperar-login',{error:"Error no se pudo cambiar los datos"});
+                //   res.status(404).send({ mensaje: "Error al listar" })
+              } else {
+                
+                io.to(socket.id).emit('respuesta-recuperar-login', dato);
+
+              }
+            }
+          
+          });
+        })
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+    });
+
 
     socket.on('login-usuario', async (data) => {
       // console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
