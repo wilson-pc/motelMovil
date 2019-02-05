@@ -9,6 +9,8 @@ precio:Number,
 precioReserva:Number,
 estado:String,
 valoracion:Number,
+valoracion:[{usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date }],
+desvaloracion:[{usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date }],
 reportes:Number,
 tipo:Tipo,
 foto:{portada:String,interior:[String]},
@@ -18,4 +20,4 @@ creacion: {usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date },
 modificacion:{fecha:Date,usuario:{ type: Schema.ObjectId, ref: "Usuarios" }}
 })
 
-module.exports = mongose.model("Habitaciones", ProductoSchema)
+module.exports = mongose.model("Habitaciones", HabitacionSchema)
