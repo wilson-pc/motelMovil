@@ -118,10 +118,29 @@ module.exports = async function (io) {
       }
 
     })
+    socket.on('listar-habitacion-negocio', async (data) => {
+
+      
+        Habitacion.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.portada": 0 }, function (error, lista) {
+  
+          if (error) {
+            // res.status(500).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listado-habitacion-negocio', { error: "ocurrio un error al listar habitaciones" });
+          } else {
+            if (!lista) {
+              //   res.status(404).send({ mensaje: "Error al listar" })
+              io.to(socket.id).emit('respuesta-listado-habitacion-negocio', { error: "no hay habitaciones en la base de datos" });
+            } else {
+              console.log("lista =>: ", lista);
+              io.to(socket.id).emit('respuesta-listado-habitacion-negocio', lista);
+            }
+          }
+        });
+      });
 
     socket.on('listar-habitacion', async (data) => {
 
-      Habitacion.find({"eliminado.estado": false }, { "foto.portada": 0 }, function (error, lista) {
+      Habitacion.find({"eliminado.estado": false }, { "foto.portada": 0 }).paginate(data.parte, 10, function (error, lista,total) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-habitacion', { error: "ocurrio un error al listar habitaciones" });
@@ -131,7 +150,7 @@ module.exports = async function (io) {
             io.to(socket.id).emit('respuesta-listado-habitacion', { error: "no habitaciones en la base de datos" });
           } else {
             console.log(lista);
-            io.to(socket.id).emit('respuesta-listado-habitacion', lista);
+            io.to(socket.id).emit('respuesta-listado-habitacion', {habitaciones:lista,total:total});
           }
         }
       });
