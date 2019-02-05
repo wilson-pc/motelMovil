@@ -96,7 +96,7 @@ module.exports = async function (io) {
 
             } else {
               console.log(nuevoProducto);
-              var negocio = await Negocio.findByIdAndUpdate("5c4b64eb9d43c514ec0f0957", { $inc: { productos: 1 } });
+              var negocio = await Negocio.findByIdAndUpdate(params.negocio, { $inc: { productos: 1 } });
               io.emit('respuesta-producto', nuevoProducto);
             }
           })
@@ -116,7 +116,6 @@ module.exports = async function (io) {
     socket.on('eliminar-producto', async (data) => {
       try {
         var datos = await Crypto.Desincryptar(data);
-        console.log("back Product ->", datos);
         if (!datos.error) {
           var producto = new Producto();
           producto._id = datos.id;
