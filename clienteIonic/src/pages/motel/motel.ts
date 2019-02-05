@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component,ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, InfiniteScroll, LoadingController } from 'ionic-angular';
 import { Habitacion } from '../../models/Habitacion';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
+
 
 /**
  * Generated class for the MotelPage page.
@@ -17,16 +18,24 @@ import { Productos } from '../../models/Productos';
   templateUrl: 'motel.html',
 })
 export class MotelPage {
+
+  infiniteScroll:any;
+  parte:number=1;  
+
   searchQuery: string = '';
   items: string[];
   habitaciones:Habitacion;
   producto:Productos;
-  listProductos:Productos[];
-  listauxProductos:Productos[];
+  listProductos:Productos[]=[];
+  listauxProductos:Productos[]=[];
+  loading:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private provedorProductos: ProviderProductosProvider) {
+  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos: ProviderProductosProvider) {
+   this.presentLoadingDefault();
     this.initializeItems();
-    this.getDatosProductos();    
+    this.getDatosProductos(this.parte);    
+    this.infiniteScroll="algo";
+    this.response();
   }
 
   ionViewDidLoad() {
@@ -35,9 +44,31 @@ export class MotelPage {
     console.log('ionViewDidLoad MotelPage');
   }
 
+  //FUNCION PARA LOADING
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Porfavor espere...'
+    });
+      
+  }
+
+  async loadData(event,parte:number) {
+  
+    this.infiniteScroll=event;
+    this.parte=parte;
+    console.log(parte);
+    await this.getDatosProductos(parte);  
+    
+  }
+
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
+
   async initializeItems() {
-    this.listauxProductos = this.listProductos;
-    console.log("lista aux" + this.listauxProductos);
+    this.listauxProductos=this.listProductos;
+    
+    // console.log("lista aux" + this.listauxProductos);
   }
 
   getItems(ev: any) {
@@ -56,17 +87,32 @@ export class MotelPage {
   }
 
   //FUNCIONES BASE DE DATOS
-   getDatosProductos(){
-    let data="Licoreria";
-    
-    this.provedorProductos.obtenerdatosProductos(data);
-    this.provedorProductos.respuestaProductosNegocio().subscribe((data:any[])=>{
-      console.log(data);
-      this.listProductos=data;   
-      this.listauxProductos=data;  
-    })    
+   getDatosProductos(parte){
+    let data="Motel";
+    console.log(parte);
+    this.provedorProductos.obtenerdatosProductos(data,parte);  
+      
+  }
 
-    
-   
+  response(){
+  
+    this.provedorProductos.respuestaProductosNegocio().subscribe((data:any[])=>{
+      console.log(data);   
+
+      data.forEach(element => {
+      //  this.listProductos.push(element);
+       this.listauxProductos.push(element);
+      });
+      this.loading.dismiss()
+
+      if(this.infiniteScroll!="algo"){
+         this.infiniteScroll.complete();
+      }
+      else{
+        this.loading.present();  
+      }
+     
+    }); 
+      
   }
 }

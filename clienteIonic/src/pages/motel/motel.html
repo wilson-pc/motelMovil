@@ -26,7 +26,7 @@
 
 <ion-content>
 
-    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+     <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
       
   <ion-list *ngIf="listauxProductos!=undefined">
       <ion-item  *ngFor="let item of listauxProductos">
@@ -38,6 +38,12 @@
         <button ion-button clear item-end>Ver</button>
       </ion-item>    
     </ion-list>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event,parte+1)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
       
 
 </ion-content>

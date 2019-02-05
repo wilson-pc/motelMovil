@@ -5,6 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
+var pagination= require ('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -209,8 +210,10 @@ module.exports = async function (io) {
 
     socket.on('listar-producto', async (data) => {
 
+      console.log(data);
       Producto.find({ "tipo.tiponegocio": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }).paginate(data.parte, 10, function (error, lista, total) {
         if (error) {
+
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
         } else {
@@ -218,7 +221,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
           } else {
-            console.log(lista);
+           
             io.to(socket.id).emit('respuesta-listado-producto', lista);
           }
         }
