@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 var log4js = require('log4js');
 log4js.configure({
     appenders: { cheese: { type: 'file', filename: 'logs/index.log' } },
-    categories: { default: { appenders: ['index'], level: 'error' } }
+    categories: { default: { appenders: ['cheese'], level: 'error' } }
   });
 const logger = log4js.getLogger('index');
 //
@@ -17,8 +17,8 @@ var productos = io.of('/productos');
 var negocios=io.of('/negocios');
 var usuarios=io.of('/usuarios');
 var home=io.of('/home');
-var habitacion=io('/habitacion');
-var comportamiento=io('/comportamiento')
+var habitacion=io.of('/habitacion');
+var comportamiento=io.of('/comportamiento')
 
 var UseProductos =require('./controllers/productosController')(productos);
 var UseUsuarios =require('./controllers/usuariosController')(usuarios);

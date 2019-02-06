@@ -64,8 +64,6 @@ var clients = [];
         console.log(e);
       }
     });
-
-    
     socket.on('registrar-tipo-negocio',async (data) => {
 
       try {
