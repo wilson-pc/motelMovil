@@ -31,11 +31,11 @@ export class MotelPage {
   loading:any;
 
   constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos: ProviderProductosProvider) {
-   this.presentLoadingDefault();
+  
     this.initializeItems();
     this.getDatosProductos(this.parte);    
     this.infiniteScroll="algo";
-    this.response();
+    //this.response();
   }
 
   ionViewDidLoad() {
@@ -45,21 +45,7 @@ export class MotelPage {
   }
 
   //FUNCION PARA LOADING
-  presentLoadingDefault() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Porfavor espere...'
-    });
-      
-  }
-
-  async loadData(event,parte:number) {
-  
-    this.infiniteScroll=event;
-    this.parte=parte;
-    console.log(parte);
-    await this.getDatosProductos(parte);  
     
-  }
 
   toggleInfiniteScroll() {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
@@ -90,29 +76,26 @@ export class MotelPage {
    getDatosProductos(parte){
     let data="Motel";
     console.log(parte);
-    this.provedorProductos.obtenerdatosProductos(data,parte);  
+   // this.provedorProductos.obtenerdatosProductosLicoreria(data,parte);  
       
   }
 
-  response(){
+  // response(){
   
-    this.provedorProductos.respuestaProductosNegocio().subscribe((data:any[])=>{
-      console.log(data);   
+  //   this.provedorProductos.respuestaProductosNegocio().subscribe((data:any[])=>{
+  //     console.log(data);   
 
-      data.forEach(element => {
-      //  this.listProductos.push(element);
-       this.listauxProductos.push(element);
-      });
-      this.loading.dismiss()
-
-      if(this.infiniteScroll!="algo"){
-         this.infiniteScroll.complete();
-      }
-      else{
-        this.loading.present();  
-      }
+  //     data.forEach(element => {
+  //     //  this.listProductos.push(element);
+  //      this.listauxProductos.push(element);
+  //     });
      
-    }); 
+
+  //     if(this.infiniteScroll!="algo"){
+  //        this.infiniteScroll.complete();
+  //     }
+     
+  //   }); 
       
-  }
+  // }
 }

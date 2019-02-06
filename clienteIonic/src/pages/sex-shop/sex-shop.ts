@@ -25,34 +25,39 @@ export class SexShopPage {
   items: string[];
   habitaciones:Habitacion;
   producto:Productos;
-  listProductos:Productos[]=[];
-  listauxProductos:Productos[]=[];
+  listProductossex:Productos[]=[];
+  listauxProductossex:Productos[]=[];
   loading:any;
 
 
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, public provedorProductos:ProviderProductosProvider) {
-    this.presentLoadingDefault();
-    this.initializeItems();
-    this.getDatosProductos(this.parte);    
-    this.infiniteScroll="algo";
-    this.response();
+  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, private provedorProductos:ProviderProductosProvider) {
+    
+    //this.initializeItems();
+    
   }
+  ionViewWillEnter(){
+  //   this.listauxProductossex=[];
+  this.getDatosProductos(this.parte);    
+   this.infiniteScroll="algo";
+  //   this.response();
+  }
+  
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SexShopPage');
   }
 
   //FUNCIONES PARA EL LOADING
-  presentLoadingDefault() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Porfavor espere...'
-    });
-    this.loading.present();    
-  }
+  // presentLoadingDefault() {
+  //   this.loading = this.loadingCtrl.create({
+  //     content: 'Porfavor espere...'
+  //   });
+  //   this.loading.present();    
+  // }
 
 //FUNCIONES PARA EL BUSCADOR
   async initializeItems() {
-    this.listauxProductos=this.listProductos;
+    this.listauxProductossex=this.listProductossex;
     
     // console.log("lista aux" + this.listauxProductos);
   }
@@ -67,20 +72,22 @@ export class SexShopPage {
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.listauxProductos = this.listauxProductos.filter((item) => {
+      this.listauxProductossex = this.listauxProductossex.filter((item) => {
         return (item.nombre.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }
 
   //FUNCIONES PARA CARGAR DATOS DESDE EL SCROLL
-  async loadData(event,parte:number) {
+  loadData(event,parte:number) {
   
-    this.infiniteScroll=event;
+    this.infiniteScroll=event;    
     this.parte=parte;
     console.log(parte);
-    await this.getDatosProductos(parte);  
-    
+    this.getDatosProductos(parte);   
+    if(this.infiniteScroll!="algo"){
+      this.infiniteScroll.complete();         
+    }          
   }
 
   toggleInfiniteScroll() {
@@ -88,30 +95,14 @@ export class SexShopPage {
   }
 
   //FUNCIONES BASE DE DATOS
-   getDatosProductos(parte){
+   async getDatosProductos(parte){
     let data="SexShop";
     console.log(parte);
-    this.provedorProductos.obtenerdatosProductos(data,parte);  
-      
+    this.listauxProductossex=this.listProductossex= await this.provedorProductos.obtenerdatosProductosSexshop(data,parte);  
+   
   }
 
-  response(){
+ 
+    
   
-    this.provedorProductos.respuestaProductosNegocio().subscribe((data:any[])=>{
-      console.log(data);   
-
-      data.forEach(element => {
-      //  this.listProductos.push(element);
-       this.listauxProductos.push(element);
-      });
-      this.loading.dismiss();     
-
-      if(this.infiniteScroll!="algo"){
-         this.infiniteScroll.complete();
-      }
-     
-    }); 
-      
-  }
-
 }
