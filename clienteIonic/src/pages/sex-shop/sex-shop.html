@@ -28,8 +28,8 @@
 
    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
       
-  <ion-list *ngIf="listauxProductos!=undefined">
-      <ion-item  *ngFor="let item of listauxProductos">
+  <ion-list *ngIf="listauxProductossex!=undefined">
+      <ion-item  *ngFor="let item of listauxProductossex">
         <ion-thumbnail item-start>
           <img [src]="item.foto.miniatura">
         </ion-thumbnail>

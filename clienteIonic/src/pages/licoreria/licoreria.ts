@@ -28,61 +28,35 @@ export class LicoreriaPage {
   listauxProductos:Productos[]=[];
   loading:Loading;
   aux:number=0;
-
   constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos:ProviderProductosProvider) {
    
+   // this.initializeItems();  
+   //this.listauxProductos=[];
+    //this.response();  
    
   }
 
-  ionViewWillEnter(){
+
+   ionViewWillEnter(){   
     this.listauxProductos=[];
-    this.listProductos=[];
-    this.aux=0;
-    
-   // this.initializeItems();
-    this.presentLoadingDefault();
-    this.getDatosProductos(this.parte);    
+    this.getDatosProductos(this.parte);      
     this.infiniteScroll="algo";
-    this.response();
-    
-  }
-
-  // initializeItems() {
-  //   this.listauxProductos = this.listProductos;
-  //   console.log("lista aux" + this.listauxProductos);
-  // }
-
+    console.log("esta es la lista=>"+ this.listauxProductos.length);
+   }
+ 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LicoreriaPage');
+    
   }
 
-  
-
-  //FUNCTION LOADING
-    presentLoadingDefault() {
-       
-    this.loading = this.loadingCtrl.create({
-      content: 'Porfavor espere...'
-    });
-
-    if( this.aux==0)
-    {
-      this.loading.present();
-    }
-    else{
-      if( this.aux==1){
-        this.loading.dismiss();
-      }
-    }
-
-  }
-
+ 
    loadData(event,parte:number) {
   
-    this.infiniteScroll=event;
+    this.infiniteScroll=event;    
     this.parte=parte;
     console.log(parte);
-     this.getDatosProductos(parte);  
+    this.getDatosProductos(parte);
+     
     
   }
 
@@ -90,10 +64,13 @@ export class LicoreriaPage {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
+  initializeItems(){
+    this.listauxProductos=this.listProductos;
+  }
  
   getItems(ev: any) {
     // Reset items back to all of the items
-    //this.initializeItems();
+    this.initializeItems();
 
     // set val to the value of the searchbar
     const val = ev.target.value;
@@ -105,42 +82,58 @@ export class LicoreriaPage {
       })
     }
   }
-
   //FUNCIONES BASE DE DATOS
-   getDatosProductos(parte){
+   async getDatosProductos(parte){
     let data="Licoreria";
     console.log(parte);
-    this.provedorProductos.obtenerdatosProductos(data,parte);  
-      
+    this.listauxProductos=this.listProductos= await this.provedorProductos.obtenerdatosProductosLicoreria(data,parte);      
+    await console.log( this.listauxProductos);
+    if(this.infiniteScroll!="algo"){
+        this.infiniteScroll.complete();         
+      }          
+   
   }
 
- response(){ 
+  //  responce(){
   
-    this.provedorProductos.respuestaProductosNegocio().subscribe( (data:any[])=>{
-      console.log(data);   
-      
-      this.loading.dismiss();
+  //   if( this.listProductos.length==0){
+  //     this.aux=1;
+  //   }
+  //   else{
+  //     this.aux=0;      
+  //   }
 
-      this.listauxProductos=[];   
-     
-     
-      data.forEach(element => {
-      
-       this.listauxProductos.push(element);
-      });        
+  //   this.guardarDatosenLista();
+    
+  // }
 
-      if(this.infiniteScroll!="algo"){
-         this.infiniteScroll.complete();         
-      }    
-     
-    }); 
-
-    this.aux=1;
-    console.log("este es el aux");
-    console.log(this.aux);
-      
-  }
+  // guardarDatosenLista(){
 
 
+  //   if(this.aux==1)
+  //   {
+  //     this.provedorProductos.respuestaProductosNegocioLicoreria().subscribe( (data:any[])=>{
+  //       this.listauxProductos=data;      
+  //       this.listProductos=data;
+  
+  //       console.log("estas dentro de getdata");
+  //       console.log(this.listauxProductos);
+  //       // data.forEach(element => {
+        
+  //       //  this.listauxProductos.push(element);
+  //       // });        
+  
+  //       // if(this.infiniteScroll!="algo"){
+  //       //    this.infiniteScroll.complete();         
+  //       // }          
+  //     });   
+  //   }
+  //   else
+  //   {
+  //     console.log("datos llenos");
+  //   }
+
+   
+  //}
 
 }
