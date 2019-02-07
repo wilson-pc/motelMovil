@@ -7,15 +7,14 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LocalWeatherPage } from '../pages/local-weather/local-weather';
 import { LoginPage } from '../pages/login/login';
-
-
 import { TabsPage } from '../pages/tabs/tabs';
 import { AuthProvider } from '../providers/auth/auth';
-
-
+import { Storage } from '@ionic/storage';
 import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
+import {AndroidPermissions} from '@ionic-native/android-permissions'
 import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
+import { UsuarioProvider } from '../providers/usuario/usuario';
 
 
 @Component({
@@ -37,9 +36,29 @@ export class MyApp {
 
 
 
-  constructor(public proveedordata:AuthProvider,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(private storage: Storage,private userServ:UsuarioProvider,public proveedordata:AuthProvider,private androidPermissions: AndroidPermissions,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
        
     this.initializeApp();
+    platform.ready().then(() => {
+
+      androidPermissions.requestPermissions(
+        [
+          androidPermissions.PERMISSION.STORAGE, 
+          androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE, 
+          androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
+        ]
+      );
+      storage.get('usuario').then((val) => {
+        if(val){
+        //  alert(val);
+          this.userServ.UserSeCion=val;
+          alert("con secion");
+        }else{
+          alert("sin secion");
+        }
+      });
+
+ }) 
     
     // used for an example of ngFor and navigation
     this.menu = [
@@ -54,6 +73,8 @@ export class MyApp {
 
 
   }
+
+
 
   initializeApp() {
 
@@ -82,6 +103,8 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
   logout() {
+    this.storage.remove("usuario");
+    this.userServ.UserSeCion=undefined;
     this.nav.setRoot(LoginPage);
   }
 }

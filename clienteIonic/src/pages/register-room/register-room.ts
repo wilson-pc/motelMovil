@@ -1,8 +1,6 @@
 import { Habitacion } from './../../models/Habitacion';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Observable, Subject  } from 'rxjs-compat';
-import { map, windowWhen } from 'rxjs/operators';
 import { getBase64, resizeBase64 } from 'base64js-es6'
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { ReplaySubject } from "rxjs/ReplaySubject";
@@ -10,6 +8,7 @@ import {
   ImagePicker,
   ImagePickerOptions
 } from '@ionic-native/image-picker';
+import { Observable } from 'rxjs';
 declare var window;
 
 /**

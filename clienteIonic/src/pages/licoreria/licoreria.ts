@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, LoadingController, Loading } from 
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
-import { async } from 'rxjs/internal/scheduler/async';
 
 /**
  * Generated class for the LicoreriaPage page.

@@ -2,6 +2,7 @@
 var nodemailer = require('nodemailer');
 var Producto=require('../schemas/producto');
 var Negocio=require('../schemas/negocio');
+var Crypto = require("../variables/desincryptar");
 module.exports = async function (io) {
     var clients = [];
     io.on('connection', async function (socket) {
