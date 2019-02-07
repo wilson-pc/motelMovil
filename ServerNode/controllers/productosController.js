@@ -176,22 +176,26 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+         
+          console.log(datos);
+
           var producto = new Producto();
           var params = datos.producto;
+          producto._id = params._id;
           producto.nombre = params.nombre;
           producto.negocio = params.negocio;
           producto.precio = params.precio;
-          producto.disponibilidad = params.disponibilidad;
           producto.cantidad = params.cantidad;
-          producto.tipo = await Tipo.findById(params.tito);
+          producto.tipo = await Tipo.findById(params.tipo);
           producto.foto = params.foto;
           // usuario.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           //  producto.creacion = params.creacion
           producto.modificacion = params.modificacion;
 
-          producto.findByIdAndUpdate(params._id, producto, { new: true }, async (error, productoActualizado) => {
+          Producto.findByIdAndUpdate(params._id, producto, { new: true }, async (error, productoActualizado) => {
             if (error) {
+              console.log(error);
               io.to(socket.id).emit('respuesta-actualizar-producto', { error: "ocurio un error al crear el producto" });
             } else {
 
