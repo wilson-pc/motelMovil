@@ -1,3 +1,4 @@
+import { SocketUsuarioService2 } from './../services/socket-config.service';
 import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -136,6 +137,7 @@ export const firebaseConfig = {
     GooglePlus,
     AndroidPermissions,
     ProviderProductosProvider,
+    SocketUsuarioService2,
     SocketConfigService,
     SocketLoginService,
     UsuarioProvider

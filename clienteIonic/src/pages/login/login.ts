@@ -102,11 +102,11 @@ usuario:Usuarios;
 
 
   RegisterGoogle(dataUsuario:Usuarios){
-    alert("jala");
+    alert(JSON.stringify(dataUsuario));
     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({usuario: dataUsuario}), clave.clave);
     this.socketLogin.emit("login-googlepus", ciphertext.toString());
     this.socketLogin.on('respuesta-login-googlepus', (data) => {
-      alert(JSON.stringify(data));
+      
       if(!data.error){
       this.userServ.UserSeCion=data;
       this.storage.set("usuario", this.encryptData(data));

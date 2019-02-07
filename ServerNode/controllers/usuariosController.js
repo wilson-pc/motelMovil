@@ -62,6 +62,69 @@ module.exports = async function (io) {
 
 
     });
+
+
+    socket.on('registrar-usuario-cliente', async (data) => {
+
+
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var usuario = new Usuario();
+
+          var params = datos.usuario;
+
+          usuario.nombre = params.nombre;
+          usuario.apellidos = params.apellidos;
+          usuario.genero = params.genero;
+          usuario.email = params.email;
+          usuario.login = params.login;
+          usuario.foto = params.foto;
+          usuario.eliminado = { estado: false, razon: "" };
+          usuario.creacion = params.creacion
+          usuario.modificacion = params.modificacion;
+          usuario.rol = await Rol.findById(params.rol);
+          var cantidad = await Usuario.countDocuments({ email: params.email });
+          if (cantidad < 1) {
+            if (params.nombre) {
+              //encripta el pasword del usuario
+              bcrypt.hash(usuario.login.password, null, null, async function (error, hash) {
+                usuario.login.password = hash;
+
+                if (usuario.login.usuario != null) {
+                  //guarda al nuevo usuario en la bd
+
+                  usuario.save(async (error, nuevoUsuario) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { error: "Error no se pudo crear el registro" });
+
+                    } else {
+                      
+                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { dato:nuevoUsuario});
+                 
+                    }
+                  })
+                }
+
+              });
+            }
+          }
+          else {
+            io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { error: "este usuario ya esta registrado" });
+            //console.log("usuario existe");
+          }
+
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+      //console.log(req.body);
+    });
+
+
     socket.on('registrar-usuario', async (data) => {
 
 

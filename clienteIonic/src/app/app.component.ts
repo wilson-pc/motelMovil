@@ -52,9 +52,9 @@ export class MyApp {
         if(val){
         //  alert(val);
           this.userServ.UserSeCion=val;
-          alert("con secion");
+          //alert("con secion");
         }else{
-          alert("sin secion");
+        //  alert("sin secion");
         }
       });
 
