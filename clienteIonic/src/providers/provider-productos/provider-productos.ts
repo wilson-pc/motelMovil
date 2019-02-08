@@ -17,6 +17,7 @@ export class ProviderProductosProvider {
 
   listLicores:Productos[]=[];
   listSexshop:Productos[]=[];
+  sw=0;
  
   constructor(public http: HttpClient, private productService:SocketConfigService) {
     console.log('Hello ProviderProductosProvider Provider');
@@ -76,27 +77,33 @@ export class ProviderProductosProvider {
  
      let newdata={termino:producto,parte:parte}
      console.log(newdata);
-     this.productService.emit('listar-producto', newdata); 
-     
+     this.productService.emit('listar-producto', newdata);      
       
       if(this.listSexshop.length==0)
       {
         this.respuestaProductosNegocioSexshop().subscribe((data:Productos[])=>{
           data.forEach(element =>{          
             this.listSexshop.push(element);
-          })
-        })
+          });
+        });
        
       }
       else{
         this.respuestaProductosNegocioSexshop().subscribe((data:Productos[])=>{
-        
-          data.forEach(element =>{          
-            this.listSexshop.push(element);
-          })
-        })
+          if(this.sw==1)
+          {
+            data.forEach(element =>{          
+              this.listSexshop.push(element);
+            });
+          }
+         
+          console.log("este es el sexlist"+this.listSexshop);
+          console.log(data);
+         
+        });
       }       
-       //console.log(this.listSexshop);   
+          
+       
      return  this.listSexshop;
     }
 
