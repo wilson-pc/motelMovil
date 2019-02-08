@@ -1,0 +1,64 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title><b>{{commerceOnly.nombre}}</b></ion-title>
+    
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+
+    <ion-row>
+      <ion-col col-5>
+        <div >
+          <img [src]="productOnly.foto.miniatura">
+        </div>
+      </ion-col>
+      <ion-col col-7>
+        <ion-item>
+          <ion-label stacked>Producto:</ion-label>
+          <ion-label>{{productOnly.nombre}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>Tipo:</ion-label>
+          <ion-label>{{productOnly.tipo.tipo}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>Precio:</ion-label>
+          <ion-label>{{productOnly.precio}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>Cantidad:</ion-label>
+          <ion-label>{{productOnly.cantidad}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>Descripcion:</ion-label>
+          <ion-label>{{productOnly.descripcion}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>
