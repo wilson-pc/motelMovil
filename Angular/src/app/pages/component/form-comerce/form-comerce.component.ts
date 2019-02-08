@@ -132,7 +132,7 @@ export class FormComerceComponent implements OnInit {
 		this.descripcion=negocio.direccion.descripcion;
 		this.ubicaciongps=negocio.direccion.ubicaciongps;
 		
-		console.log(this.negocios );
+		console.log(negocio);
 	
 		
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
@@ -171,6 +171,29 @@ export class FormComerceComponent implements OnInit {
 		 	console.log(data);
 		 });
 		
+	}
+
+	update(){
+		
+		var date= new Date().toUTCString();
+		this.isError=false;
+		this.isRequired=false;
+		this.isExito=false;		
+
+		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};		
+		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
+
+		let data={usuario:this.usuarioServ ,negocio: this.negocios}
+
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
+		this.socket.emit("actualizar-negocio",ciphertext.toString());
+		this.socket.on('respuesta-actualizar-negocio',(data)=>{
+			console.log("Entraste a respuesta");
+			console.log(data);
+		});
+		console.log(this.descripcion);
+		console.log(this.ubicaciongps);
+		console.log(this.negocios);
 	}
 
 
@@ -228,15 +251,7 @@ export class FormComerceComponent implements OnInit {
 		//console.log(this.ListaNegocio);	
 				
 	}
-	// mostrarmsj(){
-	// 	this.isError = false;
-	// 	this.isRequired = false;
-	// 	this.isExito = false;
-	// 	console.log(this.isExito);
-	// 	console.log("mensaje");
-	// 	console.log(this.isExito);
-	// }
-
+	
 	conn() {
 		this.ListaNegocio = [];
 		this.respuestaCrear().subscribe((data: any) => {		
@@ -263,30 +278,15 @@ export class FormComerceComponent implements OnInit {
 
 		});
 		
-		// this.respuestaListarNegocio().subscribe((data: any[]) => {
-		// 	console.log("carga al array");
-		// 	this.ListaNegocio=data;
-		// 	console.log(this.negocios)
-		// });
+		
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 		console.log(data);
 			this.ListaNegocio = data;
-			//console.log(this.negocios)
+			
 		});
 	}
 
-	update(){
-		console.log(this.descripcion);
-		console.log(this.ubicaciongps);
-		var date= new Date().toUTCString();
-		this.isError=false;
-		this.isRequired=false;
-		this.isExito=false;		
-
-		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
-		
-		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
-	}
+	
 
 	delete(){
 
