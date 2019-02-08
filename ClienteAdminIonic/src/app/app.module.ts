@@ -37,6 +37,7 @@ import { UserOnlyProvider } from '../providers/user-only/user-only';
 import { ListProductsPage } from '../pages/list-products/list-products';
 import { CommerceProvider } from '../providers/commerce/commerce';
 import { RegisterProductsPage } from '../pages/register-products/register-products';
+import { EditProductsPage } from '../pages/edit-products/edit-products';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -65,7 +66,8 @@ export const firebaseConfig = {
     RegisterRoomPage,
     CommercePage,
     ListProductsPage,
-    RegisterProductsPage
+    RegisterProductsPage,
+    EditProductsPage,
   ],
   imports: [
     BrowserModule,
@@ -102,7 +104,8 @@ export const firebaseConfig = {
     EditLoginPage,
     CommercePage,
     ListProductsPage,
-    RegisterProductsPage
+    RegisterProductsPage,
+    EditProductsPage,
   ],
   providers: [
     StatusBar,

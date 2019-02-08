@@ -18,8 +18,10 @@ var negocios=io.of('/negocios');
 var usuarios=io.of('/usuarios');
 var home=io.of('/home');
 var habitacion=io.of('/habitacion');
-var comportamiento=io.of('/comportamiento')
+var comportamiento=io.of('/comportamiento');
+var login=io.of('/login');
 
+var useLogin=require('./controllers/loginClientController')(login);
 var UseProductos =require('./controllers/productosController')(productos);
 var UseUsuarios =require('./controllers/usuariosController')(usuarios);
 var UseNegocios =require('./controllers/NegocioController')(negocios);

@@ -16,5 +16,6 @@ export class Usuarios{
     public eliminado:{estado:Boolean,razon:string};
     public creacion:{fecha:string,usuario:string};
     public modificacion:{fecha:string,usuario:string};
+    public tiporegistro:string;
 
 }

@@ -13,7 +13,7 @@ export class SocketConfigService extends Socket {
 
 }
 
-export class SocketConfigService2 extends Socket {
+export class SocketUsuarioService2 extends Socket {
   constructor() {
     super({ url: RutaServer.socket + "usuarios", options: {} });
   }
@@ -24,7 +24,13 @@ export class SocketConfigHomeService extends Socket {
     super({ url: RutaServer.socket + "home", options: {} });
   }
 }
-export class SocketConfigService3 extends Socket {
+
+export class SocketLoginService extends Socket {
+  constructor() {
+    super({ url: RutaServer.socket + "login", options: {} });
+  }
+}
+export class SocketNegocioService3 extends Socket {
   constructor() {
     super({
       url: RutaServer.socket + "negocios", options: {}

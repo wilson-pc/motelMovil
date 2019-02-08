@@ -9,6 +9,7 @@ import { Negocio } from '../../models/Negocio';
 import { Observable } from 'rxjs';
 import { Productos } from '../../models/Productos';
 import { RegisterProductsPage } from '../register-products/register-products';
+import { EditProductsPage } from '../edit-products/edit-products';
 
 @Component({
   selector: 'page-list-products',
@@ -25,6 +26,7 @@ export class ListProductsPage {
   // variables internas
   productOnly: Productos;
   commerceOnly: Negocio;
+  updateList: false;
 
   constructor(
     public navCtrl: NavController,
@@ -38,6 +40,11 @@ export class ListProductsPage {
     //Inicializacion
     this.connectionBackendSocket();
     this.getAllCommerce();
+
+    if(this.updateList){
+      this.getAllCommerce();
+    }
+
   }
 
   ionViewDidLoad() {
@@ -86,7 +93,12 @@ export class ListProductsPage {
   }
 
   updateProduct(product) {
-
+    console.log("Editar producto: ", product.nombre);
+    let modal = this.modalCtrl.create(EditProductsPage, { product: product, commerce: this.commerceOnly });
+    modal.onDidDismiss(action => {
+      this.getProductsCommerce();
+    });
+    modal.present();
   }
 
   deleteProduct(product) {

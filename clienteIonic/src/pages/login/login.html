@@ -46,8 +46,12 @@
       <p text-center ion-text color="dark">O</p>
 
       
-      <button ion-button icon-only block class="btn-gplus">
+      <button (click)="loginGoogle()"  ion-button icon-only block class="btn-gplus">
         <ion-icon name="logo-google"></ion-icon>
+      </button>
+      
+      <button  (click)="loginFacebook()" ion-button icon-only block class="btn-gplus">
+        <ion-icon name="logo-facebook"></ion-icon>
       </button>
 
     </div>

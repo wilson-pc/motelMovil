@@ -62,6 +62,69 @@ module.exports = async function (io) {
 
 
     });
+
+
+    socket.on('registrar-usuario-cliente', async (data) => {
+
+
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var usuario = new Usuario();
+
+          var params = datos.usuario;
+
+          usuario.nombre = params.nombre;
+          usuario.apellidos = params.apellidos;
+          usuario.genero = params.genero;
+          usuario.email = params.email;
+          usuario.login = params.login;
+          usuario.foto = params.foto;
+          usuario.eliminado = { estado: false, razon: "" };
+          usuario.creacion = params.creacion
+          usuario.modificacion = params.modificacion;
+          usuario.rol = await Rol.findById(params.rol);
+          var cantidad = await Usuario.countDocuments({ email: params.email });
+          if (cantidad < 1) {
+            if (params.nombre) {
+              //encripta el pasword del usuario
+              bcrypt.hash(usuario.login.password, null, null, async function (error, hash) {
+                usuario.login.password = hash;
+
+                if (usuario.login.usuario != null) {
+                  //guarda al nuevo usuario en la bd
+
+                  usuario.save(async (error, nuevoUsuario) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { error: "Error no se pudo crear el registro" });
+
+                    } else {
+                      
+                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { dato:nuevoUsuario});
+                 
+                    }
+                  })
+                }
+
+              });
+            }
+          }
+          else {
+            io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { error: "este usuario ya esta registrado" });
+            //console.log("usuario existe");
+          }
+
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+      //console.log(req.body);
+    });
+
+
     socket.on('registrar-usuario', async (data) => {
 
 
@@ -495,15 +558,18 @@ module.exports = async function (io) {
           var usuario = params.usuario;
           var pass = params.password;
           var tipo = params.tipo;
+          console.log(params);
 
           Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
+              console.log(error);
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
             } else {
 
               if (user == null) {
+                console.log("usuario no existe");
                 io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exite" });
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
@@ -514,6 +580,7 @@ module.exports = async function (io) {
                   var usuario = new Usuario();
                   usuario._id = user._id;
                   usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
+                  console.log(user.login);
 
                   bcrypt.compare(pass, user.login.password, function (error, ok) {
 

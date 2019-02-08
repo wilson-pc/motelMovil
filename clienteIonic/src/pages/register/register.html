@@ -6,7 +6,7 @@
     <div padding text-center>
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        <strong>Ionic 3</strong> Start Theme
+        <strong>Triservice</strong> registrese
       </h2>
     </div>
 
@@ -15,47 +15,82 @@
       <ion-item>
         <ion-label floating>
           <ion-icon name="person" item-start class="text-primary"></ion-icon>
-          Full Name
+          Nombre
         </ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-input type="text" [(ngModel)]="usuario.nombre" name="nombre"></ion-input>
       </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="people" item-start class="text-primary"></ion-icon>
+          Apellidos
+        </ion-label>
+        <ion-input type="text" name="apellidos" [(ngModel)]="usuario.apellidos"></ion-input>
+      </ion-item>
+      <ion-item (click)="filechoosser()">
+        <ion-label floating>
+          <ion-icon name="people" item-start class="text-primary"></ion-icon>
+          foto
+        </ion-label>
+        <input type="file" accept="image/*"  name="fileInput" (change)="fileChange($event)" #fileInput  class="input-file" style="position:absolute; top: -999999px">
+        <ion-input type="text" [(ngModel)]="nombreimagen" name="gats" disabled="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="transgender" item-start class="text-primary"></ion-icon>
+         Genero
+        </ion-label>
+        <ion-select name="genero"  [(ngModel)]="usuario.genero" >
+          <ion-option value="masculino">Masculino</ion-option>
+          <ion-option value="femenino">Femenino</ion-option>
+          <ion-option value="otros">Otros</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon item-start class="text-primary"></ion-icon>
+         Email
+        </ion-label>
+
+
+        <ion-input  name="mail" [(ngModel)]="usuario.email" type="email"></ion-input>
+      </ion-item>
+
+
+
+
+
 
       <ion-item>
         <ion-label floating>
-          <ion-icon name="mail" item-start class="text-primary"></ion-icon>
-          Email
+          <ion-icon name="photos" item-start class="text-primary"></ion-icon>
+          Nombre de usuario
         </ion-label>
-        <ion-input type="email"></ion-input>
+        <ion-input  name="nombreDeUsuario" [(ngModel)]="nombreDeUsuario" type="text"></ion-input>
       </ion-item>
-
       <ion-item>
         <ion-label floating>
           <ion-icon name="lock" item-start class="text-primary"></ion-icon>
-          Password
+          contraseña
         </ion-label>
-        <ion-input type="password"></ion-input>
+        <ion-input name="password" [(ngModel)]="password" type="password"></ion-input>
       </ion-item>
     </form>
 
     <div margin-top>
       <button ion-button block color="dark" tappable (click)="register()">
-        SIGN UP
+       Craer cuenta
       </button>
 
-      <p text-center ion-text color="secondary">Or Sign Up with:</p>
+      <p text-center ion-text color="secondary">O inicie sesión con:</p>
 
       <ion-grid>
         <ion-row>
           <ion-col col-4>
-            <button ion-button icon-only block class="btn-facebook">
+            <button (click)=" OpenFacebook()" ion-button icon-only block class="btn-facebook">
               <ion-icon name="logo-facebook"></ion-icon>
             </button>
           </ion-col>
-          <ion-col col-4>
-            <button ion-button icon-only block class="btn-twitter">
-              <ion-icon name="logo-twitter"></ion-icon>
-            </button>
-          </ion-col>
+         
           <ion-col col-4>
             <button ion-button icon-only block class="btn-gplus">
               <ion-icon name="logo-googleplus"></ion-icon>
