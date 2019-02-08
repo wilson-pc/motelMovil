@@ -50,11 +50,13 @@ export class MyApp {
           androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
         ]
       );
-      storage.get('usuario').then((val) => {
+     storage.get('usuario').then((val) => {
         if(val){
         //  alert(val);
-        
-          this.userServ.UserSeCion=this.decryptData(val);
+      let datos=this.decryptData(val);
+
+          this.userServ.UserSeCion=datos;
+          console.log(datos);
           //alert("con secion");
         }else{
           this.userServ.UserSeCion=false;

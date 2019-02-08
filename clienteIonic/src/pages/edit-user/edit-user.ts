@@ -3,7 +3,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Usuarios } from '../../models/Usuarios';
 import { defecto } from '../register/imagedefault';
-import { SocketUsuarioService2 } from '../../services/socket-config.service';
+import { Storage } from '@ionic/storage';
+import { SocketUsuarioService2, SocketLoginService } from '../../services/socket-config.service';
 import { clave } from '../../app/cryptoclave';
 import { resizeBase64 } from 'base64js-es6';
 import * as CryptoJS from 'crypto-js';
@@ -26,7 +27,7 @@ export class EditUserPage {
   @ViewChild('fileInput') fileInput: ElementRef;
   nombreDeUsuario:string;
   password:string;
-  constructor(public serServ:UsuarioProvider,public toastCtrl: ToastController,private userSocket:SocketUsuarioService2,public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private storage: Storage,public serServ:UsuarioProvider,public toastCtrl: ToastController,private userSocket:SocketLoginService,public navCtrl: NavController, public navParams: NavParams) {
     this.usuario=new Usuarios;
     this.usuario=serServ.UserSeCion.datos;
     this.connection();
@@ -40,7 +41,7 @@ if(this.usuario.nombre && this.usuario.email && this.usuario.apellidos){
   this.usuario.modificacion = { fecha: date} as any;
 
   let data = { usuario: this.usuario}
- 
+ console.log(data)
   var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
   this.userSocket.emit("actualizar-usuario-cliente", ciphertext.toString());
   
@@ -62,22 +63,19 @@ if(this.usuario.nombre && this.usuario.email && this.usuario.apellidos){
 
   
   connection(){
-    this.userSocket.on('respuesta-registrar-usuario-cliente', (data) => {
-      if(!data.error){
+    this.userSocket.on('respuesta-actualizar-usuario-cliente', (data) => {
+      if(!data.mensaje){
+        var cache={datos:data,token:this.serServ.UserSeCion.token};
+        this.serServ.UserSeCion=cache;
+        console.log(cache);
+        this.storage.set("usuario", this.encryptData(cache));
      this.navCtrl.pop();
-     let toast = this.toastCtrl.create({
-      showCloseButton: true,
-      cssClass: 'profile-bg',
-      message: "registro con exito inicio secion",
-      duration: 3000,
-      position: 'bottom'
-    });
-    toast.present();
+
     }else{
       let toast = this.toastCtrl.create({
         showCloseButton: true,
         cssClass: 'profile-bg',
-        message: data.error,
+        message: data.mensaje,
         duration: 3000,
         position: 'bottom'
       });
@@ -120,4 +118,11 @@ if(this.usuario.nombre && this.usuario.email && this.usuario.apellidos){
     return base64Observable;
   }
 
+  encryptData(data) {
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

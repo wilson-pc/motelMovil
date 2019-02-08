@@ -146,28 +146,27 @@ module.exports = async function (io) {
           socket.on('actualizar-usuario-cliente', async (data) => {
 
             try {
-              const bytes = CryptoJS.AES.decrypt(data, clave.clave);
-              if (bytes.toString()) {
-                var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+              var datos = await Crypto.Desincryptar(data);
+              if (!datos.error) {
                 var usuario = new Usuario();
                 var params = datos.usuario;
                 usuario._id = params._id;
                 usuario.nombre = params.nombre;
-                usuario.apellido = params.apellido;
+                usuario.apellidos = params.apellidos;
                 usuario.email = params.email;
-                usuario.login = params.login;
+                //usuario.login = params.login;
                 usuario.foto = params.foto;
                 usuario.modificacion = params.modificacion;
-      
+      console.log(usuario);
                 //guarda al nuevo usuario en la bd
       
-                Usuario.findByIdAndUpdate(params._id, usuario, { new: true }, async (error, actualizado) => {
+              Usuario.findByIdAndUpdate(params._id, usuario, { new: true }, async (error, actualizado) => {
                   if (error) {
-                    io.to(socket.id).emit('respuesta-actualizar-usuario-cliente', { mensaje: "error al actualizar usuario" });
+                    io.to(socket.id).emit('respuesta-actualizar-usuario-cliente', { mensaje: "error al canbiar datos" });
                     // res.status(500).send({ mensaje: "error al guradar" })
                   } else {
       
-                  
+                    console.log(actualizado);            
                     io.to(socket.id).emit('respuesta-actualizar-usuario-cliente', actualizado);
       
                   //  io.emit('respuesta-actualizar-usuario-todos', actualizado);
@@ -176,7 +175,7 @@ module.exports = async function (io) {
       
               }
               else {
-      
+                io.to(socket.id).emit('respuesta-actualizar-usuario-cliente', { mensaje: "error al actualizar datos de usuario usuario" });
               }
             } catch (e) {
               console.log(e);
