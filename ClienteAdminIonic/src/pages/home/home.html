@@ -10,25 +10,18 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="animated fadeIn common-bg">
-
-  <div>
-    <div style="display: block">
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [chartType]="barChartType">
-      </canvas>
-    </div>
-  </div>
-
-  <div *ngFor="let negocio ">
-    <ion-card>
-      <ion-card-content>
-        <!-- Add card content here! -->
-      </ion-card-content>
-    </ion-card>
-  </div>
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+      refreshingText="Actualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-card *ngFor="let commerce of listCommerce">
+    <ion-card-header>
+      {{commerce.tipo.nombre}}
+    </ion-card-header>
+    <ion-card-content>
+      {{commerce.nombre}}
+    </ion-card-content>
+  </ion-card>
 </ion-content>

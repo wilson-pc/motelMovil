@@ -1,3 +1,4 @@
+
 import { SocketConfigService } from './../../socket-config.service';
 import { element } from 'protractor';
 import { BuscadorService } from './../../service/buscador.service';
@@ -12,6 +13,8 @@ import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
 import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
+import { Socket } from 'net';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
 	selector: 'app-registry-owner',
@@ -32,15 +35,20 @@ export class RegistryOwnerComponent implements OnInit {
 	usuario: Usuarios;
 	usuarios: Usuarios[] = [];
 	a: any;
+	errorMensaje: string;
 	idUsuario: string;
-	usuarioActualizado:Usuarios;
-	loginusuario:string;
-	loginpassword:string;
+	usuarioActualizado: Usuarios;
+	loginusuario: string;
+	loginpassword: string;
 	dropdownList = [];
 	selectedItems = [];
 	dropdownSettings = {};
 	// Cabeceras de la Tabla
 	headElements = ['Nro', 'Nombres', 'Apellidos', 'CI', 'Genero', 'Contacto', 'Email'];
+	profileUser: Usuarios;
+	negociosUsuario: Negocio[] = [];
+	contentUserID: string;
+	buttons:boolean=true;
 
 	items: any = []
 	term: string;
@@ -48,25 +56,29 @@ export class RegistryOwnerComponent implements OnInit {
 	negocios: Negocio[];
 
 	// Cabeceras de la Tabla
-	constructor(private socketProducto:SocketConfigService,private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
+	constructor(private socketProducto: SocketConfigService, private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
+		this.profileUser = new Usuarios;
 
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
-		
+		this.errorMensaje = "Error no se pudo guardar el registro."
 		this.getUsers();
 		this.conn();
 		this.a = 1;
 		// Model Negocios
 		this.negocio = new Negocio;
-		this.usuarioActualizado=new Usuarios
-		this.peticionSocketNegocio();
+		this.usuarioActualizado = new Usuarios
+	
 		this.buscador.lugar = "usuarios";
-	}
 
-	ejm() {
-		alert("ejemplo");
 	}
-          //Llenar el ng-select
+	
+	cargarDrow(){
+		console.log("nuevoi");
+		this.peticionSocketNegocio();
+	}
+	
+	//Llenar el ng-select
 	ngOnInit() {
 
 		this.selectedItems = [
@@ -76,58 +88,71 @@ export class RegistryOwnerComponent implements OnInit {
 			singleSelection: false,
 			idField: '_id',
 			textField: 'nombre',
-			selectAllText: 'Select All',
-			unSelectAllText: 'UnSelect All',
-			itemsShowLimit: 3,
+			selectAllText: 'Seleccionar Negocios',
+			unSelectAllText: 'Descelecionar Negocios',
+			itemsShowLimit: 5,
 			allowSearchFilter: true
 		};
 	}
-	onItemSelect(item: any) {
-		console.log(item);
-	}
-	onSelectAll(items: any) {
-		console.log(items);
-	}
-	onFilterChange(item: any) {
 
+	onItemSelect(item: any) {
+	}
+
+	onSelectAll(items: any) {
+	}
+
+	onFilterChange(item: any) {
 		if (item.length > 1) {
 			let datos = this.negocios.filter(word => word.nombre.includes(item));
 			if (datos.length > 0) {
 				this.dropdownList = datos
 			}
-
 		}
 	}
+
 	peticionSocketNegocio() {
+		console.log("dfrr");
 		this.socket3.emit("listar-negocio2", { data: "nada" });
+	  
+		this.socket3.on('respuesta-listar-negocio2', (data) => {
+			this.dropdownList = data.slice(0, 3);
+			this.negocios = data;
+			this.selectedItems=[];
+		});
 	}
 
 	getUsers() {
 		this.socket.emit("listar-usuario", { data: "nada" });
 	}
+
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
-	//	var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto:"da"}), clave.clave);
-	//	this.socket.emit("validar-token", ciphertext.toString());
-		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
-		this.modal.result.then((e) => {
-		});
-	}
-
-	openModalView(content) {
-		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
-		this.modal.result.then((e) => {
-		});
-	}
-	openModalUpdate(content,usuario) {
 		this.selectedItems=[];
-
-		 
-		this.usuarioActualizado=this.usuarios.filter(word => word._id==usuario._id)[0];
-
+		this.peticionSocketNegocio();
+		this.buttons=true;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
+	}
+
+	openModalView(content, id: string) {
+		this.contentUserID = id;
+		
+		this.viewUser();
+		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
+		this.modal.result.then((e) => {
+		});
+	}
+
+	openModalUpdate(content, usuario) {
+		this.peticionSocketNegocio();
+		this.selectedItems = [];
+		this.usuarioActualizado = this.usuarios.filter(word => word._id == usuario._id)[0];
+		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
+		this.modal.result.then((e) => {
+		});
+		//Obtener listado de negocios
+		this.negocioActualPorEvento(this.usuarioActualizado._id);
 	}
 
 	openModalDelete(content, id) {
@@ -135,20 +160,28 @@ export class RegistryOwnerComponent implements OnInit {
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
+
+		//Obtener listado de negocios antes de eliminar
+		this.negocioActualPorEvento(id);
 	}
 
 	cancelModal() {
-		this.idUsuario=undefined;
+		this.idUsuario = undefined;
 		this.modal.close();
+		this.eliminar = false;
+	}
+	validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
 	}
 
 	// COSUMO DE SERVICIOS
 	add() {
+
 		var date = new Date().toUTCString();
 		this.isError = false;
 		this.isRequired = false;
 		this.isExito = false;
-		//console.log(this.usuario,this.user,this.password);
 		this.usuario.login = { usuario: this.user, password: this.password, estado: false };
 		let seleccionados = [];
 		this.usuario.rol = "5c45ef012f230f065ce7d830" as any;
@@ -160,41 +193,48 @@ export class RegistryOwnerComponent implements OnInit {
 		let data = { usuario: this.usuario, negocio: seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 
-		if(this.usuario.nombre!=undefined && this.usuario.apellidos!=undefined && this.user!=undefined && this.selectedItems.length>0 && this.usuario.email!=undefined){
+		if (this.usuario.nombre != undefined && this.usuario.apellidos != undefined && this.user != undefined && this.selectedItems.length > 0 && this.validateEmail(this.usuario.email)) {
+			this.buttons=false;
 			this.socket.emit("registrar-usuario", ciphertext.toString());
-			
 		}
-		else{
-		this.isRequired=true;
+		else {
+			this.isRequired = true;
 		}
-		
+
 	}
 
-
-
-
 	update() {
-		var fecha=new Date().toUTCString();
+		var fecha = new Date().toUTCString();
 
-		this.usuarioActualizado.modificacion={fecha:fecha,usuario:this.usuarioServ.usuarioActual.datos._id};
-		
-		let seleccionados=[];
+		this.usuarioActualizado.modificacion = { fecha: fecha, usuario: this.usuarioServ.usuarioActual.datos._id };
+
+		let seleccionados = [];
 		this.selectedItems.forEach(element => {
 			seleccionados.push(element._id);
 		});
-		let data = { usuario: this.usuarioActualizado,negocio: seleccionados }
+		let data = { usuario: this.usuarioActualizado, negocio: seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-		
-	   
-	   	this.socket.emit("actualizar-usuario", ciphertext.toString());
+
+
+		this.socket.emit("actualizar-usuario", ciphertext.toString());
 	}
 
 	delete(razon) {
 		let data = { id: this.idUsuario, razon: razon }
 
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.eliminar=false;
 		this.socket.emit("eliminar-usuario", ciphertext.toString());
 	}
+
+
+	viewUser() {
+		let data = { id: this.contentUserID }
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket.emit("sacar-usuario", ciphertext.toString());
+		this.verificarNegocioUsuario();
+	}
+
 	razonEliminar(event, Termino) {
 		if (Termino.length > 12) {
 			this.eliminar = true;
@@ -202,6 +242,34 @@ export class RegistryOwnerComponent implements OnInit {
 			this.eliminar = false;
 		}
 	}
+
+	verificarNegocioUsuario() {
+		let data = { id: this.contentUserID, tipo: "negocios" }
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket3.emit("listar-negocios-de-usuario", ciphertext.toString());
+	}
+
+	negocioActualPorEvento(id) {
+		let data = { id: id, tipo: "negocios" }
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket3.emit("listar-negocios-de-usuario", ciphertext.toString());
+	}
+
+	removeCommerceTitular(negocio) {
+
+		let fechaUTC = new Date().toUTCString();
+		let usarioActualSesion = this.usuarioServ.usuarioActual.datos._id;
+		let data = {
+			negocio: {
+				_id: negocio._id, eliminado: { estado: true, razon: "" },
+				modificacion: { fecha: fechaUTC, usuario: usarioActualSesion }
+			}
+		}
+
+		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+		this.socket3.emit("eliminar-negocio-de-usuarios", ciphertext.toString());
+	}
+
 	//funcion para buscar imagen dentro de la maquina
 	changeListener($event): void {
 		this.readThis($event.target);
@@ -216,10 +284,8 @@ export class RegistryOwnerComponent implements OnInit {
 		myReader.onloadend = (e) => {
 			// this.docente.perfil.foto = myReader.result.toString();
 			// console.log(myReader.result.toString());
-			resizeBase64(myReader.result, 400, 500).then((result) => {
+			resizeBase64(myReader.result, 90, 100).then((result) => {
 				this.usuario.foto = result;
-
-
 			});
 		}
 		myReader.readAsDataURL(file);
@@ -230,59 +296,101 @@ export class RegistryOwnerComponent implements OnInit {
 		this.negocios = [];
 		this.respuestaCrear().subscribe((data: any) => {
 
-			if (data.usuario) {
+			if (data.exito) {
 
-				this.isError =false;
+				console.log(data);
+				this.isError = false;
 				this.isRequired = false;
 				this.isExito = true;
-				this.usuarios.push(data.usuario);
-				this.usuario=new Usuarios();
-				this.user="";
-				this.password="";
-				this.selectedItems=[];
-			}
-			else {
-				this.isError = true;
-				this.isRequired = false;
-				this.isExito = false;
-			}
+				this.buttons=true;
+				this.usuario = new Usuarios();
+				this.user = "";
+				this.password = "";
+
+			
+			} else
+				if (data.mensaje) {
+					this.isError = true;
+					this.buttons=true;
+
+					this.errorMensaje = "Este usuario ya esta registrado"
+				} else {
+					this.isError = true;
+					this.isRequired = false;
+					this.isExito = false;
+					this.buttons=true;
+
+					this.errorMensaje = "Error no se pudo crear el registro";
+				}
 		});
 
-		this.respuestaActualizar().subscribe((data:any) => {
+		this.respuestaActualizar().subscribe((data: any) => {
 
-		this.usuarios.filter(word => word._id==data._id)[0]=data;
-		this.modal.close();
-      
+			this.usuarios.filter(word => word._id == data._id)[0] = data;
+			this.modal.close();
+
 		});
 		this.respuestaListar().subscribe((data: any[]) => {
-			//console.log(data);
 			this.usuarios = data;
-	
-		});
-		this.respuestaListarNegocio().subscribe((data: any[]) => {
-            console.log(data);
-			this.dropdownList = data.slice(0, 3);
-			this.negocios = data;
 
 		});
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
-
 			this.usuarios = data;
-			//console.log(this.negocios)
 		});
+
+		//Sacar Usuario
+		this.respuestaSacarUsuario().subscribe((data: any) => {
+			this.profileUser = data;
+		});
+
+		this.respuestaNuevousuario().subscribe((data: any) => {
+			console.log(data);
+			this.usuarios.push(data.usuario)
+		});
+
+		// verificar negocio
+		this.respuestaVerificarNegocio().subscribe((data: any) => {
+			this.negociosUsuario = data;
+			console.log(this.negociosUsuario)
+		});
+		
 		this.respuestaEliminarUsuario().subscribe((data: any) => {
 			
+			if(data.exito){
+			this.modal.close();
+			this.eliminar = false;}
+			else{
 
+			}
+		});
+		//eliminar negocio del panel de edicion
+		this.repuestaEliminarNegocio().subscribe((data: any) => {
+			console.log(data);
+			let fila = this.negociosUsuario.filter(word => word._id == data._id)[0];
 
-		   let fila= this.usuarios.filter(word => word._id==data._id)[0];
+			var index = this.negociosUsuario.indexOf(fila);
+			console.log(index);
+			this.negociosUsuario.splice(index, 1);
+			//this.peticionSocketNegocio();
+		});
 
-		var index = this.usuarios.indexOf(fila);
-		this.usuarios.splice(index,1);
-		this.modal.close();
-		//	this.usuarios = data;
-			//console.log(this.negocios)
+		this.socket.on('respuesta-eliminar-usuario-todos', (data) => {
+			let fila = this.usuarios.filter(word => word._id == data._id)[0];
+
+			var index = this.usuarios.indexOf(fila);
+			this.usuarios.splice(index, 1);
+			
+		});
+
+		this.socket.on('respuesta-actualizar-usuario-todos', (data) => {
+
+			let fila = this.usuarios.filter(word => word._id == data._id)[0];
+			var index = this.usuarios.indexOf(fila);
+			this.usuarios[index] = data;
+			console.log(this.usuarios);
 		});
 	}
+
 	respuestaCrear() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-crear', (data) => {
@@ -300,7 +408,8 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-//respuesta-listar-usuarios
+
+	//respuesta-listar-usuarios
 	respuestaListar() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-listado', (data) => {
@@ -309,7 +418,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
-//respuesta-buscar-usuario
+	//respuesta-buscar-usuario
 	respuestaBuscarUsuario() {
 		let observable = new Observable(observer => {
 			this.socket.on('respuesta-buscar-usuarios', (data) => {
@@ -327,6 +436,7 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
+
 	respuestaEliminarUsuario() {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario
@@ -336,5 +446,40 @@ export class RegistryOwnerComponent implements OnInit {
 		})
 		return observable;
 	}
+	respuestaSacarUsuario() {
+		let observable = new Observable(observer => {
+			//respuesta-eliminar-usuario
+			this.socket.on('respuesta-sacar-usuario', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
+	respuestaVerificarNegocio() {
+		let observable = new Observable(observer => {
+			this.socket3.on('respuesta-listar-negocio-de-usuario', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
+	respuestaNuevousuario() {
+		let observable = new Observable(observer => {
+			this.socket.on('respuesta-crear-todos', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
 
+	repuestaEliminarNegocio() {
+		let observable = new Observable(observer => {
+			this.socket3.on('respuesta-elimina-negocio-de-usuario', (data) => {
+				observer.next(data);
+			});
+		})
+		return observable;
+	}
 }
+
+//

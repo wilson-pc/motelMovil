@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <label class=" control-label">Nombres del Negocio: </label>
                                 <div class="">
-                                    <input [(ngModel)]="negocios.nombre" type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="">
+                                    <input [(ngModel)]="negocios.nombre" type="text"  name="apellidos" placeholder="Castillo " class="form-control input-md" required="campo reqierodp">
                                 </div>
                             </div>
                             <!--Direccion-->
@@ -47,8 +47,7 @@
                                                     </div>
                                               </div>
                                             </div>
-                                          </div>
-                                
+                                          </div>                               
 
                                 
                             </div>
@@ -61,13 +60,7 @@
                                     <input [(ngModel)]="negocios.telefono" type="number"  name="telefono" placeholder="76592654" class="form-control input-md" required="">
                                 </div>
                             </div>
-                            <!--Titular-->
-                            <!-- <div class="form-group">
-                                <label class=" control-label">Titular</label>
-                                <div class="">
-                                    <input [(ngModel)]="negocios.titular" type="text" name="titular" placeholder="Propietario(a)" class="form-control input-md" required="">
-                                </div>
-                            </div> -->
+                            
 
                             <!--Foto-->
                             <div class="form-group">
@@ -121,14 +114,14 @@
                         exito
                     </div>
                     <div class="alert alert-danger" *ngIf="isRequired">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Datos incorrectos, posiblemente esten vacios o correo invalido, llene todos los campos.
                     </div>
                     <!--btnCancelar / btnGuardar-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
                         <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="add(negocios)">Guardar</button>
                         <button *ngIf="flag==1" type="button" class="btn btn-success" (click)="update(negocios)">Actualizar</button>
-                        <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="limpiarMensajes()">CLICKME</button>
+                         <!-- <button *ngIf="flag==0" type="button" class="btn btn-success" (click)="ver()">CLICKME</button>  -->
                      
                     </div>
                 </ng-template>
@@ -144,22 +137,88 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label class=" control-label">Razon de Borrado: </label>
+                                <label class=" control-label">Razon de Borrado (Minimo 12 caracteres en el campo) </label>
                                 <div class="">
-                                    <input [(ngModel)]="razonBorrado" type="text"  name="razonbr" placeholder="Ingrese razon para ser borrado" class="form-control input-md"
+                                    <input  #termino (keydown)="razonEliminar($event,termino.value)" [(ngModel)]="razonBorrado" type="text"  name="razonbr" class="form-control input-md"
                                         required="">
                                 </div>
                             </div>
+
+                              <!--Notificaciones-->
+                    <div class="alert alert-danger" *ngIf="isError">
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Error no se pudo guardar
+                        el
+                        registro
+                    </div>
+                    
+                    <div class="alert alert-success" *ngIf="isExito">
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>registro guardado con
+                        exito
+                    </div>
+                    <div class="alert alert-danger" *ngIf="isRequired">
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Dato(s) invalidos, ingrese la razon por la cual esta siendo borrado
+                    </div>
                             
                             <div class="modal-footer">
                               <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
-                              <button type="button" class="btn btn-danger" (click)="delete()">Eliminar</button>
+                              <button type="button" [disabled]="!eliminar" class="btn btn-danger" (click)="delete()">Eliminar</button>
                             </div>
                         </form>
                     </div>
 
                    
                   </ng-template>
+
+                  <!--VISTA DE CONTENIDOS-->
+                  <ng-template #contentModelView let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Informacion del Administrador</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"></h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">                   
+    
+                                            <div class=" col-md-9 col-lg-9 ">
+                                                <table class="table table-user-information">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Nombre:</td>
+                                                            <td>{{negocios.nombre}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Direccion:</td>
+                                                            <td>{{negocios.direccion.descripcion}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Telefono</td>
+                                                            <td>{{negocios.telefono}}</td>
+                                                        </tr>
+    
+                                                        <tr>
+                                                        <tr>
+                                                            <td>Correo</td>
+                                                            <td>{{negocios.correo}}</td>
+                                                        </tr>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
 
                 <i class='mdi mdi-account-multiple-plus btn btn-info' (click)="openFromRegistry(contentAdd,0)"></i>
               </div>
@@ -179,9 +238,9 @@
                                     <td>{{user.telefono}}</td>                            
                                     <td>{{user.correo}}</td>
                                     <td class="text-right">
-                                        <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
+                                        <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView,user)"></i>
                                         <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentAdd,user,1)"></i>
-                                        <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete)"></i>
+                                        <i *ngIf="user.titular == undefind" class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user)"></i>
                                     </td>
                                 </tr> 
                             </tbody>

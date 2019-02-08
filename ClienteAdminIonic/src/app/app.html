@@ -1,17 +1,17 @@
 <ion-menu [content]="content">
   <ion-header>
-    <ion-toolbar class="user-profile">
+    <ion-toolbar *ngIf="userOnlyProvider.userSesion!=undefined"  class="user-profile">
 
       <ion-grid>
         <ion-row>
           <ion-col col-4>
               <div class="user-avatar">
-                <img src="../assets/imgs/avatar.jpeg">
+                <img [src]="userOnlyProvider.userSesion.datos.foto">
               </div>
           </ion-col>
           <ion-col padding-top col-8>
             <h2 ion-text class="no-margin bold text-white">
-              Pepito
+             {{userOnlyProvider.userSesion.datos.nombre}}
             </h2>
             <span ion-text color="light">Customer</span>
           </ion-col>
@@ -19,9 +19,9 @@
 
         <ion-row no-padding class="other-data">
           <ion-col no-padding class="column">
-            <button ion-button icon-left small full color="light" menuClose disabled>
+            <button (click)="editLogin()"  ion-button icon-left small full color="light" menuClose>
               <ion-icon name="contact"></ion-icon>
-              Editar Perfil
+              Editar login
             </button>
           </ion-col>
           <ion-col no-padding class="column">

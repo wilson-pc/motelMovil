@@ -5,16 +5,45 @@
   Ionic pages and navigation.
 -->
 <ion-header>
+    <ion-navbar color="primary">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>
+        <strong>Ionic 3</strong> Start Theme
+      </ion-title>
+      <ion-buttons end>
+        <button ion-button tappable (click)="presentNotifications($event)">
+          <ion-icon name="notifications"></ion-icon>
+        </button>
+        <button ion-button tappable (click)="goToAccount()">
+          <ion-icon name="cog"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
 
-  <ion-navbar>
-    <ion-title>motel</ion-title>
-  </ion-navbar>
 
-</ion-header>
+<ion-content>
 
-
-<ion-content padding>
-
-  <h1>HOLA MOTEL</h1>
+     <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+      
+  <ion-list *ngIf="listauxProductos!=undefined">
+      <ion-item  *ngFor="let item of listauxProductos">
+        <ion-thumbnail item-start>
+          <img [src]="item.foto.miniatura">
+        </ion-thumbnail>
+        <h2>{{item.nombre}}</h2>
+        <p>{{item.descripcion}}</p>
+        <button ion-button clear item-end>Ver</button>
+      </ion-item>    
+    </ion-list>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event,parte+1)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+      
 
 </ion-content>

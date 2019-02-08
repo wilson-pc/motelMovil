@@ -16,39 +16,34 @@
                         <form>
                             <div class="form-group">
                                 <label class="control-label">Nombre del negocio: </label>
-                                <ng-multiselect-dropdown name="multi"
-  [placeholder]="'custom placeholder'"
-  [data]="dropdownList"
-  [(ngModel)]="selectedItems"
-  [settings]="dropdownSettings"
-  (onSelect)="onItemSelect($event)"
-  (onSelectAll)="onSelectAll($event)"
-  (onFilterChange)="onFilterChange($event)"
->
-</ng-multiselect-dropdown>
+                                <ng-multiselect-dropdown name="multi" [placeholder]="'seleccionar'" [data]="dropdownList"
+                                    [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                                    (onSelectAll)="onSelectAll($event)" (onFilterChange)="onFilterChange($event)"
+                                    required>
+                                </ng-multiselect-dropdown>
                             </div>
                             <!--Nombre-->
                             <div class="form-group">
                                 <label class=" control-label">Nombres: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.nombre" name="nombre" placeholder="Ari"
-                                        class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.nombre" name="nombre" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
                             <!--Apellido-->
                             <div class="form-group">
                                 <label class=" control-label">Apellidos: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" placeholder="Castillo "
-                                        class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.apellidos" name="apellidos" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
                             <!--Ci-->
                             <div class="form-group">
                                 <label class=" control-label">Ci: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="usuario.ci" name="ci" placeholder="1254576CBB"
-                                        class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="usuario.ci" name="ci" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
                             <!--Genero-->
@@ -56,7 +51,6 @@
                                 <label class=" control-label">Generos: </label>
                                 <div class="">
                                     <select [(ngModel)]="usuario.genero" name="genero" class="form-control" id="selectCurso">
-                                        <option></option>
                                         <option value="Masculino">Masculino</option>
                                         <option value="Femenino">Femenino</option>
                                         <option value="Otros">Otro</option>
@@ -67,8 +61,8 @@
                             <div class="form-group">
                                 <label class=" control-label">Contacto: </label>
                                 <div class="">
-                                    <input type="number" [(ngModel)]="usuario.telefono" name="telefono" placeholder="76592654"
-                                        class="form-control input-md" required="">
+                                    <input type="number" [(ngModel)]="usuario.telefono" name="telefono" class="form-control input-md"
+                                        required>
                                 </div>
                             </div>
 
@@ -76,8 +70,8 @@
                             <div class="form-group">
                                 <label class=" control-label">Email: </label>
                                 <div class="">
-                                    <input type="email" [(ngModel)]="usuario.email" name="email" placeholder="example@gmail.com"
-                                        class="form-control input-md"  [required]="true">
+                                    <input type="email" [(ngModel)]="usuario.email" name="email" class="form-control input-md"
+                                        [required]="true">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -91,7 +85,7 @@
                             <div class="form-group">
                                 <label class=" control-label">Usuario: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="user" name="usuario" placeholder="ari365" class="form-control input-md"
+                                    <input type="text" [(ngModel)]="user" name="usuario" class="form-control input-md"
                                         required="">
                                 </div>
                             </div>
@@ -99,31 +93,27 @@
                             <div class="form-group">
                                 <label class=" control-label">Contraseña: </label>
                                 <div class="">
-                                    <input type="text" [(ngModel)]="password" name="password" placeholder="ari9867KlP"
-                                        class="form-control input-md" required="">
+                                    <input type="text" [(ngModel)]="password" name="password" class="form-control input-md"
+                                        required="">
                                 </div>
                             </div>
                         </form>
                     </div>
                     <!--Notificaciones-->
                     <div class="alert alert-danger" *ngIf="isError">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Error no se pudo guardar
-                        el
-                        registro
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a> {{errorMensaje}}
                     </div>
-
                     <div class="alert alert-success" *ngIf="isExito">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>registro guardado con
-                        exito
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Registro guardado con
+                        exito.
                     </div>
                     <div class="alert alert-danger" *ngIf="isRequired">
-                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
+                        <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Rellene los campos.
                     </div>
                     <!--btnCancelar / btnGuardar-->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
-                        <button type="button" class="btn btn-success" (click)="add()">Guardar</button>
-                        <button *ngIf="a==1" (click)="ejm()">Ejemplo</button>
+                        <button type="button" class="btn btn-success" [disabled]="!buttons" (click)="add()">Guardar</button>
                     </div>
                 </ng-template>
                 <!--END MODAL-->
@@ -137,7 +127,7 @@
             <!--FORMULARIO DE ACTUALIZACION-->
             <ng-template #contentUpdate let-modal>
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modal-basic-title">ACTUALIZAR DATOS DEL DOCENTE</h4>
+                    <h4 class="modal-title" id="modal-basic-title">ACTUALIZAR DATOS DEL ADINISTRADOR</h4>
                     <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -148,35 +138,48 @@
                         <div class="form-group">
                             <label class=" control-label">Nombres: </label>
                             <div class="">
-                                <input type="text" [(ngModel)]="usuarioActualizado.nombre" name="nombre" class="form-control input-md" required="">
+                                <input type="text" [(ngModel)]="usuarioActualizado.nombre" name="nombre" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                         <!--Apellido-->
                         <div class="form-group">
                             <label class=" control-label">Apellidos: </label>
                             <div class="">
-                                <input type="text" [(ngModel)]="usuarioActualizado.apellidos" name="apellidos" class="form-control input-md" required="">
+                                <input type="text" [(ngModel)]="usuarioActualizado.apellidos" name="apellidos" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                         <!--Ci-->
                         <div class="form-group">
                             <label class=" control-label">Ci: </label>
                             <div class="">
-                                <input name="ci" [(ngModel)]="usuarioActualizado.ci" type="text" class="form-control input-md" required="">
+                                <input name="ci" [(ngModel)]="usuarioActualizado.ci" type="text" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
+                        <!--Negocios Actules-->
+                        <div class="form-group">
+                            <label class="text-dark control-label">Negocios Actuales: </label>
+
+                            <div class=" col-md-9 col-lg-9 ">
+                                <table class="table table-user-information">
+                                    <tbody>
+                                        <tr *ngFor="let negocio of negociosUsuario, let i=index">
+                                            <td><label class="text-white bg-dark control-label">{{negocio.nombre}}</label></td>
+                                            <td><i class='mdi mdi-delete btn btn-danger' (click)="removeCommerceTitular(negocio)"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--NUevos Negocios-->
                         <div class="form-group">
                             <label class="control-label">Nuevo Negocio: </label>
-                            <ng-multiselect-dropdown name="multi"
-[placeholder]="'custom placeholder'"
-[data]="dropdownList"
-[(ngModel)]="selectedItems"
-[settings]="dropdownSettings"
-(onSelect)="onItemSelect($event)"
-(onSelectAll)="onSelectAll($event)"
-(onFilterChange)="onFilterChange($event)"
->
-</ng-multiselect-dropdown>
+                            <ng-multiselect-dropdown  name="multi" [placeholder]="'custom placeholder'" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)" (onFilterChange)="onFilterChange($event)">
+                            </ng-multiselect-dropdown>
                         </div>
                         <!--Genero-->
                         <div class="form-group">
@@ -194,19 +197,22 @@
                         <div class="form-group">
                             <label class="control-label">Contacto: </label>
                             <div class="">
-                                <input [(ngModel)]="usuarioActualizado.telefono" name="conatco" type="number" class="form-control input-md" required="">
+                                <input [(ngModel)]="usuarioActualizado.telefono" name="conatco" type="number" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                         <!--Email-->
                         <div class="form-group">
                             <label class=" control-label">Email: </label>
                             <div class="">
-                                <input name="email" [(ngModel)]="usuarioActualizado.email" type="text" class="form-control input-md" required="">
+                                <input name="email" [(ngModel)]="usuarioActualizado.email" type="text" class="form-control input-md"
+                                    required="">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="cancelModal()">Cancelar</button>
                     <button type="button" class="btn btn-success" (click)="update()">ACTUALIZAR</button>
                 </div>
             </ng-template>
@@ -215,7 +221,7 @@
             <!--MODAL DE VIEW INFO-->
             <ng-template #contentModelView let-modal>
                 <div class="modal-header">
-                    <h4 class="modal-title">Informacion del Admonistrador</h4>
+                    <h4 class="modal-title">Informacion del Administrador</h4>
                     <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -223,55 +229,74 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-9">
-                          <div class="panel panel-info">
-                            <div class="panel-heading">
-                              <h3 class="panel-title"></h3>
-                            </div>
-                            <div class="panel-body">
-                              <div class="row">
-                                <div class="col-md-3"> <img alt="User Pic" src="https://www.socialtools.me/blog/wp-content/uploads/2016/04/foto-de-perfil.jpg"
-                                    class="img-circle img-responsive"> </div>
-          
-                                <div class=" col-md-9 col-lg-9 ">
-                                  <table class="table table-user-information">
-                                    <tbody>
-                                      <tr>
-                                        <td>Nombre:</td>
-                                        <td>Programming</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Apellidos:</td>
-                                        <td>06/23/2013</td>
-                                      </tr>
-                                      <tr>
-                                        <td>CI</td>
-                                        <td>01/24/1988</td>
-                                      </tr>
-          
-                                      <tr>
-                                      <tr>
-                                        <td>Genero</td>
-                                        <td>Female</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Contacto</td>
-                                        <td>Kathmandu,Nepal</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Email</td>
-                                        <td><a href="mailto:info@support.com">info@support.com</a></td>
-                                      </tr>
-                                      <td>Fecha de registro</td>
-                                      <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
-                                      </td>
-                                    </tbody>
-                                  </table>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"></h3>
                                 </div>
-                              </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img *ngIf="profileUser.foto != undefind" alt="User Pic" [src]="profileUser.foto"
+                                                class="img-circle img-responsive">
+                                            <img *ngIf="profileUser.foto == undefind" alt="User Pic" src="../../../assets/images/fotoPerfil.png"
+                                                class="img-circle img-responsive">
+                                        </div>
+
+                                        <div class=" col-md-9 col-lg-9 ">
+                                            <table class="table table-user-information">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Nombre:</td>
+                                                        <td>{{profileUser.nombre}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Apellidos:</td>
+                                                        <td>{{profileUser.apellidos}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>CI</td>
+                                                        <td>{{profileUser.ci}}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                    <tr>
+                                                        <td>Genero</td>
+                                                        <td>{{profileUser.genero}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Contacto</td>
+                                                        <td>{{profileUser.telefono}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Email</td>
+                                                        <td>{{profileUser.email}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Fecha de creacion</td>
+                                                        <td>{{profileUser.creacion.fecha | date: 'dd/MM/yyyy hh:mm'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Fecha modificacion</td>
+                                                        <td>{{profileUser.modificacion.fecha | date: 'dd/MM/yyyy
+                                                            hh:mm'}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <h3><b>NEGOCIOS</b></h3>
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngFor="let negocio of negociosUsuario, let i=index">
+                                                        <td>{{negocio.tipo.nombre}}:</td>
+                                                        <td class="text-white bg-dark">"{{negocio.nombre}}"</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
+                    </div>
                 </div>
             </ng-template>
 
@@ -279,14 +304,20 @@
             <!--Modal Eliminar-->
             <ng-template #contentDelete let-modal>
                 <div class="modal-header">
-                    <h4 class="modal-title">Eliminar Registro</h4>
+                    <h4 class="modal-title">¿Desea eliminar este administrador?</h4>
                     <button type="button" class="close" aria-label="Close" (click)="cancelModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Desea eliminar el registro? especifique la razon</p>
-                    <input #termino (keydown)="razonEliminar($event,termino.value)" name="razon" type="text" class="form-control input-md" required="">
+                    <label class="text-danger">Al eliminar se borraran toda la informacion de los siguientes negocios
+                        anexados:</label>
+                    <div *ngFor="let negocio of negociosUsuario, let i=index">
+                        <label class="text-danger">- {{negocio.nombre}}</label>
+                    </div>
+                    <p>Describe la razon (minímo de 14 caracteres):</p>
+                    <input #termino (keydown)="razonEliminar($event,termino.value)" name="razon" type="text" class="form-control input-md"
+                        required="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
@@ -307,14 +338,13 @@
                         <tbody>
                             <tr *ngFor="let user of usuarios, let i=index">
                                 <td>{{i+1}}</td>
-                                <td>{{user.nombre}}</td>
+                                <td (click)="openModalView(contentModelView, user._id)">{{user.nombre}}</td>
                                 <td>{{user.apellidos}}</td>
                                 <td>{{user.ci}}</td>
                                 <td>{{user.genero}}</td>
                                 <td>{{user.telefono}}</td>
                                 <td>{{user.email}}</td>
                                 <td class="text-right">
-                                    <i class='mdi mdi-tablet btn btn-success' (click)="openModalView(contentModelView)"></i>
                                     <i class='mdi mdi-rotate-3d btn btn-warning' (click)="openModalUpdate(contentUpdate,user)"></i>
                                     <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user._id)"></i>
                                 </td>

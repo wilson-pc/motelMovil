@@ -3,7 +3,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
-import { SocketConfigService2 } from '../../socket-config.service';
+import { SocketConfigService2, SocketConfigService3 } from '../../socket-config.service';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 export class NavigationComponent implements AfterViewInit {
     name: string;
     termino:string="";
-    constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService,private buscador:BuscadorService) {
+    constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService,private buscador:BuscadorService,private socketNegocio:SocketConfigService3) {
         this.conn();
      }
 
@@ -47,12 +47,29 @@ export class NavigationComponent implements AfterViewInit {
         return observable;
         }
         buscar(event) {
+            
            if(this.termino.length>1){
             if(event.keyCode == 13) {
                 this.buscador.Buscar(this.termino);
               }
            }else{
+              // console.log(this.termino);
+             //  console.log(this.buscador.lugar);
+           if(this.buscador.lugar=="usuarios"){
+           
             this.socket.emit("listar-usuario", { data: "nada" });
+           }else
+           if(this.buscador.termino=="licorerias"){
+               console.log("entra a lico");
+            this.socketNegocio.emit("listar-negocio", { termino:'Licoreria'});
+           }else
+           //sexshops
+           if(this.buscador.termino=="sexshops"){
+           	this.socketNegocio.emit("listar-negocio", { termino:'SexShop'});
+           }else
+           if(this.buscador.termino=="moteles"){
+	this.socketNegocio.emit("listar-negocio", { termino:'Motel'});
+           }
            }
           }
 

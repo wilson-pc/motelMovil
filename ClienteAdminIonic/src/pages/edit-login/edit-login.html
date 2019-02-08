@@ -1,0 +1,38 @@
+<!--
+  Generated template for the EditLoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>editLogin</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label floating>Usuario</ion-label>
+      <ion-input #usuario type="text"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label floating>Contraseña</ion-label>
+      <ion-input #pass1 type="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Repetir Contraseña</ion-label>
+      <ion-input #pass2 type="password"></ion-input>
+    </ion-item>
+  
+  </ion-list>
+  <P style="color: red"> {{mensaje}}</P>
+  <div  padding>
+    <button ion-button (click)="guardarCambios(usuario.value,pass1.value,pass2.value)"  block>Guardar</button>
+  </div>
+</ion-content>

@@ -6,7 +6,8 @@ var Reservaproducto = Schema({
     cliente:{type: Schema.ObjectId, ref: "Usuarios"},
     negocio:{type: Schema.ObjectId, ref: "Negocios"},
     tiempo:{type: Schema.ObjectId, ref: "Tiemporeservado"},
-    producto:Producto
+    producto:Producto,
+    estado:String,
 })
 
 module.exports = mongose.model("Tiemporeservadoproductos",Reservaproducto)

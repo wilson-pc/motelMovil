@@ -1,0 +1,28 @@
+<!--
+  Generated template for the CommercePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>commerce</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="animated fadeIn common-bg"> 
+  <div>
+    <div style="display: block">
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType">
+      </canvas>
+    </div>
+  </div>
+</ion-content>

@@ -2,18 +2,18 @@ import { Negocio } from "./Negocio";
 import { Tipo } from "./TipoProducto";
 
 export class Productos{
-    public id:string;
+    public _id:string;
     public nombre:string;   
     public negocio:Negocio;
-    public precio:{precio:Number,moneda:string}    
-    public disponibilidad:string;
+    public precio:Number;  
+    public precioReserva:Number;
     public cantidad:Number;
     public tipo:Tipo;
     public foto:{normal:string,miniatura:string};
     public descripcion:string;
     public eliminado:{estado:Boolean,razon:string};
-    public creacion:{estado:Boolean,razon:string};
-    public modificacion:{fecha:Date,usuario:string};
+    public creacion:{fecha:string};
+    public modificacion:{fecha:string};
 
 }
 /**

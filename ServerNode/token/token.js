@@ -13,7 +13,6 @@ MÉTODO DEL TOKEN
 =============================================*/
 
 exports.crearToken = function(selectet){
-	console.log(selectet);
 
 	//Datos que vamos a codificar
         

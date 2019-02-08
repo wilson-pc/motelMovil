@@ -22,7 +22,8 @@ exports.crearToken = function(selectet){
 		hash:selectet,
 		//unix() formato timestamp actual
 		now: moment().unix(),
-		exp: moment().add(30, "days").unix()
+		exp: moment().add(1, "days").unix()
+	//	exp: moment().add(1, "minutes").unix()
 
 	}
 

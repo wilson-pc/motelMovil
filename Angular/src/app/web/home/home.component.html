@@ -90,14 +90,8 @@
                 <!-- FORMULARIO -->
                 <div class="panel panel-default well">
                     <div class="panel-body">
-                        <form action="" class="form-horizontal track-event-form bv-form" data-goaltype="”General”"
-                            data-formname="”ContactUs”" method="post" id="contact-us-all" novalidate="novalidate">
-                            <input name="elqSiteId" type="hidden" value="928">
-                            <input name="sFDCLastCampaignID" type="hidden" value="701400000012Lql">
-                            <input name="elqFormName" type="hidden" value="EMEAAllContactUsSubmissions">
-                            <input name="nexturl" type="hidden" value="">
-                            <input name="Partner" type="hidden" value="">
-                            <input name="language" type="hidden" value="en">
+                        <div>
+                      
 
                             <!--NOMBRE-->
                             <div class="form-group">
@@ -105,7 +99,7 @@
                                     <div class="input-group">
 
                                         <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Nombre(s)"
-                                            name="C_FirstName" data-bv-field="C_FirstName">
+                                            name="C_FirstName" #nombre data-bv-field="C_FirstName">
                                     </div>
                                     <small data-bv-validator="notEmpty" data-bv-validator-for="C_FirstName" class="help-block"
                                         style="display: none;">Required</small>
@@ -117,18 +111,19 @@
                                     <div class="input-group">
 
                                         <input type="text" class="form-control" id="exampleInputLastName" placeholder="Apellido(s)"
-                                            name="C_LastName" data-bv-field="C_LastName">
+                                            name="C_LastName" #apellidos data-bv-field="C_LastName">
                                     </div>
                                     <small data-bv-validator="notEmpty" data-bv-validator-for="C_LastName" class="help-block"
                                         style="display: none;">Required</small>
                                 </div>
                             </div>
+                           
                             <!--EMAIL-->
                             <div class="form-group">
                                 <div class="col-sm-6">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Ingresa email"
-                                            name="C_EmailAddress" data-bv-field="C_EmailAddress">
+                                            name="C_EmailAddress" #email data-bv-field="C_EmailAddress">
                                     </div>
                                     <small data-bv-validator="notEmpty" data-bv-validator-for="C_EmailAddress" class="help-block"
                                         style="display: none;">Required</small>
@@ -138,7 +133,7 @@
                             <div class="form-group">
                                 <div class="col-sm-6">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="C_BusPhone" placeholder="Teléfono"
+                                        <input type="text" class="form-control" #telefono id="C_BusPhone" placeholder="Teléfono"
                                             name="C_BusPhone">
                                     </div>
                                 </div>
@@ -147,19 +142,31 @@
                             <div class="form-group">
                                 <div class="col-sm-12">
                                     <div class="input-group">
-                                        <textarea class="form-control" name="Comments" id="Comments" rows="5" style="width:99.9%"
+                                        <textarea class="form-control" #mensaje name="Comments" id="Comments" rows="5" style="width:99.9%"
                                             placeholder="Ingresa tu mensaje"></textarea>
                                     </div>
                                 </div>
                             </div>
+                            <div class="alert alert-danger" *ngIf="isError">
+                                <a class="close font-weight-light" data-dismiss="alert" href="#">×</a> 
+                                Ocurrio un error y no se pudo enviar su mensaje
+                            </div>
+        
+                            <div class="alert alert-success" *ngIf="isExito">
+                                <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>
+                                Su mensaje a sido envidado con exito, nos contactaremos con usted lo antes posible
+                            </div>
+                            <div class="alert alert-danger" *ngIf="isRequired">
+                                <a class="close font-weight-light" data-dismiss="alert" href="#">×</a>Ingrese datos correctos
+                            </div>
                             <!--DESCRIPCION-->
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button id="contacts-submit" type="submit" class="btn btn-default btn-info">CONTACTANOS</button>
+                                    <button id="contacts-submit" (click)="enviar(nombre.value,apellidos.value,email.value,telefono.value,mensaje.value)"  class="btn btn-default btn-info">CONTACTANOS</button>
                                 </div>
                             </div>
-                            <input type="hidden" value="">
-                        </form>
+                            
+                        </div>
                     </div>
                 </div>
                 <!-- END FORMULARIO -->

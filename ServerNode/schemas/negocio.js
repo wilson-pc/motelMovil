@@ -18,6 +18,7 @@ valoracion:Number,
 visitas:Number,
 ganancia:{total:Number,pasado:Number,actual:Number},
 eliminado:{estado:Boolean,razon:String},
+calificacion:[{usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date,puntuacion:Number }],
 creacion: {usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date },
 modificacion:{fecha:Date,usuario:{ type: Schema.ObjectId, ref: "Usuarios" }}
 })

@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" >
   <ion-header>
     <ion-toolbar class="user-profile">
 
@@ -36,15 +36,23 @@
     </ion-toolbar>
   </ion-header>
 
+  <!--API KEY DE GOOGLE:AIzaSyAotPRc50V0anEWhi8j18TbbpBCvyWOF_s 
+    AIzaSyBSknUFeVDQ4uajWizWDzFyEgadElTyb1g
+  -->
+
+
   <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+    <!--Listar en el menu derecho la lista moteles-->
+    <ion-list >
+      <button menuClose ion-item *ngFor="let p of menu" (click)="openPage(p)">
         {{p.title}}
       </button>
     </ion-list>
+    
   </ion-content>
+    
 
 </ion-menu>
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
-<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
+<ion-nav [root]="rootPage" #content></ion-nav>

@@ -1,3 +1,4 @@
+import { EditLoginPage } from './../pages/edit-login/edit-login';
 import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -22,6 +23,7 @@ import { TripsPage } from '../pages/trips/trips';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { ActivityService } from '../services/activity-service';
+import { SocketIoModule,SocketIoConfig } from 'ng-socket-io';
 import { TripService } from '../services/trip-service';
 import { WeatherProvider } from '../services/weather';
 import {FileChooser} from '@ionic-native/file-chooser';
@@ -29,6 +31,13 @@ import { ImagePicker } from '@ionic-native/image-picker';
 import { AuthProvider } from '../providers/auth/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
+import { CommercePage } from '../pages/commerce/commerce';
+import { SocketServiceCommerce, SocketServiceHomeService, SocketServiceProduct, SocketServiceUser } from '../providers/socket-config/socket-config';
+import { UserOnlyProvider } from '../providers/user-only/user-only';
+import { ListProductsPage } from '../pages/list-products/list-products';
+import { CommerceProvider } from '../providers/commerce/commerce';
+import { RegisterProductsPage } from '../pages/register-products/register-products';
+import { EditProductsPage } from '../pages/edit-products/edit-products';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -53,12 +62,18 @@ export const firebaseConfig = {
     SearchLocationPage,
     TripDetailPage,
     TripsPage,
-    RegisterRoomPage
+    EditLoginPage,
+    RegisterRoomPage,
+    CommercePage,
+    ListProductsPage,
+    RegisterProductsPage,
+    EditProductsPage,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ChartsModule,
+    SocketIoModule,
     IonicModule.forRoot(MyApp,{
       scrollPadding: false,
       scrollAssist: true,
@@ -85,18 +100,30 @@ export const firebaseConfig = {
     SearchLocationPage,
     TripDetailPage,
     TripsPage,
-    RegisterRoomPage
+    RegisterRoomPage,
+    EditLoginPage,
+    CommercePage,
+    ListProductsPage,
+    RegisterProductsPage,
+    EditProductsPage,
   ],
   providers: [
     StatusBar,
     ActivityService,
+    SocketIoModule,
     TripService,
     WeatherProvider,
     FileChooser,
+    SocketServiceCommerce,
+    SocketServiceHomeService,
+    SocketServiceProduct,
+    SocketServiceUser,
     SplashScreen,
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
+    UserOnlyProvider,
+    CommerceProvider,
   ]
 })
 export class AppModule {}

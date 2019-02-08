@@ -5,52 +5,156 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>tops</ion-title>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+        <p style="color:white;">
+            Welcome to<strong>Triservice App</strong>
+        </p>
+    
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
+<ion-content>
 
-<ion-content padding>
+<div padding>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="kittens">
+        Todos
+      </ion-segment-button>
 
-    <ion-card>
+      <ion-segment-button value="puppies">
+        Moteles
+      </ion-segment-button>
 
-        <ion-item>
-          <ion-avatar item-start>
-            <img src="../../assets/imgs/marty-avatar.png">
-          </ion-avatar>
-          <h2>Marty McFly</h2>
-          <p>November 5, 1955</p>
-        </ion-item>
+      <ion-segment-button value="otro">
+        Bebidas
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  
+  <div [ngSwitch]="pet">
+    <ion-list *ngSwitchCase="'puppies'">
+  
+       <ion-item>
+          <ion-thumbnail item-start>
+            
+             <img src="../../assets/imgs/habitacion.jpg"/>
+            
+          </ion-thumbnail>
+  
+          <ion-col>  
+            <ion-row>
+              <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+            </ion-row>   
+                                      
+            <ion-row>              
+              <button ion-button clear small color="default" icon-start>
+                <ion-icon name='star'></ion-icon>
+                399 Visitas
+              </button>    
+              <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                  <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                Mas
+              </button>      
+            </ion-row>
+                        
+          </ion-col>   
+        </ion-item> 
+    </ion-list>
+  
+    <ion-list *ngSwitchCase="'kittens'">
+      <ion-item>
+        <ion-thumbnail item-start>
+           <!--TODO-->
+           <img src="../../assets/imgs/licor.jpg"/>
+          
+        </ion-thumbnail>
+
+        <ion-col>
+
+          <ion-row>
+            <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+          </ion-row>               
+          <ion-row>              
+              <button ion-button clear small color="default" icon-start>
+                <ion-icon name='star'></ion-icon>
+                399 Visitas
+              </button>    
+              <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                  <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                Mas
+              </button>      
+            </ion-row>
+        </ion-col>   
+      </ion-item>    
       
-        <img src="../../assets/imgs/advance-card-bttf.png">
-      
-        <ion-card-content>
-          <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
-        </ion-card-content>
-      
-        <ion-row>
+      <ion-item>
+          <ion-thumbnail item-start>
+             <!--TODO-->
+             <img src="../../assets/imgs/habitacion.jpg"/>
+            
+          </ion-thumbnail>
+  
           <ion-col>
-            <button ion-button icon-start clear small>
-              <ion-icon name="thumbs-up"></ion-icon>
-              <div>12 Likes</div>
-            </button>
-          </ion-col>
+  
+            <ion-row>
+              <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+            </ion-row>               
+            <ion-row>              
+                <button ion-button clear small color="default" icon-start>
+                  <ion-icon name='star'></ion-icon>
+                  399 Visitas
+                </button>    
+                <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                    <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                  Mas
+                </button>      
+              </ion-row>
+          </ion-col>   
+  
+        </ion-item>         
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'otro'">
+
+       <!--Nuevo item-->
+       <ion-item>
+          <ion-thumbnail item-start>
+            
+             <img  src="../../assets/imgs/licor.jpg"/>
+            
+          </ion-thumbnail>
+  
           <ion-col>
-            <button ion-button icon-start clear small>
-              <ion-icon name="text"></ion-icon>
-              <div>4 Comments</div>
-            </button>
-          </ion-col>
-          <ion-col align-self-center text-center>
-            <ion-note>
-              11h ago
-            </ion-note>
-          </ion-col>
-        </ion-row>
-      
-      </ion-card>
+
+          <ion-row>
+            <h4>Marty MacFly qweqweqweqwwqwqewqwqwqqwewqeqeqwe</h4>
+          </ion-row>               
+          <ion-row>              
+              <button ion-button clear small color="default" icon-start>
+                <ion-icon name='star'></ion-icon>
+                399 Visitas
+              </button>    
+              <button ion-button clear small color="default" icon-start (click)="presentModal()">
+                  <ion-icon ios="ios-book" md="md-book"></ion-icon>
+                Mas
+              </button>      
+            </ion-row>
+        </ion-col>   
+
+        </ion-item>         
+      </ion-list>
+  </div>  
 
 </ion-content>

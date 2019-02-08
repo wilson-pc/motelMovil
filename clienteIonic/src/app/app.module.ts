@@ -1,13 +1,14 @@
+import { SocketUsuarioService2 } from './../services/socket-config.service';
 import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
+import { Facebook } from '@ionic-native/facebook';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-
+import {GooglePlus} from '@ionic-native/google-plus'
 import { ListPage } from '../pages/list/list';
-
+import {AndroidPermissions} from '@ionic-native/android-permissions'
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SettingsPage } from '../pages/settings/settings';
@@ -20,7 +21,6 @@ import { RegisterPage } from '../pages/register/register';
 import { SearchLocationPage } from '../pages/search-location/search-location';
 import { TripsPage } from '../pages/trips/trips';
 import { HttpClientModule } from '@angular/common/http';
-import { IonicStorageModule } from '@ionic/storage';
 import { ActivityService } from '../services/activity-service';
 import { TripService } from '../services/trip-service';
 import { WeatherProvider } from '../services/weather';
@@ -34,6 +34,16 @@ import { TopsPage } from '../pages/tops/tops';
 import { MotelPage } from '../pages/motel/motel';
 import { SexShopPage } from '../pages/sex-shop/sex-shop';
 import { CercaDeMiPage } from '../pages/cerca-de-mi/cerca-de-mi';
+import { TabsPage } from '../pages/tabs/tabs';
+import { MapsPage } from '../pages/maps/maps';
+import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
+import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
+import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
+import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
+import { ProviderProductosProvider } from '../providers/provider-productos/provider-productos';
+import { SocketConfigService, SocketLoginService } from '../services/socket-config.service';
+import { UsuarioProvider } from '../providers/usuario/usuario';
+import { IonicStorageModule } from '@ionic/storage';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -64,6 +74,13 @@ export const firebaseConfig = {
     MotelPage,
     SexShopPage,
     CercaDeMiPage,
+    TabsPage,
+    MapsPage,
+    ListaDeseosPage,
+    ListaReservasPage,
+    ListaFavoritosPage,
+    DescripcionProductoPage
+
   ],
   imports: [
     BrowserModule,
@@ -73,12 +90,9 @@ export const firebaseConfig = {
       scrollAssist: true,
       autoFocusAssist: false
     }),
+    IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig,'demo104'),
-    AngularFireDatabaseModule,
-    IonicStorageModule.forRoot({
-      name: '__ionic3_start_theme',
-        driverOrder: ['indexeddb', 'sqlite', 'websql']
-    })
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -100,17 +114,33 @@ export const firebaseConfig = {
     MotelPage,
     SexShopPage,
     CercaDeMiPage,
+    TabsPage,
+    MapsPage,
+    ListaDeseosPage,
+    ListaReservasPage,
+    ListaFavoritosPage,
+    DescripcionProductoPage,
+
+  
   ],
   providers: [
     StatusBar,
     ActivityService,
     TripService,
     WeatherProvider,
+    Facebook,
     FileChooser,
     SplashScreen,
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
+    GooglePlus,
+    AndroidPermissions,
+    ProviderProductosProvider,
+    SocketUsuarioService2,
+    SocketConfigService,
+    SocketLoginService,
+    UsuarioProvider
   ]
 })
 export class AppModule {}
