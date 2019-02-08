@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ViewController, ToastController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Negocio } from '../../models/Negocio';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -8,6 +8,7 @@ import { SocketServiceProduct } from '../../providers/socket-config/socket-confi
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
 import { resizeBase64 } from 'base64js-es6';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'page-edit-products',
@@ -17,8 +18,11 @@ export class EditProductsPage {
   @ViewChild('fileInput') fileInput: ElementRef;
   productOnly: Productos;
   commerceOnly: Negocio;
-  actionSelectType: boolean;
   nombreimagen: string = "selecciona una foto";
+
+  submitAttempt: boolean;
+  statusInput: boolean;
+  productForm: any;
 
   listTypeProduct: Tipo[] = [];
   typeProduct: Tipo;
@@ -28,24 +32,48 @@ export class EditProductsPage {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public alertCtrl: AlertController,
-    public productService: SocketServiceProduct) {
+    public productService: SocketServiceProduct,
+    private formBuilder: FormBuilder,
+    private toastCtrl: ToastController) {
     //Inicializacion
-    this.actionSelectType = false;
     this.getCommerceAndProduct();
     this.connectionBackendSocket();
     this.typeProduct = new Tipo;
+    this.validInputFormProducts();
+  }
+
+  validInputFormProducts() {
+    this.productForm = this.formBuilder.group({
+      productNombre: ['', Validators.compose([Validators.maxLength(30),Validators.required])],
+      productImg: ['', Validators.compose([])],
+      productTipoVal: ['', Validators.compose([])],
+      productTipo: ['', Validators.compose([Validators.required])],
+      productPrecio: ['', Validators.compose([Validators.maxLength(4), Validators.pattern('[0-9]*'), Validators.required])],
+      productCantidad: ['', Validators.compose([Validators.maxLength(3), Validators.pattern('[0-9]*'), Validators.required])],
+      productDescripcion: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(80), Validators.required])]
+    });
+  }
+
+  alertMessage(message) {
+    this.presentToast(message);
+  }
+
+  presentToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+
+    toast.onDidDismiss(() => {
+    });
+
+    toast.present();
   }
 
   ionViewDidLoad() {
   }
 
-  selectType(status: boolean){
-    this.actionSelectType = status;
-  }
-
-  closeModal() {
-    this.viewCtrl.dismiss();
-  }
 
   filechoosser() {
     this.fileInput.nativeElement.click();
@@ -54,25 +82,24 @@ export class EditProductsPage {
   async getCommerceAndProduct() {
     this.productOnly = this.navParams.get("product");
     this.commerceOnly = this.navParams.get("commerce");
-    console.log("Tipo: ", this.productOnly.tipo.tipo);
     this.getTypeProducts();
   }
 
-   // Carga de la foto
-   async fileChange(event) {
+  // Carga de la foto
+  async fileChange(event) {
     // alert(event.srcElement.files[0].name);
     this.readFile(event.srcElement.files[0]).subscribe(data => {
       resizeBase64(data, 90, 60).then((result) => {
-        this.productOnly.foto={miniatura:result,normal:""}
-       
-       
+        this.productOnly.foto = { miniatura: result, normal: "" }
+
+
       });
       resizeBase64(data, 90, 60).then((result) => {
-        this.productOnly.foto.normal=result;
+        this.productOnly.foto.normal = result;
         console.log(this.productOnly);
-       
+
       });
-      this.nombreimagen=event.srcElement.files[0].name;
+      this.nombreimagen = event.srcElement.files[0].name;
       //   alert(dec.substring(0, 10));
 
     });
@@ -92,18 +119,20 @@ export class EditProductsPage {
 
   //Consumos de Servicios
   updateProduct() {
-    console.log("Producto actualizado", this.productOnly);
-    // Guardar producto
-   var date = new Date().toUTCString();
-    this.productOnly.negocio = this.commerceOnly._id as any;
-    this.productOnly.modificacion = { fecha: date };
+    // Modificar producto
+    this.statusInput = true;
+    if (!this.productForm.valid) {
+      this.alertMessage("Imposible Actualizar verifique los campos de actualizacion.")
+    }
+    else {
+      var date = new Date().toUTCString();
+      this.productOnly.negocio = this.commerceOnly._id as any;
+      this.productOnly.modificacion = { fecha: date };
 
-    let data = this.productOnly;
-    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({producto: data}), clave.clave);
-    this.productService.emit("actualizar-producto", ciphertext.toString());
-    
-    // cerrar MODAL
-    this.viewCtrl.dismiss();
+      let data = this.productOnly;
+      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ producto: data }), clave.clave);
+      this.productService.emit("actualizar-producto", ciphertext.toString());
+    }
   }
 
   addTypeProduct() {
@@ -156,22 +185,17 @@ export class EditProductsPage {
     // tipos de producto
     this.respuestaTipoProducto().subscribe((data: any) => {
       this.listTypeProduct = data;
-      /*let auc = this.listTypeProduct.filter(tipoP => tipoP.tipo == this.productOnly.tipo.tipo)[0];
-      let ouc = this.listTypeProduct.indexOf(auc);
-      console.log(ouc, auc);
-      this.listTypeProduct.splice(ouc,1);*/
-
-      console.log("los tipos son: ", this.listTypeProduct);
     });
 
     // agregar tipos de producto
     this.respuestaRegistrarTipoProducto().subscribe((data: any) => {
-      console.log("exito tipo producto Guardado", data);
+      this.alertMessage("Tipo producto '" + data.tipo + "', agregado.");
     });
 
     // actualizar producto
     this.respuestaActualizarProducto().subscribe((data: any) => {
-      console.log("Producto Modificado", data);
+      this.alertMessage("Producto '" + this.productOnly.nombre + "' , actualizado con exito");
+      this.navCtrl.pop();
     });
   }
 

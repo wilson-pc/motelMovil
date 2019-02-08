@@ -50,12 +50,12 @@ export class RegisterProductsPage {
 
   validInputFormProducts() {
     this.productForm = this.formBuilder.group({
-      productNombre: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
+      productNombre: ['', Validators.compose([Validators.maxLength(30), Validators.required])],
       productImg: ['', Validators.compose([])],
       productTipo: ['', Validators.compose([Validators.required])],
       productPrecio: ['', Validators.compose([Validators.maxLength(4), Validators.pattern('[0-9]*'), Validators.required])],
       productCantidad: ['', Validators.compose([Validators.maxLength(3), Validators.pattern('[0-9]*'), Validators.required])],
-      productDescripcion: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(60), Validators.required])]
+      productDescripcion: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(80), Validators.required])]
     });
   }
 
@@ -71,7 +71,6 @@ export class RegisterProductsPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
     });
 
     toast.present();
@@ -98,7 +97,6 @@ export class RegisterProductsPage {
         {
           text: 'cancelar',
           handler: data => {
-            console.log('Cancel clicked');
           }
         },
         {
@@ -106,7 +104,6 @@ export class RegisterProductsPage {
           handler: data => {
             let dato = data.tipo;
             this.addTypeProducts(dato);
-            console.log('Saved clicked');
           }
         }
       ]

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, AlertController, ToastController } from 'ionic-angular';
 import { CommerceProvider } from '../../providers/commerce/commerce';
 import { UserOnlyProvider } from '../../providers/user-only/user-only';
 import { SocketServiceCommerce, SocketServiceProduct } from '../../providers/socket-config/socket-config';
@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { Productos } from '../../models/Productos';
 import { RegisterProductsPage } from '../register-products/register-products';
 import { EditProductsPage } from '../edit-products/edit-products';
+import { ViewProductsPage } from '../view-products/view-products';
 
 @Component({
   selector: 'page-list-products',
@@ -27,6 +28,7 @@ export class ListProductsPage {
   productOnly: Productos;
   commerceOnly: Negocio;
   updateList: false;
+  productNameDelte: string;
 
   constructor(
     public navCtrl: NavController,
@@ -36,25 +38,35 @@ export class ListProductsPage {
     public commerceService: SocketServiceCommerce,
     public productService: SocketServiceProduct,
     public modalCtrl: ModalController,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    private toastCtrl: ToastController) {
     //Inicializacion
     this.connectionBackendSocket();
     this.getAllCommerce();
-
-    if(this.updateList){
-      this.getAllCommerce();
-    }
-
   }
 
   ionViewDidLoad() {
   }
 
+  alertMessage(message) {
+    this.presentToast(message);
+  }
+
+  presentToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+
+    toast.onDidDismiss(() => {
+    });
+
+    toast.present();
+  }
+
   doRefresh(event) {
-    console.log('Comenzar la operación asíncrona');
-    //this.getAllCommerce();
     setTimeout(() => {
-      console.log('La operación asíncrona ha finalizado');
       this.getProductsCommerce();
       event.complete();
     }, 2000);
@@ -76,35 +88,29 @@ export class ListProductsPage {
   }
 
   // Metodo para actualizar lista despues de alguna accion
-  getProductsCommerce() {
+  async getProductsCommerce() {
     let data = { termino: this.commerceOnly._id }
     this.productService.emit("listar-producto-negocio", data);
   }
 
   addProduct() {
-    console.log("Producto para guardar => ", this.commerceOnly);
-    let modal = this.modalCtrl.create(RegisterProductsPage, { negocio: this.commerceOnly });
-    modal.present();
+    this.navCtrl.push(RegisterProductsPage, { negocio: this.commerceOnly });
     this.getProductsCommerce();
   }
 
-  infoProduct() {
-
+  infoProduct(product) {
+    this.navCtrl.push(ViewProductsPage, {product: product, commerce: this.commerceOnly });
   }
 
   updateProduct(product) {
-    console.log("Editar producto: ", product.nombre);
-    let modal = this.modalCtrl.create(EditProductsPage, { product: product, commerce: this.commerceOnly });
-    modal.onDidDismiss(action => {
-      this.getProductsCommerce();
-    });
-    modal.present();
+    this.navCtrl.push(EditProductsPage, { product: product, commerce: this.commerceOnly });
+    this.getProductsCommerce();
   }
 
   deleteProduct(product) {
     const prompt = this.alertCtrl.create({
       title: 'Eliminar Producto',
-      message: "Ingrese la razon por el cual esta eliminando este producto.",
+      message: "Ingrese la razon por el cual esta eliminando este producto. (mínimo 15 caracteres)",
       inputs: [
         {
           name: 'razon',
@@ -121,17 +127,22 @@ export class ListProductsPage {
         {
           text: 'Eliminar',
           handler: data => {
-            product.eliminado.razon = data.razon;
-            let datos = { id: product._id, razon: product.eliminado.razon }
-            var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(datos), clave.clave);
-            this.productService.emit("eliminar-producto", ciphertext.toString());
-            this.getProductsCommerce();
+            if(data.razon.length >= 15){
+              this.productNameDelte = product.nombre;
+              product.eliminado.razon = data.razon;
+              let datos = { id: product._id, razon: product.eliminado.razon }
+              var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(datos), clave.clave);
+              this.productService.emit("eliminar-producto", ciphertext.toString());
+            }else{
+              this.alertMessage("La razon debe contener mínimo 15 caracteres.");
+            }
           }
         }
       ]
     });
     prompt.present();
   }
+
   // Conexion con el Backend
   connectionBackendSocket() {
     // negocios de un usuario
@@ -146,7 +157,8 @@ export class ListProductsPage {
 
     // Eliminar producto
     this.respuestaEliminarProductoNegocio().subscribe((data: any) => {
-      console.log("estado eliminado: ", data);
+      this.alertMessage("Producto '" + this.productNameDelte + "', eliminado exitosamente.");
+      this.getProductsCommerce();
     });
 
   }
@@ -160,22 +172,6 @@ export class ListProductsPage {
     return observable;
   }
   respuestaProductosNegocio() {
-    let observable = new Observable(observer => {
-      this.productService.on('respuesta-listado-producto-negocio', (data) => {
-        observer.next(data);
-      });
-    })
-    return observable;
-  }
-  respuestaVerProductoNegocio() {
-    let observable = new Observable(observer => {
-      this.productService.on('respuesta-listado-producto-negocio', (data) => {
-        observer.next(data);
-      });
-    })
-    return observable;
-  }
-  respuestaEditarProductoNegocio() {
     let observable = new Observable(observer => {
       this.productService.on('respuesta-listado-producto-negocio', (data) => {
         observer.next(data);

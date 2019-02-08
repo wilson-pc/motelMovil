@@ -14,8 +14,8 @@
     <form [formGroup]="productForm">
 
       <ion-item no-lines>
-        <ion-title>Negocio:</ion-title>
-        <ion-title><b>"{{commerceOnly.nombre}}"</b></ion-title>
+        <ion-title>Negocio: "{{commerceOnly.nombre}}"</ion-title>
+        <ion-title>Tipo: "{{commerceOnly.nombre}}"</ion-title>
         <br>
       </ion-item>
       
@@ -36,7 +36,7 @@
       </ion-item>
       <!--alert-->
       <ion-item no-lines *ngIf="!productForm.controls.productNombre.valid  && (productForm.controls.productNombre.dirty || statusInput)">
-        <p>Campo nombre inválido;no caracteres ni numeros.</p>
+        <p>Campo nombre inválido; 1 - 40 caracteres.</p>
       </ion-item>
 
       <ion-row>
@@ -86,7 +86,7 @@
       </ion-item>
       <!--alert-->
       <ion-item no-lines *ngIf="!productForm.controls.productDescripcion.valid  && (productForm.controls.productDescripcion.dirty || statusInput)">
-        <p>Campo descripción inválido; caracteres (10 - 60).</p>
+        <p>Campo descripción inválido; caracteres (10 - 90).</p>
       </ion-item>
 
       <br><br>
