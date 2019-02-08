@@ -149,7 +149,7 @@ export class FormComerceComponent implements OnInit {
 		this.descripcion=negocio.direccion.descripcion;
 		this.ubicaciongps=negocio.direccion.ubicaciongps;
 		
-		console.log(this.negocios );
+		console.log(negocio);
 	
 		
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
@@ -317,6 +317,8 @@ export class FormComerceComponent implements OnInit {
 
 	}
 
+	
+
 
 	limpiarCampos()
 	{
@@ -477,7 +479,7 @@ export class FormComerceComponent implements OnInit {
 		this.respuestaBuscarNegocio().subscribe((data: any[]) => {
 		console.log(data);
 			this.ListaNegocio = data;
-			//console.log(this.negocios)
+			
 		});
 	}
 

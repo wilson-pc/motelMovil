@@ -29,7 +29,7 @@ export class LicoreriaPage {
   loading:Loading;
   aux:number=0;
   constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos:ProviderProductosProvider) {
-   
+   this.listauxProductos=[];
    // this.initializeItems();  
    //this.listauxProductos=[];
     //this.response();  
@@ -65,7 +65,9 @@ export class LicoreriaPage {
   }
 
   initializeItems(){
-    this.listauxProductos=this.listProductos;
+    this.listProductos.forEach(element =>{
+      this.listauxProductos.push(element);
+    });
   }
  
   getItems(ev: any) {
@@ -86,11 +88,12 @@ export class LicoreriaPage {
    async getDatosProductos(parte){
     let data="Licoreria";
     console.log(parte);
-    this.listauxProductos=this.listProductos= await this.provedorProductos.obtenerdatosProductosLicoreria(data,parte);      
-    await console.log( this.listauxProductos);
-    if(this.infiniteScroll!="algo"){
-        this.infiniteScroll.complete();         
-      }          
+    //this.listProductos= await this.provedorProductos.obtenerdatosProductosLicoreria(data,parte);   
+    this.initializeItems();   
+    // await console.log( this.listauxProductos);
+    // if(this.infiniteScroll!="algo"){
+    //     this.infiniteScroll.complete();         
+    //   }          
    
   }
 
