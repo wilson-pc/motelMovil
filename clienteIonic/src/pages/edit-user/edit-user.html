@@ -1,0 +1,65 @@
+<!--
+  Generated template for the EditUserPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>editUser</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <form class="list-form">
+        <ion-item>
+          <ion-label floating>
+            <ion-icon name="person" item-start class="text-primary"></ion-icon>
+            Nombre
+          </ion-label>
+          <ion-input type="text" [(ngModel)]="usuario.nombre" name="nombre"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>
+            <ion-icon name="people" item-start class="text-primary"></ion-icon>
+            Apellidos
+          </ion-label>
+          <ion-input type="text" name="apellidos" [(ngModel)]="usuario.apellidos"></ion-input>
+        </ion-item>
+        <ion-item (click)="filechoosser()">
+          <ion-label floating>
+            <ion-icon name="people" item-start class="text-primary"></ion-icon>
+            foto
+          </ion-label>
+          <input type="file" accept="image/*"  name="fileInput" (change)="fileChange($event)" #fileInput  class="input-file" style="position:absolute; top: -999999px">
+          <ion-input type="text" [(ngModel)]="nombreimagen" name="gats" disabled="true"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>
+            <ion-icon name="transgender" item-start class="text-primary"></ion-icon>
+           Genero
+          </ion-label>
+          <ion-select name="genero"  [(ngModel)]="usuario.genero"   >
+              <ion-option value="femenino">Femenino</ion-option>
+            <ion-option value="masculino">Masculino</ion-option>
+            <ion-option value="otros">Otros</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>
+            <ion-icon item-start class="text-primary"></ion-icon>
+           Email
+          </ion-label>
+  
+          <ion-input  name="mail" [(ngModel)]="usuario.email" type="email"></ion-input>
+        </ion-item>
+        
+      </form>
+  
+        <button ion-button block color="dark" tappable (click)="register()">
+         Craer cuenta
+        </button>
+</ion-content>

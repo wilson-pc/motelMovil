@@ -6,7 +6,7 @@
     <div padding-horizontal text-center class="animated fadeInDown">
       <div class="logo"></div>
       <h2 ion-text class="text-primary">
-        <strong>SEX</strong>VAGO
+        <strong>Triservice</strong> Login
       </h2>
     </div>
 
@@ -14,10 +14,10 @@
     <form class="list-form">
       <ion-item>
         <ion-label floating>
-          <ion-icon name="mail" item-start class="text-primary"></ion-icon>
-          Correo
+          <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+          Nombre de usuario
         </ion-label>
-        <ion-input type="email"></ion-input>
+        <ion-input [(ngModel)]="loginUser.usuario" name="username" type="email"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -25,7 +25,7 @@
           <ion-icon name="lock" item-start class="text-primary"></ion-icon>
           Contraseña
         </ion-label>
-        <ion-input type="password"></ion-input>
+        <ion-input [(ngModel)]="loginUser.password" name="password" type="password"></ion-input>
       </ion-item>
     </form>
 

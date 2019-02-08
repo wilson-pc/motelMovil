@@ -629,7 +629,7 @@ module.exports = async function (io) {
           var pass = params.password;
           var tipo = params.tipo;
 
-          Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
+          Usuario.findOne({'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });

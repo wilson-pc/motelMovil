@@ -224,7 +224,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
           } else {
-           
+           console.log(lista);
             io.to(socket.id).emit('respuesta-listado-producto', lista);
           }
         }
@@ -284,14 +284,14 @@ socket.on('listar-todos-productos', async (data) => {
       }, { "foto.normal": 0 }, function (error, lista) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
-          io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
+          io.to(socket.id).emit('respuesta-buscar-producto', { error: "ocurrio un error al buscar productos" });
         } else {
           if (!lista) {
             //   res.status(404).send({ mensaje: "Error al listar" })
-            io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
+            io.to(socket.id).emit('respuesta-buscar-producto', { error: "no hay resultado en le busqueda" });
           } else {
             console.log(lista);
-            io.to(socket.id).emit('respuesta-listado-producto', lista);
+            io.to(socket.id).emit('respuesta-buscar-producto', lista);
           }
         }
 

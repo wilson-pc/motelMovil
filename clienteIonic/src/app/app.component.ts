@@ -1,14 +1,16 @@
+import { ProfileUserPage } from './../pages/profile-user/profile-user';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import * as CryptoJS from 'crypto-js';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LocalWeatherPage } from '../pages/local-weather/local-weather';
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import { AuthProvider } from '../providers/auth/auth';
+import { clave } from '../app/cryptoclave';
 import { Storage } from '@ionic/storage';
 import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
@@ -36,7 +38,7 @@ export class MyApp {
 
 
 
-  constructor(private storage: Storage,private userServ:UsuarioProvider,public proveedordata:AuthProvider,private androidPermissions: AndroidPermissions,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(private storage: Storage,public userServ:UsuarioProvider,public proveedordata:AuthProvider,private androidPermissions: AndroidPermissions,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
        
     this.initializeApp();
     platform.ready().then(() => {
@@ -51,9 +53,12 @@ export class MyApp {
       storage.get('usuario').then((val) => {
         if(val){
         //  alert(val);
-          this.userServ.UserSeCion=val;
+        
+          this.userServ.UserSeCion=this.decryptData(val);
           //alert("con secion");
         }else{
+          this.userServ.UserSeCion=false;
+          console.log("sin cescio");
         //  alert("sin secion");
         }
       });
@@ -102,9 +107,29 @@ export class MyApp {
 
     this.nav.setRoot(page.component);
   }
-  logout() {
-    this.storage.remove("usuario");
-    this.userServ.UserSeCion=undefined;
+  login(){
+    this.userServ.UserSeCion=false;
     this.nav.setRoot(LoginPage);
+  }
+  logout() {
+    this.userServ.UserSeCion=false;
+    this.storage.remove("usuario");
+  
+    this.nav.setRoot(LoginPage);
+  }
+
+  perfil(){
+    this.nav.push(ProfileUserPage);
+  }
+  decryptData(data) {
+    try {
+      const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+      if (bytes.toString()) {
+        return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      }
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

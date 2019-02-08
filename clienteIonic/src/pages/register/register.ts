@@ -41,6 +41,7 @@ export class RegisterPage {
 if(this.usuario.nombre && this.usuario.nombre && this.usuario.email && this.usuario.login.usuario && this.usuario.login.password){
   this.usuario.rol =this.rolUser as any;
   var date = new Date().toUTCString();
+  this.usuario.tiporegistro="app";
   this.usuario.creacion = { fecha: date} as any
   this.usuario.modificacion = { fecha: date} as any;
 
@@ -49,7 +50,15 @@ if(this.usuario.nombre && this.usuario.nombre && this.usuario.email && this.usua
   this.userSocket.emit("registrar-usuario-cliente", ciphertext.toString());
   this.userSocket.on('respuesta-registrar-usuario-cliente', (data) => {
     if(!data.error){
-    console.log(data);
+   this.nav.setRoot(LoginPage);
+   let toast = this.toastCtrl.create({
+    showCloseButton: true,
+    cssClass: 'profile-bg',
+    message: "registro con exito inicie secion",
+    duration: 3000,
+    position: 'bottom'
+  });
+  toast.present();
   }else{
     let toast = this.toastCtrl.create({
       showCloseButton: true,
@@ -202,7 +211,7 @@ if(this.usuario.nombre && this.usuario.nombre && this.usuario.email && this.usua
 
     // alert(event.srcElement.files[0].name);
     this.readFile(event.srcElement.files[0]).subscribe(data => {
-      resizeBase64(data, 90, 60).then((result) => {
+      resizeBase64(data, 200, 150).then((result) => {
         
         this.usuario.foto=result;
       //  console.log(this.usuario);
