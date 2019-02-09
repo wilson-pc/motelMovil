@@ -6,6 +6,7 @@ import { ProviderProductosProvider } from '../../providers/provider-productos/pr
 import { elementAt } from 'rxjs/operators';
 import { SocketConfigService } from '../../services/socket-config.service';
 import { Observable } from 'rxjs';
+import { DEFAULT_INTERPOLATION_CONFIG } from '@angular/compiler';
 
 /**
  * Generated class for the SexShopPage page.
@@ -38,6 +39,7 @@ export class SexShopPage {
   constructor(public productService:SocketConfigService ,public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, private provedorProductos:ProviderProductosProvider) {
     
     //this.initializeItems();
+    this.respuestaProductosNegocioSexshop();
     
   }
   async ionViewWillEnter(){
@@ -45,6 +47,7 @@ export class SexShopPage {
     this.listProductossex=[];
    this.obtenerdatosProductos();
    this.parte=1;       
+   this.presentLoadingDefault();
        
     //   this.response();
     }
@@ -62,12 +65,14 @@ export class SexShopPage {
     }
   
     //FUNCIONES PARA EL LOADING
-    // presentLoadingDefault() {
-    //   this.loading = this.loadingCtrl.create({
-    //     content: 'Porfavor espere...'
-    //   });
-    //   this.loading.present();    
-    // }
+   presentLoadingDefault() {
+     this.loading = this.loadingCtrl.create({
+       content: 'Porfavor espere...',
+        
+     });
+     this.loading.present(); 
+    
+   }
   
   //FUNCIONES PARA EL BUSCADOR
      initializeItems() {
@@ -96,13 +101,11 @@ export class SexShopPage {
      loadData(event) {   
       this.cont++;  
       if(this.cont==1)
-      {
-        this.aux=1
+      {       
         setTimeout(()=>{
           event.complete();
           this.parte++;                  
-         this.obtenerdatosProductos(); 
-         this.aux=0;                     
+         this.obtenerdatosProductos();                              
           this.cont=0;
         },3000);
       }          
@@ -119,35 +122,26 @@ export class SexShopPage {
     
     obtenerdatosProductos(){
       let terminoL="SexShop";    
-
-      if(this.listauxProductossex.length==0){
-        let newdata={termino:terminoL,parte:this.parte}
-        console.log(newdata);
-
-        this.productService.emit('listar-producto', newdata);
-        this.respuestaProductosNegocioSexshop();
-      } 
-      else{
-        if(this.aux==1){
-          let newdata={termino:terminoL,parte:this.parte}
-          console.log(newdata);
-          this.productService.emit('listar-producto', newdata);
-        this.respuestaProductosNegocioSexshop();
-        }
-      }
+      let newdata={termino:terminoL,parte:this.parte}
+      
+      console.log(newdata);
+      this.productService.emit('listar-producto', newdata);      
+      
     }
 
     respuestaProductosNegocioSexshop() {
-         
-         
-          this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
-           
+        
+      this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
+                        
             if(data){
               console.log("este es el data:"+data);
+              
               data.forEach(element =>{
                 this.listauxProductossex.push(element);
                 this.listProductossex.push(element);
-              })             
+              })   
+             // this.loading.dismiss();          
+              
             }
             else{
               console.log("error en la lista");

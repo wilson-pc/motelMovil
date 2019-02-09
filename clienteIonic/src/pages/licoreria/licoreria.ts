@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, Loading } from 
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
+import {  SocketConfigService } from '../../services/socket-config.service';
 
 /**
  * Generated class for the LicoreriaPage page.
@@ -29,23 +30,15 @@ export class LicoreriaPage {
   loading:Loading;
   aux:number=0;
   cont=0;
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos:ProviderProductosProvider) {
-   this.listauxProductos=[];
-   // this.initializeItems();  
-   //this.listauxProductos=[];
-    //this.response();  
+  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private productService:SocketConfigService) {
    
+    this.respuestaProductosNegocioLicores();   
   }
    async ionViewWillEnter(){   
     this.listauxProductos=[];
-    this.listProductos=[];
-    await this.provedorProductos.listSexshop;
-    this.provedorProductos.listSexshop=[];
-    this.provedorProductos.sw=0;
-    this.getDatosProductos();    
-  
-      
-  
+    this.listProductos=[];  
+    this.obtenerdatosProductos();          
+  this.parte=1;
    }
  
   ionViewDidLoad() {
@@ -53,27 +46,20 @@ export class LicoreriaPage {
     
   }
 
- 
-   loadData(event,parte:number) {
+   loadData(event) {
   
     this.cont++;  
     if(this.cont==1)
     {
-      this.provedorProductos.sw=1;
+      
       setTimeout(()=>{
         event.complete();
         this.parte++;        
-        this.getDatosProductos();
-        this.provedorProductos.sw=0;
-        this.listProductos=[];
-        this.listauxProductos=[];
-        console.log("se termino el tiempo");
-        this.aux=0;
+        this.obtenerdatosProductos();    
+        console.log("se termino el tiempo");      
         this.cont=0;
       },3000);
-    }
-        
-     
+    }           
     
   }
 
@@ -100,13 +86,33 @@ export class LicoreriaPage {
     }
   }
   //FUNCIONES BASE DE DATOS
-   async getDatosProductos(){
-    let data="Licoreria";
+
+  obtenerdatosProductos(){
+    let terminoL="Licoreria";    
+    let newdata={termino:terminoL,parte:this.parte}
     
-    this.listauxProductos=this.listProductos= await this.provedorProductos.obtenerdatosProductosLicoreria(data,this.parte);   
-      
-   
+    console.log(newdata);
+    this.productService.emit('listar-producto', newdata);   
   }
+
+  respuestaProductosNegocioLicores() {
+        
+    this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
+                      
+          if(data){
+            console.log("este es el data:"+data);
+            
+            data.forEach(element =>{
+              this.listProductos.push(element);
+              this.listauxProductos.push(element);
+            })             
+          }
+          else{
+            console.log("error en la lista");
+          }
+        })
+      
+   }
 
  
 
