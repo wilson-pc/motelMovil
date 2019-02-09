@@ -1,0 +1,76 @@
+<!--
+  Generated template for the ProfileUserPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>profileUser</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <div class="bg-image">
+        <ion-img [src]="userServ.UserSeCion.datos.foto" class="round-image" 
+      style="
+        height: 150px !important;
+        width: 150px !important;
+        margin-top: 5%;
+        background: none !important;
+        background-color :none !important;">
+       </ion-img>
+       <h3>{{userServ.UserSeCion.datos.nombre}}</h3>
+       <p>{{userServ.UserSeCion.datos.email}}</p>
+
+       <ion-row no-padding>
+          <ion-col>
+            <button (click)="editLogin()"  ion-button  small color="primary" icon-start>
+              editar login
+            </button>
+          </ion-col>
+          <ion-col text-right>
+            <button (click)="editUser()"  ion-button  small color="primary" icon-start>
+            
+              editar datos
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
+      <ion-list>
+         
+            <ion-item>
+              <ion-card>
+                  <ion-card-header>
+                     <strong>Nombre: </strong> {{userServ.UserSeCion.datos.nombre}}
+                    </ion-card-header>
+                  
+                
+      
+              </ion-card>
+            </ion-item>
+            <ion-item>
+                <ion-card>
+                    <ion-card-header>
+                       <strong>Apellido: </strong>{{userServ.UserSeCion.datos.apellidos}}
+                      </ion-card-header>
+                    
+                      
+        
+                </ion-card>
+              </ion-item>
+              <ion-item>
+                  <ion-card>
+                      <ion-card-header>
+                         <strong>Email: </strong>{{userServ.UserSeCion.datos.email}}
+                        </ion-card-header>
+                      
+          
+                  </ion-card>
+                </ion-item>
+          
+        </ion-list>
+</ion-content>
