@@ -4,6 +4,8 @@ import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { elementAt } from 'rxjs/operators';
+import { SocketConfigService } from '../../services/socket-config.service';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the SexShopPage page.
@@ -31,17 +33,27 @@ export class SexShopPage {
   loading:any;
   aux:number= 0;
   cont=0;
+  
 
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, private provedorProductos:ProviderProductosProvider) {
+  constructor(public productService:SocketConfigService ,public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, private provedorProductos:ProviderProductosProvider) {
     
     //this.initializeItems();
     
   }
-  ionViewWillEnter(){
-    //   this.listauxProductossex=[];
-    this.getDatosProductos();    
-     this.infiniteScroll="algo";
+  async ionViewWillEnter(){
+    this.listauxProductossex=[];
+    this.listProductossex=[];
+   this.obtenerdatosProductos();
+   this.parte=1;       
+       
     //   this.response();
+    }
+    
+     ionViewDidLeave() {
+     this.listauxProductossex=[];
+     this.parte=1;
+     this.aux=0;
+     
     }
     
   
@@ -58,8 +70,8 @@ export class SexShopPage {
     // }
   
   //FUNCIONES PARA EL BUSCADOR
-    async initializeItems() {
-      this.listauxProductossex=this.listProductossex;
+     initializeItems() {
+      this.listauxProductossex= this.listProductossex;
       
       // console.log("lista aux" + this.listauxProductos);
     }
@@ -85,21 +97,16 @@ export class SexShopPage {
       this.cont++;  
       if(this.cont==1)
       {
-        this.provedorProductos.sw=1;
+        this.aux=1
         setTimeout(()=>{
           event.complete();
-          this.parte++;        
-          this.getDatosProductos();
-          this.provedorProductos.sw=0;
-          console.log("se termino el tiempo");
-          this.aux=0;
+          this.parte++;                  
+         this.obtenerdatosProductos(); 
+         this.aux=0;                     
           this.cont=0;
         },3000);
-      }
-          
-      //this.infiniteScroll=event;    
-      
-    
+      }          
+      //this.infiniteScroll=event;  
     }
 
   
@@ -107,20 +114,49 @@ export class SexShopPage {
       this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
     }
   
-    //FUNCIONES BASE DE DATOS
-     async getDatosProductos(){
-      let data="SexShop";
-     
-        this.listauxProductossex=this.listauxProductossex = await this.provedorProductos.obtenerdatosProductosSexshop(data,this.parte);
-     
-    
-         
-      // this.provedorProductos.obtenerdatosProductosSexshop(data,parte).forEach( element =>{
-      //   this.listauxProductossex.push(element);
-      // })  
-     
-    }
+    //FUNCIONES BASE DE DATOS  
   
+    
+    obtenerdatosProductos(){
+      let terminoL="SexShop";    
+
+      if(this.listauxProductossex.length==0){
+        let newdata={termino:terminoL,parte:this.parte}
+        console.log(newdata);
+
+        this.productService.emit('listar-producto', newdata);
+        this.respuestaProductosNegocioSexshop();
+      } 
+      else{
+        if(this.aux==1){
+          let newdata={termino:terminoL,parte:this.parte}
+          console.log(newdata);
+          this.productService.emit('listar-producto', newdata);
+        this.respuestaProductosNegocioSexshop();
+        }
+      }
+    }
+
+    respuestaProductosNegocioSexshop() {
+         
+         
+          this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
+           
+            if(data){
+              console.log("este es el data:"+data);
+              data.forEach(element =>{
+                this.listauxProductossex.push(element);
+                this.listProductossex.push(element);
+              })             
+            }
+            else{
+              console.log("error en la lista");
+            }
+          })
+        
+     }
+      
+ 
  
     
   

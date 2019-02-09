@@ -28,6 +28,7 @@ export class LicoreriaPage {
   listauxProductos:Productos[]=[];
   loading:Loading;
   aux:number=0;
+  cont=0;
   constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos:ProviderProductosProvider) {
    this.listauxProductos=[];
    // this.initializeItems();  
@@ -35,13 +36,16 @@ export class LicoreriaPage {
     //this.response();  
    
   }
-
-
-   ionViewWillEnter(){   
+   async ionViewWillEnter(){   
     this.listauxProductos=[];
-    this.getDatosProductos(this.parte);      
-    this.infiniteScroll="algo";
-    console.log("esta es la lista=>"+ this.listauxProductos.length);
+    this.listProductos=[];
+    await this.provedorProductos.listSexshop;
+    this.provedorProductos.listSexshop=[];
+    this.provedorProductos.sw=0;
+    this.getDatosProductos();    
+  
+      
+  
    }
  
   ionViewDidLoad() {
@@ -52,10 +56,23 @@ export class LicoreriaPage {
  
    loadData(event,parte:number) {
   
-    this.infiniteScroll=event;    
-    this.parte=parte;
-    console.log(parte);
-    this.getDatosProductos(parte);
+    this.cont++;  
+    if(this.cont==1)
+    {
+      this.provedorProductos.sw=1;
+      setTimeout(()=>{
+        event.complete();
+        this.parte++;        
+        this.getDatosProductos();
+        this.provedorProductos.sw=0;
+        this.listProductos=[];
+        this.listauxProductos=[];
+        console.log("se termino el tiempo");
+        this.aux=0;
+        this.cont=0;
+      },3000);
+    }
+        
      
     
   }
@@ -65,9 +82,7 @@ export class LicoreriaPage {
   }
 
   initializeItems(){
-    this.listProductos.forEach(element =>{
-      this.listauxProductos.push(element);
-    });
+   this.listauxProductos=this.listProductos;
   }
  
   getItems(ev: any) {
@@ -85,58 +100,14 @@ export class LicoreriaPage {
     }
   }
   //FUNCIONES BASE DE DATOS
-   async getDatosProductos(parte){
+   async getDatosProductos(){
     let data="Licoreria";
-    console.log(parte);
-    //this.listProductos= await this.provedorProductos.obtenerdatosProductosLicoreria(data,parte);   
-    this.initializeItems();   
-    // await console.log( this.listauxProductos);
-    // if(this.infiniteScroll!="algo"){
-    //     this.infiniteScroll.complete();         
-    //   }          
+    
+    this.listauxProductos=this.listProductos= await this.provedorProductos.obtenerdatosProductosLicoreria(data,this.parte);   
+      
    
   }
 
-  //  responce(){
-  
-  //   if( this.listProductos.length==0){
-  //     this.aux=1;
-  //   }
-  //   else{
-  //     this.aux=0;      
-  //   }
-
-  //   this.guardarDatosenLista();
-    
-  // }
-
-  // guardarDatosenLista(){
-
-
-  //   if(this.aux==1)
-  //   {
-  //     this.provedorProductos.respuestaProductosNegocioLicoreria().subscribe( (data:any[])=>{
-  //       this.listauxProductos=data;      
-  //       this.listProductos=data;
-  
-  //       console.log("estas dentro de getdata");
-  //       console.log(this.listauxProductos);
-  //       // data.forEach(element => {
-        
-  //       //  this.listauxProductos.push(element);
-  //       // });        
-  
-  //       // if(this.infiniteScroll!="algo"){
-  //       //    this.infiniteScroll.complete();         
-  //       // }          
-  //     });   
-  //   }
-  //   else
-  //   {
-  //     console.log("datos llenos");
-  //   }
-
-   
-  //}
+ 
 
 }
