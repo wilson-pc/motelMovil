@@ -10,6 +10,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { UsuarioProvider } from './../../providers/usuario/usuario';
 import { Storage } from '@ionic/storage';
 import { SocketLoginService } from '../../services/socket-config.service';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'page-login',
@@ -18,9 +19,12 @@ import { SocketLoginService } from '../../services/socket-config.service';
 export class LoginPage {
   rolUser:string="5c45ef2909d2200ea8f6db83";
 usuario:Usuarios;
+loginUser:any={usuario:"",password:"",tipo:"Cliente"};
   constructor(private googlePlus: GooglePlus,private storage: Storage,private userServ:UsuarioProvider,private socketLogin:SocketLoginService,private facebook: Facebook,public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
     this.menu.swipeEnable(false);
     this.usuario=new Usuarios;
+    this.connectonSocket();
+    console.log(this.loginUser);
   }
   loginFacebook(){
     this.facebook.login(['public_profile', 'email'])
@@ -146,7 +150,21 @@ usuario:Usuarios;
   }
   // login and go to home page
   login() {
-    this.nav.setRoot(HomePage);
+    if(this.loginUser.usuario!="" && this.loginUser.password!=""){
+      var datos=this.encryptData(this.loginUser);
+      this.socketLogin.emit("login-usuario-clientes", datos);
+    }else{
+      let toast = this.toastCtrl.create({
+        message: 'Deve completar los campos',
+        duration: 3000,
+        position: 'top',
+        cssClass: 'dark-trans',
+        closeButtonText: 'OK',
+        showCloseButton: true
+      });
+      toast.present();
+    }
+    
   }
 
   forgotPass() {
@@ -185,6 +203,33 @@ usuario:Usuarios;
       ]
     });
     forgot.present();
+  }
+
+  connectonSocket(){
+    this.socketLogin.on('respuesta-login', (data) => {
+      
+      if(!data.mensaje){
+      this.userServ.UserSeCion=data;
+      this.storage.set("usuario", this.encryptData(data));
+     // localStorage.setItem("usuario", this.encryptData(data));
+      /* 
+      
+       localStorage.clear();
+        // Redirecionar al Login
+        this.nav.setRoot(LoginPage);
+      */
+      this.nav.setRoot(TabsPage);
+      }else{
+        let toast = this.toastCtrl.create({
+          showCloseButton: true,
+          cssClass: 'profile-bg',
+          message: data.mensaje,
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      }
+    });
   }
 
 }

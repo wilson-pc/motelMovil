@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, Loading } from 
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
+import {  SocketConfigService } from '../../services/socket-config.service';
 
 /**
  * Generated class for the LicoreriaPage page.
@@ -28,20 +29,16 @@ export class LicoreriaPage {
   listauxProductos:Productos[]=[];
   loading:Loading;
   aux:number=0;
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos:ProviderProductosProvider) {
-   this.listauxProductos=[];
-   // this.initializeItems();  
-   //this.listauxProductos=[];
-    //this.response();  
+  cont=0;
+  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private productService:SocketConfigService) {
    
+    this.respuestaProductosNegocioLicores();   
   }
-
-
-   ionViewWillEnter(){   
+   async ionViewWillEnter(){   
     this.listauxProductos=[];
-    this.getDatosProductos(this.parte);      
-    this.infiniteScroll="algo";
-    console.log("esta es la lista=>"+ this.listauxProductos.length);
+    this.listProductos=[];  
+    this.obtenerdatosProductos();          
+  this.parte=1;
    }
  
   ionViewDidLoad() {
@@ -49,14 +46,20 @@ export class LicoreriaPage {
     
   }
 
- 
-   loadData(event,parte:number) {
+   loadData(event) {
   
-    this.infiniteScroll=event;    
-    this.parte=parte;
-    console.log(parte);
-    this.getDatosProductos(parte);
-     
+    this.cont++;  
+    if(this.cont==1)
+    {
+      
+      setTimeout(()=>{
+        event.complete();
+        this.parte++;        
+        this.obtenerdatosProductos();    
+        console.log("se termino el tiempo");      
+        this.cont=0;
+      },3000);
+    }           
     
   }
 
@@ -65,9 +68,7 @@ export class LicoreriaPage {
   }
 
   initializeItems(){
-    this.listProductos.forEach(element =>{
-      this.listauxProductos.push(element);
-    });
+   this.listauxProductos=this.listProductos;
   }
  
   getItems(ev: any) {
@@ -85,58 +86,34 @@ export class LicoreriaPage {
     }
   }
   //FUNCIONES BASE DE DATOS
-   async getDatosProductos(parte){
-    let data="Licoreria";
-    console.log(parte);
-    //this.listProductos= await this.provedorProductos.obtenerdatosProductosLicoreria(data,parte);   
-    this.initializeItems();   
-    // await console.log( this.listauxProductos);
-    // if(this.infiniteScroll!="algo"){
-    //     this.infiniteScroll.complete();         
-    //   }          
-   
+
+  obtenerdatosProductos(){
+    let terminoL="Licoreria";    
+    let newdata={termino:terminoL,parte:this.parte}
+    
+    console.log(newdata);
+    this.productService.emit('listar-producto', newdata);   
   }
 
-  //  responce(){
-  
-  //   if( this.listProductos.length==0){
-  //     this.aux=1;
-  //   }
-  //   else{
-  //     this.aux=0;      
-  //   }
-
-  //   this.guardarDatosenLista();
-    
-  // }
-
-  // guardarDatosenLista(){
-
-
-  //   if(this.aux==1)
-  //   {
-  //     this.provedorProductos.respuestaProductosNegocioLicoreria().subscribe( (data:any[])=>{
-  //       this.listauxProductos=data;      
-  //       this.listProductos=data;
-  
-  //       console.log("estas dentro de getdata");
-  //       console.log(this.listauxProductos);
-  //       // data.forEach(element => {
+  respuestaProductosNegocioLicores() {
         
-  //       //  this.listauxProductos.push(element);
-  //       // });        
-  
-  //       // if(this.infiniteScroll!="algo"){
-  //       //    this.infiniteScroll.complete();         
-  //       // }          
-  //     });   
-  //   }
-  //   else
-  //   {
-  //     console.log("datos llenos");
-  //   }
+    this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
+                      
+          if(data){
+            console.log("este es el data:"+data);
+            
+            data.forEach(element =>{
+              this.listProductos.push(element);
+              this.listauxProductos.push(element);
+            })             
+          }
+          else{
+            console.log("error en la lista");
+          }
+        })
+      
+   }
 
-   
-  //}
+ 
 
 }

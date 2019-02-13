@@ -1,0 +1,18 @@
+page-profile-user {
+    .bg-image {
+        background-color: #F7556D;
+        height: 75%;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .round-image img{
+        background-position: center center;
+        background-size: contain;
+        border-radius: 50%;
+        border: 3px solid;
+        border-color: rgb(255, 255, 255);
+        height: 100%;
+        width: 100%;
+    }
+}
