@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, InfiniteScroll, LoadingController 
 import { Habitacion } from '../../models/Habitacion';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
+import { SocketConfigService } from '../../services/socket-config.service';
 
 
 /**
@@ -29,15 +30,20 @@ export class MotelPage {
   listProductos:Productos[]=[];
   listauxProductos:Productos[]=[];
   loading:any;
+  cont=0;
 
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private provedorProductos: ProviderProductosProvider) {
-  
-    this.initializeItems();
-    this.getDatosProductos(this.parte);    
-    this.infiniteScroll="algo";
-    //this.response();
+  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private socketservicio: SocketConfigService) {
+  this.respuestaProductosNegocioMoteles();
+    
   }
 
+  ionViewWillEnter()
+  {
+    this.listauxProductos=[];
+    this.listauxProductos=[];
+    this.obtenerdatosProductos();
+    this.parte=1;
+  }
   ionViewDidLoad() {
 
    
@@ -47,10 +53,29 @@ export class MotelPage {
   //FUNCION PARA LOADING
     
 
-  toggleInfiniteScroll() {
-    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  //FUNCION PARA SCROLL INFINITO
+  loadData(event) {
+  
+    this.cont++;  
+    if(this.cont==1)
+    {
+      
+      setTimeout(()=>{
+        event.complete();
+        this.parte++;        
+        this.obtenerdatosProductos();    
+        console.log("se termino el tiempo");      
+        this.cont=0;
+      },3000);
+    }           
+    
   }
 
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }// FIN FUNCIONES DEL SCROLL INFINITO
+
+  //FUNCIONES PARA BUSCAR POR NOMBRE EN UN ARRAY
   async initializeItems() {
     this.listauxProductos=this.listProductos;
     
@@ -70,32 +95,33 @@ export class MotelPage {
         return (item.nombre.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
-  }
+  }//FIN FUNCIONES PARA BUSCAR POR NOMBRE EN ARRAY
 
   //FUNCIONES BASE DE DATOS
-   getDatosProductos(parte){
-    let data="Motel";
-    console.log(parte);
-   // this.provedorProductos.obtenerdatosProductosLicoreria(data,parte);  
-      
+  obtenerdatosProductos(){
+    let terminoL="Motel";    
+    let newdata={termino:terminoL,parte:this.parte}
+    
+    console.log(newdata);
+    this.socketservicio.emit('listar-producto', newdata);   
   }
 
-  // response(){
-  
-  //   this.provedorProductos.respuestaProductosNegocio().subscribe((data:any[])=>{
-  //     console.log(data);   
-
-  //     data.forEach(element => {
-  //     //  this.listProductos.push(element);
-  //      this.listauxProductos.push(element);
-  //     });
-     
-
-  //     if(this.infiniteScroll!="algo"){
-  //        this.infiniteScroll.complete();
-  //     }
-     
-  //   }); 
+  respuestaProductosNegocioMoteles() {
+        
+    this.socketservicio.on('respuesta-listado-producto',(data:Productos[])=>{
+                      
+          if(data){
+            console.log("este es el data:"+data);
+            
+            data.forEach(element =>{
+              this.listProductos.push(element);
+              this.listauxProductos.push(element);
+            })             
+          }
+          else{
+            console.log("error en la lista");
+          }
+        })
       
-  // }
+   }
 }
