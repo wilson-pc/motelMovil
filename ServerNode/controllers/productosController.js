@@ -247,7 +247,7 @@ socket.on('listar-todos-productos', async (data) => {
         //   res.status(404).send({ mensaje: "Error al listar" })
         io.to(socket.id).emit('respuesta-listar-todos-productos', { error: "no hay productos en la base de datos" });
       } else {
-        console.log(lista);
+        //console.log(lista);
         io.to(socket.id).emit('respuesta-listar-todos-productos', {productos:lista,total:total});
       }
     }

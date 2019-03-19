@@ -14,3 +14,65 @@
   name: 'MongoNetworkError',
   errorLabels: [ 'TransientTransactionError' ],
   [Symbol(mongoErrorContextSymbol)]: {} }
+[2019-03-18T15:49:32.835] [FATAL] index - no se pudo conectar a la base de datos,revise la conexion al servidor Error: No hostname or hostnames provided in connection string
+    at parseConnectionString (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb\lib\url_parser.js:147:11)
+    at parseHandler (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb\lib\url_parser.js:129:14)
+    at module.exports (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb\lib\url_parser.js:25:12)
+    at deprecated (internal/util.js:73:15)
+    at connect (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb\lib\operations\mongo_client_ops.js:180:3)
+    at connectOp (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb\lib\operations\mongo_client_ops.js:284:3)
+    at executeOperation (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb\lib\utils.js:420:24)
+    at MongoClient.connect (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb\lib\mongo_client.js:168:10)
+    at Promise (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongoose\lib\connection.js:521:12)
+    at new Promise (<anonymous>)
+    at NativeConnection.Connection.openUri (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongoose\lib\connection.js:518:19)
+    at Mongoose.connect (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongoose\lib\index.js:270:15)
+    at Object.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\index.js:33:14)
+    at Module._compile (internal/modules/cjs/loader.js:721:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:732:10)
+    at Module.load (internal/modules/cjs/loader.js:620:32)
+[2019-03-18T15:49:46.539] [FATAL] index - no se pudo conectar a la base de datos,revise la conexion al servidor { MongoNetworkError: failed to connect to server [192.168.1.5:27017] on first connect [MongoNetworkError: connect EHOSTUNREACH 192.168.1.5:27017]
+    at Pool.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\topologies\server.js:564:11)
+    at Pool.emit (events.js:188:13)
+    at Connection.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\pool.js:317:12)
+    at Object.onceWrapper (events.js:276:13)
+    at Connection.emit (events.js:188:13)
+    at Socket.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\connection.js:246:50)
+    at Object.onceWrapper (events.js:276:13)
+    at Socket.emit (events.js:188:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process.internalTickCallback (internal/process/next_tick.js:72:19)
+  name: 'MongoNetworkError',
+  errorLabels: [ 'TransientTransactionError' ],
+  [Symbol(mongoErrorContextSymbol)]: {} }
+[2019-03-18T15:51:13.614] [FATAL] index - no se pudo conectar a la base de datos,revise la conexion al servidor { MongoNetworkError: failed to connect to server [192.168.1.5:27017] on first connect [MongoNetworkError: connect ETIMEDOUT 192.168.1.5:27017]
+    at Pool.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\topologies\server.js:564:11)
+    at Pool.emit (events.js:188:13)
+    at Connection.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\pool.js:317:12)
+    at Object.onceWrapper (events.js:276:13)
+    at Connection.emit (events.js:188:13)
+    at Socket.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\connection.js:246:50)
+    at Object.onceWrapper (events.js:276:13)
+    at Socket.emit (events.js:188:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process.internalTickCallback (internal/process/next_tick.js:72:19)
+  name: 'MongoNetworkError',
+  errorLabels: [ 'TransientTransactionError' ],
+  [Symbol(mongoErrorContextSymbol)]: {} }
+[2019-03-18T16:49:23.982] [FATAL] index - no se pudo conectar a la base de datos,revise la conexion al servidor { MongoNetworkError: failed to connect to server [192.168.1.5:27017] on first connect [MongoNetworkError: connect ETIMEDOUT 192.168.1.5:27017]
+    at Pool.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\topologies\server.js:564:11)
+    at Pool.emit (events.js:188:13)
+    at Connection.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\pool.js:317:12)
+    at Object.onceWrapper (events.js:276:13)
+    at Connection.emit (events.js:188:13)
+    at Socket.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\connection.js:246:50)
+    at Object.onceWrapper (events.js:276:13)
+    at Socket.emit (events.js:188:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process.internalTickCallback (internal/process/next_tick.js:72:19)
+  name: 'MongoNetworkError',
+  errorLabels: [ 'TransientTransactionError' ],
+  [Symbol(mongoErrorContextSymbol)]: {} }
