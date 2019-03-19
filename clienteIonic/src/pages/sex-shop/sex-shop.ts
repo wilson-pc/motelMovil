@@ -140,7 +140,7 @@ export class SexShopPage {
                 this.listauxProductossex.push(element);
                 this.listProductossex.push(element);
               })   
-             // this.loading.dismiss();          
+              this.loading.dismiss();          
               
             }
             else{
