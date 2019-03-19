@@ -100,9 +100,9 @@ module.exports = async function (io) {
                       io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { error: "Error no se pudo crear el registro" });
 
                     } else {
-                      
-                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { dato:nuevoUsuario});
-                 
+
+                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { dato: nuevoUsuario });
+
                     }
                   })
                 }
@@ -124,14 +124,57 @@ module.exports = async function (io) {
       //console.log(req.body);
     });
 
+    socket.on('registrar-sa', async () => {
+
+     
+          var usuario = new Usuario();
+
+
+          usuario.nombre = "Super";
+          usuario.apellidos = "Admin";
+          usuario.genero = "otro";
+          usuario.ci = "9595633";
+          usuario.telefono = "45252523";
+          usuario.email = "sa@yandex.com";
+          usuario.login = { usuario: 'sa', password: '123', estado: false };
+          usuario.rol = await Rol.findById("5c45eed64d12261e10b57845");
+
+          
+              //encripta el pasword del usuario
+              bcrypt.hash(usuario.login.password, null, null, async function (error, hash) {
+                usuario.login.password = hash;
+
+                if (usuario.login.usuario != null) {
+                  //guarda al nuevo usuario en la bd
+
+                  usuario.save(async (error, nuevoUsuario) => {
+                    if (error) {
+                      console.log(error);
+                      io.to(socket.id).emit('respuesta-crear', { error: "Error no se pudo crear el registro" });
+
+                    } else {
+                      
+                      console.log("exito ");
+                      io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
+                      io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
+                    }
+                  })
+                }
+
+              });
+
+      //console.log(req.body);
+    });
+
 
     socket.on('registrar-usuario', async (data) => {
 
-
+      console.log(data);
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          console.log(datos);
           var usuario = new Usuario();
 
           var params = datos.usuario;
@@ -160,6 +203,7 @@ module.exports = async function (io) {
 
                   usuario.save(async (error, nuevoUsuario) => {
                     if (error) {
+                      console.log(error);
                       io.to(socket.id).emit('respuesta-crear', { error: "Error no se pudo crear el registro" });
 
                     } else {
@@ -173,7 +217,7 @@ module.exports = async function (io) {
                           var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                         }
                       }
-
+                      console.log("exito ");
                       io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
                       io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
                     }
@@ -185,7 +229,7 @@ module.exports = async function (io) {
           }
           else {
             io.to(socket.id).emit('respuesta-crear', { mensaje: "este usuario ya esta registrado" });
-            //console.log("usuario existe");
+            console.log("usuario existe");
           }
 
         }
@@ -629,7 +673,7 @@ module.exports = async function (io) {
           var pass = params.password;
           var tipo = params.tipo;
 
-          Usuario.findOne({'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
+          Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
@@ -701,11 +745,11 @@ module.exports = async function (io) {
 
             if (error) {
               //  io.to(socket.id).emit('progreso',{total:image.length,progreso:index+1});
-              io.to(socket.id).emit('respuesta-cerrar', { mensaje:"ocurrio un error durante el cierre se cesion" });
+              io.to(socket.id).emit('respuesta-cerrar', { mensaje: "ocurrio un error durante el cierre se cesion" });
               //  res.status(500).send({ mensaje: "Error desconocido" })
             } else {
               if (!data) {
-                io.to(socket.id).emit('respuesta-cerrar', {mensaje:"ocurrio un error durante el cierre se cesion" });
+                io.to(socket.id).emit('respuesta-cerrar', { mensaje: "ocurrio un error durante el cierre se cesion" });
                 //  res.status(404).send({ mensaje: "Error no se  pudo cerrar secion" })
               } else {
                 io.to(socket.id).emit('respuesta-cerrar', { data: true });
