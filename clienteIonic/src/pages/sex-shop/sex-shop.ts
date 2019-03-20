@@ -53,7 +53,7 @@ export class SexShopPage {
     this.listProductossex=[];
    this.obtenerdatosProductos();
    this.parte=1;       
-   this.presentLoadingDefault();
+  
        
     //   this.response();
     }

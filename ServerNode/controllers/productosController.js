@@ -5,7 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
-var pagination= require ('mongoose-pagination');
+var pagination = require('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -176,7 +176,7 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-         
+
           console.log(datos);
 
           var producto = new Producto();
@@ -224,7 +224,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
           } else {
-           console.log(lista);
+            console.log(lista);
             io.to(socket.id).emit('respuesta-listado-producto', lista);
           }
         }
@@ -233,28 +233,28 @@ module.exports = async function (io) {
     });
 
 
-//
+    //
 
 
-socket.on('listar-todos-productos', async (data) => {
+    socket.on('listar-todos-productos', async (data) => {
 
-  Producto.find({"eliminado.estado": false }, { "foto.normal": 0 }).paginate(data.parte, 10, function (error, lista, total) {
-    if (error) {
-      // res.status(500).send({ mensaje: "Error al listar" })
-      io.to(socket.id).emit('respuesta-listar-todos-productos', { error: "ocurrio un error al listar productos" });
-    } else {
-      if (!lista) {
-        //   res.status(404).send({ mensaje: "Error al listar" })
-        io.to(socket.id).emit('respuesta-listar-todos-productos', { error: "no hay productos en la base de datos" });
-      } else {
-        console.log(lista);
-        io.to(socket.id).emit('respuesta-listar-todos-productos', {productos:lista,total:total});
-      }
-    }
-  });
-  // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
-});
-//
+      Producto.find({ "eliminado.estado": false }, { "foto.normal": 0 }).paginate(data.parte, 10, function (error, lista, total) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listar-todos-productos', { error: "ocurrio un error al listar productos" });
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listar-todos-productos', { error: "no hay productos en la base de datos" });
+          } else {
+            //console.log(lista);
+            io.to(socket.id).emit('respuesta-listar-todos-productos', { productos: lista, total: total });
+          }
+        }
+      });
+      // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
+    });
+    //
     socket.on('listar-producto-negocio', async (data) => {
 
       console.log("dentro de la consulta", data);
@@ -297,6 +297,45 @@ socket.on('listar-todos-productos', async (data) => {
 
       });
       // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
+    });
+
+    socket.on('top-productos', async (data) => {
+      var datos=JSON.parse(data);
+      Producto.aggregate([
+        {$match : {"tipo.tiponegocio": datos.tipo, "eliminado.estado": false,}},
+        {
+          $project: {
+            _id: "$_id",
+            "likes": { $size: "$valoracion.usuario" },
+            "dislike":{$size: "$desvaloracion.usuario"},
+            "eliminado": "$eliminado",
+            "foto":{miniatura:"$foto.miniatura"},
+            "creacion": "$creacion",
+            "modificacion": "$modificacion",
+            "nombre": "$nombre",
+            "negocio": "$negocio",
+            "precio": "$precio",
+            "cantidad": "$cantidad",
+            "tipo": "$tipo",
+            "descripcion": "$descripcion"
+          }
+        },
+        { $sort: { "likes": -1 } },
+        { $limit: 10 }
+      ], function (error, lista) {
+        if (error) {
+          console.log(lista);
+          io.to(socket.id).emit('respuesta-top-productos',{ error: "ocurrio un error en el servidor" });
+        } else {
+          if (!lista) {
+            io.to(socket.id).emit('respuesta-top-productos', { error: "no hay productos en la base de datos" });
+          } else {
+            console.log("exito listado");
+            io.to(socket.id).emit('respuesta-top-productos', lista);
+          }
+        }
+      });
+
     });
 
   })

@@ -372,7 +372,7 @@ module.exports = async function (io) {
                 '</td> </tr><tr width="100%"> <td valign="top" align="left" style="border-bottom-left-radius:4px; border-bottom-right-radius:4px; background:#fff; padding:18px"><h1 style="font-size:20px; margin:0; color:#333">Buenas: </h1>' +
                 ' <p style="font:15px/1.25em,Arial,Helvetica; color:#333">Hemos notado que esta tratando de recuperar su usuario y contraseña de triservice.</p><p style="font:15px/1.25em, Arial,Helvetica; color:#333"><strong>Fecha y hora:</strong>' + fecha + '<br>' +
                 '<p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si no es usted ignore este correo</p>' +
-                ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si es usted as click <a href="http://localhost:4200/recuperacion/' + hash + '" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> ' +
+                ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si es usted as click <a href="http://triservicedemo.herokuapp.com/recuperacion/' + hash + '" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> ' +
                 'aqui</a> para poder crear sus nuevos creenciales </p></td></tr></tbody></table> </td></tr> </tbody> </div>'
             };
 
