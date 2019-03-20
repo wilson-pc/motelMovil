@@ -128,8 +128,6 @@ module.exports = async function (io) {
 
      
           var usuario = new Usuario();
-
-
           usuario.nombre = "Super";
           usuario.apellidos = "Admin";
           usuario.genero = "otro";
