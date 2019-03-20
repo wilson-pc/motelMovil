@@ -1,9 +1,10 @@
 import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll, LoadingController, ModalController } from 'ionic-angular';
 import { Habitacion } from '../../models/Habitacion';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
 import { SocketConfigService } from '../../services/socket-config.service';
+import { DescriptionMotelPage } from '../description-motel/description-motel';
 
 
 /**
@@ -32,9 +33,17 @@ export class MotelPage {
   loading:any;
   cont=0;
 
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private socketservicio: SocketConfigService) {
+  constructor(public loadingCtrl: LoadingController,
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    private socketservicio: SocketConfigService,
+    public modalCtrl: ModalController) {
   this.respuestaProductosNegocioMoteles();
     
+  }
+  presentModal() {
+    const modal = this.modalCtrl.create(DescriptionMotelPage);
+    modal.present();
   }
 
   ionViewWillEnter()
