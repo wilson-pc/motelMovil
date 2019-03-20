@@ -1,11 +1,12 @@
 import { Component } from "@angular/core";
-import { NavController, NavParams } from "ionic-angular";
+import { NavController, NavParams, ModalController } from "ionic-angular";
 import { Negocio } from "../../models/Negocio";
 import { UserOnlyProvider } from "../../providers/user-only/user-only";
 import { SocketServiceCommerce } from "../../providers/socket-config/socket-config";
 import { Observable } from "rxjs";
 import * as CryptoJS from 'crypto-js';
 import { clave } from "../../app/cryptoclave";
+import { ModalViewStatisticsPage } from "../modal-view-statistics/modal-view-statistics";
 
 
 @Component({
@@ -21,7 +22,8 @@ export class HomePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public userOnlyProvider: UserOnlyProvider,
-    public commerceService: SocketServiceCommerce) {
+    public commerceService: SocketServiceCommerce,
+    public modalController : ModalController) {
       //Inicializacion
     this.connectionBackendSocket();
     this.getAllCommerce();
@@ -63,5 +65,10 @@ export class HomePage {
 			});
 		})
 		return observable;
-	}
+  }
+  
+  modalEstadisticas() {
+    const modal = this.modalController.create(ModalViewStatisticsPage);
+    modal.present();
+  }
 }

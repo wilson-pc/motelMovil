@@ -17,11 +17,13 @@
     </ion-refresher-content>
   </ion-refresher>
   <ion-card *ngFor="let commerce of listCommerce">
-    <ion-card-header>
-      {{commerce.tipo.nombre}}
-    </ion-card-header>
-    <ion-card-content>
-      {{commerce.nombre}}
-    </ion-card-content>
+    <div (click)="modalEstadisticas()">
+        <ion-card-header>
+          {{commerce.tipo.nombre}}
+        </ion-card-header>
+        <ion-card-content>
+          {{commerce.nombre}}
+        </ion-card-content>
+    </div>
   </ion-card>
 </ion-content>

@@ -40,6 +40,7 @@ import { RegisterProductsPage } from '../pages/register-products/register-produc
 import { EditProductsPage } from '../pages/edit-products/edit-products';
 import { ViewProductsPage } from '../pages/view-products/view-products';
 import { ProductProvider } from '../providers/product/product';
+import { ModalViewStatisticsPageModule } from '../pages/modal-view-statistics/modal-view-statistics.module';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -87,7 +88,8 @@ export const firebaseConfig = {
     IonicStorageModule.forRoot({
       name: '__ionic3_start_theme',
         driverOrder: ['indexeddb', 'sqlite', 'websql']
-    })
+    }),
+    ModalViewStatisticsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
