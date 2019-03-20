@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.socket.emit("login-usuario");
   }
 
   crearAdminlevel0(){
