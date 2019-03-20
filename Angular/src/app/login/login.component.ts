@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
  
       var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({usuario:user,password:pass,tipo:"SuperAdmin"}), clave.clave);
       this.socket.emit("login-usuario",ciphertext.toString());
-//    this.rout.navigate(['/administracion']);
+      //this.rout.navigate(['/administracion']);
     
     
     //this.rout.navigate(['/administracion']);
@@ -88,5 +88,12 @@ export class LoginComponent implements OnInit {
       });
     })
     return observable;
+  }
+
+  //CREAR UN SUPER ADMIN
+  createSuperAdmin(){
+   
+    this.socket.emit('registrar-sa');
+    
   }
 }

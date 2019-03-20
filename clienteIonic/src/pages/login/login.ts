@@ -153,6 +153,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
     if(this.loginUser.usuario!="" && this.loginUser.password!=""){
       var datos=this.encryptData(this.loginUser);
       this.socketLogin.emit("login-usuario-clientes", datos);
+      console.log (this.loginUser);
     }else{
       let toast = this.toastCtrl.create({
         message: 'Deve completar los campos',

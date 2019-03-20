@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading, ModalController } from 'ionic-angular';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
 import {  SocketConfigService } from '../../services/socket-config.service';
+import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
 
 /**
  * Generated class for the LicoreriaPage page.
@@ -30,7 +31,11 @@ export class LicoreriaPage {
   loading:Loading;
   aux:number=0;
   cont=0;
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private productService:SocketConfigService) {
+  constructor(public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+     public navParams: NavParams,
+     private productService:SocketConfigService,
+     public modalCtrl: ModalController) {
    
     this.respuestaProductosNegocioLicores();   
   }
@@ -40,6 +45,10 @@ export class LicoreriaPage {
     this.obtenerdatosProductos();          
   this.parte=1;
    }
+   presentModal() {
+    const modal = this.modalCtrl.create(DescriptionLicoreriaPage);
+    modal.present();
+  }
  
   ionViewDidLoad() {
     console.log('ionViewDidLoad LicoreriaPage');

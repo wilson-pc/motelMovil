@@ -52,6 +52,7 @@ export class MyApp {
           androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
         ]
       );
+
      storage.get('usuario').then((val) => {
         if(val){
         //  alert(val);
@@ -112,7 +113,7 @@ export class MyApp {
     this.nav.setRoot(LoginPage);
   }
   logout() {
-var data={id:this.userServ.UserSeCion.datos._id}
+   var data={id:this.userServ.UserSeCion.datos._id}
     this.socketUser.emit("cerrar-secion", this.encryptData(data));
   }
 
