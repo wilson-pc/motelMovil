@@ -7,10 +7,10 @@ module.exports = async function (io) {
     var clients = [];
     io.on('connection', async function (socket) {
         socket.on('calificar-producto', async (data) => {
-          /*  try {
+            try {
                var datos = await Crypto.Desincryptar(data);
-                if (!datos.error) {*/
-                  var datos=JSON.parse(data);
+                if (!datos.error) {
+    
                  
                     var cliente=datos.idcliente;
                     var producto=datos.idproducto;
@@ -35,13 +35,13 @@ module.exports = async function (io) {
                    
 
                
-                  /*     }
+                       }
             return data;
             }
             
             catch (e) {
               console.log(e);
-            }*/
+            }
           });
 
           socket.on('calificar-negocio', async (data) => {
@@ -73,11 +73,10 @@ module.exports = async function (io) {
           });
 
           socket.on('descalificar-producto', async (data) => {
-         /*   try {
+            try {
                 var datos = await Crypto.Desincryptar(data);
-                if (!datos.error) {*/
+                if (!datos.error) {
 
-                  var datos=JSON.parse(data);
                     var cliente=datos.idcliente;
                     var producto=datos.idproducto;
                     var valoracion={usuario:cliente,fecha:datos.fecha}
@@ -94,13 +93,13 @@ module.exports = async function (io) {
                     })
 
                
-          /*  }
+            }
             return data;
             }
             
             catch (e) {
               console.log(e);
-            }*/
+            }
           });
     });
 }

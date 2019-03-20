@@ -214,7 +214,26 @@ module.exports = async function (io) {
     socket.on('listar-producto', async (data) => {
 
       console.log(data);
-      Producto.find({ "tipo.tiponegocio": data.termino, "eliminado.estado": false }, { "foto.normal": 0 }).paginate(data.parte, 10, function (error, lista, total) {
+      Producto.aggregate([
+        {$match : {"tipo.tiponegocio": datos.tipo, "eliminado.estado": false,}},
+        {
+          $project: {
+            _id: "$_id",
+            "likes": { $size: "$valoracion.usuario" },
+            "dislike":{$size: "$desvaloracion.usuario"},
+            "eliminado": "$eliminado",
+            "foto":{miniatura:"$foto.miniatura"},
+            "creacion": "$creacion",
+            "modificacion": "$modificacion",
+            "nombre": "$nombre",
+            "negocio": "$negocio",
+            "precio": "$precio",
+            "cantidad": "$cantidad",
+            "tipo": "$tipo",
+            "descripcion": "$descripcion"
+          }
+        }
+      ], function (error, lista, total) {
         if (error) {
 
           // res.status(500).send({ mensaje: "Error al listar" })
