@@ -2,14 +2,14 @@
 var mongose = require("mongoose");
 var Schema = mongose.Schema;
 var Tipo=require("./tipo").schema;
+var calificacion=require("./calificacion").schema;
 var ProductoSchema = Schema({
 nombre:String,
 negocio:{type: Schema.ObjectId, ref: "Negocios"},
 precio:Number,
 precioReserva:Number,
 cantidad:Number,
-valoracion:[{usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date }],
-desvaloracion:[{usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date }],
+calificacion:[calificacion],
 reportes:Number,
 tipo:Tipo,
 foto:{normal:String,miniatura:String},

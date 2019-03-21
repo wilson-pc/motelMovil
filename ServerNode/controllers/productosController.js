@@ -96,9 +96,46 @@ module.exports = async function (io) {
               console.log(error);
 
             } else {
-              console.log(nuevoProducto);
+              console.log("nuevo producto creado");
               var negocio = await Negocio.findByIdAndUpdate(params.negocio, { $inc: { productos: 1 } });
+              console.log("ervkjrbeui fgeriu");
               io.emit('respuesta-producto', nuevoProducto);
+
+
+              Producto.aggregate([
+                {$match : {"tipo.tiponegocio":params.tipo, "eliminado.estado": false,}},
+                {
+                  $project: {
+                    _id: "$_id",
+                    "likes": { $size: "$valoracion.usuario" },
+                    "dislike":{$size: "$desvaloracion.usuario"},
+                    "eliminado": "$eliminado",
+                    "foto":{miniatura:"$foto.miniatura"},
+                    "creacion": "$creacion",
+                    "modificacion": "$modificacion",
+                    "nombre": "$nombre",
+                    "negocio": "$negocio",
+                    "precio": "$precio",
+                    "cantidad": "$cantidad",
+                    "tipo": "$tipo",
+                    "descripcion": "$descripcion"
+                  }
+                }
+              ], function (error, lista) {
+                if (error) {
+        
+                  // res.status(500).send({ mensaje: "Error al listar" })
+                  io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
+                } else {
+                  if (!lista) {
+                    //   res.status(404).send({ mensaje: "Error al listar" })
+                    io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
+                  } else {
+                    console.log("oifh reghu9nhgiuhfierhfuinhfephgceuep gy");
+                    io.emit('respuesta-listado-producto', lista);
+                  }
+                }
+              });
             }
           })
 
@@ -215,7 +252,7 @@ module.exports = async function (io) {
 
       console.log(data);
       Producto.aggregate([
-        {$match : {"tipo.tiponegocio": datos.tipo, "eliminado.estado": false,}},
+        {$match : {"tipo.tiponegocio": data.termino, "eliminado.estado": false,}},
         {
           $project: {
             _id: "$_id",
@@ -233,7 +270,7 @@ module.exports = async function (io) {
             "descripcion": "$descripcion"
           }
         }
-      ], function (error, lista, total) {
+      ], function (error, lista) {
         if (error) {
 
           // res.status(500).send({ mensaje: "Error al listar" })
@@ -243,7 +280,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
           } else {
-            console.log(lista);
+            console.log("lista");
             io.to(socket.id).emit('respuesta-listado-producto', lista);
           }
         }

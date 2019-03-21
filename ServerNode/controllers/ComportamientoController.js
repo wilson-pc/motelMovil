@@ -3,6 +3,7 @@ var nodemailer = require('nodemailer');
 var Producto=require('../schemas/producto');
 var Negocio=require('../schemas/negocio');
 var Crypto = require("../variables/desincryptar");
+var Calificacion=require("../schemas/calificacion");
 module.exports = async function (io) {
     var clients = [];
     io.on('connection', async function (socket) {
@@ -45,14 +46,19 @@ module.exports = async function (io) {
           });
 
           socket.on('calificar-negocio', async (data) => {
-            try {
+          try {
                 var datos = await Crypto.Desincryptar(data);
                 if (!datos.error) {
-                    var cliente=datos.idcliente;
-                    var negocio=datos.idnegocio;
-                    var calificacion={usuario:cliente,fecha:datos.fecha,puntuacion:datos.puntuacion}
-                    await Producto.update({_id:negocio},{ $pull:{ "valoracion": {usuario:cliente}} });
-                    Negocio.findOneAndUpdate({_id:negocio}, { $push: { calificacion: calificacion } },{new: true},(error, actualizado) => {
+                  
+                  var calificacion= new Calificacion();
+                    
+                    calificacion.usuario=datos.idcliente;
+                    calificacion.negocio=datos.idnegocio;
+                    calificacion.estrella=datos.estrella;
+                    calificacion.fecha=new Date().toUTCString();
+                    console.log(calificacion);
+                    await Negocio.update({_id:datos.idnegocio},{ $pull: { "calificacion": {usuario:datos.idcliente}} });
+                    Negocio.findOneAndUpdate({_id:datos.idnegocio}, { $push: {calificacion: calificacion } },{new: true},(error, actualizado) => {
                         if (error) {
                           io.to(socket.id).emit('respuesta-calificar-negocio',{error: "error al calificar"});
                         //    res.status(500).send({ mensaje: "error al guradar" })
@@ -63,7 +69,7 @@ module.exports = async function (io) {
                         }
                     })
                
-            }
+                   }
             return data;
             }
             
