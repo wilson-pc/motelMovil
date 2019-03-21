@@ -68,7 +68,6 @@ export class HomePage {
   }
   
   modalEstadisticas() {
-    const modal = this.modalController.create(ModalViewStatisticsPage);
-    modal.present();
+    const modal = this.navCtrl.push(ModalViewStatisticsPage);
   }
 }
