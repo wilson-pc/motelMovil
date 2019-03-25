@@ -87,7 +87,7 @@ export const firebaseConfig = {
     LoginPage,
     NotificationsPage,
     RegisterRoomPage,
-    EditLoginPage,s
+    EditLoginPage,
     CommercePage,
     ListProductsPage,
     RegisterProductsPage,
