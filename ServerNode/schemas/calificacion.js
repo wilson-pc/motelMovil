@@ -4,7 +4,7 @@ var Schema = mongose.Schema;
 var CalificacionSchema = Schema({
 negocio:{type: Schema.ObjectId, ref: "Negocios"},
 usuario:{type: Schema.ObjectId, ref: "Usuarios"},
-calificacion:Number,
+estrella:Number,
 fecha:Date
 })
 

@@ -34,6 +34,7 @@ import { ProductProvider } from '../providers/product/product';
 import { DenunciaPage } from '../pages/denuncia/denuncia';
 import { ReservaPage } from '../pages/reserva/reserva';
 import { BilleteraPage } from '../pages/billetera/billetera';
+import { ModalViewStatisticsPageModule } from '../pages/modal-view-statistics/modal-view-statistics.module';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -76,7 +77,8 @@ export const firebaseConfig = {
     IonicStorageModule.forRoot({
       name: '__ionic3_start_theme',
         driverOrder: ['indexeddb', 'sqlite', 'websql']
-    })
+    }),
+    ModalViewStatisticsPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -85,7 +87,7 @@ export const firebaseConfig = {
     LoginPage,
     NotificationsPage,
     RegisterRoomPage,
-    EditLoginPage,
+    EditLoginPage,s
     CommercePage,
     ListProductsPage,
     RegisterProductsPage,

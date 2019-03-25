@@ -47,6 +47,9 @@ import { UsuarioProvider } from '../providers/usuario/usuario';
 import { IonicStorageModule } from '@ionic/storage';
 import { EditLoginPage } from '../pages/edit-login/edit-login';
 import { EditUserPage } from '../pages/edit-user/edit-user';
+import { DescriptionMotelPage } from '../pages/description-motel/description-motel';
+import { DescriptionLicoreriaPage } from '../pages/description-licoreria/description-licoreria';
+import { DescriptionSexshopPage } from '../pages/description-sexshop/description-sexshop';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -84,6 +87,9 @@ export const firebaseConfig = {
     ListaFavoritosPage,
     ProfileUserPage,
     DescripcionProductoPage,
+    DescriptionMotelPage,
+    DescriptionLicoreriaPage,
+    DescriptionSexshopPage,
     EditUserPage,
     EditLoginPage
   ],
@@ -125,6 +131,9 @@ export const firebaseConfig = {
     ListaReservasPage,
     ListaFavoritosPage,
     DescripcionProductoPage,
+    DescriptionMotelPage,
+    DescriptionLicoreriaPage,
+    DescriptionSexshopPage,
     EditUserPage,
     ProfileUserPage,
     EditLoginPage
