@@ -8,7 +8,6 @@
 </ion-header>
 
 <ion-content padding>
-
   <div padding>
     <ion-segment [(ngModel)]="tipo">
       <ion-segment-button value="Reserva">
@@ -20,6 +19,10 @@
       </ion-segment-button>
     </ion-segment>
   </div>
+
+  <div>
+    <ion-searchbar (ionInput)="buscar($event)"></ion-searchbar>
+  </div><br>
 
   <div [ngSwitch]="tipo">
     <ion-list *ngSwitchCase="'Reserva'">
@@ -60,74 +63,74 @@
       </ion-item>
 
       <ion-item>
-          <ion-thumbnail item-start>
-            <img src="../../assets/imgs/licor.jpg" />
-          </ion-thumbnail>
-  
-          <ion-col>
-            <ion-row>
-              <h2><b>Negocio: BAR AZUL</b></h2>
-            </ion-row>
-            <ion-row>
-              <h4><b>Producto: </b>CocaCola</h4>
-            </ion-row>
-            <ion-row>
-              <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <button ion-button clear small color="default" icon-start>
-                  65 Bs.
-                </button>
-              </ion-col>
-  
-              <ion-col>
-                <ion-item>
-                  <ion-input type="number" placeholder="1">6</ion-input>
-                </ion-item>
-              </ion-col>
-  
-              <ion-col>
-                <button ion-button small color="default">Confirmar</button>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-        </ion-item>
+        <ion-thumbnail item-start>
+          <img src="../../assets/imgs/licor.jpg" />
+        </ion-thumbnail>
+
+        <ion-col>
+          <ion-row>
+            <h2><b>Negocio: BAR AZUL</b></h2>
+          </ion-row>
+          <ion-row>
+            <h4><b>Producto: </b>CocaCola</h4>
+          </ion-row>
+          <ion-row>
+            <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <button ion-button clear small color="default" icon-start>
+                65 Bs.
+              </button>
+            </ion-col>
+
+            <ion-col>
+              <ion-item>
+                <ion-input type="number" placeholder="1">6</ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col>
+              <button ion-button small color="default">Confirmar</button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-item>
 
     </ion-list>
 
     <ion-list *ngSwitchCase="'Entregado'">
 
-        <ion-item>
-            <ion-thumbnail item-start>
-              <img src="../../assets/imgs/licor.jpg" />
-            </ion-thumbnail>
-    
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="../../assets/imgs/licor.jpg" />
+        </ion-thumbnail>
+
+        <ion-col>
+          <ion-row>
+            <h2><b>Negocio: SECRETS</b></h2>
+          </ion-row>
+          <ion-row>
+            <h4><b>Producto: </b>MaxMen</h4>
+          </ion-row>
+          <ion-row>
+            <h4><b>Fecha Entrega: </b>26-03-2019 15:00 hrs.</h4>
+          </ion-row>
+          <ion-row>
             <ion-col>
-              <ion-row>
-                <h2><b>Negocio: SECRETS</b></h2>
-              </ion-row>
-              <ion-row>
-                <h4><b>Producto: </b>MaxMen</h4>
-              </ion-row>
-              <ion-row>
-                <h4><b>Fecha Entrega: </b>26-03-2019 15:00 hrs.</h4>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <button ion-button clear small color="default" icon-start>
-                    60 Bs.
-                  </button>
-                </ion-col>
-    
-                <ion-col>
-                  <ion-item>
-                    <ion-input type="number" placeholder="1">6</ion-input>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
+              <button ion-button clear small color="default" icon-start>
+                60 Bs.
+              </button>
             </ion-col>
-          </ion-item>
+
+            <ion-col>
+              <ion-item>
+                <ion-input type="number" placeholder="1">6</ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-item>
 
     </ion-list>
 
