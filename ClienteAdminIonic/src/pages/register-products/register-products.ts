@@ -171,6 +171,37 @@ export class RegisterProductsPage {
       this.alertMessage("Imposible registrar verifique los campos de registro.")
     }
     else {
+      // datos habitacion
+      let estado = "Disponible";
+      let seccionubicacion = "Piso 2";
+    
+      var date = new Date().toUTCString();
+      this.product.negocio = this.commerceOnly._id as any;
+      this.product.creacion = { fecha: date };
+      this.product.modificacion = { fecha: date };
+      let data = this.product;
+
+      console.log("Producto A GUARDAR", data);
+      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ producto: data }), clave.clave);
+      this.productService.emit("registrar-producto", ciphertext.toString());
+    }
+  }
+
+  registerHabitacion() {
+    // Guardar producto
+    if (this.product.foto == undefined) {
+      this.product.foto = { miniatura: this.productProvider.imageDefault, normal: this.productProvider.imageDefault }
+    }
+
+    this.statusInput = true;
+    if (!this.productForm.valid) {
+      this.alertMessage("Imposible registrar verifique los campos de registro.")
+    }
+    else {
+      // datos habitacion
+      let estado = "Disponible";
+      let seccionubicacion = "Piso 2";
+    
       var date = new Date().toUTCString();
       this.product.negocio = this.commerceOnly._id as any;
       this.product.creacion = { fecha: date };

@@ -4,18 +4,17 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { LocalWeatherPage } from '../pages/local-weather/local-weather';
 import { LoginPage } from '../pages/login/login';
-import { RegisterRoomPage } from '../pages/register-room/register-room';
 import { UserOnlyProvider } from '../providers/user-only/user-only';
-import { Usuarios } from '../models/Usuarios';
 import * as CryptoJS from 'crypto-js';
 import { clave } from './cryptoclave';
 import { SocketServiceUser } from '../providers/socket-config/socket-config';
 import { Observable } from 'rxjs';
-import { ngControlStatusHost } from '@angular/forms/src/directives/ng_control_status';
 import { ListProductsPage } from '../pages/list-products/list-products';
 import { EditLoginPage } from '../pages/edit-login/edit-login';
+import { DenunciaPage } from '../pages/denuncia/denuncia';
+import { ReservaPage } from '../pages/reserva/reserva';
+import { BilleteraPage } from '../pages/billetera/billetera';
 
 
 @Component({
@@ -42,7 +41,10 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Inicio', component: HomePage },
-      { title: 'Lista Productos', component: ListProductsPage }
+      { title: 'Productos', component: ListProductsPage },
+      { title: 'Denuncias', component: DenunciaPage },
+      { title: 'Reservas', component: ReservaPage },
+      { title: 'Billetera', component: BilleteraPage }
     ];
     // Valid route
     this.validUserLocalStorage();

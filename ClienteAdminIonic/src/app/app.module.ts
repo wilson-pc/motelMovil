@@ -7,19 +7,10 @@ import { ChartsModule } from 'ng2-charts';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
-import { ListPage } from '../pages/list/list';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { SettingsPage } from '../pages/settings/settings';
-import { CheckoutTripPage } from '../pages/checkout-trip/checkout-trip';
-import { LocalWeatherPage } from '../pages/local-weather/local-weather';
 import { NotificationsPage } from '../pages/notifications/notifications';
 import { LoginPage } from '../pages/login/login';
-import { TripDetailPage } from '../pages/trip-detail/trip-detail';
-import { RegisterPage } from '../pages/register/register';
-import { SearchLocationPage } from '../pages/search-location/search-location';
-import { TripsPage } from '../pages/trips/trips';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { ActivityService } from '../services/activity-service';
@@ -40,6 +31,9 @@ import { RegisterProductsPage } from '../pages/register-products/register-produc
 import { EditProductsPage } from '../pages/edit-products/edit-products';
 import { ViewProductsPage } from '../pages/view-products/view-products';
 import { ProductProvider } from '../providers/product/product';
+import { DenunciaPage } from '../pages/denuncia/denuncia';
+import { ReservaPage } from '../pages/reserva/reserva';
+import { BilleteraPage } from '../pages/billetera/billetera';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -54,23 +48,18 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
-    ListPage,
-    SettingsPage,
-    CheckoutTripPage,
     LoginPage,
-    LocalWeatherPage,
     NotificationsPage,
-    RegisterPage,
-    SearchLocationPage,
-    TripDetailPage,
-    TripsPage,
     EditLoginPage,
     RegisterRoomPage,
     CommercePage,
     ListProductsPage,
     RegisterProductsPage,
     EditProductsPage,
-    ViewProductsPage
+    ViewProductsPage,
+    DenunciaPage,
+    BilleteraPage,
+    ReservaPage
   ],
   imports: [
     BrowserModule,
@@ -93,23 +82,18 @@ export const firebaseConfig = {
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage,
-    SettingsPage,
-    CheckoutTripPage,
     LoginPage,
-    LocalWeatherPage,
     NotificationsPage,
-    RegisterPage,
-    SearchLocationPage,
-    TripDetailPage,
-    TripsPage,
     RegisterRoomPage,
     EditLoginPage,
     CommercePage,
     ListProductsPage,
     RegisterProductsPage,
     EditProductsPage,
-    ViewProductsPage
+    ViewProductsPage,
+    DenunciaPage,
+    BilleteraPage,
+    ReservaPage
   ],
   providers: [
     StatusBar,
