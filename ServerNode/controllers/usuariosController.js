@@ -459,6 +459,25 @@ module.exports = async function (io) {
         }
       });
     });
+    
+    socket.on('listar-cliente', async (data) => {
+
+      Usuario.find({ "rol.rol": "Cliente", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
+        if (error) {
+          console.log(error);
+          io.to(socket.id).emit('respuesta-listar-cliente', {error:"error al buscar clientes"});
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+
+            io.to(socket.id).emit('respuesta-listar-cliente', {error:"no existe usuarios registrados"});
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+            io.to(socket.id).emit('respuesta-listar-cliente', lista);
+          }
+        }
+      });
+    });
 
     socket.on('cambiar-login', async (data) => {
       try {

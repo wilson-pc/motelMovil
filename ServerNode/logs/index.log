@@ -126,3 +126,33 @@
   name: 'MongoNetworkError',
   errorLabels: [ 'TransientTransactionError' ],
   [Symbol(mongoErrorContextSymbol)]: {} }
+[2019-03-25T08:40:27.880] [FATAL] index - no se pudo conectar a la base de datos,revise la conexion al servidor { MongoNetworkError: failed to connect to server [192.168.1.16:27017] on first connect [MongoNetworkError: connect ECONNREFUSED 192.168.1.16:27017]
+    at Pool.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\topologies\server.js:564:11)
+    at Pool.emit (events.js:188:13)
+    at Connection.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\pool.js:317:12)
+    at Object.onceWrapper (events.js:276:13)
+    at Connection.emit (events.js:188:13)
+    at Socket.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\connection.js:246:50)
+    at Object.onceWrapper (events.js:276:13)
+    at Socket.emit (events.js:188:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process.internalTickCallback (internal/process/next_tick.js:72:19)
+  name: 'MongoNetworkError',
+  errorLabels: [ 'TransientTransactionError' ],
+  [Symbol(mongoErrorContextSymbol)]: {} }
+[2019-03-25T09:42:15.778] [FATAL] index - no se pudo conectar a la base de datos,revise la conexion al servidor { MongoNetworkError: failed to connect to server [192.168.1.16:27017] on first connect [MongoNetworkError: connect ECONNREFUSED 192.168.1.16:27017]
+    at Pool.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\topologies\server.js:564:11)
+    at Pool.emit (events.js:188:13)
+    at Connection.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\pool.js:317:12)
+    at Object.onceWrapper (events.js:276:13)
+    at Connection.emit (events.js:188:13)
+    at Socket.<anonymous> (F:\Gamboa corporation\motelMovil\ServerNode\node_modules\mongodb-core\lib\connection\connection.js:246:50)
+    at Object.onceWrapper (events.js:276:13)
+    at Socket.emit (events.js:188:13)
+    at emitErrorNT (internal/streams/destroy.js:82:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+    at process.internalTickCallback (internal/process/next_tick.js:72:19)
+  name: 'MongoNetworkError',
+  errorLabels: [ 'TransientTransactionError' ],
+  [Symbol(mongoErrorContextSymbol)]: {} }
