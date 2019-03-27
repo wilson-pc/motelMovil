@@ -17,46 +17,25 @@
 
   <ion-card>
       <ion-card-header>
-          Bar Chart
-        </ion-card-header>
-      
-        <ion-card-content>
-            <canvas #barCanvas></canvas>
-        </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-      <ion-card-header>
-          Line Chart
+        <!-- <ion-item>
+          <ion-label>Mes de</ion-label>
+          <ion-select [(ngModel)]="toppings" multiple="true">
+            <ion-option *ngFor="let mes of meses">{{mes}}</ion-option>
+          </ion-select>
+        </ion-item> -->
         </ion-card-header>
       
         <ion-card-content>
             <canvas #lineCanvas></canvas>
             <ion-item>
-              <ion-label>Date</ion-label>
-              <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="myDate"></ion-datetime>
+              <ion-label>Desde</ion-label>
+              <ion-datetime displayFormat="DD, YYYY" [(ngModel)]="desde"></ion-datetime>
+            </ion-item>
+            <ion-item>
+              <ion-label>Hasta</ion-label>
+              <ion-datetime displayFormat="DD, YYYY" [(ngModel)]="hasta"></ion-datetime>
             </ion-item>
         </ion-card-content>
   </ion-card>
 
-  <ion-card>
-      <ion-card-header>
-          pieCanvas Chart
-        </ion-card-header>
-      
-        <ion-card-content>
-            <canvas #pieCanvas></canvas>
-        </ion-card-content>
-  </ion-card>
-  
-  <ion-card>
-      <ion-card-header>
-          doughnutCanvas Chart
-        </ion-card-header>
-      
-        <ion-card-content>
-            <canvas #doughnutCanvas></canvas>
-        </ion-card-content>
-  </ion-card>
-  
 </ion-content>
