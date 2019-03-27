@@ -1,139 +1,29 @@
+<!--
+  Generated template for the ListaReservasLicoresPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
 <ion-header>
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Reservas</ion-title>
+    <ion-title>
+      <strong>Ionic 3</strong> Start Theme
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
-  <div padding>
-    <ion-segment [(ngModel)]="tipo">
-      <ion-segment-button value="Reserva">
-        Reservas
-      </ion-segment-button>
-
-      <ion-segment-button value="Entregado">
-        Entregados
-      </ion-segment-button>
-    </ion-segment>
-  </div>
-
-  <div>
-    <ion-searchbar (ionInput)="buscar($event)"></ion-searchbar>
-  </div><br>
-
-  <div [ngSwitch]="tipo">
-    <ion-list *ngSwitchCase="'Reserva'">
-
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
-        </ion-thumbnail>
-
-        <ion-col>
-          <ion-row>
-            <h2><b>Negocio: LUNA AZUL</b></h2>
-          </ion-row>
-          <ion-row>
-            <h4><b>Producto: </b>Habitacion SUITE</h4>
-          </ion-row>
-          <ion-row>
-            <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <button ion-button clear small color="default" icon-start>
-                109 Bs.
-              </button>
-            </ion-col>
-
-            <!--<ion-col>
-              <ion-item>
-                <ion-input type="number" placeholder="1">1</ion-input>
-              </ion-item>
-            </ion-col>-->
-
-            <ion-col>
-              <button ion-button small color="default">Confirmar</button>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-item>
-
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
-        </ion-thumbnail>
-
-        <ion-col>
-          <ion-row>
-            <h2><b>Negocio: BAR AZUL</b></h2>
-          </ion-row>
-          <ion-row>
-            <h4><b>Producto: </b>CocaCola</h4>
-          </ion-row>
-          <ion-row>
-            <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <button ion-button clear small color="default" icon-start>
-                65 Bs.
-              </button>
-            </ion-col>
-
-            <ion-col>
-              <ion-item>
-                <ion-input type="number" placeholder="1">6</ion-input>
-              </ion-item>
-            </ion-col>
-
-            <ion-col>
-              <button ion-button small color="default">Confirmar</button>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-item>
-
-    </ion-list>
-
-    <ion-list *ngSwitchCase="'Entregado'">
-
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
-        </ion-thumbnail>
-
-        <ion-col>
-          <ion-row>
-            <h2><b>Negocio: SECRETS</b></h2>
-          </ion-row>
-          <ion-row>
-            <h4><b>Producto: </b>MaxMen</h4>
-          </ion-row>
-          <ion-row>
-            <h4><b>Fecha Entrega: </b>26-03-2019 15:00 hrs.</h4>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <button ion-button clear small color="default" icon-start>
-                60 Bs.
-              </button>
-            </ion-col>
-
-            <ion-col>
-              <ion-item>
-                <ion-input type="number" placeholder="1">6</ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-item>
-
-    </ion-list>
-
-  </div>
 
 </ion-content>

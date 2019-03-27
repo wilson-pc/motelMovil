@@ -132,7 +132,7 @@ module.exports = async function (io) {
                     io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
                   } else {
                     console.log("oifh reghu9nhgiuhfierhfuinhfephgceuep gy");
-                    socket.broadcast.emit('respuesta-listado-producto', lista);
+                    io.emit('respuesta-listado-producto', lista);
                   }
                 }
               });
@@ -326,25 +326,6 @@ module.exports = async function (io) {
           } else {
             console.log("lista =>: ", lista);
             io.to(socket.id).emit('respuesta-listado-producto-negocio', lista);
-          }
-        }
-      });
-    });
-
-    socket.on('detalle-producto', async (data) => {
-
-      Producto.findOne({_id:data.id,"eliminado.estado": false}, function (error, productoDetalle) {
-
-        if (error) {
-          // res.status(500).send({ mensaje: "Error al listar" })
-          io.to(socket.id).emit('respuesta-listado-producto-negocio', { error: "ocurrio un error al obtener la informacion" });
-        } else {
-          if (!productoDetalle) {
-            //   res.status(404).send({ mensaje: "Error al listar" })
-            io.to(socket.id).emit('respuesta-listado-producto-negocio', { error: "producto no disponible" });
-          } else {
-            console.log(" producto =>: ", productoDetalle);
-            io.to(socket.id).emit('respuesta-listado-producto-negocio', productoDetalle);
           }
         }
       });
