@@ -9,7 +9,9 @@ var Reservaproducto = Schema({
     producto:{type: Schema.ObjectId, ref: "Productos",autopopulate: true},
     precioactual:Number,
     cantidad:Number,
-    fechaentrega:Date
+    fechaentrega:Date,
+    estado:String,
+    dueno:String
 })
 Reservaproducto.plugin(require('mongoose-autopopulate'));
 module.exports = mongose.model("Reservas",Reservaproducto)
