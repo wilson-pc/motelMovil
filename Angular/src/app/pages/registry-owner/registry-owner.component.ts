@@ -15,6 +15,7 @@ import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
 import { Socket } from 'net';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { OwnerService } from '../../services/owner.service';
 
 @Component({
 	selector: 'app-registry-owner',
@@ -56,20 +57,25 @@ export class RegistryOwnerComponent implements OnInit {
 	negocios: Negocio[];
 
 	// Cabeceras de la Tabla
-	constructor(private socketProducto: SocketConfigService, private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
+	constructor(private ownerService :OwnerService,private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 		this.profileUser = new Usuarios;
 
 		this.titulo = "Usuarios Administradores";
 		this.usuario = new Usuarios;
 		this.errorMensaje = "Error no se pudo guardar el registro."
-		this.getUsers();
-		this.conn();
+		
 		this.a = 1;
 		// Model Negocios
 		this.negocio = new Negocio;
 		this.usuarioActualizado = new Usuarios
 	
 		this.buscador.lugar = "usuarios";
+		this.ownerService.getOwner().subscribe((owner)=>{
+			console.log(owner);
+			console.log("Algo anda vien");
+			this.usuarios = owner;
+		})
+
 
 	}
 	
@@ -80,7 +86,8 @@ export class RegistryOwnerComponent implements OnInit {
 	
 	//Llenar el ng-select
 	ngOnInit() {
-
+		this.conn();
+		this.ownerService.sendEmitGetOwner();
 		this.selectedItems = [
 
 		];
@@ -119,10 +126,6 @@ export class RegistryOwnerComponent implements OnInit {
 			this.negocios = data;
 			this.selectedItems=[];
 		});
-	}
-
-	getUsers() {
-		this.socket.emit("listar-usuario", { data: "nada" });
 	}
 
 	// ACCIONES DE LOS MODALS
@@ -195,7 +198,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 		if (this.usuario.nombre != undefined && this.usuario.apellidos != undefined && this.user != undefined && this.selectedItems.length > 0 && this.validateEmail(this.usuario.email)) {
 			this.buttons=false;
-			this.socket.emit("registrar-usuario", ciphertext.toString());
+		    this.ownerService.saveOwner(ciphertext.toString());
 		}
 		else {
 			this.isRequired = true;
@@ -224,7 +227,7 @@ export class RegistryOwnerComponent implements OnInit {
 
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 		this.eliminar=false;
-		this.socket.emit("eliminar-usuario", ciphertext.toString());
+		this.ownerService.deleteOwner(ciphertext.toString());
 	}
 
 
@@ -291,14 +294,15 @@ export class RegistryOwnerComponent implements OnInit {
 		myReader.readAsDataURL(file);
 	}
 
+
+	
 	//Metodo para ejecutar los evenListener de socket
 	conn() {
 		this.negocios = [];
-		this.respuestaCrear().subscribe((data: any) => {
-
+		this.ownerService.eventSaveOwner().subscribe((data: any) => {
 			if (data.exito) {
 
-				console.log(data);
+				console.log("solo");
 				this.isError = false;
 				this.isRequired = false;
 				this.isExito = true;
@@ -330,10 +334,7 @@ export class RegistryOwnerComponent implements OnInit {
 			this.modal.close();
 
 		});
-		this.respuestaListar().subscribe((data: any[]) => {
-			this.usuarios = data;
-
-		});
+	
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 			this.usuarios = data;
 		});
@@ -343,7 +344,7 @@ export class RegistryOwnerComponent implements OnInit {
 			this.profileUser = data;
 		});
 
-		this.respuestaNuevousuario().subscribe((data: any) => {
+		this.ownerService.eventSaveOwnerAll().subscribe((data: any) => {
 			console.log(data);
 			this.usuarios.push(data.usuario)
 		});
@@ -354,7 +355,7 @@ export class RegistryOwnerComponent implements OnInit {
 			console.log(this.negociosUsuario)
 		});
 		
-		this.respuestaEliminarUsuario().subscribe((data: any) => {
+		this.ownerService.eventDeleteOwner().subscribe((data: any) => {
 			
 			if(data.exito){
 			this.modal.close();
@@ -374,14 +375,6 @@ export class RegistryOwnerComponent implements OnInit {
 			//this.peticionSocketNegocio();
 		});
 
-		this.socket.on('respuesta-eliminar-usuario-todos', (data) => {
-			let fila = this.usuarios.filter(word => word._id == data._id)[0];
-
-			var index = this.usuarios.indexOf(fila);
-			this.usuarios.splice(index, 1);
-			
-		});
-
 		this.socket.on('respuesta-actualizar-usuario-todos', (data) => {
 
 			let fila = this.usuarios.filter(word => word._id == data._id)[0];
@@ -389,15 +382,6 @@ export class RegistryOwnerComponent implements OnInit {
 			this.usuarios[index] = data;
 			console.log(this.usuarios);
 		});
-	}
-
-	respuestaCrear() {
-		let observable = new Observable(observer => {
-			this.socket.on('respuesta-crear', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
 	}
 	//respuesta-actualizar-usuarios
 	respuestaActualizar() {
@@ -410,14 +394,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	//respuesta-listar-usuarios
-	respuestaListar() {
-		let observable = new Observable(observer => {
-			this.socket.on('respuesta-listado', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
-	}
+	
 	//respuesta-buscar-usuario
 	respuestaBuscarUsuario() {
 		let observable = new Observable(observer => {
@@ -437,15 +414,7 @@ export class RegistryOwnerComponent implements OnInit {
 		return observable;
 	}
 
-	respuestaEliminarUsuario() {
-		let observable = new Observable(observer => {
-			//respuesta-eliminar-usuario
-			this.socket.on('respuesta-eliminar-usuario', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
-	}
+
 	respuestaSacarUsuario() {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario
@@ -458,14 +427,6 @@ export class RegistryOwnerComponent implements OnInit {
 	respuestaVerificarNegocio() {
 		let observable = new Observable(observer => {
 			this.socket3.on('respuesta-listar-negocio-de-usuario', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
-	}
-	respuestaNuevousuario() {
-		let observable = new Observable(observer => {
-			this.socket.on('respuesta-crear-todos', (data) => {
 				observer.next(data);
 			});
 		})
