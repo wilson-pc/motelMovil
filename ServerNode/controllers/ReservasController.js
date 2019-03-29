@@ -22,12 +22,11 @@ module.exports = async function (io) {
       var fecha = new Date().toUTCString();
       reserva.cliente = datos.idcliente;
       reserva.cantidad = datos.cantidad;
-      reserva.negocio = datos.idnegocio;
-
       reserva.producto = datos.idproducto;
       var producto = await Producto.findById(datos.idproducto, { valoracion: 0, desvaloracion: 0, eliminado: 0, creacion: 0, modificacion: 0 });
       //var dueno =await Dueno.findById(producto.pro);
       var negocio= await Negocio.findById(producto.negocio);
+      reserva.negocio=producto.negocio
       reserva.dueno=negocio.titular;
       reserva.precioactual = producto.precio;
       reserva.tiempo = { fechareserva: fecha, fechalimite: moment(fecha).add(datos.tiempo, 'hours') };
@@ -128,7 +127,13 @@ module.exports = async function (io) {
        io.to(socket.id).emit('respuesta-listrar-reserva', reservsas);
        })
      }else{
-     
+      Reservas.find({dueno:datos.iddueno},{},(error,reservsas)=>{
+        if(error){
+         io.to(socket.id).emit('respuesta-listrar-reserva', { error: "error no se pudo listar la reserva" });
+        }
+        console.log(reservsas);
+        io.to(socket.id).emit('respuesta-listrar-reserva', reservsas);
+        })
     }
 
       /*          }
@@ -140,6 +145,30 @@ module.exports = async function (io) {
   }*/
     });
 
+    socket.on('listar-reserva-rango', async (data) => {
+      /*     try {
+                 var datos = await Crypto.Desincryptar(data);
+                 if (!datos.error) {*/
+                  var datos = JSON.parse(data);
+       Reservas.find({"tiempo.fechareserva":{
+        "$gte":new Date(datos.rangofecha.inicio),
+        "$lt":new Date(datos.rangofecha.fin)
+    }},{},(error,reservsas)=>{
+       if(error){
+        io.to(socket.id).emit('respuesta-listrar-reserva-rango', { error: "error no se pudo listar la reserva" });
+       }
+       console.log("Reservas",reservsas);
+       io.to(socket.id).emit('respuesta-listrar-reserva-rango', reservsas);
+       })
+   
 
+      /*          }
+  return data;
+  }
+  
+  catch (e) {
+    console.log(e);
+  }*/
+    });
   });
 }

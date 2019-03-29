@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams, Platform, ViewController } from 'i
 })
 export class DescripcionProductoPage {
   character:any;
-
+  cantidadReserva = 1;
  
   constructor(public navCtrl: NavController, public navParams: NavParams,public platform: Platform,public viewCtrl: ViewController
     ) {}

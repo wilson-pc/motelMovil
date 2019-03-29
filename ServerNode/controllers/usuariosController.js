@@ -215,8 +215,9 @@ module.exports = async function (io) {
                           var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                         }
                       }
-                      console.log("exito ");
+                     
                       io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
+                      console.log("llega");
                       io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
                     }
                   })
@@ -321,7 +322,18 @@ module.exports = async function (io) {
 
 
               io.to(socket.id).emit('respuesta-eliminar-usuario', { exito: "eliminado con exito" });
-              io.emit('respuesta-eliminar-usuario-todos', actualizado);
+              
+      Usuario.find({ "rol.rol": "Admin", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+            io.to(socket.id).emit('respuesta-listado', lista);
+          }
+        }
+      });
             }
           })
 
