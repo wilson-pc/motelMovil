@@ -207,6 +207,7 @@ export class RegistryOwnerComponent implements OnInit {
 	}
 
 	update() {
+		console.log("llega y nada");
 		var fecha = new Date().toUTCString();
 
 		this.usuarioActualizado.modificacion = { fecha: fecha, usuario: this.usuarioServ.usuarioActual.datos._id };
@@ -218,8 +219,7 @@ export class RegistryOwnerComponent implements OnInit {
 		let data = { usuario: this.usuarioActualizado, negocio: seleccionados }
 		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
 
-
-		this.socket.emit("actualizar-usuario", ciphertext.toString());
+        this.ownerService.updateOwner(ciphertext.toString());
 	}
 
 	delete(razon) {
@@ -328,7 +328,7 @@ export class RegistryOwnerComponent implements OnInit {
 				}
 		});
 
-		this.respuestaActualizar().subscribe((data: any) => {
+		this.ownerService.eventUpdate().subscribe((data: any) => {
 
 			this.usuarios.filter(word => word._id == data._id)[0] = data;
 			this.modal.close();
@@ -375,23 +375,16 @@ export class RegistryOwnerComponent implements OnInit {
 			//this.peticionSocketNegocio();
 		});
 
-		this.socket.on('respuesta-actualizar-usuario-todos', (data) => {
-
+		 this.ownerService.eventUpdateAll().subscribe((data)=>{
 			let fila = this.usuarios.filter(word => word._id == data._id)[0];
 			var index = this.usuarios.indexOf(fila);
 			this.usuarios[index] = data;
 			console.log(this.usuarios);
-		});
+		 })
+
 	}
 	//respuesta-actualizar-usuarios
-	respuestaActualizar() {
-		let observable = new Observable(observer => {
-			this.socket.on('respuesta-actualizar-usuario', (data) => {
-				observer.next(data);
-			});
-		})
-		return observable;
-	}
+	
 
 	//respuesta-listar-usuarios
 	

@@ -20,6 +20,9 @@ export class OwnerService {
   saveOwner(Owner){
     this.socket.emit("registrar-usuario", Owner);
   }
+  updateOwner(data){
+    this.socket.emit("actualizar-usuario",data);
+  }
   deleteOwner(data){
     this.socket.emit("eliminar-usuario", data);
   }
@@ -29,7 +32,17 @@ export class OwnerService {
     .map( data => data );
   }
 
-
+  eventUpdate(){
+    return this.socket
+    .fromEvent<any>("respuesta-actualizar-usuario")
+    .map( data => data );
+  }
+eventUpdateAll(){
+  
+  return this.socket
+  .fromEvent<any>("respuesta-actualizar-usuario-todos")
+  .map( data => data );
+}
   //respuesta-crear
    eventSaveOwner(){
     return this.socket

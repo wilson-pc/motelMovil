@@ -118,8 +118,15 @@ export class MotelPage {
   respuestaProductosNegocioMoteles() {
         
     this.socketservicio.on('respuesta-listado-producto',(data)=>{
-        
-      console.log(data);
+        if(!data.error){
+          console.log(data);
+          this.listauxProductos=data;
+          this.listProductos=data;
+        }
+        else{
+          console.log("ocurrio un problema");
+        }
+      
          
     })
       

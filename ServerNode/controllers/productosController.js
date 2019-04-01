@@ -5,7 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
-var pagination = require('mongoose-pagination');
+require ('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -132,7 +132,7 @@ module.exports = async function (io) {
                     io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
                   } else {
                     console.log("oifh reghu9nhgiuhfierhfuinhfephgceuep gy");
-                    socket.broadcast.emit('respuesta-listado-producto', lista);
+                    io.emit('respuesta-listado-producto', lista);
                   }
                 }
               });
@@ -272,7 +272,7 @@ module.exports = async function (io) {
         }
       ], function (error, lista) {
         if (error) {
-
+          console.log("este es el error:",error)
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
         } else {
@@ -326,25 +326,6 @@ module.exports = async function (io) {
           } else {
             console.log("lista =>: ", lista);
             io.to(socket.id).emit('respuesta-listado-producto-negocio', lista);
-          }
-        }
-      });
-    });
-
-    socket.on('detalle-producto', async (data) => {
-
-      Producto.findOne({_id:data.id,"eliminado.estado": false}, function (error, productoDetalle) {
-
-        if (error) {
-          // res.status(500).send({ mensaje: "Error al listar" })
-          io.to(socket.id).emit('respuesta-listado-producto-negocio', { error: "ocurrio un error al obtener la informacion" });
-        } else {
-          if (!productoDetalle) {
-            //   res.status(404).send({ mensaje: "Error al listar" })
-            io.to(socket.id).emit('respuesta-listado-producto-negocio', { error: "producto no disponible" });
-          } else {
-            console.log(" producto =>: ", productoDetalle);
-            io.to(socket.id).emit('respuesta-listado-producto-negocio', productoDetalle);
           }
         }
       });
