@@ -269,7 +269,8 @@ module.exports = async function (io) {
             "tipo": "$tipo",
             "descripcion": "$descripcion"
           }
-        }
+        },
+        { $limit: 10 }
       ], function (error, lista) {
         if (error) {
 
