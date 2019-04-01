@@ -107,7 +107,7 @@ export class MotelPage {
     let newdata={termino:terminoL,parte:this.parte}
     
     console.log(newdata);
-    this.socketservicio.emit('listar-producto', newdata);   
+    this.socketservicio.emit('listar-producto-moteles', newdata);   
   }
 
   presentModal() {
@@ -118,7 +118,7 @@ export class MotelPage {
 
   respuestaProductosNegocioMoteles() {
         
-    this.socketservicio.on('respuesta-listado-producto',(data)=>{
+    this.socketservicio.on('respuesta-listado-producto-moteles',(data)=>{
         if(!data.error){
           console.log(data);
           this.listauxProductos=data;

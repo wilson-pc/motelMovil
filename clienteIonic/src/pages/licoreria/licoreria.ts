@@ -101,12 +101,12 @@ export class LicoreriaPage {
     let newdata={termino:terminoL,parte:this.parte}
     
     console.log(newdata);
-    this.productService.emit('listar-producto', newdata);   
+    this.productService.emit('listar-producto-licores', newdata);   
   }
 
   respuestaProductosNegocioLicores() {
         
-    this.productService.on('respuesta-listado-producto',(data)=>{
+    this.productService.on('respuesta-listado-producto-licores',(data)=>{
                       
           if(!data.error){
             console.log("este es el data:"+data);

@@ -41,24 +41,17 @@ export class SexShopPage {
     //this.initializeItems();
     
     this.parte=0;       
-    
+    this.presentLoadingDefault();
+    this.obtenerdatosProductos();
     this.respuestaProductosNegocioSexshop();
    
   }  
 
-  async ionViewWillEnter(){
-    this.obtenerdatosProductos();
-    this.parte=0;       
-    this.presentLoadingDefault();
-    //   this.response();
-    }
+  // ionViewWillEnter(){  
+  //   //   this.response();
+  //   }
     
-     ionViewDidLeave() {
-     
-     this.parte=0;
-     this.aux=0;
-     
-    }
+  // ionViewDidLeave() { }
 
     
     
@@ -128,23 +121,24 @@ export class SexShopPage {
       let newdata={termino:terminoL,parte:this.parte}
       
       console.log(newdata);
-      this.productService.emit('listar-producto', newdata);      
+      this.productService.emit('listar-producto-sexshops', newdata);      
       
     }
 
     respuestaProductosNegocioSexshop() {
         
-      this.productService.on('respuesta-listado-producto',(data)=>{
+      this.productService.on('respuesta-listado-producto-sexshops',(data)=>{
                         
             if(!data.error){
               console.log("este es el data:",data);
               console.log(data); 
 
-              // data.array.forEach(element => {
-              //   this.listauxProductossex.push(element);
-              //   this.listProductossex.push(element);
-              // });    
-              this.listauxProductossex=data;
+               data.forEach(element => {
+                 this.listauxProductossex.push(element);
+                 this.listProductossex.push(element);
+               });    
+
+              //this.listauxProductossex=data;
              
               this.loading.dismiss();          
               
