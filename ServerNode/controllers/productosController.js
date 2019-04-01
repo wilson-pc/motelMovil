@@ -5,7 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
-require ('mongoose-pagination');
+var pagination = require('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -251,7 +251,7 @@ module.exports = async function (io) {
     socket.on('listar-producto', async (data) => {
 
       console.log(data);
-      Producto.aggregate([
+      Producto.aggregatePaginate([
         {$match : {"tipo.tiponegocio": data.termino, "eliminado.estado": false,}},
         {
           $project: {
@@ -270,7 +270,7 @@ module.exports = async function (io) {
             "descripcion": "$descripcion"
           }
         }
-      ]).paginate(data.parte, 10, function (error, lista) {
+      ], function (error, lista) {
         if (error) {
 
           // res.status(500).send({ mensaje: "Error al listar" })

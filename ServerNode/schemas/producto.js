@@ -3,6 +3,7 @@ var mongose = require("mongoose");
 var Schema = mongose.Schema;
 var Tipo=require("./tipo").schema;
 var calificacion=require("./calificacion").schema;
+var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 var ProductoSchema = Schema({
 nombre:String,
 negocio:{type: Schema.ObjectId, ref: "Negocios"},
@@ -20,5 +21,5 @@ eliminado:{estado:Boolean,razon:String},
 creacion: {fecha:String },
 modificacion:{fecha:String}
 })
-
+ProductoSchema.plugin(mongooseAggregatePaginate);
 module.exports = mongose.model("Productos", ProductoSchema)
