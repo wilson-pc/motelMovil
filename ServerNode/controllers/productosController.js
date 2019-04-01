@@ -272,7 +272,7 @@ module.exports = async function (io) {
         }
       ], function (error, lista) {
         if (error) {
-
+          console.log("este es el error:",error)
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
         } else {

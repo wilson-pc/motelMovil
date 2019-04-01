@@ -42,8 +42,9 @@ export class LicoreriaPage {
    async ionViewWillEnter(){   
     this.listauxProductos=[];
     this.listProductos=[];  
+    this.parte=1;
     this.obtenerdatosProductos();          
-  this.parte=1;
+  
    }
    presentModal() {
     const modal = this.modalCtrl.create(DescriptionLicoreriaPage);
@@ -59,8 +60,7 @@ export class LicoreriaPage {
   
     this.cont++;  
     if(this.cont==1)
-    {
-      
+    {      
       setTimeout(()=>{
         event.complete();
         this.parte++;        
@@ -110,11 +110,9 @@ export class LicoreriaPage {
                       
           if(!data.error){
             console.log("este es el data:"+data);
-            
-            data.forEach(element =>{
-              this.listProductos.push(element);
-              this.listauxProductos.push(element);
-            })             
+            this.listauxProductos=data;
+            this.listProductos=data;
+           
           }
           else{
             console.log("error en la lista");
@@ -122,7 +120,5 @@ export class LicoreriaPage {
         })
       
    }
-
- 
 
 }
