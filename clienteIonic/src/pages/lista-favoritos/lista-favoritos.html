@@ -10,7 +10,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      <strong>Ionic 3</strong> Start Theme
+      <strong>TRI</strong>service App
     </ion-title>
     <ion-buttons end>
       <button ion-button tappable (click)="presentNotifications($event)">
@@ -25,5 +25,114 @@
 
 
 <ion-content padding>
+
+ <ion-list>
+
+    <div padding>
+        <ion-segment [(ngModel)]="pet">
+          <ion-segment-button value="licores">
+            Licores
+          </ion-segment-button>
+          <ion-segment-button value="moteles">
+            Moteles
+          </ion-segment-button>
+          <ion-segment-button value="productosSex">
+              Products Sex
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      
+      <div [ngSwitch]="pet">
+        
+        <ion-list *ngSwitchCase="'licores'">
+            <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+            <ion-item>
+                <ion-thumbnail item-start>
+                  <img src="../../assets/imgs/avatar.jpeg">
+                </ion-thumbnail>
+                <div class="contentList">
+                  <div class="titulolist">
+                      <h2>Titulo Producto</h2>
+                      <p>Alguna descripcion bana del producto</p>
+                  </div>
+                 
+                  <div class="likes">
+                    <div class="like">
+                        <ion-icon name="thumbs-up"></ion-icon>
+                        <div>1 k</div>
+                    </div>
+                    <div class="dislike">
+                        <ion-icon name="thumbs-down"></ion-icon>
+                        <div>100</div>
+                    </div>
+                    <div class="vermas">
+                        <button ion-button clear item-end>Ver mas</button>
+                    </div>
+                  </div>
+                 </div>  <!--fin div content            -->
+              </ion-item>       
+      
+        </ion-list>
+      
+        <ion-list *ngSwitchCase="'moteles'">
+            <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+            <ion-item>
+                <ion-thumbnail item-start>
+                  <img src="../../assets/imgs/avatar.jpeg">
+                </ion-thumbnail>
+                <div class="contentList">
+                  <div class="titulolist">
+                      <h2>Titulo Producto</h2>
+                      <p>Alguna descripcion bana del producto</p>
+                  </div>
+                 
+                  <div class="likes">
+                    <div class="like">
+                        <ion-icon name="thumbs-up"></ion-icon>
+                        <div>1 k</div>
+                    </div>
+                    <div class="dislike">
+                        <ion-icon name="thumbs-down"></ion-icon>
+                        <div>100</div>
+                    </div>
+                    <div class="vermas">
+                        <button ion-button clear item-end>Ver mas</button>
+                    </div>
+                  </div>
+                 </div>  <!--fin div content            -->
+              </ion-item>       
+         
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'productosSex'">
+            <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+            <ion-item>
+              <ion-thumbnail item-start>
+                <img src="../../assets/imgs/avatar.jpeg">
+              </ion-thumbnail>
+              <div class="contentList">
+                <div class="titulolist">
+                    <h2>Titulo Producto</h2>
+                    <p>Alguna descripcion bana del producto</p>
+                </div>
+               
+                <div class="likes">
+                  <div class="like">
+                      <ion-icon name="thumbs-up"></ion-icon>
+                      <div>1 k</div>
+                  </div>
+                  <div class="dislike">
+                      <ion-icon name="thumbs-down"></ion-icon>
+                      <div>100</div>
+                  </div>
+                  <div class="vermas">
+                      <button ion-button clear item-end>Ver mas</button>
+                  </div>
+                </div>
+               </div>  <!--fin div content            -->
+            </ion-item>            
+          </ion-list>
+      </div>   
+  </ion-list>
 
 </ion-content>

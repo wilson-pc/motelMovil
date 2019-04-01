@@ -20,6 +20,7 @@ var home=io.of('/home');
 var habitacion=io.of('/habitacion');
 var comportamiento=io.of('/comportamiento');
 var login=io.of('/login');
+var reservas=io.of("/reservas");
 
 var useLogin=require('./controllers/loginClientController')(login);
 var UseProductos =require('./controllers/productosController')(productos);
@@ -28,6 +29,7 @@ var UseNegocios =require('./controllers/NegocioController')(negocios);
 var useHome=require('./controllers/homeController')(home);
 var UseHabitacion=require('./controllers/habitacionController')(habitacion);
 var useComportamineto=require('./controllers/ComportamientoController')(comportamiento);
+var useReservas=require('./controllers/ReservasController')(reservas);
 
 mongoose.connect('mongodb://root:toor123@ds161104.mlab.com:61104/triservicesapp',{ useNewUrlParser: true },(error, respuesta) => {
   //  mongoose.connect('mongodb://192.168.1.16:27017/triservice', (error, respuesta) => {

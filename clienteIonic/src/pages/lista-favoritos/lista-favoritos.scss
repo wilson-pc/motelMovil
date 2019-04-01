@@ -1,3 +1,37 @@
-page-lista-favoritos {
-
+.contentList{
+    
+    width: 100%;
+    
 }
+.titulolist{
+    
+    width: 100%;   
+    text-align: left;
+    
+    }
+
+.vermas{
+    text-align: right;
+    width: 100%;
+   
+    }
+
+.likes{
+   
+    width: 70%;
+    float: left;
+    }
+.like{
+    
+    width: 50%;
+    float: left;
+    text-align: left;
+    color: rgb(0, 136, 226)
+    }
+.dislike{
+   
+    width: 50%;
+    float: left;
+    text-align: left;
+    color: rgba(177, 5, 5, 0.897);
+    }
