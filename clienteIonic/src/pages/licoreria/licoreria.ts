@@ -46,8 +46,8 @@ export class LicoreriaPage {
     this.obtenerdatosProductos();          
   
    }
-   presentModal() {
-    const modal = this.modalCtrl.create(DescriptionLicoreriaPage);
+   presentModal(item) {
+    const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
     modal.present();
   }
  

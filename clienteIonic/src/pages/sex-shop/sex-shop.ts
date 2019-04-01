@@ -8,6 +8,8 @@ import { SocketConfigService } from '../../services/socket-config.service';
 import { Observable } from 'rxjs';
 import { DEFAULT_INTERPOLATION_CONFIG } from '@angular/compiler';
 import { DescriptionSexshopPage } from '../description-sexshop/description-sexshop';
+import { DescripcionProductoPage } from '../descripcion-producto/descripcion-producto';
+import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
 
 /**
  * Generated class for the SexShopPage page.
@@ -35,6 +37,7 @@ export class SexShopPage {
   loading:any;
   aux:number= 0;
   cont=0;
+  
   
 
   constructor(public productService:SocketConfigService ,
@@ -67,9 +70,9 @@ export class SexShopPage {
      this.aux=0;
      
     }
-
-    presentModal() {
-      const modal = this.modalCtrl.create(DescriptionSexshopPage);
+   
+    presentModal(item) {
+      const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
       modal.present();
     }
   
