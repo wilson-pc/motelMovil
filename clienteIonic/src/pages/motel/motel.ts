@@ -22,7 +22,7 @@ import { DescriptionMotelPage } from '../description-motel/description-motel';
 export class MotelPage {
 
   infiniteScroll:any;
-  parte:number=1;
+  parte:number;
   searchQuery: string = '';
   items: string[];
   habitaciones:Habitacion;
@@ -38,13 +38,14 @@ export class MotelPage {
     private socketservicio: SocketConfigService,
     public modalCtrl: ModalController) {
   this.respuestaProductosNegocioMoteles();
+  this.parte=0;
     
   }
  
   ionViewWillEnter()
   {    
     this.obtenerdatosProductos();
-    this.parte=1;
+    this.parte=0;
   }
 
   ionViewDidLoad() {

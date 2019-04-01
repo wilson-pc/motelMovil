@@ -23,7 +23,7 @@ import { DEFAULT_INTERPOLATION_CONFIG } from '@angular/compiler';
 export class SexShopPage {
 
   infiniteScroll:any;
-  parte:number=1;  
+  parte:number;  
 
   searchQuery: string = '';
   items: string[];
@@ -39,25 +39,23 @@ export class SexShopPage {
   constructor(public productService:SocketConfigService ,public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, private provedorProductos:ProviderProductosProvider) {
     
     //this.initializeItems();
-    this.respuestaProductosNegocioSexshop();
     
-  }
-
-  
+    this.parte=0;       
+    
+    this.respuestaProductosNegocioSexshop();
+   
+  }  
 
   async ionViewWillEnter(){
-    
-    
-   this.obtenerdatosProductos();
-   this.parte=1;       
-   this.presentLoadingDefault();
-       
+    this.obtenerdatosProductos();
+    this.parte=0;       
+    this.presentLoadingDefault();
     //   this.response();
     }
     
      ionViewDidLeave() {
-     this.listauxProductossex=[];
-     this.parte=1;
+     
+     this.parte=0;
      this.aux=0;
      
     }
@@ -141,8 +139,12 @@ export class SexShopPage {
             if(!data.error){
               console.log("este es el data:",data);
               console.log(data); 
+
+              // data.array.forEach(element => {
+              //   this.listauxProductossex.push(element);
+              //   this.listProductossex.push(element);
+              // });    
               this.listauxProductossex=data;
-              this.listProductossex=data;
              
               this.loading.dismiss();          
               
