@@ -3,6 +3,7 @@ import { SocketUsuarioService2 } from './../services/socket-config.service';
 import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { GoogleMaps } from '@ionic-native/google-maps';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import { MyApp } from './app.component';
@@ -150,6 +151,7 @@ export const firebaseConfig = {
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
+    GoogleMaps,
     GooglePlus,
     AndroidPermissions,
     ProviderProductosProvider,

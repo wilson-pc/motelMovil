@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
   //CREAR UN SUPER ADMIN
   createSuperAdmin(){
    
-    this.socket.emit('registrar-sa');
+    //this.socket.emit('registrar-sa');
     
   }
 }
