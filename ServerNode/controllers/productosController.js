@@ -269,6 +269,10 @@ module.exports = async function (io) {
             "tipo": "$tipo",
             "descripcion": "$descripcion"
           }
+        },{
+          $skip:10*data.parte
+        },{
+          $limit:10
         }
       ], function (error, lista) {
         if (error) {
@@ -277,6 +281,7 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
         } else {
           if (!lista) {
+            console.log("lista 2");
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
           } else {
