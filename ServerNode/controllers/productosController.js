@@ -5,7 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
-var pagination = require('mongoose-pagination');
+require ('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -269,9 +269,8 @@ module.exports = async function (io) {
             "tipo": "$tipo",
             "descripcion": "$descripcion"
           }
-        },
-        { $limit: 10 },{$skip:data.parte}
-      ], function (error, lista) {
+        }
+      ]).paginate(data.parte, 10, function (error, lista) {
         if (error) {
           console.log("este es el error:",error)
           // res.status(500).send({ mensaje: "Error al listar" })
