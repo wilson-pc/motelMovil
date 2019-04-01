@@ -12,7 +12,6 @@ export class SocketConfigService extends Socket {
 
     super({ url: RutaServer.socket + "productos", options: {} });
   }
-
 }
 
 export class SocketConfigService2 extends Socket {
