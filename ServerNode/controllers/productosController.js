@@ -270,7 +270,7 @@ module.exports = async function (io) {
             "descripcion": "$descripcion"
           }
         },
-        { $limit: 10 }
+        { $limit: 10 },{$skip:data.parte}
       ], function (error, lista) {
         if (error) {
           console.log("este es el error:",error)
