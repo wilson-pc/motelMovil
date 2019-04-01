@@ -277,6 +277,7 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
         } else {
           if (!lista) {
+            console.log("lista 2");
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
           } else {
