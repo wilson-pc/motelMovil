@@ -270,7 +270,7 @@ module.exports = async function (io) {
             "descripcion": "$descripcion"
           }
         }
-      ]).paginate(data.parte, 10, function (error, lista) {
+      ], function (error, lista) {
         if (error) {
           console.log("este es el error:",error)
           // res.status(500).send({ mensaje: "Error al listar" })
