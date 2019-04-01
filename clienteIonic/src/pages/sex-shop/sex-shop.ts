@@ -46,8 +46,8 @@ export class SexShopPage {
   
 
   async ionViewWillEnter(){
-    this.listauxProductossex=[];
-    this.listProductossex=[];
+    
+    
    this.obtenerdatosProductos();
    this.parte=1;       
    this.presentLoadingDefault();
@@ -141,6 +141,8 @@ export class SexShopPage {
             if(!data.error){
               console.log("este es el data:",data);
               console.log(data); 
+              this.listauxProductossex=data;
+              this.listProductossex=data;
              
               this.loading.dismiss();          
               
