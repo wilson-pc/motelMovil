@@ -20,7 +20,7 @@ import { DescriptionLicoreriaPage } from '../description-licoreria/description-l
 })
 export class LicoreriaPage {
   infiniteScroll:any;
-  parte:number=1;  
+  parte:number;  
 
   searchQuery: string = '';
   items: string[];
@@ -36,13 +36,13 @@ export class LicoreriaPage {
      public navParams: NavParams,
      private productService:SocketConfigService,
      public modalCtrl: ModalController) {
-   
+   this.parte=0;
     this.respuestaProductosNegocioLicores();   
   }
    async ionViewWillEnter(){   
     this.listauxProductos=[];
     this.listProductos=[];  
-    this.parte=1;
+    this.parte=0;
     this.obtenerdatosProductos();          
   
    }
