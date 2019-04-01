@@ -42,6 +42,10 @@ export class EditProductsPage {
     this.validInputFormProducts();
   }
 
+  dismissModal(){
+    this.viewCtrl.dismiss();
+  }
+
   validInputFormProducts() {
     this.productForm = this.formBuilder.group({
       productNombre: ['', Validators.compose([Validators.maxLength(30),Validators.required])],
@@ -195,7 +199,7 @@ export class EditProductsPage {
     // actualizar producto
     this.respuestaActualizarProducto().subscribe((data: any) => {
       this.alertMessage("Producto '" + this.productOnly.nombre + "' , actualizado con exito");
-      this.navCtrl.pop();
+      this.viewCtrl.dismiss();
     });
   }
 

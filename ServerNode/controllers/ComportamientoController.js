@@ -82,21 +82,19 @@ module.exports = async function (io) {
 
 
           socket.on('calificar-negocio', async (data) => {
-     /*     try {
+          try {
                 var datos = await Crypto.Desincryptar(data);
-                if (!datos.error) {*/
+                if (!datos.error) {
                   
-                  var puntuacion = new Calificacion();
-                  var datos=JSON.parse(data);
+                  var calificacion= new Calificacion();
                     
-                    puntuacion.usuario=datos.idcliente;
-                    puntuacion.negocio=datos.idnegocio;
-                    puntuacion.estrella=datos.estrella;
-                    puntuacion.fecha=new Date().toUTCString();
-                    
-                    console.log(puntuacion);
+                    calificacion.usuario=datos.idcliente;
+                    calificacion.negocio=datos.idnegocio;
+                    calificacion.estrella=datos.estrella;
+                    calificacion.fecha=new Date().toUTCString();
+                    console.log(calificacion);
                     await Negocio.update({_id:datos.idnegocio},{ $pull: { "calificacion": {usuario:datos.idcliente}} });
-                    Negocio.findOneAndUpdate({_id:datos.idnegocio}, { $push: {calificacion: puntuacion } },{new: true},(error, actualizado) => {
+                    Negocio.findOneAndUpdate({_id:datos.idnegocio}, { $push: {calificacion: calificacion } },{new: true},(error, actualizado) => {
                         if (error) {
                           io.to(socket.id).emit('respuesta-calificar-negocio',{error: "error al calificar"});
                         //    res.status(500).send({ mensaje: "error al guradar" })
@@ -107,49 +105,14 @@ module.exports = async function (io) {
                         }
                     })
                
-                /*          }
+                   }
             return data;
             }
             
             catch (e) {
               console.log(e);
-            }*/
+            }
           });
-
-          socket.on('visitas-negocio', async (data) => {
-            /*     try {
-                       var datos = await Crypto.Desincryptar(data);
-                       if (!datos.error) {*/
-                         
-                       
-                         var datos=JSON.parse(data);
-                           
-                          
-                           var usuario=datos.idusuario;
-                           var fecha=new Date().toUTCString();
-                           
-                         //  await Negocio.update({_id:datos.idnegocio},{ $pull: { "visitas": {usuario:datos.idcliente}} });
-                           Negocio.findOneAndUpdate({_id:datos.idnegocio}, { $push: {visitas: {usuario:usuario,fecha:fecha} } },{new: true},(error, actualizado) => {
-                               if (error) {
-                                 console.log(error);
-                                 io.to(socket.id).emit('respuesta-visita-negocio',{error: "error al contar visita"});
-                               //    res.status(500).send({ mensaje: "error al guradar" })
-                               } else {
-                                 console.log(actualizado);
-                                 io.to(socket.id).emit('respuesta-visita-negocio',{datos:actualizado});  
-                         //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
-                                 
-                               }
-                           })
-                      
-                       /*          }
-                   return data;
-                   }
-                   
-                   catch (e) {
-                     console.log(e);
-                   }*/
-                 });
 
           socket.on('descalificar-producto', async (data) => {
             try {

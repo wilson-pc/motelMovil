@@ -23,6 +23,10 @@ export class ViewProductsPage {
   ionViewDidLoad() {
   }
 
+  dismissModal(){
+    this.viewCtrl.dismiss();
+  }
+
   getProduct() {
     this.productOnly = this.navParams.get('product');
     this.commerceOnly = this.navParams.get('commerce');
