@@ -22,8 +22,7 @@ import { DescriptionMotelPage } from '../description-motel/description-motel';
 export class MotelPage {
 
   infiniteScroll:any;
-  parte:number=1;  
-
+  parte:number=1;
   searchQuery: string = '';
   items: string[];
   habitaciones:Habitacion;
@@ -41,18 +40,13 @@ export class MotelPage {
   this.respuestaProductosNegocioMoteles();
     
   }
-  presentModal() {
-    const modal = this.modalCtrl.create(DescriptionMotelPage);
-    modal.present();
-  }
-
+ 
   ionViewWillEnter()
-  {
-    this.listauxProductos=[];
-    this.listauxProductos=[];
+  {    
     this.obtenerdatosProductos();
     this.parte=1;
   }
+
   ionViewDidLoad() {
 
    
@@ -115,22 +109,19 @@ export class MotelPage {
     this.socketservicio.emit('listar-producto', newdata);   
   }
 
+  presentModal() {
+    const modal = this.modalCtrl.create(DescriptionMotelPage);
+    modal.present();
+  }
+
+
   respuestaProductosNegocioMoteles() {
         
-    this.socketservicio.on('respuesta-listado-producto',(data:Productos[])=>{
-                      
-          if(data){
-            console.log("este es el data:"+data);
-            
-            data.forEach(element =>{
-              this.listProductos.push(element);
-              this.listauxProductos.push(element);
-            })             
-          }
-          else{
-            console.log("error en la lista");
-          }
-        })
+    this.socketservicio.on('respuesta-listado-producto',(data)=>{
+        
+      console.log(data);
+         
+    })
       
    }
 }
