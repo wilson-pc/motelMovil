@@ -36,9 +36,6 @@ module.exports = async function (io) {
                    } catch (error) {
                      console.log("error");
                    }
-                   
-
-               
                        }
             return data;
             }
@@ -47,6 +44,42 @@ module.exports = async function (io) {
               console.log(e);
             }
           });
+
+          socket.on('denuncia-producto', async (data) => {
+            /*     try {
+                       var datos = await Crypto.Desincryptar(data);
+                       if (!datos.error) {*/
+                         
+                       
+                         var datos=JSON.parse(data);
+                           
+                          
+                           var usuario=datos.idusuario;
+                           var fecha=new Date().toUTCString();
+                           
+                         //  await Negocio.update({_id:datos.idnegocio},{ $pull: { "visitas": {usuario:datos.idcliente}} });
+                           Producto.findOneAndUpdate({_id:datos.idproducto}, { $push: {denuncias: {usuario:usuario,fecha:fecha,detalle:datos.detalle} } },{new: true},(error, actualizado) => {
+                               if (error) {
+                                 console.log(error);
+                                 io.to(socket.id).emit('respuesta-denuncia-negocio',{error: "error al guardar denuncia"});
+                               //    res.status(500).send({ mensaje: "error al guradar" })
+                               } else {
+                                 console.log(actualizado);
+                                 io.to(socket.id).emit('respuesta-denuncia-negocio',{datos:actualizado});  
+                         //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                                 
+                               }
+                           })
+                      
+                       /*          }
+                   return data;
+                   }
+                   
+                   catch (e) {
+                     console.log(e);
+                   }*/
+                 });
+
 
           socket.on('calificar-negocio', async (data) => {
      /*     try {
