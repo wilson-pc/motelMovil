@@ -94,16 +94,18 @@ export class ListProductsPage {
   }
 
   addProduct() {
-    this.navCtrl.push(RegisterProductsPage, { negocio: this.commerceOnly });
-    this.getProductsCommerce();
+    const modal = this.modalCtrl.create(RegisterProductsPage, { negocio: this.commerceOnly });
+    modal.present();
   }
 
   infoProduct(product) {
-    this.navCtrl.push(ViewProductsPage, {product: product, commerce: this.commerceOnly });
+    const modal = this.modalCtrl.create(ViewProductsPage, {product: product, commerce: this.commerceOnly });
+    modal.present();
   }
 
   updateProduct(product) {
-    this.navCtrl.push(EditProductsPage, { product: product, commerce: this.commerceOnly });
+    const modal = this.modalCtrl.create(EditProductsPage, { product: product, commerce: this.commerceOnly });
+    modal.present();
     this.getProductsCommerce();
   }
 

@@ -1,7 +1,14 @@
 <ion-header>
-
+  
   <ion-navbar>
-    <ion-title>Editar Producto</ion-title>
+    <ion-toolbar>
+      <ion-title>Editar Producto</ion-title>
+      <ion-buttons start>
+        <button ion-button (click)="dismissModal()">
+          <span ion-text color="primary" showWhen="ios">Cancelar</span>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
   </ion-navbar>
 
 </ion-header>

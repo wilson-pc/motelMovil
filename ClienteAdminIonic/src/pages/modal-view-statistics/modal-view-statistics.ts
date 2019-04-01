@@ -1,8 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
-@IonicPage()
 @Component({
   selector: 'page-modal-view-statistics',
   templateUrl: 'modal-view-statistics.html',
@@ -19,6 +18,10 @@ export class ModalViewStatisticsPage {
   pieChart : any;
   doughnutChart : any;
 
+  // Meses del año
+  meses : any[] = ['Enero', 'Ferebrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -31,86 +34,56 @@ export class ModalViewStatisticsPage {
 
   ngAfterViewInit(){
     setTimeout(() => {
-      this.barchart = this.getBarChart();
       this.lineChart = this.getLineChart();
     }, 150)
-    setTimeout(() => {
-      this.pieChart = this.getPieChart();
-      this.doughnutChart = this.getdoughnutChart();
-    }, 250)
-  }
-
-  getChart(context, chartType, data, options){
-    return new Chart(context, {
-      data,
-      options,
-      type: chartType
-    })
-  }
-
-  getBarChart(){
-    const data = {
-      labels: ['Vernelho', 'Azul', 'Amarelo', 'Verde', 'Roxo'],
-      datasets: [{
-        label: 'Numero de votos',
-        data: [12, 23, 15, 90, 5],
-        backgroundColor: [
-          'rgb(255,0,0)',
-          'rgb(20,0,255)',
-          'rgb(255,230,0)',
-          'rgb(0,255,10)',
-          'rgb(60,0,70)',
-        ],
-        borderWidth: 1
-      }]
-    };
-
-    const options = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-
-    return this.getChart(this.barCanvas.nativeElement, 'bar', data, options)
   }
 
   getLineChart(){
-    const data = {
-      labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
+    var chart = new Chart(this.lineCanvas.nativeElement, {
+      data : {
+      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
       datasets: [{
-        label: 'Menu de datos',
+        label: '1',
         fill: false,
         lineTension: 0.1,
         data: [12, 23, 15, 90, 5],
-        backgroundColor: 'rgb(0 , 178, 255)',
-        dorderColor: 'rgb(231, 205, 35)',
+        backgroundColor: '#cc65fe',
+        borderColor: '#cc65fe',
         borderCapStyle : 'butt',
         boderJoinStyle : 'miter',
-        pointRadius: 1,
-        pointHitRadius: 10,
-        dat : [20, 15, 98, 4],
-        scanGaps: false
-      }, {
-        label: 'Menu de datos',
+        pointRadius: 4,
+        pointHitRadius: 1,
+        spanGaps: true
+      },
+      {
+        label: '2',
         fill: false,
         lineTension: 0.1,
-        data: [12, 23, 15, 90, 5],
-        backgroundColor: 'rgb(117 , 0, 49)',
-        dorderColor: 'rgb(51, 50, 46)',
+        data: [12, 200, 5, 80, 9],
+        backgroundColor: 'rgb(207, 20, 20)',
+        borderColor: 'rgb(207, 20, 20)',
         borderCapStyle : 'butt',
         boderJoinStyle : 'miter',
-        pointRadius: 1,
-        pointHitRadius: 10,
-        dat : [29, 135, 13, 70],
-        scanGaps: false
-      }]
-    }
+        pointRadius: 4,
+        pointHitRadius: 1,
+        spanGaps: true
+      },
+      {
+        label: '3',
+        fill: false,
+        lineTension: 0.1,
+        data: [12, 55, 5, 80, 9],
+        backgroundColor: 'rgb(180, 20, 20)',
+        borderColor: 'rgb(180, 20, 20)',
+        borderCapStyle : 'butt',
+        boderJoinStyle : 'miter',
+        pointRadius: 4,
+        pointHitRadius: 1,
+        spanGaps: true
+      },]
+    },
 
-    const options = {
+    options: {
       scales: {
         yAxes: [{
           ticks: {
@@ -118,57 +91,12 @@ export class ModalViewStatisticsPage {
           }
         }]
       }
-    }
+    },
 
-    return this.getChart(this.lineCanvas.nativeElement, 'line', data, options)
-  }
+      type: 'line'
+    })
 
-  getPieChart(){
-    const data = {
-      labels: ['Vermelho', 'Azul', 'Amarelo'],
-      datasets : [{
-        data : [300, 75, 224],
-        backgroundColor : ['rgb(200, 6, 0', 'rgb(36, 0, 255)', 'rgb(242, 255, 0)']
-      }]
-    }
-
-    const options = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-
-    return this.getChart(this.pieCanvas.nativeElement, 'pie', data, options)
-  }
-
-  getdoughnutChart(){
-    const data = {
-      labels: ['Vermelho', 'Azul', 'Amarelo'],
-      datasets: [{
-        label: 'texte Chart',
-        dat : [12, 65, 32],
-        backgroundColor: [
-          'rgb(0, 244, 97)',
-          'rgb(37, 39, 43)',
-          'rgb(255, 207, 0)'
-        ]
-      }]
-    }
-    const options = {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-
-    return this.getChart(this.doughnutCanvas.nativeElement, 'doughnut', data, options);
+    return chart;
   }
 
   atras(){
