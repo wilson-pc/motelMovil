@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, AlertController, ToastController, ModalController } from 'ionic-angular';
 import { resizeBase64 } from 'base64js-es6';
 import { Negocio } from '../../models/Negocio';
 import { Productos } from '../../models/Productos';
@@ -10,6 +10,7 @@ import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
 import { ProductProvider } from '../../providers/product/product';
 import { FormBuilder, Validators } from '@angular/forms';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'page-register-products',
@@ -46,6 +47,10 @@ export class RegisterProductsPage {
     this.getTypeProducts();
 
     this.validInputFormProducts();
+  }
+
+  dismissModal(){
+    this.viewCtrl.dismiss();
   }
 
   validInputFormProducts() {
@@ -171,10 +176,6 @@ export class RegisterProductsPage {
       this.alertMessage("Imposible registrar verifique los campos de registro.")
     }
     else {
-      // datos habitacion
-      let estado = "Disponible";
-      let seccionubicacion = "Piso 2";
-    
       var date = new Date().toUTCString();
       this.product.negocio = this.commerceOnly._id as any;
       this.product.creacion = { fecha: date };
@@ -229,7 +230,7 @@ export class RegisterProductsPage {
     // agregar producto
     this.respuestaRegistrarProducto().subscribe((data: any) => {
       this.alertMessage("Producto '"+ data.nombre + "', registrado.");
-      this.navCtrl.pop();
+      this.viewCtrl.dismiss();
     });
   }
 
