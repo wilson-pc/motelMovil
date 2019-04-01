@@ -110,9 +110,13 @@ export class LicoreriaPage {
                       
           if(!data.error){
             console.log("este es el data:"+data);
-            this.listauxProductos=data;
-            this.listProductos=data;
-           
+
+            data.forEach(element => {
+              this.listauxProductos.push(element);
+              this.listProductos.push(element);
+            });    
+
+          
           }
           else{
             console.log("error en la lista");
