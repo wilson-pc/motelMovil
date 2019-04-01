@@ -251,7 +251,7 @@ module.exports = async function (io) {
     socket.on('listar-producto', async (data) => {
 
       console.log(data);
-      Producto.aggregatePaginate([
+      Producto.aggregate([
         {$match : {"tipo.tiponegocio": data.termino, "eliminado.estado": false,}},
         {
           $project: {
@@ -269,6 +269,10 @@ module.exports = async function (io) {
             "tipo": "$tipo",
             "descripcion": "$descripcion"
           }
+        },{
+          $skip:10*data.parte
+        },{
+          $limit:10
         }
       ], function (error, lista) {
         if (error) {
