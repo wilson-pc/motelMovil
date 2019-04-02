@@ -472,6 +472,21 @@ module.exports = async function (io) {
       });
     });
 
+    socket.on('listar-usuario-cliente', async (data) => {
+
+      Usuario.find({ "rol.rol": "Cliente", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+            io.to(socket.id).emit('respuesta-listado-usuario-cliente', lista);
+          }
+        }
+      });
+    });
+
     socket.on('cambiar-login', async (data) => {
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
