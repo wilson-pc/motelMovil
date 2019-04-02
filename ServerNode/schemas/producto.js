@@ -3,10 +3,7 @@ var mongose = require("mongoose");
 var Schema = mongose.Schema;
 var Tipo=require("./tipo").schema;
 var calificacion=require("./calificacion").schema;
-<<<<<<< HEAD
-=======
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
->>>>>>> 26b9e961e9b4217b073c44c68b0cc980e6f27982
 var ProductoSchema = Schema({
 nombre:String,
 negocio:{type: Schema.ObjectId, ref: "Negocios"},
