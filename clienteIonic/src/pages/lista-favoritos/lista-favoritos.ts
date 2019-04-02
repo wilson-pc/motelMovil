@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Negocio } from '../../models/Negocio';
+import { conexionSocketComportamiento } from '../../services/socket-config.service';
+import { UsuarioProvider } from '../../providers/usuario/usuario';
 
 /**
  * Generated class for the ListaFavoritosLicoreriasPage page.
@@ -21,11 +23,18 @@ export class ListaFavoritosPage {
   listaProductos: Productos[]=[];
   listabuscadorProductos:Productos[]=[];
   producto:Productos;
-  items:string[]=[];
+ 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+     public navParams: NavParams,      
+     private usuarioLogueado:UsuarioProvider,
+     public provedorSocketFavoritos:conexionSocketComportamiento) {
+
+      this.obtenerListadeFavoritos();
+     
     this.llenarDatos();
     this.initializeItems();
+    this.obtenerListadeFavoritos();
     this.producto=new Productos();
   }
 
@@ -35,34 +44,7 @@ export class ListaFavoritosPage {
 
 
   llenarDatos(){
-    this.producto= new Productos();
-    this.producto.nombre="Cocacola";
-    this.producto.precio={precio:250,moneda:"Bs"};
-    this.producto.descripcion="Refresco gaseoso con cafeina";
-
-    this.listaProductos.push(this.producto);
-
-    this.producto= new Productos();
-    this.producto.nombre="Simba";
-    this.producto.precio={precio:20,moneda:"Bs"};
-    this.producto.descripcion="Refresco casi gaseoso con cafeina";
-
-    this.listaProductos.push(this.producto);
-
-    this.producto= new Productos();
-    this.producto.nombre="Cascada";
-    this.producto.precio={precio:250,moneda:"Bs"};
-    this.producto.descripcion="Refresco unico gaseoso con cafeina";
-
-    this.listaProductos.push(this.producto);
-
-    this.producto= new Productos();
-    this.producto.nombre="Sprite";
-    this.producto.precio={precio:250,moneda:"Bs"};
-    this.producto.descripcion="Refresco poco gaseoso con cafeina";
-
-    this.listaProductos.push(this.producto);
-   
+       
 
     console.log("este es la lista:",this.listaProductos);
   }
@@ -88,8 +70,7 @@ export class ListaFavoritosPage {
 
         if(item.nombre.toLowerCase().indexOf(val.toLowerCase())>-1 || item.descripcion.toLowerCase().indexOf(val.toLowerCase())>-1){
           return item;
-        }       
-       
+        }              
        // return (item['nombre'].toLowerCase().indexOf(val.toLowerCase())>-1);
         
       })
@@ -99,7 +80,15 @@ export class ListaFavoritosPage {
   }
 
   //Metodos de obtencion de datos
-  obtenerListadeFavoritos(){
+   obtenerListadeFavoritos(){
+     let idusuario=this.usuarioLogueado.UserSeCion.datos._id;
+     console.log(idusuario);
+     this.provedorSocketFavoritos.emit('listar-favorito',idusuario, (data)=>{
+        console.log(data);
+     });  
+   }
 
-  }
+   respuestaListaFavoritos(){
+     
+   }
 }

@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component,OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Productos } from '../../models/Productos';
+import {SocketConfigService} from '../../services/socket-config.service';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the DescriptionLicoreriaPage page.
@@ -13,11 +16,30 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
   selector: 'page-description-licoreria',
   templateUrl: 'description-licoreria.html',
 })
-export class DescriptionLicoreriaPage {
+export class DescriptionLicoreriaPage implements OnDestroy{
+  productoRecibido:Productos;
+  imagenProducto:any;
+  cantidadReserva = 1;
+  clientesSubscription: Subscription;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
-    public viewCtrl: ViewController) {
+    public viewCtrl: ViewController,
+    private productoServ: SocketConfigService) {
+      this.clientesSubscription=this.eventoSacarDatos().subscribe(data=>{
+        this.imagenProducto=data.foto.normal;
+        console.log("entrando",this.imagenProducto);
+      })
+      this.obtenerDatosProducto();
+  }
+  ngOnDestroy() {
+    console.log("saliendo");
+    this.clientesSubscription.unsubscribe();
+  }
+  obtenerDatosProducto(){
+    this.productoRecibido=this.navParams.get("producto")
+    console.log("esto es el producto",this.productoRecibido);
+    this.sacarDatos();
   }
 
   ionViewDidLoad() {
@@ -25,6 +47,14 @@ export class DescriptionLicoreriaPage {
   }
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  sacarDatos(){
+    this.productoServ.emit("sacar-producto",{id:this.productoRecibido._id})
+  }
+  eventoSacarDatos(){
+    console.log("entrando1");
+    return this.productoServ.fromEvent<any> ('respuesta-sacar-producto').map(data=>data)
   }
 
 }

@@ -210,6 +210,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
     this.socketLogin.on('respuesta-login', (data) => {
       
       if(!data.mensaje){
+        console.log("esto es el login data:",data);
       this.userServ.UserSeCion=data;
       this.storage.set("usuario", this.encryptData(data));
      // localStorage.setItem("usuario", this.encryptData(data));
