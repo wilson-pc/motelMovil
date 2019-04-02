@@ -18,11 +18,13 @@ module.exports = async function (io) {
 
                 var favorito=new Favorito();
                  favorito.producto=datos.idproducto;
-                  favorito.usuario=datos.usuario;
+                  favorito.usuario=datos.idsuario;
                   favorito.fecha=new Date().toUTCString();
                 
                try {
+               var cantidad= await favorito.countDocuments({producto:datos.idproducto,usuario:datos.idsuario});
              //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+             if(cantidad!=0){
                 favorito.save((error, favoritos) => {
                     if (error) {
                       io.to(socket.id).emit('respuesta-agregar-favorito',{error: "error al calificar"});
@@ -34,6 +36,9 @@ module.exports = async function (io) {
                       
                     }
                 })
+              }else{
+                io.to(socket.id).emit('respuesta-agregar-favorito',{error: "el producto ya esta en los favoritos"});
+              }
                } catch (error) {
                  console.log("error");
                }
