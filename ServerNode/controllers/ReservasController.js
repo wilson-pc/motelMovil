@@ -119,7 +119,7 @@ module.exports = async function (io) {
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
-                  var datos = JSON.parse(data);
+                  var datos = data;
      if(datos.idcliente){
        Reservas.find({cliente:datos.idcliente},{},(error,reservsas)=>{
        if(error){
