@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { DescripcionProductoPage } from '../descripcion-producto/descripcion-producto';
 import { SocketConfigService } from '../../services/socket-config.service';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Productos } from '../../models/Productos';
 
 @IonicPage()
@@ -14,6 +14,7 @@ export class TopsPage {
 
   Negocios = "Moteles";
   listProductTop: Productos[] = [];
+  suscripctionSocket: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -52,23 +53,19 @@ export class TopsPage {
     }
   }
 
-
   // Respuestas Socket
   connectionBackendSocket() {
-    this.respuestaProductTop().subscribe((data: any) => {
+    this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
       this.listProductTop = data;
       console.log(this.listProductTop);
     });
   }
 
   respuestaProductTop() {
-    let observable = new Observable(observer => {
-      this.productService.on('respuesta-top-productos', (data) => {
-        observer.next(data);
-      });
-    })
-    return observable;
+    return this.productService.fromEvent<any>('respuesta-top-productos').map(data => data)
   }
 
-
+  ngOnDestroy() {
+    this.suscripctionSocket.unsubscribe();
+  }
 }
