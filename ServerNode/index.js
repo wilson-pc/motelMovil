@@ -33,7 +33,7 @@ mongoose.connect('mongodb://root:toor123@ds161104.mlab.com:61104/triservicesapp'
   //  mongoose.connect('mongodb://192.168.1.16:27017/triservice', (error, respuesta) => {
         if (error) {
          
-            logger.fatal('no se pudo conectar a la base de datos,revise la conexion al servidor',error);
+       ///     logger.fatal('no se pudo conectar a la base de datos,revise la conexion al servidor',error);
             throw error;
         } else {
             console.log("correcta");
