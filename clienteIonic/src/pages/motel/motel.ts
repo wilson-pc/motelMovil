@@ -37,15 +37,17 @@ export class MotelPage {
     public navParams: NavParams,
     private socketservicio: SocketConfigService,
     public modalCtrl: ModalController) {
+      this.parte=0;
+      this.obtenerdatosProductos();
   this.respuestaProductosNegocioMoteles();
-  this.parte=0;
+  
     
   }
  
   ionViewWillEnter()
   {    
-    this.obtenerdatosProductos();
-    this.parte=0;
+    
+    
   }
 
   ionViewDidLoad() {

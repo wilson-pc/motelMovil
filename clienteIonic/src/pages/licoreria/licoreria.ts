@@ -37,13 +37,12 @@ export class LicoreriaPage {
      private productService:SocketConfigService,
      public modalCtrl: ModalController) {
    this.parte=0;
+   this.obtenerdatosProductos();  
     this.respuestaProductosNegocioLicores();   
   }
    async ionViewWillEnter(){   
-    this.listauxProductos=[];
-    this.listProductos=[];  
-    this.parte=0;
-    this.obtenerdatosProductos();          
+   
+            
   
    }
    presentModal() {
