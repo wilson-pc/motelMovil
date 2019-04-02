@@ -5,11 +5,108 @@ var Negocio=require('../schemas/negocio');
 var Crypto = require("../variables/desincryptar");
 var Calificacion=require("../schemas/calificacion");
 var mongoose=require("mongoose");
+var Favorito = require("../schemas/favoritos");
 
 
 module.exports = async function (io) {
     var clients = [];
     io.on('connection', async function (socket) {
+      socket.on('agregar-favorito', async (data) => {
+        try {
+           var datos = await Crypto.Desincryptar(data);
+            if (!datos.error) {
+
+                var favorito=new Favorito();
+                 favorito.producto=datos.idproducto;
+                  favorito.usuario=datos.idsuario;
+                  //favorito.fecha=new Date().toUTCString();
+                
+               try {
+               var cantidad= await favorito.countDocuments({producto:datos.idproducto,usuario:datos.idsuario});
+             //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+             if(cantidad!=0){
+                favorito.save((error, favoritos) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-agregar-favorito',{error: "error al calificar"});
+                    //    res.status(500).send({ mensaje: "error al guradar" })
+                    } else {
+                      console.log(actualizado);
+                      io.to(socket.id).emit('respuesta-agregar-favorito',{datos:favoritos});  
+              //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                      
+                    }
+                })
+              }else{
+                io.to(socket.id).emit('respuesta-agregar-favorito',{error: "el producto ya esta en los favoritos"});
+              }
+               } catch (error) {
+                 console.log("error");
+               }
+                   }
+        return data;
+        }
+        
+        catch (e) {
+          console.log(e);
+        }
+      });
+
+      socket.on('quitar-favorito', async (data) => {
+        try {
+           var datos = await Crypto.Desincryptar(data);
+            if (!datos.error) {
+
+               
+                
+               try {
+                Favorito.remove({producto:data.idproducto,usuario:data.idsuario},(error, nofavorito) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-quitar-favorito',{error: "error al borrar"});
+                    //    res.status(500).send({ mensaje: "error al guradar" })
+                    } else {
+                      console.log(actualizado);
+                      io.to(socket.id).emit('respuesta-quitar-favorito',{datos:nofavorito});  
+              //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                      
+                    }
+                })
+           
+               } catch (error) {
+                 console.log("error");
+               }
+                   }
+        return data;
+        }
+        
+        catch (e) {
+          console.log(e);
+        }
+      });
+
+      socket.on('listar-favorito', async (data) => {
+        
+           
+                
+               try {
+             //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+                Favorito.find({usuario:data.idusuario},(error, favoritos) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-listar-favorito',{error: "error al listar"});
+                    //    res.status(500).send({ mensaje: "error al guradar" })
+                    } else {
+                      console.log(actualizado);
+                      io.to(socket.id).emit('respuesta-listar-favorito',{datos:favoritos});  
+              //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                      
+                    }
+                })
+               } catch (error) {
+                 console.log("error");
+               }
+                   
+      
+      });
+
         socket.on('calificar-producto', async (data) => {
             try {
                var datos = await Crypto.Desincryptar(data);

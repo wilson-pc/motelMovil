@@ -45,8 +45,8 @@ export class LicoreriaPage {
             
   
    }
-   presentModal() {
-    const modal = this.modalCtrl.create(DescriptionLicoreriaPage);
+   presentModal(item) {
+    const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
     modal.present();
   }
  
