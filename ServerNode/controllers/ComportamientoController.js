@@ -51,13 +51,47 @@ module.exports = async function (io) {
         }
       });
 
+      socket.on('quitar-favorito', async (data) => {
+        try {
+           var datos = await Crypto.Desincryptar(data);
+            if (!datos.error) {
+
+               
+                
+               try {
+                Favorito.remove({producto:data.idproducto,usuario:data.idsuario},(error, nofavorito) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-quitar-favorito',{error: "error al borrar"});
+                    //    res.status(500).send({ mensaje: "error al guradar" })
+                    } else {
+                      console.log(actualizado);
+                      io.to(socket.id).emit('respuesta-quitar-favorito',{datos:nofavorito});  
+              //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                      
+                    }
+                })
+           
+               } catch (error) {
+                 console.log("error");
+               }
+                   }
+        return data;
+        }
+        
+        catch (e) {
+          console.log(e);
+        }
+      });
+
       socket.on('listar-favorito', async (data) => {
-            
+        
+           
+                
                try {
              //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
                 Favorito.find({usuario:data.idusuario},(error, favoritos) => {
                     if (error) {
-                      io.to(socket.id).emit('respuesta-listar-favorito',{error: "error al calificar"});
+                      io.to(socket.id).emit('respuesta-listar-favorito',{error: "error al listar"});
                     //    res.status(500).send({ mensaje: "error al guradar" })
                     } else {
                       console.log(actualizado);
