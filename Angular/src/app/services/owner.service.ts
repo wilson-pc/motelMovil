@@ -51,7 +51,6 @@ eventUpdateAll(){
    }
 
    eventSaveOwnerAll(){
-     console.log("hola mundi");
     return this.socket
     .fromEvent<any>("respuesta-crear-todos")
     .map( data => data );
