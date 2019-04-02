@@ -22,8 +22,7 @@ import { DescriptionMotelPage } from '../description-motel/description-motel';
 export class MotelPage {
 
   infiniteScroll:any;
-  parte:number=1;  
-
+  parte:number;
   searchQuery: string = '';
   items: string[];
   habitaciones:Habitacion;
@@ -39,20 +38,16 @@ export class MotelPage {
     private socketservicio: SocketConfigService,
     public modalCtrl: ModalController) {
   this.respuestaProductosNegocioMoteles();
+  this.parte=0;
     
   }
-  presentModal() {
-    const modal = this.modalCtrl.create(DescriptionMotelPage);
-    modal.present();
+ 
+  ionViewWillEnter()
+  {    
+    this.obtenerdatosProductos();
+    this.parte=0;
   }
 
-  ionViewWillEnter()
-  {
-    this.listauxProductos=[];
-    this.listauxProductos=[];
-    this.obtenerdatosProductos();
-    this.parte=1;
-  }
   ionViewDidLoad() {
 
    
@@ -112,25 +107,33 @@ export class MotelPage {
     let newdata={termino:terminoL,parte:this.parte}
     
     console.log(newdata);
-    this.socketservicio.emit('listar-producto', newdata);   
+    this.socketservicio.emit('listar-producto-moteles', newdata);   
   }
+
+  presentModal() {
+    const modal = this.modalCtrl.create(DescriptionMotelPage);
+    modal.present();
+  }
+
 
   respuestaProductosNegocioMoteles() {
         
-    this.socketservicio.on('respuesta-listado-producto',(data:Productos[])=>{
-                      
-          if(data){
-            console.log("este es el data:"+data);
-            
-            data.forEach(element =>{
-              this.listProductos.push(element);
-              this.listauxProductos.push(element);
-            })             
-          }
-          else{
-            console.log("error en la lista");
-          }
-        })
+    this.socketservicio.on('respuesta-listado-producto-moteles',(data)=>{
+        if(!data.error){
+          console.log(data);
+
+          data.forEach(element => {
+            this.listauxProductos.push(element);
+            this.listProductos.push(element);
+          });
+         
+        }
+        else{
+          console.log("ocurrio un problema");
+        }
+      
+         
+    })
       
    }
 }

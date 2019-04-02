@@ -20,7 +20,7 @@ import { DescriptionLicoreriaPage } from '../description-licoreria/description-l
 })
 export class LicoreriaPage {
   infiniteScroll:any;
-  parte:number=1;  
+  parte:number;  
 
   searchQuery: string = '';
   items: string[];
@@ -36,14 +36,15 @@ export class LicoreriaPage {
      public navParams: NavParams,
      private productService:SocketConfigService,
      public modalCtrl: ModalController) {
-   
+   this.parte=0;
     this.respuestaProductosNegocioLicores();   
   }
    async ionViewWillEnter(){   
     this.listauxProductos=[];
     this.listProductos=[];  
+    this.parte=0;
     this.obtenerdatosProductos();          
-  this.parte=1;
+  
    }
    presentModal() {
     const modal = this.modalCtrl.create(DescriptionLicoreriaPage);
@@ -59,8 +60,7 @@ export class LicoreriaPage {
   
     this.cont++;  
     if(this.cont==1)
-    {
-      
+    {      
       setTimeout(()=>{
         event.complete();
         this.parte++;        
@@ -101,20 +101,22 @@ export class LicoreriaPage {
     let newdata={termino:terminoL,parte:this.parte}
     
     console.log(newdata);
-    this.productService.emit('listar-producto', newdata);   
+    this.productService.emit('listar-producto-licores', newdata);   
   }
 
   respuestaProductosNegocioLicores() {
         
-    this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
+    this.productService.on('respuesta-listado-producto-licores',(data)=>{
                       
-          if(data){
+          if(!data.error){
             console.log("este es el data:"+data);
-            
-            data.forEach(element =>{
-              this.listProductos.push(element);
+
+            data.forEach(element => {
               this.listauxProductos.push(element);
-            })             
+              this.listProductos.push(element);
+            });    
+
+          
           }
           else{
             console.log("error en la lista");
@@ -122,7 +124,5 @@ export class LicoreriaPage {
         })
       
    }
-
- 
 
 }
