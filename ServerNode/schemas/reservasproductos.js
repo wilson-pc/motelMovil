@@ -14,4 +14,4 @@ var Reservaproducto = Schema({
     dueno:String
 })
 
-module.exports = mongose.model("Tiemporeservadoproductos",Reservaproducto)
+module.exports = mongose.model("Reservas",Reservaproducto)

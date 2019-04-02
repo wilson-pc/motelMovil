@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      "NombreProducto"
-    </ion-title>
     <ion-buttons start>
-      <button ion-button (click)="dismiss()">
+      <button ion-button (click)="dismissModal()">
         <span ion-text color="primary" showWhen="ios">atras</span>
         <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
       </button>
@@ -18,22 +15,16 @@
       <ion-card>
         <ion-card-content>
           <ion-card-title>
-            Vino Tinto - La Valle
+            {{product.nombre}}
           </ion-card-title>
-          <img src="../../assets/imgs/licor.jpg" /><br>
+
+          <img [src]="product.foto.miniatura" /><br>
           <p>
-            El grupo industrial más popular de la historia, y en gran parte responsable de llevar el mejor vino asu
-            mesa.
+            <b>Descripcion: </b><br>
+            {{product.descripcion}}
           </p>
 
           <ion-row>
-            <ion-col>
-              <button ion-button clear small color="default" icon-start>
-                <ion-icon name='star'></ion-icon>
-                399 Visitas
-              </button>
-            </ion-col>
-
             <ion-col>
               <button ion-button icon-start clear small color="default">
                 <ion-icon name="thumbs-up"></ion-icon>
@@ -63,7 +54,8 @@
           <ion-card-title>
             Reservar Producto
           </ion-card-title>
-          <p>Cantidad: </p>
+          <p><b>Precio: </b>{{product.precio}} Bs.</p><br>
+          <p><b>Cantidad: </b></p>
           <ion-row>
             <ion-col>
               <ion-item>
@@ -79,7 +71,7 @@
             </ion-col>
 
             <ion-col>
-              <button ion-button color="danger">Reservar</button>
+              <button ion-button color="danger" (click)="reserveProduct()">Reservar</button>
             </ion-col>
           </ion-row>
         </ion-card-content>

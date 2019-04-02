@@ -18,7 +18,7 @@ module.exports = async function (io) {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
       var reserva = new Reservas();
-      var datos = JSON.parse(data);
+      var datos = data;
       var fecha = new Date().toUTCString();
       reserva.cliente = datos.idcliente;
       reserva.cantidad = datos.cantidad;
@@ -34,13 +34,15 @@ module.exports = async function (io) {
       if (producto.cantidad >= reserva.cantidad) {
         reserva.save(async (error, nuevaReserve) => {
           if (error) {
+            console.log(error);
             io.to(socket.id).emit('respuesta-reserva-producto', { error: "error no se pudo guardar la reserva" });
 
             //    res.status(500).send({ mensaje: "error al guradar" })
           } else {
             //console.log(nuevoNegocio);
-
+            
             await Producto.findByIdAndUpdate(datos.idproducto, { "$inc": { "cantidad": -(reserva.cantidad )} });
+            console.log("Guardado")
             io.emit('respuesta-reserva-producto', nuevaReserve);
           }
         })

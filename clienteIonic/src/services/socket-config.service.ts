@@ -37,3 +37,11 @@ export class SocketNegocioService3 extends Socket {
     })
   }
 }
+
+export class SocketReservaService extends Socket {
+  constructor() {
+    super({
+      url: RutaServer.socket + "reservas", options: {}
+    })
+  }
+}

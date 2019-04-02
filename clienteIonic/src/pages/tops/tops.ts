@@ -13,7 +13,7 @@ import { Productos } from '../../models/Productos';
 export class TopsPage {
 
   Negocios = "Moteles";
-  listProductTop: Productos [] = [];
+  listProductTop: Productos[] = [];
 
   constructor(
     public navCtrl: NavController,
@@ -25,8 +25,8 @@ export class TopsPage {
     this.getProductTop();
   }
 
-  presentModal() {
-    const modal = this.modalCtrl.create(DescripcionProductoPage);
+  productDescription(product: Productos) {
+    const modal = this.modalCtrl.create(DescripcionProductoPage, { producto: product });
     modal.present();
   }
 
