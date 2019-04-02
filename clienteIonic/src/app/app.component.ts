@@ -36,9 +36,6 @@ export class MyApp {
   verificacion:any=0;
   content;
   navCtrl: any;
-
-
-
   constructor(public socketUser:SocketUsuarioService2,public toastCtrl: ToastController,private storage: Storage,public userServ:UsuarioProvider, private androidPermissions: AndroidPermissions,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
        
     this.initializeApp();
@@ -52,15 +49,18 @@ export class MyApp {
           androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
         ]
       );
+
      storage.get('usuario').then((val) => {
         if(val){
         //  alert(val);
       let datos=this.decryptData(val);
 
           this.userServ.UserSeCion=datos;
+        //  this.storage.remove("usuario");
           console.log(datos);
           //alert("con secion");
         }else{
+         
           this.userServ.UserSeCion=false;
           console.log("sin cescio");
         //  alert("sin secion");
@@ -112,7 +112,7 @@ export class MyApp {
     this.nav.setRoot(LoginPage);
   }
   logout() {
-var data={id:this.userServ.UserSeCion.datos._id}
+   var data={id:this.userServ.UserSeCion.datos._id}
     this.socketUser.emit("cerrar-secion", this.encryptData(data));
   }
 

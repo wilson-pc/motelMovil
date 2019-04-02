@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading, ModalController } from 'ionic-angular';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
 import {  SocketConfigService } from '../../services/socket-config.service';
+import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
 
 /**
  * Generated class for the LicoreriaPage page.
@@ -19,7 +20,7 @@ import {  SocketConfigService } from '../../services/socket-config.service';
 })
 export class LicoreriaPage {
   infiniteScroll:any;
-  parte:number=1;  
+  parte:number;  
 
   searchQuery: string = '';
   items: string[];
@@ -30,16 +31,24 @@ export class LicoreriaPage {
   loading:Loading;
   aux:number=0;
   cont=0;
-  constructor(public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams,private productService:SocketConfigService) {
-   
+  constructor(public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+     public navParams: NavParams,
+     private productService:SocketConfigService,
+     public modalCtrl: ModalController) {
+   this.parte=0;
+   this.obtenerdatosProductos();  
     this.respuestaProductosNegocioLicores();   
   }
    async ionViewWillEnter(){   
-    this.listauxProductos=[];
-    this.listProductos=[];  
-    this.obtenerdatosProductos();          
-  this.parte=1;
+   
+            
+  
    }
+   presentModal() {
+    const modal = this.modalCtrl.create(DescriptionLicoreriaPage);
+    modal.present();
+  }
  
   ionViewDidLoad() {
     console.log('ionViewDidLoad LicoreriaPage');
@@ -50,8 +59,7 @@ export class LicoreriaPage {
   
     this.cont++;  
     if(this.cont==1)
-    {
-      
+    {      
       setTimeout(()=>{
         event.complete();
         this.parte++;        
@@ -92,20 +100,22 @@ export class LicoreriaPage {
     let newdata={termino:terminoL,parte:this.parte}
     
     console.log(newdata);
-    this.productService.emit('listar-producto', newdata);   
+    this.productService.emit('listar-producto-licores', newdata);   
   }
 
   respuestaProductosNegocioLicores() {
         
-    this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
+    this.productService.on('respuesta-listado-producto-licores',(data)=>{
                       
-          if(data){
+          if(!data.error){
             console.log("este es el data:"+data);
-            
-            data.forEach(element =>{
-              this.listProductos.push(element);
+
+            data.forEach(element => {
               this.listauxProductos.push(element);
-            })             
+              this.listProductos.push(element);
+            });    
+
+          
           }
           else{
             console.log("error en la lista");
@@ -113,7 +123,5 @@ export class LicoreriaPage {
         })
       
    }
-
- 
 
 }

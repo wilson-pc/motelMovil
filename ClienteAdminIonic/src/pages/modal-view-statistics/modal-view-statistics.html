@@ -1,0 +1,41 @@
+<!--
+  Generated template for the ModalViewStatisticsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  
+  <ion-navbar>
+    <ion-title> Estadisticas </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card>
+      <ion-card-header>
+        <!-- <ion-item>
+          <ion-label>Mes de</ion-label>
+          <ion-select [(ngModel)]="toppings" multiple="true">
+            <ion-option *ngFor="let mes of meses">{{mes}}</ion-option>
+          </ion-select>
+        </ion-item> -->
+        </ion-card-header>
+      
+        <ion-card-content>
+            <canvas #lineCanvas></canvas>
+            <ion-item>
+              <ion-label>Desde</ion-label>
+              <ion-datetime displayFormat="DD, YYYY" [(ngModel)]="desde"></ion-datetime>
+            </ion-item>
+            <ion-item>
+              <ion-label>Hasta</ion-label>
+              <ion-datetime displayFormat="DD, YYYY" [(ngModel)]="hasta"></ion-datetime>
+            </ion-item>
+        </ion-card-content>
+  </ion-card>
+
+</ion-content>

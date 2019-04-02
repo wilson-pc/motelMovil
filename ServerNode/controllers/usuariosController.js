@@ -100,9 +100,9 @@ module.exports = async function (io) {
                       io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { error: "Error no se pudo crear el registro" });
 
                     } else {
-                      
-                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { dato:nuevoUsuario});
-                 
+
+                      io.to(socket.id).emit('respuesta-registrar-usuario-cliente', { dato: nuevoUsuario });
+
                     }
                   })
                 }
@@ -124,14 +124,55 @@ module.exports = async function (io) {
       //console.log(req.body);
     });
 
+    socket.on('registrar-sa', async () => {
+
+     
+          var usuario = new Usuario();
+          usuario.nombre = "Super";
+          usuario.apellidos = "Admin";
+          usuario.genero = "otro";
+          usuario.ci = "9595633";
+          usuario.telefono = "45252523";
+          usuario.email = "sa@yandex.com";
+          usuario.login = { usuario: 'sa', password: '123', estado: false };
+          usuario.rol = await Rol.findById("5c45eed64d12261e10b57845");
+
+          
+              //encripta el pasword del usuario
+              bcrypt.hash(usuario.login.password, null, null, async function (error, hash) {
+                usuario.login.password = hash;
+
+                if (usuario.login.usuario != null) {
+                  //guarda al nuevo usuario en la bd
+
+                  usuario.save(async (error, nuevoUsuario) => {
+                    if (error) {
+                      console.log(error);
+                      io.to(socket.id).emit('respuesta-crear', { error: "Error no se pudo crear el registro" });
+
+                    } else {
+                      
+                      console.log("exito ");
+                      io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
+                      io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
+                    }
+                  })
+                }
+
+              });
+
+      //console.log(req.body);
+    });
+
 
     socket.on('registrar-usuario', async (data) => {
 
-
+      console.log(data);
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          console.log(datos);
           var usuario = new Usuario();
 
           var params = datos.usuario;
@@ -160,6 +201,7 @@ module.exports = async function (io) {
 
                   usuario.save(async (error, nuevoUsuario) => {
                     if (error) {
+                      console.log(error);
                       io.to(socket.id).emit('respuesta-crear', { error: "Error no se pudo crear el registro" });
 
                     } else {
@@ -173,8 +215,9 @@ module.exports = async function (io) {
                           var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                         }
                       }
-
+                     
                       io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
+                      console.log("llega");
                       io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
                     }
                   })
@@ -185,7 +228,7 @@ module.exports = async function (io) {
           }
           else {
             io.to(socket.id).emit('respuesta-crear', { mensaje: "este usuario ya esta registrado" });
-            //console.log("usuario existe");
+            console.log("usuario existe");
           }
 
         }
@@ -279,7 +322,18 @@ module.exports = async function (io) {
 
 
               io.to(socket.id).emit('respuesta-eliminar-usuario', { exito: "eliminado con exito" });
-              io.emit('respuesta-eliminar-usuario-todos', actualizado);
+              
+      Usuario.find({ "rol.rol": "Admin", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+            io.to(socket.id).emit('respuesta-listado', lista);
+          }
+        }
+      });
             }
           })
 
@@ -330,7 +384,7 @@ module.exports = async function (io) {
                 '</td> </tr><tr width="100%"> <td valign="top" align="left" style="border-bottom-left-radius:4px; border-bottom-right-radius:4px; background:#fff; padding:18px"><h1 style="font-size:20px; margin:0; color:#333">Buenas: </h1>' +
                 ' <p style="font:15px/1.25em,Arial,Helvetica; color:#333">Hemos notado que esta tratando de recuperar su usuario y contraseña de triservice.</p><p style="font:15px/1.25em, Arial,Helvetica; color:#333"><strong>Fecha y hora:</strong>' + fecha + '<br>' +
                 '<p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si no es usted ignore este correo</p>' +
-                ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si es usted as click <a href="http://localhost:4200/recuperacion/' + hash + '" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> ' +
+                ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si es usted as click <a href="http://triservicedemo.herokuapp.com/recuperacion/' + hash + '" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> ' +
                 'aqui</a> para poder crear sus nuevos creenciales </p></td></tr></tbody></table> </td></tr> </tbody> </div>'
             };
 
@@ -644,7 +698,7 @@ module.exports = async function (io) {
           var pass = params.password;
           var tipo = params.tipo;
 
-          Usuario.findOne({'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
+          Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
@@ -716,11 +770,11 @@ module.exports = async function (io) {
 
             if (error) {
               //  io.to(socket.id).emit('progreso',{total:image.length,progreso:index+1});
-              io.to(socket.id).emit('respuesta-cerrar', { mensaje:"ocurrio un error durante el cierre se cesion" });
+              io.to(socket.id).emit('respuesta-cerrar', { mensaje: "ocurrio un error durante el cierre se cesion" });
               //  res.status(500).send({ mensaje: "Error desconocido" })
             } else {
               if (!data) {
-                io.to(socket.id).emit('respuesta-cerrar', {mensaje:"ocurrio un error durante el cierre se cesion" });
+                io.to(socket.id).emit('respuesta-cerrar', { mensaje: "ocurrio un error durante el cierre se cesion" });
                 //  res.status(404).send({ mensaje: "Error no se  pudo cerrar secion" })
               } else {
                 io.to(socket.id).emit('respuesta-cerrar', { data: true });

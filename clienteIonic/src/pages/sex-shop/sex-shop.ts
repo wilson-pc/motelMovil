@@ -23,7 +23,7 @@ import { DEFAULT_INTERPOLATION_CONFIG } from '@angular/compiler';
 export class SexShopPage {
 
   infiniteScroll:any;
-  parte:number=1;  
+  parte:number;  
 
   searchQuery: string = '';
   items: string[];
@@ -39,25 +39,21 @@ export class SexShopPage {
   constructor(public productService:SocketConfigService ,public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, private provedorProductos:ProviderProductosProvider) {
     
     //this.initializeItems();
+    
+    this.parte=0;       
+    this.presentLoadingDefault();
+    this.obtenerdatosProductos();
     this.respuestaProductosNegocioSexshop();
+   
+  }  
+
+  // ionViewWillEnter(){  
+  //   //   this.response();
+  //   }
     
-  }
-  async ionViewWillEnter(){
-    this.listauxProductossex=[];
-    this.listProductossex=[];
-   this.obtenerdatosProductos();
-   this.parte=1;       
-   this.presentLoadingDefault();
-       
-    //   this.response();
-    }
+  // ionViewDidLeave() { }
+
     
-     ionViewDidLeave() {
-     this.listauxProductossex=[];
-     this.parte=1;
-     this.aux=0;
-     
-    }
     
   
     ionViewDidLoad() {
@@ -125,26 +121,31 @@ export class SexShopPage {
       let newdata={termino:terminoL,parte:this.parte}
       
       console.log(newdata);
-      this.productService.emit('listar-producto', newdata);      
+      this.productService.emit('listar-producto-sexshops', newdata);      
       
     }
 
     respuestaProductosNegocioSexshop() {
         
-      this.productService.on('respuesta-listado-producto',(data:Productos[])=>{
+      this.productService.on('respuesta-listado-producto-sexshops',(data)=>{
                         
-            if(data){
-              console.log("este es el data:"+data);
-              
-              data.forEach(element =>{
-                this.listauxProductossex.push(element);
-                this.listProductossex.push(element);
-              })   
+            if(!data.error){
+              console.log("este es el data:",data);
+              console.log(data); 
+
+               data.forEach(element => {
+                 this.listauxProductossex.push(element);
+                 this.listProductossex.push(element);
+               });    
+
+              //this.listauxProductossex=data;
+             
               this.loading.dismiss();          
               
             }
             else{
               console.log("error en la lista");
+              this.loading.dismiss();  
             }
           })
         

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../cryptoclave';
 import { UsuarioService } from '../services/usuario.service';
+import { Usuarios } from '../models/Usuarios';
 
 @Component({
   selector: 'app-login',
@@ -16,11 +17,16 @@ export class LoginComponent implements OnInit {
   isExito:boolean=false;
   recordar: boolean = false;
   isRequired:boolean=false;
+  usuario: Usuarios;
+
   constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService) { 
+    
+		this.usuario = new Usuarios;
     this.conn();
   }
 
   ngOnInit() {
+    this.socket.emit("login-usuario");
   }
 
   crearAdminlevel0(){
@@ -30,9 +36,9 @@ export class LoginComponent implements OnInit {
   login(user: string, pass: string){
    
  
-      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({usuario:user,password:pass,tipo:"AdminAdmi"}), clave.clave);
+      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({usuario:user,password:pass,tipo:"SuperAdmin"}), clave.clave);
       this.socket.emit("login-usuario",ciphertext.toString());
-//    this.rout.navigate(['/administracion']);
+      //this.rout.navigate(['/administracion']);
     
     
     //this.rout.navigate(['/administracion']);
@@ -82,5 +88,12 @@ export class LoginComponent implements OnInit {
       });
     })
     return observable;
-	}
+  }
+
+  //CREAR UN SUPER ADMIN
+  createSuperAdmin(){
+   
+    //this.socket.emit('registrar-sa');
+    
+  }
 }

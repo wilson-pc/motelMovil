@@ -16,6 +16,8 @@ import { DescripcionProductoPage } from '../descripcion-producto/descripcion-pro
 })
 export class TopsPage {
 
+  Negocios = "Moteles";
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController) {
   }
 

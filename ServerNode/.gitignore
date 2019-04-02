@@ -3,6 +3,7 @@ build
 npm-debug.log
 .env
 .DS_Store
+logs
 
 # Paquetes de creacion de node_modules
 #package.json
