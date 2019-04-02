@@ -482,9 +482,9 @@ module.exports = async function (io) {
     });
 
     socket.on('top-productos', async (data) => {
-      var datos=JSON.parse(data);
+     
       Producto.aggregate([
-        {$match : {"tipo.tiponegocio": datos.tipo, "eliminado.estado": false,}},
+        {$match : {"tipo.tiponegocio": data.tipo, "eliminado.estado": false,}},
         {
           $project: {
             _id: "$_id",
