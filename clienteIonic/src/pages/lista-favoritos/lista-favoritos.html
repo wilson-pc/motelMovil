@@ -29,7 +29,7 @@
  <ion-list>
 
     <div padding>
-        <ion-segment [(ngModel)]="pet">
+        <ion-segment [(ngModel)]="productos">
           <ion-segment-button value="licores">
             Licores
           </ion-segment-button>
@@ -42,7 +42,7 @@
         </ion-segment>
       </div>
       
-      <div [ngSwitch]="pet">
+      <div [ngSwitch]="productos">
         
         <ion-list *ngSwitchCase="'licores'">
             <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>

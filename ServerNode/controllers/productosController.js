@@ -266,11 +266,11 @@ module.exports = async function (io) {
 
     });
 
-    socket.on('listar-producto', async (data) => {
+    socket.on('listar-producto-licores', async (data) => {
 
       console.log(data);
       Producto.aggregate([
-        {$match : {"tipo.tiponegocio": data.termino, "eliminado.estado": false,}},
+        {$match : {"tipo.tiponegocio": "Licoreria", "eliminado.estado": false,}},
         {
           $project: {
             _id: "$_id",
@@ -296,15 +296,15 @@ module.exports = async function (io) {
         if (error) {
           console.log("este es el error:",error)
           // res.status(500).send({ mensaje: "Error al listar" })
-          io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
+          io.to(socket.id).emit('respuesta-listado-producto-licores', { error: "ocurrio un error al listar productos" });
         } else {
           if (!lista) {
             console.log("lista 2");
             //   res.status(404).send({ mensaje: "Error al listar" })
-            io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
+            io.to(socket.id).emit('respuesta-listado-producto-licores', { error: "no hay productos en la base de datos" });
           } else {
             console.log("lista");
-            io.to(socket.id).emit('respuesta-listado-producto', lista);
+            io.to(socket.id).emit('respuesta-listado-producto-licores', lista);
           }
         }
       });
@@ -312,7 +312,100 @@ module.exports = async function (io) {
     });
 
 
-    //
+    //METODO PARA SACAR PRODUCTOS -SEXSHOPS
+    socket.on('listar-producto-sexshops', async (data) => {
+
+      console.log(data);
+      Producto.aggregate([
+        {$match : {"tipo.tiponegocio": 'SexShop', "eliminado.estado": false,}},
+        {
+          $project: {
+            _id: "$_id",
+            "likes": { $size: "$valoracion.usuario" },
+            "dislike":{$size: "$desvaloracion.usuario"},
+            "eliminado": "$eliminado",
+            "foto":{miniatura:"$foto.miniatura"},
+            "creacion": "$creacion",
+            "modificacion": "$modificacion",
+            "nombre": "$nombre",
+            "negocio": "$negocio",
+            "precio": "$precio",
+            "cantidad": "$cantidad",
+            "tipo": "$tipo",
+            "descripcion": "$descripcion"
+          }
+        },{
+          $skip:10*data.parte
+        },{
+          $limit:10
+        }
+      ], function (error, lista) {
+        if (error) {
+          console.log("este es el error:",error)
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listado-producto-sexshops', { error: "ocurrio un error al listar productos" });
+        } else {
+          if (!lista) {
+            console.log("lista 2");
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listado-producto-sexshops', { error: "no hay productos en la base de datos" });
+          } else {
+            console.log("lista");
+            io.to(socket.id).emit('respuesta-listado-producto-sexshops', lista);
+          }
+        }
+      });
+      // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
+    });
+
+
+    //METODO PARA SACAR PRODUCTOS MOTELES
+    socket.on('listar-producto-moteles', async (data) => {
+
+      console.log(data);
+      Producto.aggregate([
+        {$match : {"tipo.tiponegocio": 'Motel', "eliminado.estado": false,}},
+        {
+          $project: {
+            _id: "$_id",
+            "likes": { $size: "$valoracion.usuario" },
+            "dislike":{$size: "$desvaloracion.usuario"},
+            "eliminado": "$eliminado",
+            "foto":{miniatura:"$foto.miniatura"},
+            "creacion": "$creacion",
+            "modificacion": "$modificacion",
+            "nombre": "$nombre",
+            "negocio": "$negocio",
+            "precio": "$precio",
+            "cantidad": "$cantidad",
+            "tipo": "$tipo",
+            "descripcion": "$descripcion"
+          }
+        },{
+          $skip:10*data.parte
+        },{
+          $limit:10
+        }
+      ], function (error, lista) {
+        if (error) {
+          console.log("este es el error:",error)
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listado-producto-moteles', { error: "ocurrio un error al listar productos" });
+        } else {
+          if (!lista) {
+            console.log("lista 2");
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listado-producto-moteles', { error: "no hay productos en la base de datos" });
+          } else {
+            console.log("lista");
+            io.to(socket.id).emit('respuesta-listado-producto-moteles', lista);
+          }
+        }
+      });
+      // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
+    });
+
+
 
 
     socket.on('listar-todos-productos', async (data) => {
