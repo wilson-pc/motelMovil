@@ -19,7 +19,7 @@ module.exports = async function (io) {
                 var favorito=new Favorito();
                  favorito.producto=datos.idproducto;
                   favorito.usuario=datos.idsuario;
-                  favorito.fecha=new Date().toUTCString();
+                  //favorito.fecha=new Date().toUTCString();
                 
                try {
                var cantidad= await favorito.countDocuments({producto:datos.idproducto,usuario:datos.idsuario});
