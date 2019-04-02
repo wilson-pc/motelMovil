@@ -37,13 +37,12 @@ export class LicoreriaPage {
      private productService:SocketConfigService,
      public modalCtrl: ModalController) {
    this.parte=0;
+   this.obtenerdatosProductos();  
     this.respuestaProductosNegocioLicores();   
   }
    async ionViewWillEnter(){   
-    this.listauxProductos=[];
-    this.listProductos=[];  
-    this.parte=0;
-    this.obtenerdatosProductos();          
+   
+            
   
    }
    presentModal() {
@@ -101,18 +100,22 @@ export class LicoreriaPage {
     let newdata={termino:terminoL,parte:this.parte}
     
     console.log(newdata);
-    this.productService.emit('listar-producto', newdata);   
+    this.productService.emit('listar-producto-licores', newdata);   
   }
 
   respuestaProductosNegocioLicores() {
         
-    this.productService.on('respuesta-listado-producto',(data)=>{
+    this.productService.on('respuesta-listado-producto-licores',(data)=>{
                       
           if(!data.error){
             console.log("este es el data:"+data);
-            this.listauxProductos=data;
-            this.listProductos=data;
-           
+
+            data.forEach(element => {
+              this.listauxProductos.push(element);
+              this.listProductos.push(element);
+            });    
+
+          
           }
           else{
             console.log("error en la lista");
