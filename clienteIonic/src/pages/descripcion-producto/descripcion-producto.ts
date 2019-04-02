@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ViewController, ToastController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SocketReservaService } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 
@@ -14,6 +14,7 @@ export class DescripcionProductoPage {
 
   cantidadReserva = 1;
   product: Productos;
+  suscripctionSocket: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -39,7 +40,7 @@ export class DescripcionProductoPage {
     const toast = this.toastCtrl.create({
       message: reserveMessage,
       duration: 2000,
-      position: 'top'
+      position: 'buttom'
     });
     toast.present();
   }
@@ -51,36 +52,33 @@ export class DescripcionProductoPage {
 
   //Consumo Socket 
   reserveProduct() {
-    console.log("reserva");
     let reserva = {
       idcliente: this.userService.UserSeCion.datos._id,
       cantidad: this.cantidadReserva,
       idproducto: this.product._id
     }
-    this.productService.emit("reserva-producto", reserva);
     
+    this.productService.emit("reserva-producto", reserva)
   }
 
   // Respuestas Socket
   connectionBackendSocket() {
-    this.respuestaReserva().subscribe((data: any) => {
+    this.suscripctionSocket = this.respuestaReserva().subscribe((data: any) => {
       if(data.error){
         this.presentToast(data.error);
       }else{
-        //this.presentToast("Error Imposible reservar");
-        console.log(data);
+        this.presentToast("Producto Reservado");
         this.dismissModal();
       }
     });
   }
 
   respuestaReserva() {
-    let observable = new Observable(observer => {
-      this.productService.on('respuesta-reserva-producto', (data) => {
-        observer.next(data);
-      });
-    })
-    return observable;
+    return this.productService.fromEvent<any> ('respuesta-reserva-producto').map(data=>data)
   }
-}
 
+  ngOnDestroy() {
+    this.suscripctionSocket.unsubscribe();
+  }
+
+}

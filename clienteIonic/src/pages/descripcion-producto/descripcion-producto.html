@@ -18,7 +18,25 @@
             {{product.nombre}}
           </ion-card-title>
 
-          <img [src]="product.foto.miniatura" /><br>
+          <ion-row>
+            <ion-col col-4>
+              <img [src]="product.foto.miniatura" /><br>
+            </ion-col>
+            <ion-col col-8>
+
+              <button ion-button icon-start clear small color="default">
+                <ion-label color="primary">Agregar a Favoritos</ion-label>
+                <ion-icon ios="ios-heart-outline" md="md-heart-outline"></ion-icon>
+              </button>
+
+              <button ion-button icon-start clear small color="default">
+                <ion-label color="primary">Precio: {{product.precio}} Bs</ion-label>
+                <ion-icon ios="ios-cash" md="md-cash"></ion-icon>
+              </button>
+
+            </ion-col>
+          </ion-row>
+
           <p>
             <b>Descripcion: </b><br>
             {{product.descripcion}}
@@ -54,7 +72,6 @@
           <ion-card-title>
             Reservar Producto
           </ion-card-title>
-          <p><b>Precio: </b>{{product.precio}} Bs.</p><br>
           <p><b>Cantidad: </b></p>
           <ion-row>
             <ion-col>
