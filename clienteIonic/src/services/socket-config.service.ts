@@ -37,3 +37,11 @@ export class SocketNegocioService3 extends Socket {
     })
   }
 }
+
+export class conexionSocketComportamiento extends Socket {
+  constructor() {
+    super({
+      url: RutaServer.socket + "comportamiento", options: {}
+    })
+  }
+}

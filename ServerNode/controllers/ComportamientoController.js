@@ -19,7 +19,7 @@ module.exports = async function (io) {
                 var favorito=new Favorito();
                  favorito.producto=datos.idproducto;
                   favorito.usuario=datos.idsuario;
-                  favorito.fecha=new Date().toUTCString();
+                  //favorito.fecha=new Date().toUTCString();
                 
                try {
                var cantidad= await favorito.countDocuments({producto:datos.idproducto,usuario:datos.idsuario});
@@ -52,12 +52,7 @@ module.exports = async function (io) {
       });
 
       socket.on('listar-favorito', async (data) => {
-        
-                var favorito=new Favorito();
-                 favorito.producto=datos.idproducto;
-                  favorito.usuario=datos.usuario;
-                  favorito.fecha=new Date().toUTCString();
-                
+            
                try {
              //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
                 Favorito.find({usuario:data.idusuario},(error, favoritos) => {
