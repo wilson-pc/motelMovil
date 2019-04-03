@@ -36,8 +36,7 @@
               <ion-label fixed>Foto</ion-label>
               <ion-input [(ngModel)]="imagen1" type="text" disabled="true"></ion-input>
             </ion-item>
-             <ion-card *ngIf="image" >
-               
+             <ion-card *ngIf="image">
                 <ion-card-content>
                     <img [src]="image.data"/>
                 </ion-card-content>

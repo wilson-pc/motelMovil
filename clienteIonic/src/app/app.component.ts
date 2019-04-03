@@ -36,9 +36,6 @@ export class MyApp {
   verificacion:any=0;
   content;
   navCtrl: any;
-
-
-
   constructor(public socketUser:SocketUsuarioService2,public toastCtrl: ToastController,private storage: Storage,public userServ:UsuarioProvider, private androidPermissions: AndroidPermissions,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
        
     this.initializeApp();
@@ -59,9 +56,11 @@ export class MyApp {
       let datos=this.decryptData(val);
 
           this.userServ.UserSeCion=datos;
-          console.log(datos);
+        //  this.storage.remove("usuario");
+          console.log("soy datos en app",datos);
           //alert("con secion");
         }else{
+         
           this.userServ.UserSeCion=false;
           console.log("sin cescio");
         //  alert("sin secion");

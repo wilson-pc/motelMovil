@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Productos } from '../../models/Productos';
+import { Negocio } from '../../models/Negocio';
+import { conexionSocketComportamiento } from '../../services/socket-config.service';
+import { UsuarioProvider } from '../../providers/usuario/usuario';
 
 /**
  * Generated class for the ListaFavoritosLicoreriasPage page.
@@ -15,22 +19,44 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ListaFavoritosPage {
 
+  productos="licores";
+  listaProductos: Productos[]=[];
+  listabuscadorProductos:Productos[]=[];
+  producto:Productos;
+ 
 
-  items: string[];
+  constructor(public navCtrl: NavController,
+     public navParams: NavParams,      
+     private usuarioLogueado:UsuarioProvider,
+     public provedorSocketFavoritos:conexionSocketComportamiento) {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+      this.obtenerListadeFavoritos();
+     
+    this.llenarDatos();
     this.initializeItems();
+    this.obtenerListadeFavoritos();
+    this.producto=new Productos();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ListaFavoritosLicoreriasPage');
   }
 
+
+  llenarDatos(){
+       
+
+    console.log("este es la lista:",this.listaProductos);
+  }
+//FUNCION PARA BUSCAR EN LA LISTA
   initializeItems(){
     //TODO Cargar datos al array;
+   
+    this.listabuscadorProductos=this.listaProductos;
+    //console.log(this.listabuscadorProductos);
+   
   }
-
-  //FUNCION PARA BUSCAR EN LA LISTA
+  
   getItems(ev: any) {
     // Reset items back to all of the items
     this.initializeItems();
@@ -40,9 +66,29 @@ export class ListaFavoritosPage {
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.items = this.items.filter((item) => {
-        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      this.listabuscadorProductos = this.listabuscadorProductos.filter((item) => {
+
+        if(item.nombre.toLowerCase().indexOf(val.toLowerCase())>-1 || item.descripcion.toLowerCase().indexOf(val.toLowerCase())>-1){
+          return item;
+        }              
+       // return (item['nombre'].toLowerCase().indexOf(val.toLowerCase())>-1);
+        
       })
     }
+    console.log(this.listabuscadorProductos);
+    //item.toLowerCase().indexOf(val.toLowerCase()) > -1
   }
+
+  //Metodos de obtencion de datos
+   obtenerListadeFavoritos(){
+     let idusuario=this.usuarioLogueado.UserSeCion.datos._id;
+     console.log(idusuario);
+     this.provedorSocketFavoritos.emit('listar-favorito',idusuario, (data)=>{
+        console.log(data);
+     });  
+   }
+
+   respuestaListaFavoritos(){
+     
+   }
 }

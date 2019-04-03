@@ -5,6 +5,7 @@ import { ProviderProductosProvider } from '../../providers/provider-productos/pr
 import { Productos } from '../../models/Productos';
 import { SocketConfigService } from '../../services/socket-config.service';
 import { DescriptionMotelPage } from '../description-motel/description-motel';
+import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
 
 
 /**
@@ -112,9 +113,9 @@ export class MotelPage {
     this.socketservicio.emit('listar-producto-moteles', newdata);   
   }
 
-  presentModal() {
-    const modal = this.modalCtrl.create(DescriptionMotelPage);
-    modal.present();
+  presentModal(item) {
+    const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
+      modal.present();
   }
 
 
