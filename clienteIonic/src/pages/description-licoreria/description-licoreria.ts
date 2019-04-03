@@ -1,9 +1,19 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
-import { SocketConfigService, SocketReservaService } from '../../services/socket-config.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Favoritos } from '../../models/Favoritos';
+import * as CryptoJS from 'crypto-js';
+import { clave } from '../../app/cryptoclave';
+import { Subscription } from 'rxjs';
+import { SocketReservaService, conexionSocketComportamiento, SocketConfigService } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
+
+/**
+ * Generated class for the DescriptionLicoreriaPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
 
 @IonicPage()
 @Component({
@@ -16,17 +26,25 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   cantidadReserva = 1;
   clientesSubscription: Subscription;
   suscripctionSocket: Subscription;
+  favorito: Favoritos;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public toastCtrl: ToastController,
-    private productoServ: SocketConfigService,
     private reservaProduct: SocketReservaService,
-    private userService: UsuarioProvider) {
+    private userService: UsuarioProvider,
+    private productoServ: SocketConfigService,
+    private provedorFavoritos: conexionSocketComportamiento,
+    private usuarioLogin: UsuarioProvider) {
     //Incializacion del constrictor
-      this.obtenerDatosProducto();
-      this.connectionBackendSocket();
+    this.favorito = new Favoritos();
+    this.clientesSubscription = this.eventoSacarDatos().subscribe(data => {
+      this.imagenProducto = data.foto.normal;
+      console.log("entrando", this.imagenProducto);
+    })
+    this.obtenerDatosProducto();
+    this.connectionBackendSocket();
   }
 
   ngOnDestroy() {
@@ -41,7 +59,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   ionViewDidLoad() {
   }
-  
+
   presentToast(reserveMessage: string) {
     const toast = this.toastCtrl.create({
       message: reserveMessage,
@@ -53,10 +71,6 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   dismiss() {
     this.viewCtrl.dismiss();
-  }
-
-  sacarDatos() {
-    this.productoServ.emit("sacar-producto", { id: this.productoRecibido._id })
   }
 
   //Consumo Socket 
@@ -86,6 +100,18 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     });
   }
 
+  encryptData(data) {
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  sacarDatos() {
+    this.productoServ.emit("sacar-producto", { id: this.productoRecibido._id })
+  }
+
   eventoSacarDatos() {
     return this.productoServ.fromEvent<any>('respuesta-sacar-producto').map(data => data)
   }
@@ -94,4 +120,12 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     return this.reservaProduct.fromEvent<any>('respuesta-reserva-producto').map(data => data)
   }
 
+  guardarFavorito() {
+
+    let data = { idproducto: this.productoRecibido._id, idsuario: this.usuarioLogin.UserSeCion.datos._id };
+
+    console.log("datos favoritos:", data);
+    this.provedorFavoritos.emit('agregar-favorito', this.encryptData(data));
+
+  }
 }

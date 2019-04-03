@@ -1,5 +1,5 @@
 import { ProfileUserPage } from './../pages/profile-user/profile-user';
-import { SocketUsuarioService2, SocketReservaService } from './../services/socket-config.service';
+import { SocketUsuarioService2, SocketReservaService,conexionSocketComportamiento  } from './../services/socket-config.service';
 import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -159,7 +159,8 @@ export const firebaseConfig = {
     SocketConfigService,
     SocketLoginService,
     UsuarioProvider,
-    SocketReservaService,
+    conexionSocketComportamiento,
+    SocketReservaService
   ]
 })
 export class AppModule {}

@@ -34,7 +34,7 @@ export class LicoreriaPage {
   constructor(public loadingCtrl: LoadingController,
     public navCtrl: NavController,
      public navParams: NavParams,
-     private productService:SocketConfigService,
+     public productService:SocketConfigService,
      public modalCtrl: ModalController) {
    this.parte=0;
    this.obtenerdatosProductos();  

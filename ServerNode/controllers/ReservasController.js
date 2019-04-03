@@ -115,8 +115,6 @@ module.exports = async function (io) {
 
     
     socket.on('listar-reserva', async (data) => {
-
-      console.log(data);
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
@@ -126,7 +124,7 @@ module.exports = async function (io) {
        if(error){
         io.to(socket.id).emit('respuesta-listrar-reserva', { error: "error no se pudo listar la reserva" });
        }
-       console.log(reservsas);
+      
        io.to(socket.id).emit('respuesta-listrar-reserva', reservsas);
        })
      }else{
@@ -134,7 +132,6 @@ module.exports = async function (io) {
         if(error){
          io.to(socket.id).emit('respuesta-listrar-reserva', { error: "error no se pudo listar la reserva" });
         }
-        console.log(reservsas);
         io.to(socket.id).emit('respuesta-listrar-reserva', reservsas);
         })
     }
