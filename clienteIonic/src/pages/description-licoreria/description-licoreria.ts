@@ -1,8 +1,12 @@
 import { Component,OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
-import {SocketConfigService} from '../../services/socket-config.service';
+import {SocketConfigService, conexionSocketComportamiento} from '../../services/socket-config.service';
 import { Subscription } from 'rxjs/Subscription';
+import { UsuarioProvider } from '../../providers/usuario/usuario';
+import { Favoritos } from '../../models/Favoritos';
+import * as CryptoJS from 'crypto-js';
+import { clave } from '../../app/cryptoclave';
 
 /**
  * Generated class for the DescriptionLicoreriaPage page.
@@ -21,11 +25,16 @@ export class DescriptionLicoreriaPage implements OnDestroy{
   imagenProducto:any;
   cantidadReserva = 1;
   clientesSubscription: Subscription;
+  favorito:Favoritos;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    private productoServ: SocketConfigService) {
+    private productoServ: SocketConfigService,
+    private provedorFavoritos:conexionSocketComportamiento,
+    private usuarioLogin:UsuarioProvider) {
+
+      this.favorito=new Favoritos();
       this.clientesSubscription=this.eventoSacarDatos().subscribe(data=>{
         this.imagenProducto=data.foto.normal;
         console.log("entrando",this.imagenProducto);
@@ -49,6 +58,15 @@ export class DescriptionLicoreriaPage implements OnDestroy{
     this.viewCtrl.dismiss();
   }
 
+
+  encryptData(data) {
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   sacarDatos(){
     this.productoServ.emit("sacar-producto",{id:this.productoRecibido._id})
   }
@@ -57,4 +75,12 @@ export class DescriptionLicoreriaPage implements OnDestroy{
     return this.productoServ.fromEvent<any> ('respuesta-sacar-producto').map(data=>data)
   }
 
+  guardarFavorito(){
+   
+   let data={idproducto:this.productoRecibido._id, idsuario:this.usuarioLogin.UserSeCion.datos._id};
+   
+    console.log("datos favoritos:",data);
+    this.provedorFavoritos.emit('agregar-favorito',this.encryptData(data));
+
+  }
 }
