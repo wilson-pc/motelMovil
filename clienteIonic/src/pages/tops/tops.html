@@ -21,15 +21,15 @@
 
   <div padding>
     <ion-segment [(ngModel)]="Negocios">
-      <ion-segment-button value="Moteles">
+      <ion-segment-button value="Moteles" (click)="getProductTop()">
         Habitaciones
       </ion-segment-button>
 
-      <ion-segment-button value="Licorerias">
+      <ion-segment-button value="Licorerias" (click)="getProductTop()">
         Bebidas
       </ion-segment-button>
 
-      <ion-segment-button value="Sexshops">
+      <ion-segment-button value="Sexshops" (click)="getProductTop()">
         Eroticos
       </ion-segment-button>
     </ion-segment>
@@ -38,24 +38,28 @@
   <div [ngSwitch]="Negocios">
     <ion-list *ngSwitchCase="'Moteles'">
 
-      <ion-item>
+      <ion-item *ngFor="let productTop of listProductTop">
         <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
+          <img [src]="productTop.foto.miniatura" />
         </ion-thumbnail>
 
         <ion-col>
           <ion-row>
-            <h2><b>LUNA AZUL</b></h2>
+            <h2 style="text-transform: uppercase;"><b>{{productTop.nombre}}</b></h2>
           </ion-row>
           <ion-row>
-            <h4>Habitacion SUITE</h4>
+            <h3>{{productTop.descripcion}}</h3>
           </ion-row>
           <ion-row>
             <button ion-button clear small color="default" icon-start>
-              <ion-icon name='star'></ion-icon>
-              109 Visitas
+              <ion-icon name='thumbs-up'></ion-icon>
+              {{productTop.likes}}
             </button>
-            <button ion-button clear small color="default" icon-start (click)="presentModal()">
+            <button ion-button clear small color="default" icon-start>
+              <ion-icon name='thumbs-down'></ion-icon>
+              {{productTop.dislike}}
+            </button>
+            <button ion-button clear small color="default" icon-start (click)="productDescription(productTop)">
               <ion-icon ios="ios-book" md="md-book"></ion-icon>
               Mas
             </button>
@@ -67,24 +71,28 @@
 
     <ion-list *ngSwitchCase="'Licorerias'">
 
-      <ion-item>
+      <ion-item *ngFor="let productTop of listProductTop">
         <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
+          <img [src]="productTop.foto.miniatura" />
         </ion-thumbnail>
 
         <ion-col>
           <ion-row>
-            <h2><b>BAR COPA'S</b></h2>
+            <h2 style="text-transform: uppercase;"><b>{{productTop.nombre}}</b></h2>
           </ion-row>
           <ion-row>
-            <h4>Cerveza Taquiña</h4>
+            <h3>{{productTop.descripcion}}</h3>
           </ion-row>
           <ion-row>
             <button ion-button clear small color="default" icon-start>
-              <ion-icon name='star'></ion-icon>
-              199 Visitas
+              <ion-icon name='thumbs-up'></ion-icon>
+              {{productTop.likes}}
             </button>
-            <button ion-button clear small color="default" icon-start (click)="presentModal()">
+            <button ion-button clear small color="default" icon-start>
+              <ion-icon name='thumbs-down'></ion-icon>
+              {{productTop.dislike}}
+            </button>
+            <button ion-button clear small color="default" icon-start (click)="productDescription(productTop)">
               <ion-icon ios="ios-book" md="md-book"></ion-icon>
               Mas
             </button>
@@ -96,24 +104,28 @@
 
     <ion-list *ngSwitchCase="'Sexshops'">
 
-      <ion-item>
+      <ion-item *ngFor="let productTop of listProductTop">
         <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
+          <img [src]="productTop.foto.miniatura" />
         </ion-thumbnail>
 
         <ion-col>
           <ion-row>
-            <h2><b>SECRETOS</b></h2>
+            <h2 style="text-transform: uppercase;"><b>{{productTop.nombre}}</b></h2>
           </ion-row>
           <ion-row>
-            <h4>Condones MAXMEN</h4>
+            <h3>{{productTop.descripcion}}</h3>
           </ion-row>
           <ion-row>
             <button ion-button clear small color="default" icon-start>
-              <ion-icon name='star'></ion-icon>
-              250 Visitas
+              <ion-icon name='thumbs-up'></ion-icon>
+              {{productTop.likes}}
             </button>
-            <button ion-button clear small color="default" icon-start (click)="presentModal()">
+            <button ion-button clear small color="default" icon-start>
+              <ion-icon name='thumbs-down'></ion-icon>
+              {{productTop.dislike}}
+            </button>
+            <button ion-button clear small color="default" icon-start (click)="productDescription(productTop)">
               <ion-icon ios="ios-book" md="md-book"></ion-icon>
               Mas
             </button>

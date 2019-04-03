@@ -34,7 +34,7 @@ export class LicoreriaPage {
   constructor(public loadingCtrl: LoadingController,
     public navCtrl: NavController,
      public navParams: NavParams,
-     private productService:SocketConfigService,
+     public productService:SocketConfigService,
      public modalCtrl: ModalController) {
    this.parte=0;
    this.obtenerdatosProductos();  
@@ -45,8 +45,8 @@ export class LicoreriaPage {
             
   
    }
-   presentModal() {
-    const modal = this.modalCtrl.create(DescriptionLicoreriaPage);
+   presentModal(item) {
+    const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
     modal.present();
   }
  

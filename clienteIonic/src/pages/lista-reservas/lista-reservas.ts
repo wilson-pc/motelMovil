@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the ListaReservasLicoresPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { SocketReservaService } from '../../services/socket-config.service';
+import { Subscription } from 'rxjs';
+import { UsuarioProvider } from '../../providers/usuario/usuario';
 
 @IonicPage()
 @Component({
@@ -16,12 +12,56 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class ListaReservasPage {
 
   tipo = "Reserva";
+  reservationsListCompleted: any [] = [];
+  reservationsList: any [] = [];
+  list: any [] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  suscripctionSocket: Subscription;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public reserveService: SocketReservaService,
+    public userService: UsuarioProvider) {
+      //Inicializacion del constructor
+      this.connectionBackendSocket();
+      this.getListReserve();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ListaReservasLicoresPage');
+    console.log(this.reservationsListCompleted);
+    console.log(this.reservationsList);
   }
 
+  listReserve(){
+    this.list.forEach((element: any )=> {
+      if(element.estado == "recogido"){
+        this.reservationsListCompleted.push(element);
+      }else{
+        this.reservationsList.push(element);
+      }
+    });
+  }
+
+  //Consumo Socket 
+  getListReserve() {
+    let data = {idcliente: this.userService.UserSeCion.datos._id}
+    this.reserveService.emit("listar-reserva", data);
+  }
+
+  // Respuestas Socket
+  connectionBackendSocket() {
+    this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
+      this.list = data;
+      this.listReserve();
+    });
+  }
+
+  respuestaProductTop() {
+    return this.reserveService.fromEvent<any>('respuesta-listrar-reserva').map(data => data)
+  }
+
+  ngOnDestroy() {
+    this.suscripctionSocket.unsubscribe();
+  }
 }

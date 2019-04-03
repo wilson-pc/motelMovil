@@ -5,7 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
-var pagination = require('mongoose-pagination');
+require ('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -249,30 +249,20 @@ module.exports = async function (io) {
     })
 
     socket.on('sacar-producto', async (data) => {
-      try {
-        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
-        if (bytes.toString()) {
-          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-          console.log(datos);
-          Producto.findOne({ _id: datos.id, "eliminado.estado": false },{denuncias:0}, function (error, dato) {
+      
+          console.log(data);
+          Producto.findOne({ _id: data.id, "eliminado.estado": false },{denuncias:0}, function (error, dato) {
             if (error) {
               // res.status(500).send({ mensaje: "Error al listar" })
             } else {
               if (!dato) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-                io.to(socket.id).emit('respuesta-sacar-usuario', dato);
+                io.to(socket.id).emit('respuesta-sacar-producto', dato);
 
               }
             }
           });
-
-        }
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
 
     });
 
@@ -482,9 +472,9 @@ module.exports = async function (io) {
     });
 
     socket.on('top-productos', async (data) => {
-      var datos=JSON.parse(data);
+     
       Producto.aggregate([
-        {$match : {"tipo.tiponegocio": datos.tipo, "eliminado.estado": false,}},
+        {$match : {"tipo.tiponegocio": data.tipo, "eliminado.estado": false,}},
         {
           $project: {
             _id: "$_id",

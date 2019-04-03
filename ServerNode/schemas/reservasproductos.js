@@ -13,5 +13,5 @@ var Reservaproducto = Schema({
     estado:String,
     dueno:String
 })
-
-module.exports = mongose.model("Tiemporeservadoproductos",Reservaproducto)
+Reservaproducto.plugin(require('mongoose-autopopulate'));
+module.exports = mongose.model("Reservas",Reservaproducto)

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
@@ -7,6 +7,9 @@ import { elementAt } from 'rxjs/operators';
 import { SocketConfigService } from '../../services/socket-config.service';
 import { Observable } from 'rxjs';
 import { DEFAULT_INTERPOLATION_CONFIG } from '@angular/compiler';
+import { DescriptionSexshopPage } from '../description-sexshop/description-sexshop';
+import { DescripcionProductoPage } from '../descripcion-producto/descripcion-producto';
+import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
 
 /**
  * Generated class for the SexShopPage page.
@@ -35,8 +38,14 @@ export class SexShopPage {
   aux:number= 0;
   cont=0;
   
+  
 
-  constructor(public productService:SocketConfigService ,public loadingCtrl: LoadingController,public navCtrl: NavController, public navParams: NavParams, private provedorProductos:ProviderProductosProvider) {
+  constructor(public productService:SocketConfigService ,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    private provedorProductos:ProviderProductosProvider,
+    public modalCtrl: ModalController) {
     
     //this.initializeItems();
     
@@ -51,10 +60,17 @@ export class SexShopPage {
   //   //   this.response();
   //   }
     
-  // ionViewDidLeave() { }
-
-    
-    
+     ionViewDidLeave() {
+     
+     this.parte=0;
+     this.aux=0;
+     
+    }
+   
+    presentModal(item) {
+      const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
+      modal.present();
+    }
   
     ionViewDidLoad() {
       console.log('ionViewDidLoad SexShopPage');

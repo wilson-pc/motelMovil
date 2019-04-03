@@ -12,25 +12,29 @@ module.exports = async function (io) {
     var clients = [];
     io.on('connection', async function (socket) {
       socket.on('agregar-favorito', async (data) => {
+        console.log("entro favor",data);
         try {
            var datos = await Crypto.Desincryptar(data);
+          
             if (!datos.error) {
 
                 var favorito=new Favorito();
                  favorito.producto=datos.idproducto;
                   favorito.usuario=datos.idsuario;
                   //favorito.fecha=new Date().toUTCString();
+                  console.log("soy favorito:",favorito);
                 
                try {
-               var cantidad= await favorito.countDocuments({producto:datos.idproducto,usuario:datos.idsuario});
+               var cantidad= await Favorito.countDocuments({producto:datos.idproducto,usuario:datos.idsuario});
+               console.log("yosoy la cantidad:",cantidad);
              //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
-             if(cantidad!=0){
+             if(cantidad==0){
                 favorito.save((error, favoritos) => {
                     if (error) {
                       io.to(socket.id).emit('respuesta-agregar-favorito',{error: "error al calificar"});
                     //    res.status(500).send({ mensaje: "error al guradar" })
                     } else {
-                      console.log(actualizado);
+                     // console.log(actualizado);
                       io.to(socket.id).emit('respuesta-agregar-favorito',{datos:favoritos});  
               //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
                       
@@ -40,7 +44,7 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-agregar-favorito',{error: "el producto ya esta en los favoritos"});
               }
                } catch (error) {
-                 console.log("error");
+                 console.log("error",error);
                }
                    }
         return data;
@@ -94,7 +98,7 @@ module.exports = async function (io) {
                       io.to(socket.id).emit('respuesta-listar-favorito',{error: "error al listar"});
                     //    res.status(500).send({ mensaje: "error al guradar" })
                     } else {
-                      console.log(actualizado);
+                      console.log(favoritos);
                       io.to(socket.id).emit('respuesta-listar-favorito',{datos:favoritos});  
               //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
                       

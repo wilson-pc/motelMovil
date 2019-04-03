@@ -57,7 +57,7 @@ export class MyApp {
 
           this.userServ.UserSeCion=datos;
         //  this.storage.remove("usuario");
-          console.log(datos);
+          console.log("soy datos en app",datos);
           //alert("con secion");
         }else{
          
