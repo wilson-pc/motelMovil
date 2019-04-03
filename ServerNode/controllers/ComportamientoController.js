@@ -155,11 +155,11 @@ module.exports = async function (io) {
                   
                     usuario.findOneAndUpdate({_id:negocio}, { $push: { visitas: visita } },{new: true},(error, actualizado) => {
                         if (error) {
-                          io.to(socket.id).emit('respuesta-calificar-producto',{error: "error al calificar"});
+                          io.to(socket.id).emit('respuesta-visitar-negocio',{error: "error contar visita"});
                         //    res.status(500).send({ mensaje: "error al guradar" })
                         } else {
                           console.log(actualizado);
-                          io.to(socket.id).emit('respuesta-calificar-producto',{datos:actualizado});  
+                          io.to(socket.id).emit('respuesta-visitar-negocio',{datos:actualizado});  
                   //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
                           
                         }
