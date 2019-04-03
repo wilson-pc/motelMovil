@@ -283,16 +283,17 @@ module.exports = async function (io) {
                     $group : {
                    _id : "$day",  visitas : { $sum : 1 }}
                      
-                      }
+                      },
+                      { $sort: { "_id": 1 } },
             ], function (error, lista) {
               if (error) {
-      
+                console.log(error);
                 // res.status(500).send({ mensaje: "Error al listar" })
-                io.to(socket.id).emit('respuesta-visitas-grfica', { error: "ocurrio un error al listar productos" });
+                io.to(socket.id).emit('respuesta-visitas-grfica', { error: "ocurrio un error al listar visitas" });
               } else {
                 if (!lista) {
                   //   res.status(404).send({ mensaje: "Error al listar" })
-                  io.to(socket.id).emit('respuesta-visitas-grfica', { error: "no hay productos en la base de datos" });
+                  io.to(socket.id).emit('respuesta-visitas-grfica', { error: "no hay visitas en la base de datos" });
                 } else {
 
                   console.log(lista);

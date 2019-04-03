@@ -111,7 +111,8 @@ export class ModalViewStatisticsPage {
   connectionBackendSocket() {
     this.respuestaVerificarListaVisitas().subscribe((data: any) => {
       this.lista = data;
-      this.lista.forEach(element => {
+      console.log(this.lista);
+     this.lista.forEach(element => {
         this.cantidades.push(element.visitas);
         console.log(element._id+'-01')
         this.mesess.push(this.meses[moment(element._id+'-01').month()]);
