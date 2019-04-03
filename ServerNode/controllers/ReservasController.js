@@ -14,6 +14,7 @@ module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
     socket.on('reserva-producto', async (data) => {
+      console.log("Reserva backend");
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/

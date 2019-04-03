@@ -1,60 +1,97 @@
-import { Component,OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Component, OnDestroy } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
-import {SocketConfigService} from '../../services/socket-config.service';
+import { SocketConfigService, SocketReservaService } from '../../services/socket-config.service';
 import { Subscription } from 'rxjs/Subscription';
-
-/**
- * Generated class for the DescriptionLicoreriaPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { UsuarioProvider } from '../../providers/usuario/usuario';
 
 @IonicPage()
 @Component({
   selector: 'page-description-licoreria',
   templateUrl: 'description-licoreria.html',
 })
-export class DescriptionLicoreriaPage implements OnDestroy{
-  productoRecibido:Productos;
-  imagenProducto:any;
+export class DescriptionLicoreriaPage implements OnDestroy {
+  productoRecibido: Productos;
+  imagenProducto: any;
   cantidadReserva = 1;
   clientesSubscription: Subscription;
+  suscripctionSocket: Subscription;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    private productoServ: SocketConfigService) {
-      this.clientesSubscription=this.eventoSacarDatos().subscribe(data=>{
-        this.imagenProducto=data.foto.normal;
-        console.log("entrando",this.imagenProducto);
-      })
+    public toastCtrl: ToastController,
+    private productoServ: SocketConfigService,
+    private reservaProduct: SocketReservaService,
+    private userService: UsuarioProvider) {
+    //Incializacion del constrictor
       this.obtenerDatosProducto();
+      this.connectionBackendSocket();
   }
+
   ngOnDestroy() {
-    console.log("saliendo");
     this.clientesSubscription.unsubscribe();
+    this.suscripctionSocket.unsubscribe();
   }
-  obtenerDatosProducto(){
-    this.productoRecibido=this.navParams.get("producto")
-    console.log("esto es el producto",this.productoRecibido);
+
+  obtenerDatosProducto() {
+    this.productoRecibido = this.navParams.get("producto")
     this.sacarDatos();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DescriptionLicoreriaPage');
   }
+  
+  presentToast(reserveMessage: string) {
+    const toast = this.toastCtrl.create({
+      message: reserveMessage,
+      duration: 2000,
+      position: 'buttom'
+    });
+    toast.present();
+  }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
-  sacarDatos(){
-    this.productoServ.emit("sacar-producto",{id:this.productoRecibido._id})
+  sacarDatos() {
+    this.productoServ.emit("sacar-producto", { id: this.productoRecibido._id })
   }
-  eventoSacarDatos(){
-    console.log("entrando1");
-    return this.productoServ.fromEvent<any> ('respuesta-sacar-producto').map(data=>data)
+
+  //Consumo Socket 
+  reserveProduct() {
+    let reserva = {
+      idcliente: this.userService.UserSeCion.datos._id,
+      cantidad: this.cantidadReserva,
+      idproducto: this.productoRecibido._id
+    }
+
+    this.reservaProduct.emit("reserva-producto", reserva)
+  }
+
+  // Respuestas Socket
+  connectionBackendSocket() {
+    this.clientesSubscription = this.eventoSacarDatos().subscribe(data => {
+      this.imagenProducto = data.foto.normal;
+    })
+
+    this.suscripctionSocket = this.respuestaReserva().subscribe((data: any) => {
+      if (data.error) {
+        this.presentToast(data.error);
+      } else {
+        this.presentToast("Producto Reservado");
+        this.dismiss();
+      }
+    });
+  }
+
+  eventoSacarDatos() {
+    return this.productoServ.fromEvent<any>('respuesta-sacar-producto').map(data => data)
+  }
+
+  respuestaReserva() {
+    return this.reservaProduct.fromEvent<any>('respuesta-reserva-producto').map(data => data)
   }
 
 }

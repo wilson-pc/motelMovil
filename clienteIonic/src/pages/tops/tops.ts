@@ -57,7 +57,6 @@ export class TopsPage {
   connectionBackendSocket() {
     this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
       this.listProductTop = data;
-      console.log(this.listProductTop);
     });
   }
 

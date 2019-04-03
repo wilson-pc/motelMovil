@@ -1,120 +1,116 @@
 <ion-header>
-    <ion-toolbar>
-      <ion-title>
-          {{productoRecibido.nombre}}
-      </ion-title>
-      <ion-buttons start>
-        <button ion-button (click)="dismiss()">
-          <span ion-text color="primary" showWhen="ios">atras</span>
-          <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content>
-    <ion-item>
-      <ion-thumbnail item-start>
-        <ion-card>
-          <ion-card-content>
-            <ion-card-title>
-              {{productoRecibido.nombre}}
-            </ion-card-title>
-            <ion-row>
-                <ion-col col-4>
-                    <img [src]="imagenProducto" /><br>
-                  </ion-col>
-                  <ion-col col-8>
-                      
-                        <button ion-button icon-start clear small color="default">
-                          <ion-label color="primary">Agregar a Favoritos</ion-label>
-                          <ion-icon ios="ios-heart-outline" md="md-heart-outline"></ion-icon>
-                        </button>
-                        <button ion-button icon-start clear small color="default">
-                            <ion-label color="primary">Precio: {{productoRecibido.precio}} Bs</ion-label>
-                            <ion-icon ios="ios-cash" md="md-cash"></ion-icon>
-                          </button>
-                        
-                  </ion-col>
-                  
-                  
-              
-            </ion-row>
-            
-            <ion-row>
-              <ion-col>
-                  <p>
-                      {{productoRecibido.descripcion}}
-                  </p>
-              </ion-col>
-            </ion-row>
-  
-            <ion-row>
-              
-              <ion-col>
-                <button ion-button icon-start clear small color="default">
-                  <ion-icon name="thumbs-up"></ion-icon>
-                  <div> {{productoRecibido.likes}}</div>
-                </button>
-              </ion-col>
-  
-              <ion-col>
-                <button ion-button icon-start clear small color="default">
-                  <ion-icon ios="ios-thumbs-down" md="md-thumbs-down"></ion-icon>
-                  <div> {{productoRecibido.dislike}}</div>
-                </button>
-              </ion-col>
-            </ion-row>
-  
-            <ion-row>
-              
-              <ion-col>
-                <button ion-button color="danger">Ver Tienda</button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-  
-        <ion-card>
-          <ion-card-content>
-            <ion-card-title>
-              Reservar Producto
+  <ion-toolbar>
+    <ion-title>
+      {{productoRecibido.nombre}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">atras</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-            </ion-card-title>
-            <p>Cantidad: </p>
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-select [(ngModel)]="cantidadReserva">
-                    <ion-option value="1">1</ion-option>
-                    <ion-option value="2">2</ion-option>
-                    <ion-option value="3">3</ion-option>
-                    <ion-option value="4">4</ion-option>
-                    <ion-option value="5">5</ion-option>
-                    <ion-option value="6">6</ion-option>
-                  </ion-select>
-                </ion-item>
-              </ion-col>
-  
-              <ion-col>
-                <button ion-button color="danger">Reservar</button>
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-        <ion-row>
-            <ion-col col-8>
-                
-            </ion-col>
+<ion-content>
+  <ion-item>
+    <ion-thumbnail item-start>
+      <ion-card>
+        <ion-card-content>
+          <ion-card-title>
+            {{productoRecibido.nombre}}
+          </ion-card-title>
+          <ion-row>
             <ion-col col-4>
-                <button ion-button (click)="dismiss()" color="danger">Okey</button>
+              <img [src]="imagenProducto" /><br>
             </ion-col>
-           
-        </ion-row>
-        
-        <!--Fin de card con estrella-->
-      </ion-thumbnail>
-      
-    </ion-item>
-  </ion-content>
-  
+            <ion-col col-8>
+
+              <button ion-button icon-start clear small color="default">
+                <ion-label color="primary">Agregar a Favoritos</ion-label>
+                <ion-icon ios="ios-heart-outline" md="md-heart-outline"></ion-icon>
+              </button>
+              <button ion-button icon-start clear small color="default">
+                <ion-label color="primary">Precio: {{productoRecibido.precio}} Bs</ion-label>
+                <ion-icon ios="ios-cash" md="md-cash"></ion-icon>
+              </button>
+
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <p>
+                {{productoRecibido.descripcion}}
+              </p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+              <button ion-button icon-start clear small color="default">
+                <ion-icon name="thumbs-up"></ion-icon>
+                <div> {{productoRecibido.likes}}</div>
+              </button>
+            </ion-col>
+
+            <ion-col>
+              <button ion-button icon-start clear small color="default">
+                <ion-icon ios="ios-thumbs-down" md="md-thumbs-down"></ion-icon>
+                <div> {{productoRecibido.dislike}}</div>
+              </button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col>
+              <button ion-button color="danger">Ver Tienda</button>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-content>
+          <ion-card-title>
+            Reservar Producto
+
+          </ion-card-title>
+          <p>Cantidad: </p>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-select [(ngModel)]="cantidadReserva">
+                  <ion-option value="1">1</ion-option>
+                  <ion-option value="2">2</ion-option>
+                  <ion-option value="3">3</ion-option>
+                  <ion-option value="4">4</ion-option>
+                  <ion-option value="5">5</ion-option>
+                  <ion-option value="6">6</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+
+            <ion-col>
+              <button ion-button color="danger" (click)="reserveProduct()">Reservar</button>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+      <ion-row>
+        <ion-col col-8>
+
+        </ion-col>
+        <ion-col col-4>
+          <button ion-button (click)="dismiss()" color="danger">Okey</button>
+        </ion-col>
+
+      </ion-row>
+
+      <!--Fin de card con estrella-->
+    </ion-thumbnail>
+
+  </ion-item>
+</ion-content>
