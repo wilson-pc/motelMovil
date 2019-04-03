@@ -1,6 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Chart } from 'chart.js';
+import { Negocio } from '../../models/Negocio';
+import { SocketServiceComportamiento } from '../../providers/socket-config/socket-config';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'page-modal-view-statistics',
@@ -8,28 +11,40 @@ import { Chart } from 'chart.js';
 })
 export class ModalViewStatisticsPage {
   
-  @ViewChild('barCanvas') barCanvas;
+  // Variable Canvas
   @ViewChild('lineCanvas') lineCanvas;
-  @ViewChild('pieCanvas') pieCanvas;
-  @ViewChild('doughnutCanvas') doughnutCanvas;
-  
-  barchart: any;
   lineChart : any;
-  pieChart : any;
-  doughnutChart : any;
+
+  // Variables fechas
+  desde : any;
+  hasta : any;
 
   // Meses del año
   meses : any[] = ['Enero', 'Ferebrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
+  // Variables externas
+  negocio : Negocio;
+  
+  // Variables internas
+  lista : any[] = [];
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public modalController : ViewController) {
+    public modalController : ViewController,
+    public comportamientoSevice : SocketServiceComportamiento) {
+      // Inicializacion
+      this.getNegocio();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModalViewStatisticsPage');
+  }
+
+  getNegocio(){
+    this.negocio = this.navParams.get('id_negocio');
+    console.log(this.negocio);
   }
 
   ngAfterViewInit(){
@@ -103,4 +118,29 @@ export class ModalViewStatisticsPage {
     this.modalController.dismiss();
   }
 
+  // Conexion con el Backend
+  connectionBackendSocket() {
+    this.respuestaVerificarListaVisitas().subscribe((data: any) => {
+      this.lista = data;
+      console.log("lista de visitas", this.lista);
+    });
+    
+  }
+
+  respuestaVerificarListaVisitas() {
+		let observable = new Observable(observer => {
+			this.comportamientoSevice.on('visitas-grafica', (datos = {
+        idnegocio: this.negocio._id,
+        rangofecha: {
+          inicio: this.desde,
+          fin: this.hasta
+        }
+      }) => {
+        observer.next(datos);
+        console.log(observer);
+        console.log("data",datos);
+			});
+		})
+    return observable;
+  }
 }

@@ -144,7 +144,7 @@ module.exports = async function (io) {
             }
           });
 
-          socket.on('visitas-grfica', async (data) => {
+          socket.on('visitas-grafica', async (data) => {
 
             console.log(data);
             /*     try {

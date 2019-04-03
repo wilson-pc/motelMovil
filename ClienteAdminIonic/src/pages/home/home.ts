@@ -51,11 +51,14 @@ export class HomePage {
 		this.commerceService.emit("listar-negocios-de-usuario", ciphertext.toString());
   }
 
+
+
   // Conexion con el Backend
   connectionBackendSocket() {
     this.respuestaVerificarNegocio().subscribe((data: any) => {
       this.listCommerce = data;
-		});
+    });
+    
   }
 
   respuestaVerificarNegocio() {
@@ -67,7 +70,8 @@ export class HomePage {
 		return observable;
   }
   
-  modalEstadisticas() {
-    const modal = this.navCtrl.push(ModalViewStatisticsPage);
+  // Modal de estadisticas
+  modalEstadisticas(negocio : Negocio) {
+    const modal = this.navCtrl.push(ModalViewStatisticsPage, {id_negocio: negocio});
   }
 }
