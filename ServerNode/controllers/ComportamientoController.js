@@ -145,15 +145,13 @@ module.exports = async function (io) {
 
         socket.on('visitar-negocio', async (datos) => {
 
-                 
+                 console.log(datos)
                     var cliente=datos.idcliente;
                     var negocio=datos.idnegocio;
                     var fecha=new Date().toUTCString();
                     var visita={usuario:cliente,fecha:fecha}
-                    
-                   try {
                   
-                    usuario.findOneAndUpdate({_id:negocio}, { $push: { visitas: visita } },{new: true},(error, actualizado) => {
+                    Negocio.findOneAndUpdate({_id:negocio}, { $push: { visitas: visita } },{new: true},(error, actualizado) => {
                         if (error) {
                           io.to(socket.id).emit('respuesta-visitar-negocio',{error: "error contar visita"});
                         //    res.status(500).send({ mensaje: "error al guradar" })
@@ -164,9 +162,6 @@ module.exports = async function (io) {
                           
                         }
                     })
-                   } catch (error) {
-                     console.log("error");
-                   }
                        
           });
 
@@ -269,14 +264,14 @@ module.exports = async function (io) {
             }
           });
 
-          socket.on('visitas-grafica', async (data) => {
+          socket.on('visitas-grafica', async (datos) => {
 
-            console.log(data);
+            console.log(datos);
             /*     try {
                        var datos = await Crypto.Desincryptar(data);
                        if (!datos.error) {*/
              const ObjectId = mongoose.Types.ObjectId;
-             var datos = JSON.parse(data);
+             //var datos = JSON.parse(data);
              Negocio.aggregate([
               {$unwind : "$visitas"}, 
               {$match : {"_id":ObjectId(datos.idnegocio),"visitas.fecha":{
