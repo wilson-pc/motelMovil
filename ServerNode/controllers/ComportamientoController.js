@@ -60,9 +60,6 @@ module.exports = async function (io) {
         try {
            var datos = await Crypto.Desincryptar(data);
             if (!datos.error) {
-
-               
-                
                try {
                 Favorito.remove({producto:data.idproducto,usuario:data.idsuario},(error, nofavorito) => {
                     if (error) {
@@ -228,6 +225,28 @@ module.exports = async function (io) {
             }
           });
 
+        socket.on('visitar-negocio', async (datos) => {
+
+                 console.log(datos)
+                    var cliente=datos.idcliente;
+                    var negocio=datos.idnegocio;
+                    var fecha=new Date().toUTCString();
+                    var visita={usuario:cliente,fecha:fecha}
+                  
+                    Negocio.findOneAndUpdate({_id:negocio}, { $push: { visitas: visita } },{new: true},(error, actualizado) => {
+                        if (error) {
+                          io.to(socket.id).emit('respuesta-visitar-negocio',{error: "error contar visita"});
+                        //    res.status(500).send({ mensaje: "error al guradar" })
+                        } else {
+                          console.log(actualizado);
+                          io.to(socket.id).emit('respuesta-visitar-negocio',{datos:actualizado});  
+                  //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                          
+                        }
+                    })
+                       
+          });
+
           socket.on('denuncia-producto', async (data) => {
             /*     try {
                        var datos = await Crypto.Desincryptar(data);
@@ -327,14 +346,14 @@ module.exports = async function (io) {
             }
           });
 
-          socket.on('visitas-grfica', async (data) => {
+          socket.on('visitas-grafica', async (datos) => {
 
-            console.log(data);
+            console.log(datos);
             /*     try {
                        var datos = await Crypto.Desincryptar(data);
                        if (!datos.error) {*/
              const ObjectId = mongoose.Types.ObjectId;
-             var datos = JSON.parse(data);
+             //var datos = JSON.parse(data);
              Negocio.aggregate([
               {$unwind : "$visitas"}, 
               {$match : {"_id":ObjectId(datos.idnegocio),"visitas.fecha":{
@@ -346,16 +365,17 @@ module.exports = async function (io) {
                     $group : {
                    _id : "$day",  visitas : { $sum : 1 }}
                      
-                      }
+                      },
+                      { $sort: { "_id": 1 } },
             ], function (error, lista) {
               if (error) {
-      
+                console.log(error);
                 // res.status(500).send({ mensaje: "Error al listar" })
-                io.to(socket.id).emit('respuesta-visitas-grfica', { error: "ocurrio un error al listar productos" });
+                io.to(socket.id).emit('respuesta-visitas-grfica', { error: "ocurrio un error al listar visitas" });
               } else {
                 if (!lista) {
                   //   res.status(404).send({ mensaje: "Error al listar" })
-                  io.to(socket.id).emit('respuesta-visitas-grfica', { error: "no hay productos en la base de datos" });
+                  io.to(socket.id).emit('respuesta-visitas-grfica', { error: "no hay visitas en la base de datos" });
                 } else {
 
                   console.log(lista);

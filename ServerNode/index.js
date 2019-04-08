@@ -3,12 +3,13 @@ var app = require("./app");
 var mongoose = require("mongoose");
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+/*
 var log4js = require('log4js');
 log4js.configure({
     appenders: { cheese: { type: 'file', filename: 'logs/index.log' } },
     categories: { default: { appenders: ['cheese'], level: 'error' } }
-  });
-const logger = log4js.getLogger('index');
+  });*/
+//const logger = log4js.getLogger('index');
 //
 const host = '0.0.0.0';
 const port = process.env.PORT || 3000;

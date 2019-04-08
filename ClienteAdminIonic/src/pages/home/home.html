@@ -17,7 +17,7 @@
     </ion-refresher-content>
   </ion-refresher>
   <ion-card *ngFor="let commerce of listCommerce">
-    <div (click)="modalEstadisticas()">
+    <div (click)="modalEstadisticas(commerce)">
         <ion-card-header>
           {{commerce.tipo.nombre}}
         </ion-card-header>

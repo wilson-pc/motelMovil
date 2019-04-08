@@ -3,7 +3,7 @@ import { SocketConfigService } from './../../socket-config.service';
 import { element } from 'protractor';
 import { BuscadorService } from './../../service/buscador.service';
 import { UsuarioService } from './../../services/usuario.service';
-import { Component, OnInit, ɵConsole } from '@angular/core';
+import { Component, OnInit, ɵConsole, OnDestroy } from '@angular/core';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuarios } from '../../models/Usuarios';
 import { getBase64, resizeBase64 } from 'base64js-es6';
@@ -13,6 +13,7 @@ import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
 import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
+import { Subscription } from 'rxjs/Subscription';
 import { Socket } from 'net';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { OwnerService } from '../../services/owner.service';
@@ -22,7 +23,7 @@ import { OwnerService } from '../../services/owner.service';
 	templateUrl: './registry-owner.component.html',
 	styleUrls: ['./registry-owner.component.css']
 })
-export class RegistryOwnerComponent implements OnInit {
+export class RegistryOwnerComponent implements OnInit,OnDestroy  {
 	titulo: string;
 	public isCollapsed = true;
 	modal: NgbModalRef;
@@ -55,6 +56,8 @@ export class RegistryOwnerComponent implements OnInit {
 	term: string;
 	negocio: Negocio;
 	negocios: Negocio[];
+
+	OwnerSubscription: Array<Subscription> = [];
 
 	// Cabeceras de la Tabla
 	constructor(private ownerService :OwnerService,private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
@@ -127,7 +130,11 @@ export class RegistryOwnerComponent implements OnInit {
 			this.selectedItems=[];
 		});
 	}
-
+	ngOnDestroy() {
+		this.OwnerSubscription.forEach((subscription: Subscription) => {
+            subscription.unsubscribe();
+        });
+	  }
 	// ACCIONES DE LOS MODALS
 	openFromRegistry(content) {
 		this.selectedItems=[];
@@ -299,7 +306,7 @@ export class RegistryOwnerComponent implements OnInit {
 	//Metodo para ejecutar los evenListener de socket
 	conn() {
 		this.negocios = [];
-		this.ownerService.eventSaveOwner().subscribe((data: any) => {
+		this.OwnerSubscription.push(this.ownerService.eventSaveOwner().subscribe((data: any) => {
 			if (data.exito) {
 
 				console.log("solo");
@@ -326,14 +333,14 @@ export class RegistryOwnerComponent implements OnInit {
 
 					this.errorMensaje = "Error no se pudo crear el registro";
 				}
-		});
+		}));
 
-		this.ownerService.eventUpdate().subscribe((data: any) => {
+	this.OwnerSubscription.push(this.ownerService.eventUpdate().subscribe((data: any) => {
 
 			this.usuarios.filter(word => word._id == data._id)[0] = data;
 			this.modal.close();
 
-		});
+		}));
 	
 		this.respuestaBuscarUsuario().subscribe((data: any[]) => {
 			this.usuarios = data;
@@ -344,10 +351,10 @@ export class RegistryOwnerComponent implements OnInit {
 			this.profileUser = data;
 		});
 
-		this.ownerService.eventSaveOwnerAll().subscribe((data: any) => {
+	this.OwnerSubscription.push(this.ownerService.eventSaveOwnerAll().subscribe((data: any) => {
 			console.log(data);
 			this.usuarios.push(data.usuario)
-		});
+		}));
 
 		// verificar negocio
 		this.respuestaVerificarNegocio().subscribe((data: any) => {
@@ -355,7 +362,7 @@ export class RegistryOwnerComponent implements OnInit {
 			console.log(this.negociosUsuario)
 		});
 		
-		this.ownerService.eventDeleteOwner().subscribe((data: any) => {
+	  this.OwnerSubscription.push(this.ownerService.eventDeleteOwner().subscribe((data: any) => {
 			
 			if(data.exito){
 			this.modal.close();
@@ -363,7 +370,7 @@ export class RegistryOwnerComponent implements OnInit {
 			else{
 
 			}
-		});
+		}));
 		//eliminar negocio del panel de edicion
 		this.repuestaEliminarNegocio().subscribe((data: any) => {
 			console.log(data);
@@ -375,12 +382,12 @@ export class RegistryOwnerComponent implements OnInit {
 			//this.peticionSocketNegocio();
 		});
 
-		 this.ownerService.eventUpdateAll().subscribe((data)=>{
+		this.OwnerSubscription.push(this.ownerService.eventUpdateAll().subscribe((data)=>{
 			let fila = this.usuarios.filter(word => word._id == data._id)[0];
 			var index = this.usuarios.indexOf(fila);
 			this.usuarios[index] = data;
 			console.log(this.usuarios);
-		 })
+		 }))
 
 	}
 	//respuesta-actualizar-usuarios

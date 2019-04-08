@@ -132,4 +132,11 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     this.provedorFavoritos.emit('agregar-favorito', this.encryptData(data));
 
   }
+
+  // Funciones de push visitas
+  registrarVisita(){
+    let data = { idcliente: this.usuarioLogin.UserSeCion.datos._id , idnegocio: this.productoRecibido.negocio };
+    console.log("Cliente",data);
+    this.provedorFavoritos.emit('visitar-negocio', data);
+  }
 }

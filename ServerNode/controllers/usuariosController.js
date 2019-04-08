@@ -627,8 +627,7 @@ module.exports = async function (io) {
           var usuario = params.usuario;
           var pass = params.password;
           var tipo = params.tipo;
-          console.log(params);
-
+   
           Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
@@ -649,20 +648,20 @@ module.exports = async function (io) {
                   var usuario = new Usuario();
                   usuario._id = user._id;
                   usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
-                  console.log(user.login);
+               console.log(usuario.login.password + " f",pass);
 
-                  bcrypt.compare(pass, user.login.password, function (error, ok) {
-
+                  bcrypt.compare(pass, user.login.password, function (error, ok,ss) {
                     if (ok) {
-
+                      console.log("entra");
                       Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
-
+                        
                         io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
                         //  res.status(200).send({ token: token.crearToken(user), datos:user });
                       });
 
                     }
                     else {
+                      console.log("erorr contraseña no sirve");
                       io.to(socket.id).emit('respuesta-login', { mensaje: "error usuario y contraseñ incorrecta" });
                       //  res.status(404).send({ mensaje: "usuario o contraseña incorrectas " })
                     }

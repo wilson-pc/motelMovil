@@ -23,7 +23,12 @@ import { AuthProvider } from '../providers/auth/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { CommercePage } from '../pages/commerce/commerce';
-import { SocketServiceCommerce, SocketServiceHomeService, SocketServiceProduct, SocketServiceUser } from '../providers/socket-config/socket-config';
+import { 
+  SocketServiceCommerce, 
+  SocketServiceHomeService, 
+  SocketServiceProduct, 
+  SocketServiceUser, 
+  SocketServiceComportamiento } from '../providers/socket-config/socket-config';
 import { UserOnlyProvider } from '../providers/user-only/user-only';
 import { ListProductsPage } from '../pages/list-products/list-products';
 import { CommerceProvider } from '../providers/commerce/commerce';
@@ -108,6 +113,7 @@ export const firebaseConfig = {
     SocketServiceHomeService,
     SocketServiceProduct,
     SocketServiceUser,
+    SocketServiceComportamiento,
     SplashScreen,
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
