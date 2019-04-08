@@ -11,6 +11,7 @@ import { UsuarioProvider } from './../../providers/usuario/usuario';
 import { Storage } from '@ionic/storage';
 import { SocketLoginService } from '../../services/socket-config.service';
 import { TabsPage } from '../tabs/tabs';
+import { TopsPage } from '../tops/tops';
 
 @Component({
   selector: 'page-login',
@@ -104,6 +105,10 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
     this.nav.setRoot(RegisterPage);
   }
 
+  irHome(){
+    this.nav.setRoot(TopsPage);
+  }
+
 
   RegisterGoogle(dataUsuario:Usuarios){
     alert(JSON.stringify(dataUsuario));
@@ -168,6 +173,8 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
     
   }
 
+
+
   forgotPass() {
     let forgot = this.forgotCtrl.create({
       title: 'Olvidaste tu Contraseña?',
@@ -220,6 +227,8 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
         // Redirecionar al Login
         this.nav.setRoot(LoginPage);
       */
+     this.loginUser.usuario="";
+     this.loginUser.password="";
       this.nav.setRoot(TabsPage);
       }else{
         let toast = this.toastCtrl.create({

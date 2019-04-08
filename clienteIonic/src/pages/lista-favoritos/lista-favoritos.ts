@@ -4,6 +4,8 @@ import { Productos } from '../../models/Productos';
 import { Negocio } from '../../models/Negocio';
 import { conexionSocketComportamiento } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
+import { Moteles } from '../../models/Moteles';
+import { Habitacion } from '../../models/Habitacion';
 
 /**
  * Generated class for the ListaFavoritosLicoreriasPage page.
@@ -17,43 +19,58 @@ import { UsuarioProvider } from '../../providers/usuario/usuario';
   selector: 'page-lista-favoritos',
   templateUrl: 'lista-favoritos.html',
 })
+
 export class ListaFavoritosPage {
 
   productos="licores";
-  listaProductos: Productos[]=[];
-  listabuscadorProductos:Productos[]=[];
+  listaProductoslicores: Productos[]=[];
+  listabuscadorProductoslicores:Productos[]=[];
+
+  listamotel:Habitacion[]=[];
+  listamotelbuscador:Habitacion[]=[];
+
+  listasexshop:Productos[]=[];
+  listasexshopbuscador:Productos[]=[];
+
   producto:Productos;
  
 
-  constructor(public navCtrl: NavController,
+   constructor(public navCtrl: NavController,
      public navParams: NavParams,      
      private usuarioLogueado:UsuarioProvider,
      public provedorSocketFavoritos:conexionSocketComportamiento) {
+      
+        this.obtenerListadeFavoritosLicores();  
+        this.respuestaListaFavoritosLicores();  
 
-      this.obtenerListadeFavoritos();
-     
-    this.llenarDatos();
-    this.initializeItems();
-    this.obtenerListadeFavoritos();
+        this.obtenerListadeFavoritosMoteles();
+        this.respuestaListaFavoritosMoteles();
+
+        this.obtenerListadeFavoritosSexshop();
+        this.respuestaListaFavoritosSexshop();
+    
+
+      
+   // this.llenarDatos();
+    
+   // this.obtenerListadeFavoritos();
     this.producto=new Productos();
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ListaFavoritosLicoreriasPage');
+    console.log('ionViewDidLoad ListaFavoritosLicoreriasPage');   
   }
 
 
-  llenarDatos(){
-       
-
-    console.log("este es la lista:",this.listaProductos);
-  }
+  
 //FUNCION PARA BUSCAR EN LA LISTA
   initializeItems(){
     //TODO Cargar datos al array;
    
-    this.listabuscadorProductos=this.listaProductos;
-    //console.log(this.listabuscadorProductos);
+    this.listamotelbuscador=this.listamotel;
+    this.listasexshopbuscador=this.listasexshop;
+    this.listabuscadorProductoslicores=this.listaProductoslicores;
+    console.log("lista de favoritos",this.listabuscadorProductoslicores);
    
   }
   
@@ -66,29 +83,103 @@ export class ListaFavoritosPage {
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.listabuscadorProductos = this.listabuscadorProductos.filter((item) => {
+      this.listabuscadorProductoslicores = this.listabuscadorProductoslicores.filter((item) => {
 
         if(item.nombre.toLowerCase().indexOf(val.toLowerCase())>-1 || item.descripcion.toLowerCase().indexOf(val.toLowerCase())>-1){
           return item;
-        }              
-       // return (item['nombre'].toLowerCase().indexOf(val.toLowerCase())>-1);
-        
+        }                   
       })
-    }
-    console.log(this.listabuscadorProductos);
-    //item.toLowerCase().indexOf(val.toLowerCase()) > -1
+    }  
   }
 
   //Metodos de obtencion de datos
-   obtenerListadeFavoritos(){
-     let idusuario=this.usuarioLogueado.UserSeCion.datos._id;
-     console.log(idusuario);
-     this.provedorSocketFavoritos.emit('listar-favorito',idusuario, (data)=>{
-        console.log(data);
-     });  
-   }
+   async obtenerListadeFavoritosLicores(){
+     let usuario={idusuario: this.usuarioLogueado.UserSeCion.datos._id};
+     //console.log("este es el usuario:",usuario);
+     if(usuario.idusuario != undefined || usuario.idusuario !=null)
+     {
+       console.log("entro if");
+       await this.provedorSocketFavoritos.emit('listar-favorito-licores',usuario);
+        //await this.respuestaListaFavoritos();
 
-   respuestaListaFavoritos(){
+     }
      
    }
+
+   respuestaListaFavoritosLicores(){
+     this.provedorSocketFavoritos.on('respuesta-listar-favorito-licores',(data)=>{
+      // console.log("datos",data.datos);
+       for (let index = 0; index < data.datos.length; index++) {
+         const element = data.datos[index];
+        // console.log("productos:",element.producto);        
+
+          this.listaProductoslicores.push(element.producto);
+          this.listabuscadorProductoslicores.push(element.producto);
+         
+       }
+
+       console.log("listas Buscador",this.listabuscadorProductoslicores);
+     });    
+   }
+
+   async obtenerListadeFavoritosMoteles(){
+    let usuario={idusuario: this.usuarioLogueado.UserSeCion.datos._id};
+    //console.log("este es el usuario:",usuario);
+    if(usuario.idusuario != undefined || usuario.idusuario !=null)
+    {
+      console.log("entro if");
+      await this.provedorSocketFavoritos.emit('listar-favorito-moteles',usuario);
+       //await this.respuestaListaFavoritos();
+
+    }
+    
+  }
+
+  respuestaListaFavoritosMoteles(){
+    this.provedorSocketFavoritos.on('respuesta-listar-favorito-moteles',(data)=>{
+     // console.log("datos",data.datos);
+      for (let index = 0; index < data.datos.length; index++) {
+        const element = data.datos[index];
+       // console.log("productos:",element.producto);        
+
+         this.listamotelbuscador.push(element.producto);
+         this.listamotel.push(element.producto);
+        
+      }
+
+      console.log("listas Buscador",this.listabuscadorProductoslicores);
+    });      
+    
+  }
+
+  async obtenerListadeFavoritosSexshop(){
+    let usuario={idusuario: this.usuarioLogueado.UserSeCion.datos._id};
+    //console.log("este es el usuario:",usuario);
+    if(usuario.idusuario != undefined || usuario.idusuario !=null)
+    {
+      console.log("entro if");
+      await this.provedorSocketFavoritos.emit('listar-favorito-sexshops',usuario);
+       //await this.respuestaListaFavoritos();
+
+    }
+    
+  }
+
+  respuestaListaFavoritosSexshop(){
+    this.provedorSocketFavoritos.on('respuesta-listar-favorito-sexshops',(data)=>{
+     // console.log("datos",data.datos);
+      for (let index = 0; index < data.datos.length; index++) {
+        const element = data.datos[index];
+       // console.log("productos:",element.producto);        
+
+         this.listasexshop.push(element.producto);
+         this.listasexshopbuscador.push(element.producto);
+        
+      }      
+    });    
+    
+    
+  }
+
+
 }

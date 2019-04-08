@@ -54,6 +54,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   obtenerDatosProducto() {
     this.productoRecibido = this.navParams.get("producto")
+    console.log("producto",this.productoRecibido.tipo.tiponegocio);
     this.sacarDatos();
   }
 
@@ -122,7 +123,10 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   guardarFavorito() {
 
-    let data = { idproducto: this.productoRecibido._id, idsuario: this.usuarioLogin.UserSeCion.datos._id };
+    let data = { 
+      idproducto: this.productoRecibido._id,
+      idsuario: this.usuarioLogin.UserSeCion.datos._id,
+      tipoproducto:this.productoRecibido.tipo.tiponegocio };
 
     console.log("datos favoritos:", data);
     this.provedorFavoritos.emit('agregar-favorito', this.encryptData(data));

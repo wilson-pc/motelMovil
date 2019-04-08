@@ -21,6 +21,7 @@ module.exports = async function (io) {
                 var favorito=new Favorito();
                  favorito.producto=datos.idproducto;
                   favorito.usuario=datos.idsuario;
+                  favorito.tipo=datos.tipoproducto;
                   //favorito.fecha=new Date().toUTCString();
                   console.log("soy favorito:",favorito);
                 
@@ -87,19 +88,20 @@ module.exports = async function (io) {
         }
       });
 
-      socket.on('listar-favorito', async (data) => {
+      //LISTAR TODOS LOS FAVORITOS
+      socket.on('listar-favoritos', async (data) => {
         
            
-                
+                console.log("entraste lista",data);
                try {
              //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
                 Favorito.find({usuario:data.idusuario},(error, favoritos) => {
                     if (error) {
-                      io.to(socket.id).emit('respuesta-listar-favorito',{error: "error al listar"});
+                      io.to(socket.id).emit('respuesta-listar-favoritos',{error: "error al listar"});
                     //    res.status(500).send({ mensaje: "error al guradar" })
                     } else {
-                      console.log(favoritos);
-                      io.to(socket.id).emit('respuesta-listar-favorito',{datos:favoritos});  
+                      //console.log(favoritos);
+                      io.to(socket.id).emit('respuesta-listar-favoritos',{datos:favoritos});  
               //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
                       
                     }
@@ -110,6 +112,86 @@ module.exports = async function (io) {
                    
       
       });
+
+      //INICIO DE FAVORITO POR TIPO DE LICORERIAS
+
+      socket.on('listar-favorito-licores', async (data) => {
+        
+           
+        console.log("entraste lista",data);
+       try {
+     //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+        Favorito.find({usuario:data.idusuario,tipo:"Licoreria"},(error, favoritos) => {
+            if (error) {
+              io.to(socket.id).emit('respuesta-listar-favorito-licores',{error: "error al listar"});
+            //    res.status(500).send({ mensaje: "error al guradar" })
+            } else {
+              //console.log(favoritos);
+              io.to(socket.id).emit('respuesta-listar-favorito-licores',{datos:favoritos});  
+      //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+              
+            }
+        })
+       } catch (error) {
+         console.log("error");
+       }
+           
+
+      });
+
+      //INICIO DE FAVORITOS POR TIPO DE MOTELES
+
+      socket.on('listar-favorito-moteles', async (data) => {
+        
+           
+                console.log("entraste lista",data);
+               try {
+             //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+                Favorito.find({usuario:data.idusuario,tipo:"Motel"},(error, favoritos) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-listar-favorito-moteles',{error: "error al listar"});
+                    //    res.status(500).send({ mensaje: "error al guradar" })
+                    } else {
+                      //console.log(favoritos);
+                      io.to(socket.id).emit('respuesta-listar-favorito-moteles',{datos:favoritos});  
+              //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                      
+                    }
+                })
+               } catch (error) {
+                 console.log("error");
+               }
+                   
+      
+      });
+
+
+      // INICIOO DE FAVORITOS POR TIPO DE SEXHOPS
+
+      socket.on('listar-favorito-sexshops', async (data) => {
+        
+           
+                console.log("entraste lista",data);
+               try {
+             //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+                Favorito.find({usuario:data.idusuario,tipo:"SexShop"},(error, favoritos) => {
+                    if (error) {
+                      io.to(socket.id).emit('respuesta-listar-favorito-sexshops',{error: "error al listar"});
+                    //    res.status(500).send({ mensaje: "error al guradar" })
+                    } else {
+                      //console.log(favoritos);
+                      io.to(socket.id).emit('respuesta-listar-favorito-sexshops',{datos:favoritos});  
+              //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+                      
+                    }
+                })
+               } catch (error) {
+                 console.log("error");
+               }
+                   
+      
+      });
+
 
         socket.on('calificar-producto', async (data) => {
             try {

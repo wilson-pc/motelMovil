@@ -4,6 +4,8 @@ import { Productos } from '../../models/Productos';
 import { Observable, Subscription } from 'rxjs';
 import { SocketReservaService } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
+import * as CryptoJS from 'crypto-js';
+import { clave } from '../../app/cryptoclave';
 
 @IonicPage()
 @Component({
@@ -71,6 +73,14 @@ export class DescripcionProductoPage {
         this.dismissModal();
       }
     });
+  }
+
+  encryptData(data) {
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   respuestaReserva() {
