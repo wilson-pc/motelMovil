@@ -9,10 +9,10 @@ async function Desincryptar(data){
           return JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
 
         } else{
-            return {error:"el incryptado es incorrecto Parte 1"}
+            return {error:"el encryptado es incorrecto Parte 1"}
         }
     }catch (e) {
-        return {error:"el incryptado es incorrecto"}
+        return {error:"el encryptado es incorrecto"}
     }
 }
 module.exports={Desincryptar};

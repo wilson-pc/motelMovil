@@ -13,12 +13,57 @@ function sumarDias(fecha, dias) {
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
+
     socket.on('reserva-producto', async (data) => {
       console.log("Reserva backend");
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
       var reserva = new Reservas();
+      var datos = data;
+      var fecha = new Date().toUTCString();
+      reserva.cliente = datos.idcliente;
+      reserva.cantidad = datos.cantidad;
+      reserva.producto = datos.idproducto;
+      var producto = await Producto.findById(datos.idproducto, { valoracion: 0, desvaloracion: 0, eliminado: 0, creacion: 0, modificacion: 0 });
+      //var dueno =await Dueno.findById(producto.pro);
+      var negocio= await Negocio.findById(producto.negocio);
+      reserva.negocio=producto.negocio
+      reserva.dueno=negocio.titular;
+      reserva.precioactual = producto.precio;
+      reserva.tiempo = { fechareserva: fecha, fechalimite: moment(fecha).add(datos.tiempo, 'hours') };
+      reserva.estado = "espera"
+        reserva.save(async (error, nuevaReserve) => {
+          if (error) {
+            console.log(error);
+            io.to(socket.id).emit('respuesta-reserva-producto', { error: "error no se pudo guardar la reserva" });
+
+            //    res.status(500).send({ mensaje: "error al guradar" })
+          } else {
+            //console.log(nuevoNegocio);
+            
+         
+            console.log("Guardado")
+            io.emit('respuesta-reserva-producto', nuevaReserve);
+          }
+        })
+      
+
+      /*          }
+  return data;
+  }
+  
+  catch (e) {
+    console.log(e);
+  }*/
+    });
+
+   /* socket.on('reserva-producto', async (data) => {
+      console.log("Reserva backend");
+      /*     try {
+                 var datos = await Crypto.Desincryptar(data);
+                 if (!datos.error) {*/
+    /*  var reserva = new Reservas();
       var datos = data;
       var fecha = new Date().toUTCString();
       reserva.cliente = datos.idcliente;
@@ -58,13 +103,47 @@ module.exports = async function (io) {
   catch (e) {
     console.log(e);
   }*/
-    });
+  //  });
+
+  
+  socket.on('cambiar-reserva', async (data) => {
+    
+    var reserva = new Reservas();
+    var datos = JSON.parse(data);
+    reserva.cantidad = datos.cantidad;
+    reserva.estado = datos.estado;
+
+   if(datos.cantidad){
+    Reservas.findByIdAndUpdate(datos._id, reserva, { new: true }, async (error, actualizado) => {
+      if (error) {
+        io.to(socket.id).emit('respuesta-cambiar-reserva', { error: "error no se pudo guardar la reserva" });
+
+    
+      } else {  
+      io.emit('respuesta-cambiar-reserva', actualizado);
+      }
+    })
 
 
-    socket.on('cambiar-reserva', async (data) => {
-      /*     try {
-                 var datos = await Crypto.Desincryptar(data);
-                 if (!datos.error) {*/
+   }else{
+    Reservas.findByIdAndUpdate(datos._id, reserva, { new: true }, async (error, actualizado) => {
+      if (error) {
+        io.to(socket.id).emit('respuesta-cambiar-reserva', { error: "error no se pudo guardar la reserva" });
+
+       
+      } else {
+       
+        io.emit('respuesta-cambiar-reserva', actualizado);
+      }
+    })
+  }
+
+ 
+  });
+
+
+/*    socket.on('cambiar-reserva', async (data) => {
+    
       var reserva = new Reservas();
       var datos = JSON.parse(data);
       reserva.cantidad = datos.cantidad;
@@ -75,7 +154,7 @@ module.exports = async function (io) {
         if (error) {
           io.to(socket.id).emit('respuesta-cambiar-reserva', { error: "error no se pudo guardar la reserva" });
 
-          //    res.status(500).send({ mensaje: "error al guradar" })
+      
         } else {
           if(datos.cantidad>datos.cantidadanterior){
             var cantidad=datos.cantidad-datos.cantidadanterior;
@@ -84,7 +163,7 @@ module.exports = async function (io) {
             var cantidad=datos.cantidadanterior-datos.cantidad;
             await Producto.findByIdAndUpdate(datos.idproducto, { "$inc": { "cantidad": reserva.cantidad } });
           }
-          //console.log(nuevoNegocio);
+       
           io.emit('respuesta-cambiar-reserva', actualizado);
         }
       })
@@ -95,24 +174,18 @@ module.exports = async function (io) {
         if (error) {
           io.to(socket.id).emit('respuesta-cambiar-reserva', { error: "error no se pudo guardar la reserva" });
 
-          //    res.status(500).send({ mensaje: "error al guradar" })
+         
         } else {
-          //console.log(nuevoNegocio);
+         
           io.emit('respuesta-cambiar-reserva', actualizado);
         }
       })
     }
 
-      /*          }
-  return data;
-  }
-  
-  catch (e) {
-    console.log(e);
-  }*/
+   
     });
 
-
+*/
     
     socket.on('listar-reserva', async (data) => {
       /*     try {

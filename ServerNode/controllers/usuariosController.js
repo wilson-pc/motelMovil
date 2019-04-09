@@ -167,7 +167,7 @@ module.exports = async function (io) {
 
     socket.on('registrar-usuario', async (data) => {
 
-      console.log(data);
+      console.log("datos recividod de  nuevos usuario");
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
@@ -176,7 +176,7 @@ module.exports = async function (io) {
           var usuario = new Usuario();
 
           var params = datos.usuario;
-
+          console.log("datos recividod de  nuevos usuario");
           usuario.nombre = params.nombre;
           usuario.apellidos = params.apellidos;
           usuario.genero = params.genero;
@@ -201,6 +201,7 @@ module.exports = async function (io) {
 
                   usuario.save(async (error, nuevoUsuario) => {
                     if (error) {
+                      console.log("error no se pudo guadar el datos");
                       console.log(error);
                       io.to(socket.id).emit('respuesta-crear', { error: "Error no se pudo crear el registro" });
 
@@ -217,7 +218,7 @@ module.exports = async function (io) {
                       }
                      
                       io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
-                      console.log("llega");
+                      console.log("registro con exito");
                       io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
                     }
                   })

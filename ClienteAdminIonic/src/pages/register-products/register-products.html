@@ -81,17 +81,7 @@
         *ngIf="!productForm.controls.productPrecio.valid  && (productForm.controls.productPrecio.dirty || statusInput)">
         <p>Campo precio inválido; máximo 4 cifras.</p>
       </ion-item>
-
-      <ion-item>
-        <ion-label floating>Cantidad:</ion-label>
-        <ion-input [(ngModel)]="product.cantidad" formControlName="productCantidad" name="cantidad" type="number">
-        </ion-input>
-      </ion-item>
       <!--alert-->
-      <ion-item no-lines
-        *ngIf="!productForm.controls.productCantidad.valid  && (productForm.controls.productCantidad.dirty || statusInput)">
-        <p>Campo cantidad inválido; máximo 3 cifras.</p>
-      </ion-item>
 
       <ion-item>
         <ion-label floating>Descripcion:</ion-label>
