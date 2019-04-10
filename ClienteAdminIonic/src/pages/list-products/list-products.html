@@ -37,27 +37,27 @@
     <ion-item *ngIf="listProducts.length != 0">
       <ion-label><b>N°</b></ion-label>
       <ion-label item-right><b>Nombre</b></ion-label>
-      <ion-label item-right><b>Producto</b></ion-label>
+      <ion-label item-right><b>Estado</b></ion-label>
     </ion-item>
 
     <ion-item-sliding *ngFor="let product of listProducts; let i=index">
       <ion-item (click)="infoProduct(product)">
         <ion-label>{{i+1}}</ion-label>
         <ion-label item-right>{{product.nombre}}</ion-label>
-        <ion-label item-right>{{product.cantidad}}</ion-label>
+        <ion-label item-right>{{product.estado}}</ion-label>
       </ion-item>
 
       <ion-item-options side="left">
         <ion-buttons>
           <button ion-button color="danger" (click)="deleteProduct(product)">
-            <ion-icon trash></ion-icon> Eliminar
+            <ion-icon trash></ion-icon> borrar
           </button>
         </ion-buttons>
       </ion-item-options>
       <ion-item-options side="right">
         <ion-buttons>
           <button ion-button (click)="updateProduct(product)">
-            <ion-icon info></ion-icon> Editar
+            <ion-icon info></ion-icon> actualizar
           </button>
         </ion-buttons>
       </ion-item-options>

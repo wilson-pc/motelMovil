@@ -108,7 +108,7 @@ export class LicoreriaPage {
     this.productService.on('respuesta-listado-producto-licores',(data)=>{
                       
           if(!data.error){
-            console.log("este es el data:"+data);
+            console.log("este es el data:",data);
 
             data.forEach(element => {
               this.listauxProductos.push(element);

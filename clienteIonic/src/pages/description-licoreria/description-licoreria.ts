@@ -27,6 +27,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   clientesSubscription: Subscription;
   suscripctionSocket: Subscription;
   favorito: Favoritos;
+  cantidad:number[]=[];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -41,7 +42,6 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     this.favorito = new Favoritos();
     this.clientesSubscription = this.eventoSacarDatos().subscribe(data => {
       this.imagenProducto = data.foto.normal;
-      console.log("entrando", this.imagenProducto);
     })
     this.obtenerDatosProducto();
     this.connectionBackendSocket();
@@ -54,11 +54,15 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   obtenerDatosProducto() {
     this.productoRecibido = this.navParams.get("producto")
-    console.log("producto",this.productoRecibido.tipo.tiponegocio);
+    console.log("producto",this.productoRecibido);
     this.sacarDatos();
   }
 
   ionViewDidLoad() {
+ for (let index = 1; index < 20; index++) {
+   this.cantidad.push(index);
+   
+ }
   }
 
   presentToast(reserveMessage: string) {

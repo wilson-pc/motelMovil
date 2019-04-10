@@ -33,7 +33,10 @@
                 <ion-label color="primary">Precio: {{product.precio}} Bs</ion-label>
                 <ion-icon ios="ios-cash" md="md-cash"></ion-icon>
               </button>
-
+              <button ion-button icon-start clear small color="default">
+                <ion-label color="primary">{{product.estado}}</ion-label>
+                
+              </button>
             </ion-col>
           </ion-row>
 
@@ -77,12 +80,7 @@
             <ion-col>
               <ion-item>
                 <ion-select [(ngModel)]="cantidadReserva">
-                  <ion-option value="1">1</ion-option>
-                  <ion-option value="2">2</ion-option>
-                  <ion-option value="3">3</ion-option>
-                  <ion-option value="4">4</ion-option>
-                  <ion-option value="5">5</ion-option>
-                  <ion-option value="6">6</ion-option>
+                  <ion-option *ngFor="let item of cantidad" [value]="item">{{item}}</ion-option>
                 </ion-select>
               </ion-item>
             </ion-col>
