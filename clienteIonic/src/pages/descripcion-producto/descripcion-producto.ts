@@ -17,6 +17,7 @@ export class DescripcionProductoPage {
   cantidadReserva = 1;
   product: Productos;
   suscripctionSocket: Subscription;
+  cantidad:number[]=[];
 
   constructor(
     public navCtrl: NavController,
@@ -32,6 +33,10 @@ export class DescripcionProductoPage {
   }
 
   ionViewDidLoad() {
+    for (let index = 1; index < 20; index++) {
+      this.cantidad.push(index);
+      
+    }
   }
 
   dismissModal() {

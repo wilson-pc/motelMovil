@@ -16,7 +16,7 @@
 
 <ion-content padding>
 
-  <ion-list>
+  <ion-list *ngIf="producto !=undefined" >
 
     <form [formGroup]="productForm">
 
@@ -39,7 +39,7 @@
 
       <ion-item>
         <ion-label floating>Nombre:</ion-label>
-        <ion-input [(ngModel)]="productOnly.nombre" formControlName="productNombre" name="nombre" type="text"></ion-input>
+        <ion-input [(ngModel)]="producto.nombre" formControlName="productNombre" name="nombre" type="text"></ion-input>
       </ion-item>
       <!--alert-->
       <ion-item no-lines *ngIf="!productForm.controls.productNombre.valid  && (productForm.controls.productNombre.dirty || statusInput)">
@@ -50,7 +50,7 @@
         <ion-col col-10>
           <ion-item>
             <ion-label floating>Tipo producto: </ion-label>
-            <ion-select [(ngModel)]="productOnly.tipo.tipo" formControlName="productTipo" okText="Aceptar" cancelText="Cancelar">
+            <ion-select [(ngModel)]="producto.tipo.tipo" formControlName="productTipo" okText="Aceptar" cancelText="Cancelar">
               <ion-option *ngFor="let type of listTypeProduct" value="{{type.tipo}}">{{type.tipo}}</ion-option>
             </ion-select>
           </ion-item>
@@ -71,7 +71,7 @@
 
       <ion-item>
         <ion-label floating>Precio (BOB):</ion-label>
-        <ion-input [(ngModel)]="productOnly.precio" formControlName="productPrecio" name="precio" type="number"></ion-input>
+        <ion-input [(ngModel)]="producto.precio" formControlName="productPrecio" name="precio" type="number"></ion-input>
       </ion-item>
       <!--alert-->
       <ion-item no-lines *ngIf="!productForm.controls.productPrecio.valid  && (productForm.controls.productPrecio.dirty || statusInput)">
@@ -79,17 +79,18 @@
       </ion-item>
 
       <ion-item>
-        <ion-label floating>Cantidad:</ion-label>
-        <ion-input [(ngModel)]="productOnly.cantidad" formControlName="productCantidad" name="cantidad" type="number"></ion-input>
+        <ion-label floating>Estado:</ion-label>
+        <ion-select [(ngModel)]="producto.estado" formControlName="productPrecio" name="estado">
+          <ion-option value="casi agotado">casi agotado</ion-option>
+          <ion-option value="disponible">disponible</ion-option>
+          <ion-option value="agotado">agotado</ion-option>
+        </ion-select>
       </ion-item>
       <!--alert-->
-      <ion-item no-lines *ngIf="!productForm.controls.productCantidad.valid  && (productForm.controls.productCantidad.dirty || statusInput)">
-        <p>Campo cantidad inválido; máximo 3 cifras.</p>
-      </ion-item>
-
+  
       <ion-item>
         <ion-label floating>Descripcion:</ion-label>
-        <ion-input [(ngModel)]="productOnly.descripcion" formControlName="productDescripcion" name="descripcion" type="text"></ion-input>
+        <ion-input [(ngModel)]="producto.descripcion" formControlName="productDescripcion" name="descripcion" type="text"></ion-input>
       </ion-item>
       <!--alert-->
       <ion-item no-lines *ngIf="!productForm.controls.productDescripcion.valid  && (productForm.controls.productDescripcion.dirty || statusInput)">

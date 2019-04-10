@@ -95,6 +95,7 @@
     <plugin name="cordova-plugin-android-permissions" spec="1.0.0" />
     <plugin name="cordova-plugin-googleplus" spec="7.0.0">
         <variable name="REVERSED_CLIENT_ID" value="1084156115455-rc0ahd5f8ak576o2eomo6g2k92tr8kee.apps.googleusercontent.com" />
+        <variable name="server_client_id" value="1084156115455-cuj0uav5a0jhsvirnvp0dlu2cc3k1cuu.apps.googleusercontent.com" />
         <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
     </plugin>
     <plugin name="cordova-plugin-googlemaps" spec="2.5.3">

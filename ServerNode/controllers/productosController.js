@@ -221,20 +221,19 @@ module.exports = async function (io) {
           producto.nombre = params.nombre;
           producto.negocio = params.negocio;
           producto.precio = params.precio;
-          producto.cantidad = params.cantidad;
+          producto.estado = params.estado;
           producto.tipo = await Tipo.findById(params.tipo);
           producto.foto = params.foto;
           // usuario.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           //  producto.creacion = params.creacion
           producto.modificacion = params.modificacion;
-
           Producto.findByIdAndUpdate(params._id, producto, { new: true }, async (error, productoActualizado) => {
             if (error) {
               console.log(error);
               io.to(socket.id).emit('respuesta-actualizar-producto', { error: "ocurio un error al crear el producto" });
             } else {
-
+                console.log("exito 0>",productoActualizado);
               io.emit('respuesta-actualizar-producto', productoActualizado);
             }
           })
@@ -257,6 +256,7 @@ module.exports = async function (io) {
               if (!dato) {
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
+                console.log(dato);
                 io.to(socket.id).emit('respuesta-sacar-producto', dato);
 
               }
@@ -282,6 +282,7 @@ module.exports = async function (io) {
             "nombre": "$nombre",
             "negocio": "$negocio",
             "precio": "$precio",
+            "estado": "$estado",
             "cantidad": "$cantidad",
             "tipo": "$tipo",
             "descripcion": "$descripcion"
@@ -302,7 +303,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-licores', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("lista");
+            console.log("lista xxxxxxx=>",lista);
             io.to(socket.id).emit('respuesta-listado-producto-licores', lista);
           }
         }
@@ -328,6 +329,7 @@ module.exports = async function (io) {
             "modificacion": "$modificacion",
             "nombre": "$nombre",
             "negocio": "$negocio",
+            "estado": "$estado",
             "precio": "$precio",
             "cantidad": "$cantidad",
             "tipo": "$tipo",
@@ -375,6 +377,7 @@ module.exports = async function (io) {
             "modificacion": "$modificacion",
             "nombre": "$nombre",
             "negocio": "$negocio",
+            "estado": "$estado",
             "precio": "$precio",
             "cantidad": "$cantidad",
             "tipo": "$tipo",
@@ -428,7 +431,7 @@ module.exports = async function (io) {
     //
     socket.on('listar-producto-negocio', async (data) => {
 
-      console.log("dentro de la consulta", data);
+  
       Producto.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
 
         if (error) {
@@ -439,7 +442,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-negocio', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("lista =>: ", lista);
+         
             io.to(socket.id).emit('respuesta-listado-producto-negocio', lista);
           }
         }
@@ -485,6 +488,7 @@ module.exports = async function (io) {
             "modificacion": "$modificacion",
             "nombre": "$nombre",
             "negocio": "$negocio",
+            "estado": "$estado",
             "precio": "$precio",
             "cantidad": "$cantidad",
             "tipo": "$tipo",

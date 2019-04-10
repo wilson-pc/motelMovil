@@ -99,17 +99,20 @@ export class ListProductsPage {
   }
 
   infoProduct(product) {
+    console.log(product);
     const modal = this.modalCtrl.create(ViewProductsPage, {product: product, commerce: this.commerceOnly });
     modal.present();
   }
 
-  updateProduct(product) {
-    const modal = this.modalCtrl.create(EditProductsPage, { product: product, commerce: this.commerceOnly });
+  updateProduct(producto:Productos) {
+      console.log(producto);
+    const modal = this.modalCtrl.create(EditProductsPage, { product: producto, commerce: this.commerceOnly });
     modal.present();
-    this.getProductsCommerce();
+    //this.getProductsCommerce();
   }
 
-  deleteProduct(product) {
+  deleteProduct(product:Productos) {
+    console.log(product);
     const prompt = this.alertCtrl.create({
       title: 'Eliminar Producto',
       message: "Ingrese la razon por el cual esta eliminando este producto. (mínimo 15 caracteres)",
@@ -154,6 +157,7 @@ export class ListProductsPage {
 
     // productos de un negocio
     this.respuestaProductosNegocio().subscribe((data: any) => {
+      console.log(data);
       this.listProducts = data;
     });
 
