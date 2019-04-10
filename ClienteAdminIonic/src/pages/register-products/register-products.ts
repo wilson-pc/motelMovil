@@ -59,7 +59,6 @@ export class RegisterProductsPage {
       productImg: ['', Validators.compose([])],
       productTipo: ['', Validators.compose([Validators.required])],
       productPrecio: ['', Validators.compose([Validators.maxLength(4), Validators.pattern('[0-9]*'), Validators.required])],
-      productCantidad: ['', Validators.compose([Validators.maxLength(3), Validators.pattern('[0-9]*'), Validators.required])],
       productDescripcion: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(80), Validators.required])]
     });
   }
@@ -173,6 +172,8 @@ export class RegisterProductsPage {
 
     this.statusInput = true;
     if (!this.productForm.valid) {
+      console.log(this.productForm.valid);
+      console.log(this.productForm.value);
       this.alertMessage("Imposible registrar verifique los campos de registro.")
     }
     else {
@@ -199,9 +200,7 @@ export class RegisterProductsPage {
       this.alertMessage("Imposible registrar verifique los campos de registro.")
     }
     else {
-      // datos habitacion
-      let estado = "Disponible";
-      let seccionubicacion = "Piso 2";
+
     
       var date = new Date().toUTCString();
       this.product.negocio = this.commerceOnly._id as any;

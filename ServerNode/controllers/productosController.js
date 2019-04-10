@@ -83,7 +83,6 @@ module.exports = async function (io) {
           producto.nombre = params.nombre;
           producto.negocio = params.negocio;
           producto.precio = params.precio;
-          producto.cantidad = params.cantidad;
           producto.tipo = await Tipo.findById(params.tipo);
           producto.foto = params.foto;
           producto.eliminado = { estado: false, razon: "" };
