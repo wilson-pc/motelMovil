@@ -7,8 +7,14 @@ import {
   GoogleMapOptions,
   CameraPosition,
   MarkerOptions,
-  Marker
+  Marker,
+  LatLng,
+  GoogleMapsMapTypeId
 } from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
+
+
 /**
  * Generated class for the MapsPage page.
  *
@@ -23,24 +29,84 @@ import {
 })
 export class MapsPage {
   map: GoogleMap;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private googleMaps: GoogleMaps) {
+  myPosition:any ={};
+  markers: any[] = [
+    {
+      position:{
+        latitude: -17.3666745,
+        longitude: -66.2387878,
+      },
+      title:'Point 1',
+      bindPopup:"<h1>Soy un popup NO SE SI FUNCIONARA</h1>"
+    },
+    {
+      position:{
+        latitude: -17.3706884,
+        longitude: -66.2397749,
+      },
+      title:'Point 2'
+    },
+    {
+      position:{
+        latitude: -17.391398,
+        longitude: -66.2407904,
+      },
+      title:'Point 3'
+    },
+    {
+      position:{
+        latitude: -17.3878887,
+        longitude: -66.223664,
+      },
+      title:'Point 4'
+    },
+  ];
+  constructor(public navCtrl: NavController,
+     public navParams: NavParams,
+     private googleMaps: GoogleMaps,
+     private geolocation:Geolocation) {
   }
 
   ionViewDidLoad(){
     this.loadMap();
+    //this.getCurrentPosition();
   }
 
   loadMap(){
 
     let mapOptions: GoogleMapOptions = {
+      mapType: GoogleMapsMapTypeId.TERRAIN,
       camera: {
         target: {
           lat: 43.0741904, // default location
           lng: -89.3809802 // default location
         },
         zoom: 18,
-        tilt: 30
+        tilt: 30,        
+      },
+      controls: {
+        'compass': true,
+        'myLocationButton': true,
+        'myLocation': true,   // (blue dot)
+        'indoorPicker': true,
+        'zoom': true,          // android only
+        'mapToolbar': true     // android only
       }
+      // gestures: {
+      //   scroll: true,
+      //   tilt: true,
+      //   zoom: true,
+      //   rotate: true
+      // },
+      // preferences: {
+      //   zoom: {
+      //     minZoom: 0,
+      //     maxZoom: 110,
+      //   },
+      //   building: false
+      // },
+      // styles: []
+      
     };
 
     this.map = this.googleMaps.create('map_canvas', mapOptions);
@@ -50,6 +116,12 @@ export class MapsPage {
     .then(() => {
       // Now you can use all methods safely.
       this.getPosition();
+      //use to markers Options
+     
+      this.markers.forEach(marker=>{
+        this.addMarker(marker);
+      });
+
     })
     .catch(error =>{
       console.log(error);
@@ -75,4 +147,13 @@ export class MapsPage {
     });
   }
 
+  addMarker(options){
+    let markerOptions: MarkerOptions = {
+      position: new LatLng(options.position.latitude, options.position.longitude),
+      title: options.title
+    };
+    this.map.addMarker(markerOptions);
+  }
+
+ 
 }
