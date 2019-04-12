@@ -1,7 +1,7 @@
+import { Negocio } from './../../models/Negocio';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavController, NavParams, AlertController, ViewController, ToastController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
-import { Negocio } from '../../models/Negocio';
 import { Observable, ReplaySubject } from 'rxjs';
 import { Tipo } from '../../models/TipoProducto';
 import { SocketServiceProduct } from '../../providers/socket-config/socket-config';
@@ -9,6 +9,7 @@ import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
 import { resizeBase64 } from 'base64js-es6';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ReservasHabitaciones } from '../../models/ReservasHabitaciones';
 
 @Component({
   selector: 'page-edit-products',
@@ -16,10 +17,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class EditProductsPage {
   @ViewChild('fileInput') fileInput: ElementRef;
-  productOnly: Productos;
+  producto: Productos;
   commerceOnly: Negocio;
   nombreimagen: string = "selecciona una foto";
-
+productId:String;
   submitAttempt: boolean;
   statusInput: boolean;
   productForm: any;
@@ -36,10 +37,12 @@ export class EditProductsPage {
     private formBuilder: FormBuilder,
     private toastCtrl: ToastController) {
     //Inicializacion
+    this.producto=new Productos();
     this.getCommerceAndProduct();
     this.connectionBackendSocket();
     this.typeProduct = new Tipo;
     this.validInputFormProducts();
+  
   }
 
   dismissModal(){
@@ -52,7 +55,7 @@ export class EditProductsPage {
       productImg: ['', Validators.compose([])],
       productTipoVal: ['', Validators.compose([])],
       productTipo: ['', Validators.compose([Validators.required])],
-      productPrecio: ['', Validators.compose([Validators.maxLength(4), Validators.pattern('[0-9]*'), Validators.required])],
+      productPrecio: ['', Validators.compose([Validators.required])],
       productCantidad: ['', Validators.compose([Validators.maxLength(3), Validators.pattern('[0-9]*'), Validators.required])],
       productDescripcion: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(80), Validators.required])]
     });
@@ -84,9 +87,12 @@ export class EditProductsPage {
   }
 
   async getCommerceAndProduct() {
-    this.productOnly = this.navParams.get("product");
+    this.producto = this.navParams.get("product");
+    console.log(this.producto);
+  //  this.productService.emit("sacar-producto", {id:this.producto._id});
     this.commerceOnly = this.navParams.get("commerce");
     this.getTypeProducts();
+  console.log(this.producto);
   }
 
   // Carga de la foto
@@ -94,13 +100,13 @@ export class EditProductsPage {
     // alert(event.srcElement.files[0].name);
     this.readFile(event.srcElement.files[0]).subscribe(data => {
       resizeBase64(data, 90, 60).then((result) => {
-        this.productOnly.foto = { miniatura: result, normal: "" }
+        this.producto.foto = { miniatura: result, normal: "" }
 
 
       });
       resizeBase64(data, 90, 60).then((result) => {
-        this.productOnly.foto.normal = result;
-        console.log(this.productOnly);
+        this.producto.foto.normal = result;
+        console.log(this.producto);
 
       });
       this.nombreimagen = event.srcElement.files[0].name;
@@ -124,16 +130,17 @@ export class EditProductsPage {
   //Consumos de Servicios
   updateProduct() {
     // Modificar producto
+    console.log(this.producto.estado);
     this.statusInput = true;
     if (!this.productForm.valid) {
       this.alertMessage("Imposible Actualizar verifique los campos de actualizacion.")
     }
     else {
       var date = new Date().toUTCString();
-      this.productOnly.negocio = this.commerceOnly._id as any;
-      this.productOnly.modificacion = { fecha: date };
+      this.producto.negocio = this.commerceOnly._id as any;
+      this.producto.modificacion = { fecha: date };
 
-      let data = this.productOnly;
+      let data = this.producto;
       var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ producto: data }), clave.clave);
       this.productService.emit("actualizar-producto", ciphertext.toString());
     }
@@ -181,7 +188,6 @@ export class EditProductsPage {
     this.typeProduct.negocio = this.commerceOnly.tipo.nombre;
     let data = this.typeProduct;
     this.productService.emit("registrar-tipo-producto", data);
-    this.getTypeProducts();
   }
 
   // Conexion con el Backend
@@ -189,6 +195,20 @@ export class EditProductsPage {
     // tipos de producto
     this.respuestaTipoProducto().subscribe((data: any) => {
       this.listTypeProduct = data;
+    });
+    this.respuestaSacarProducto().subscribe((data: Productos) => {
+     let dd=data.estado;
+     console.log(dd);
+     this.producto=new Productos;
+     this.producto.estado=dd;
+     this.producto.precio=data.precio;
+     this.producto._id=data._id;
+     this.producto.nombre=data.nombre;
+     this.producto.precioreserva=data.precioreserva;
+     this.producto.tipo=data.tipo;
+
+     console.log(this.producto);
+  
     });
 
     // agregar tipos de producto
@@ -198,7 +218,7 @@ export class EditProductsPage {
 
     // actualizar producto
     this.respuestaActualizarProducto().subscribe((data: any) => {
-      this.alertMessage("Producto '" + this.productOnly.nombre + "' , actualizado con exito");
+      this.alertMessage("Producto '" + this.producto.nombre + "' , actualizado con exito");
       this.viewCtrl.dismiss();
     });
   }
@@ -206,6 +226,16 @@ export class EditProductsPage {
   respuestaTipoProducto() {
     let observable = new Observable(observer => {
       this.productService.on('respuesta-listar-tiposproductos-negocio', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
+
+  respuestaSacarProducto() {
+    let observable = new Observable(observer => {
+      this.productService.on('respuesta-sacar-producto', (data) => {
+
         observer.next(data);
       });
     })

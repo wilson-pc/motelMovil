@@ -247,13 +247,13 @@ module.exports = async function (io) {
                        
           });
 
-          socket.on('denuncia-producto', async (data) => {
+          socket.on('denuncia-producto', async (datos) => {
             /*     try {
                        var datos = await Crypto.Desincryptar(data);
                        if (!datos.error) {*/
                          
                        
-                         var datos=JSON.parse(data);
+                //         var datos=JSON.parse(data);
                            
                           
                            var usuario=datos.idusuario;

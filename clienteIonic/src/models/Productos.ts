@@ -5,16 +5,17 @@ export class Productos{
     public _id:string;
     public nombre:string;   
     public negocio:Negocio;
-    public precio:{precio:Number,moneda:string}    
+    public precio:number;   
     public disponibilidad:string;
-    public valoracion:Number;
-    public reportes:Number;
-    public cantidad:Number;
+    public valoracion:number;
+    public reportes:number;
+    public cantidad:number;
     public tipo:Tipo;
+    public estado:string;
     public foto:{normal:string,miniatura:string};
     public descripcion:string;
-    public eliminado:{estado:Boolean,razon:string};
-    public creacion:{estado:Boolean,razon:string};
+    public eliminado:{estado:boolean,razon:string};
+    public creacion:{estado:boolean,razon:string};
     public modificacion:{fecha:Date,usuario:string};
 
 }

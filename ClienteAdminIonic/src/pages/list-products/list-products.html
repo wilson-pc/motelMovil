@@ -6,6 +6,13 @@
     <ion-title>
       <strong>Lista de Productos</strong>
     </ion-title>
+    <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="fileInput" type="file" (change)="onFileChange($event)" #fileInput
+    class="input-file" style="position:absolute; top: -999999px" />
+    <ion-buttons end *ngIf="cambio" >
+      <button (click)="filechoosser()" ion-button icon-only color="royal">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -37,27 +44,27 @@
     <ion-item *ngIf="listProducts.length != 0">
       <ion-label><b>N°</b></ion-label>
       <ion-label item-right><b>Nombre</b></ion-label>
-      <ion-label item-right><b>Producto</b></ion-label>
+      <ion-label item-right><b>Estado</b></ion-label>
     </ion-item>
 
     <ion-item-sliding *ngFor="let product of listProducts; let i=index">
       <ion-item (click)="infoProduct(product)">
         <ion-label>{{i+1}}</ion-label>
         <ion-label item-right>{{product.nombre}}</ion-label>
-        <ion-label item-right>{{product.cantidad}}</ion-label>
+        <ion-label item-right>{{product.estado}}</ion-label>
       </ion-item>
 
       <ion-item-options side="left">
         <ion-buttons>
           <button ion-button color="danger" (click)="deleteProduct(product)">
-            <ion-icon trash></ion-icon> Eliminar
+            <ion-icon trash></ion-icon> borrar
           </button>
         </ion-buttons>
       </ion-item-options>
       <ion-item-options side="right">
         <ion-buttons>
           <button ion-button (click)="updateProduct(product)">
-            <ion-icon info></ion-icon> Editar
+            <ion-icon info></ion-icon> actualizar
           </button>
         </ion-buttons>
       </ion-item-options>

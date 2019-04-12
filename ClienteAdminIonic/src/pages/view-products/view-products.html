@@ -51,8 +51,13 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label stacked>Cantidad:</ion-label>
-          <ion-label>{{productOnly.cantidad}}</ion-label>
+          <ion-label stacked>Estado:</ion-label>
+         
+          <ion-select [(ngModel)]="productOnly.estado" (ngModelChange)="changeEstado($event)" name="estado">
+            <ion-option value="casi agotado">casi agotado</ion-option>
+            <ion-option value="disponible">disponible</ion-option>
+            <ion-option value="agotado">agotado</ion-option>
+          </ion-select>
         </ion-item>
       </ion-col>
     </ion-row>
