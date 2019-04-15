@@ -6,6 +6,7 @@ import { SocketReservaService } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
+import { DetallesTiendaPage } from '../detalles-tienda/detalles-tienda';
 
 @IonicPage()
 @Component({
@@ -90,6 +91,10 @@ export class DescripcionProductoPage {
 
   respuestaReserva() {
     return this.productService.fromEvent<any> ('respuesta-reserva-producto').map(data=>data)
+  }
+
+  irdetallestienda(){
+    this.navCtrl.setRoot(DetallesTiendaPage);
   }
 
   ngOnDestroy() {

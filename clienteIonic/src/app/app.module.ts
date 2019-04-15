@@ -51,6 +51,7 @@ import { EditUserPage } from '../pages/edit-user/edit-user';
 import { DescriptionMotelPage } from '../pages/description-motel/description-motel';
 import { DescriptionLicoreriaPage } from '../pages/description-licoreria/description-licoreria';
 import { DescriptionSexshopPage } from '../pages/description-sexshop/description-sexshop';
+import { DetallesTiendaPage } from '../pages/detalles-tienda/detalles-tienda';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -92,7 +93,8 @@ export const firebaseConfig = {
     DescriptionLicoreriaPage,
     DescriptionSexshopPage,
     EditUserPage,
-    EditLoginPage
+    EditLoginPage,
+    DetallesTiendaPage
   ],
   imports: [
     BrowserModule,
@@ -137,8 +139,8 @@ export const firebaseConfig = {
     DescriptionSexshopPage,
     EditUserPage,
     ProfileUserPage,
-    EditLoginPage
-  
+    EditLoginPage,
+    DetallesTiendaPage
   ],
   providers: [
     StatusBar,
