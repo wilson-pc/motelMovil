@@ -129,7 +129,7 @@ exceltojson:any[]=[];
 
   }
   read(bstr: string) {
-    console.log("llega otra vez")
+
     this.exceltojson=[];
     /* read workbook */
     const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});

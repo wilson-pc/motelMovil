@@ -28,7 +28,8 @@ import {
   SocketServiceHomeService, 
   SocketServiceProduct, 
   SocketServiceUser, 
-  SocketServiceComportamiento } from '../providers/socket-config/socket-config';
+  SocketServiceComportamiento, 
+  SocketServiceReserva} from '../providers/socket-config/socket-config';
 import { UserOnlyProvider } from '../providers/user-only/user-only';
 import { ListProductsPage } from '../pages/list-products/list-products';
 import { CommerceProvider } from '../providers/commerce/commerce';
@@ -40,6 +41,7 @@ import { DenunciaPage } from '../pages/denuncia/denuncia';
 import { ReservaPage } from '../pages/reserva/reserva';
 import { BilleteraPage } from '../pages/billetera/billetera';
 import { ModalViewStatisticsPageModule } from '../pages/modal-view-statistics/modal-view-statistics.module';
+import { ReservationProvider } from '../providers/reservation/reservation';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -114,13 +116,16 @@ export const firebaseConfig = {
     SocketServiceProduct,
     SocketServiceUser,
     SocketServiceComportamiento,
+    SocketServiceReserva,
+    ReservationProvider,
     SplashScreen,
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     UserOnlyProvider,
     CommerceProvider,
-    ProductProvider
+    ProductProvider,
+    ReservationProvider
   ]
 })
 export class AppModule {}

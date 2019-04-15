@@ -16,38 +16,41 @@
         Reservas
       </ion-segment-button>
 
-      <ion-segment-button value="Entregado">
+      <ion-segment-button value="Entregado" (click)="getReservasCompletas()" >
         Entregados
       </ion-segment-button>
     </ion-segment>
   </div>
 
-  <div>
+  <!-- <div>
     <ion-searchbar (ionInput)="buscar($event)"></ion-searchbar>
-  </div><br>
+  </div><br> -->
 
   <div [ngSwitch]="tipo">
     <ion-list *ngSwitchCase="'Reserva'">
 
-      <ion-item>
+      <ion-item *ngFor="let item of Reservas" >
         <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
+          <img [src]="item.producto.foto.miniatura" />
         </ion-thumbnail>
 
         <ion-col>
           <ion-row>
-            <h2><b>Negocio: LUNA AZUL</b></h2>
+            <h2><b>Negocio: {{item.negocio.nombre}}</b></h2>
           </ion-row>
           <ion-row>
-            <h4><b>Producto: </b>Habitacion SUITE</h4>
+            <h4><b>Producto: </b>{{item.producto.nombre}}</h4>
           </ion-row>
           <ion-row>
+            <h4><b>Cantidad: </b>{{item.cantidad}}</h4>
+          </ion-row>
+          <!-- <ion-row>
             <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
-          </ion-row>
+          </ion-row> -->
           <ion-row>
             <ion-col>
               <button ion-button clear small color="default" icon-start>
-                109 Bs.
+                {{item.precioactual}} bs
               </button>
             </ion-col>
 
@@ -57,79 +60,51 @@
               </ion-item>
             </ion-col>-->
 
-            <ion-col>
-              <button ion-button small color="default">Confirmar</button>
+            <ion-col *ngIf="item.estado=='espera'" >
+              <button (click)="confirmarClick(item)"  ion-button small color="default">Confirmar</button>
+            </ion-col>
+            <ion-col *ngIf="item.estado=='confirmacion'" >
+              <button ion-button small color="default">esperando</button>
             </ion-col>
           </ion-row>
         </ion-col>
       </ion-item>
 
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
-        </ion-thumbnail>
-
-        <ion-col>
-          <ion-row>
-            <h2><b>Negocio: BAR AZUL</b></h2>
-          </ion-row>
-          <ion-row>
-            <h4><b>Producto: </b>CocaCola</h4>
-          </ion-row>
-          <ion-row>
-            <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <button ion-button clear small color="default" icon-start>
-                65 Bs.
-              </button>
-            </ion-col>
-
-            <ion-col>
-              <ion-item>
-                <ion-input type="number" placeholder="1">6</ion-input>
-              </ion-item>
-            </ion-col>
-
-            <ion-col>
-              <button ion-button small color="default">Confirmar</button>
-            </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-item>
-
+      
     </ion-list>
 
     <ion-list *ngSwitchCase="'Entregado'">
-
-      <ion-item>
+      <ion-item *ngFor="let item of reservasCompletas" >
         <ion-thumbnail item-start>
-          <img src="../../assets/imgs/licor.jpg" />
+          <img [src]="item.producto.foto.miniatura" />
         </ion-thumbnail>
 
         <ion-col>
           <ion-row>
-            <h2><b>Negocio: SECRETS</b></h2>
+            <h2><b>Negocio: {{item.negocio.nombre}}</b></h2>
           </ion-row>
           <ion-row>
-            <h4><b>Producto: </b>MaxMen</h4>
+            <h4><b>Producto: </b>{{item.producto.nombre}}</h4>
           </ion-row>
           <ion-row>
-            <h4><b>Fecha Entrega: </b>26-03-2019 15:00 hrs.</h4>
+            <h4><b>Cantidad: </b>{{item.cantidad}}</h4>
           </ion-row>
+          
+          <!-- <ion-row>
+            <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
+          </ion-row> -->
           <ion-row>
             <ion-col>
               <button ion-button clear small color="default" icon-start>
-                60 Bs.
+                {{item.precioactual}} bs
               </button>
             </ion-col>
 
-            <ion-col>
+            <!--<ion-col>
               <ion-item>
-                <ion-input type="number" placeholder="1">6</ion-input>
+                <ion-input type="number" placeholder="1">1</ion-input>
               </ion-item>
-            </ion-col>
+            </ion-col>-->
           </ion-row>
         </ion-col>
       </ion-item>

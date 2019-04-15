@@ -126,40 +126,40 @@ module.exports = async function (io) {
 
     socket.on('registrar-sa', async () => {
 
-     
-          var usuario = new Usuario();
-          usuario.nombre = "Super";
-          usuario.apellidos = "Admin";
-          usuario.genero = "otro";
-          usuario.ci = "9595633";
-          usuario.telefono = "45252523";
-          usuario.email = "sa@yandex.com";
-          usuario.login = { usuario: 'sa', password: '123', estado: false };
-          usuario.rol = await Rol.findById("5c45eed64d12261e10b57845");
 
-          
-              //encripta el pasword del usuario
-              bcrypt.hash(usuario.login.password, null, null, async function (error, hash) {
-                usuario.login.password = hash;
+      var usuario = new Usuario();
+      usuario.nombre = "Super";
+      usuario.apellidos = "Admin";
+      usuario.genero = "otro";
+      usuario.ci = "9595633";
+      usuario.telefono = "45252523";
+      usuario.email = "sa@yandex.com";
+      usuario.login = { usuario: 'sa', password: '123', estado: false };
+      usuario.rol = await Rol.findById("5c45eed64d12261e10b57845");
 
-                if (usuario.login.usuario != null) {
-                  //guarda al nuevo usuario en la bd
 
-                  usuario.save(async (error, nuevoUsuario) => {
-                    if (error) {
-                      console.log(error);
-                      io.to(socket.id).emit('respuesta-crear', { error: "Error no se pudo crear el registro" });
+      //encripta el pasword del usuario
+      bcrypt.hash(usuario.login.password, null, null, async function (error, hash) {
+        usuario.login.password = hash;
 
-                    } else {
-                      
-                      console.log("exito ");
-                      io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
-                      io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
-                    }
-                  })
-                }
+        if (usuario.login.usuario != null) {
+          //guarda al nuevo usuario en la bd
 
-              });
+          usuario.save(async (error, nuevoUsuario) => {
+            if (error) {
+              console.log(error);
+              io.to(socket.id).emit('respuesta-crear', { error: "Error no se pudo crear el registro" });
+
+            } else {
+
+              console.log("exito ");
+              io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
+              io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
+            }
+          })
+        }
+
+      });
 
       //console.log(req.body);
     });
@@ -216,7 +216,7 @@ module.exports = async function (io) {
                           var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                         }
                       }
-                     
+
                       io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
                       console.log("registro con exito");
                       io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
@@ -323,18 +323,18 @@ module.exports = async function (io) {
 
 
               io.to(socket.id).emit('respuesta-eliminar-usuario', { exito: "eliminado con exito" });
-              
-      Usuario.find({ "rol.rol": "Admin", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
-        if (error) {
-          // res.status(500).send({ mensaje: "Error al listar" })
-        } else {
-          if (!lista) {
-            //   res.status(404).send({ mensaje: "Error al listar" })
-          } else {
-            io.to(socket.id).emit('respuesta-listado', lista);
-          }
-        }
-      });
+
+              Usuario.find({ "rol.rol": "Admin", "eliminado.estado": false }, { foto: 0 }, function (error, lista) {
+                if (error) {
+                  // res.status(500).send({ mensaje: "Error al listar" })
+                } else {
+                  if (!lista) {
+                    //   res.status(404).send({ mensaje: "Error al listar" })
+                  } else {
+                    io.to(socket.id).emit('respuesta-listado', lista);
+                  }
+                }
+              });
             }
           })
 
@@ -628,7 +628,7 @@ module.exports = async function (io) {
           var usuario = params.usuario;
           var pass = params.password;
           var tipo = params.tipo;
-   
+
           Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
@@ -649,13 +649,13 @@ module.exports = async function (io) {
                   var usuario = new Usuario();
                   usuario._id = user._id;
                   usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
-               console.log(usuario.login.password + " f",pass);
+                  console.log(usuario.login.password + " f", pass);
 
-                  bcrypt.compare(pass, user.login.password, function (error, ok,ss) {
+                  bcrypt.compare(pass, user.login.password, function (error, ok, ss) {
                     if (ok) {
                       console.log("entra");
                       Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
-                        
+
                         io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
                         //  res.status(200).send({ token: token.crearToken(user), datos:user });
                       });
