@@ -70,6 +70,56 @@ module.exports = async function (io) {
         console.log(e);
       }
     });
+
+
+    socket.on('importar-productos', async (data) => {
+
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        var idnegocios="";
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+ 
+          for (let index = 0; index < datos.length; index++) {
+           idnegocios=datos[index].tipo.idnegocio;
+           var tipo=await Tipo.findOne({tipo:datos[index].tipo.tipo});
+           console.log(tipo);
+           if(tipo!=null){
+            datos[index].tipo=tipo;
+           }else{
+             var tipos=new Tipo();
+             tipos.tipo=datos[index].tipo.tipo;
+             tipos.tiponegocio=datos[index].tipo.negocio;
+            datos[index].tipo=await tipos.save();
+           }
+            
+          }
+         
+
+        Producto.create(datos,async (error, nuevoProducto) => {
+            if (error) {
+              console.log(error);
+              io.emit('respuesta-importar-productos',{error:"no se pudo importar el excel"});
+            } else {
+            
+              console.log("nuevo producto creado");
+              var negocio = await Negocio.findByIdAndUpdate(idnegocios, { $inc: { productos: datos.length } });
+              console.log("registro exitoso");
+              io.emit('respuesta-importar-productos', {exito:"guardado"});
+            }
+          })
+
+        }
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+
+      //console.log(req.body);
+
+
+
+    });
     socket.on('registrar-producto', async (data) => {
 
       try {
@@ -430,7 +480,7 @@ module.exports = async function (io) {
     });
     //
     socket.on('listar-producto-negocio', async (data) => {
-
+    console.log(data);
   
       Producto.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
 

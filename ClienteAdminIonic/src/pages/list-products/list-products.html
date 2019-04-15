@@ -6,6 +6,13 @@
     <ion-title>
       <strong>Lista de Productos</strong>
     </ion-title>
+    <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="fileInput" type="file" (change)="onFileChange($event)" #fileInput
+    class="input-file" style="position:absolute; top: -999999px" />
+    <ion-buttons end *ngIf="cambio" >
+      <button (click)="filechoosser()" ion-button icon-only color="royal">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

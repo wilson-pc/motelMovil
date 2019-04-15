@@ -52,6 +52,7 @@ import { DescriptionMotelPage } from '../pages/description-motel/description-mot
 import { DescriptionLicoreriaPage } from '../pages/description-licoreria/description-licoreria';
 import { DescriptionSexshopPage } from '../pages/description-sexshop/description-sexshop';
 import { DetallesTiendaPage } from '../pages/detalles-tienda/detalles-tienda';
+import {Geolocation} from '@ionic-native/geolocation/ngx'
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -162,7 +163,8 @@ export const firebaseConfig = {
     SocketLoginService,
     UsuarioProvider,
     conexionSocketComportamiento,
-    SocketReservaService
+    SocketReservaService,
+    Geolocation
   ]
 })
 export class AppModule {}
