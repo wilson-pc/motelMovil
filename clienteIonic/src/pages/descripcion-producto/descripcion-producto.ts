@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ViewController, ToastController, AlertController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Observable, Subscription } from 'rxjs';
-import { SocketReservaService } from '../../services/socket-config.service';
+import { SocketReservaService, conexionSocketComportamiento } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
@@ -19,6 +19,7 @@ export class DescripcionProductoPage {
   product: Productos;
   suscripctionSocket: Subscription;
   cantidad:number[]=[];
+  motivo: string;
 
   constructor(
     public navCtrl: NavController,
@@ -26,7 +27,9 @@ export class DescripcionProductoPage {
     public platform: Platform,
     public viewCtrl: ViewController,
     public toastCtrl: ToastController,
+    public alertCtrl: AlertController,
     public productService: SocketReservaService,
+    private provedorFavoritos: conexionSocketComportamiento,
     public userService: UsuarioProvider) {
     //Inicializacion del constructor
     this.connectionBackendSocket()
@@ -58,6 +61,38 @@ export class DescripcionProductoPage {
     console.log(this.product);
   }
 
+  //Confirmacion de Denuncia
+  showPrompt() {
+    const prompt = this.alertCtrl.create({
+      title: '¿Denunciar producto?',
+      message: "Escribe el motivo de la denuncia: ",
+      inputs: [
+        {
+          name: 'motivo',
+          placeholder: 'Motivo'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Enviar',
+          handler: data => {
+            console.log('Saved clicked');
+            console.log(data.motivo);
+            this.motivo = data.motivo;
+            this.reportProduct()
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
   //Consumo Socket 
   reserveProduct() {
     let reserva = {
@@ -69,6 +104,21 @@ export class DescripcionProductoPage {
     this.productService.emit("reserva-producto", reserva)
   }
 
+  reportProduct() {
+    if(this.userService.UserSeCion.datos){
+      let denuncia = {
+        idusuario: this.userService.UserSeCion.datos._id,
+        idproducto: this.product._id,
+        detalle: this.motivo
+      }
+      this.provedorFavoritos.emit('denuncia-producto', denuncia);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
+
+  }
+
   // Respuestas Socket
   connectionBackendSocket() {
     this.suscripctionSocket = this.respuestaReserva().subscribe((data: any) => {
@@ -76,6 +126,15 @@ export class DescripcionProductoPage {
         this.presentToast(data.error);
       }else{
         this.presentToast("Producto Reservado");
+        this.dismissModal();
+      }
+    });
+
+    this.suscripctionSocket = this.respuestaDenuncia().subscribe((data: any) => {
+      if (data.error) {
+        this.presentToast(data.error);
+      } else {
+        this.presentToast("Producto Denunciado");
         this.dismissModal();
       }
     });
@@ -91,6 +150,10 @@ export class DescripcionProductoPage {
 
   respuestaReserva() {
     return this.productService.fromEvent<any> ('respuesta-reserva-producto').map(data=>data)
+  }
+
+  respuestaDenuncia() {
+    return this.provedorFavoritos.fromEvent<any>('respuesta-denuncia-negocio').map(data => data)
   }
 
   irdetallestienda(){
