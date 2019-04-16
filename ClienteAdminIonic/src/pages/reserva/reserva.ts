@@ -32,15 +32,14 @@ export class ReservaPage  implements OnDestroy {
   }
   getReservas(){
     this.ReservaSubscription.push(this.reservaService.getReservas().subscribe((data)=>{
-      console.log(data);
+      this.reservasCompletas=[];
      if(data.error){
         console.log(data);
      }else{
        data.forEach(element => {
-        if(element.estado=="espera" ||element.estado=="confirmacion"){
+        if(element.estado=="espera" ||element.estado=="rechazado"){
           this.Reservas.push(element);
         }else{
-          this.reservasCompletas=[];
           this.reservasCompletas.push(element);
         }
        });
@@ -53,22 +52,28 @@ export class ReservaPage  implements OnDestroy {
             
           }else{
             let reser=this.Reservas.filter(reser=>reser._id==data._id)[0];
-           
             let index =this.Reservas.indexOf(reser);
-          
-            this.Reservas[index]=data;
+            if(data.estado=="aceptado"){
+               this.Reservas.splice(index,1);
+            }else{
+              this.Reservas[index]=data;
+            }
           }
       })
     )
  
   }
   confirmarClick(item){
-    let datos={_id:item._id,estado:"confirmacion",cliente:item.cliente._id}
+    let datos={_id:item._id,estado:"aceptado",cliente:item.cliente._id}
+    this.reservaService.sendEmitCambiarReserva(datos);
+  }
+  CancelarClick(item){
+    let datos={_id:item._id,estado:"rechazado",cliente:item.cliente._id}
     this.reservaService.sendEmitCambiarReserva(datos);
   }
   getReservasCompletas(){
     console.log("send Emit");
-    this.reservaService.sendEmitGetReservas({iddueno:this.userOnly.userSesion.datos._id,estado:"completa"});
+    this.reservaService.sendEmitGetReservas({iddueno:this.userOnly.userSesion.datos._id,estado:"aceptado"});
   }
   ngOnDestroy(): void {
     this.ReservaSubscription.forEach((subscription: Subscription) => {

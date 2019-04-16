@@ -212,7 +212,7 @@ module.exports = async function (io) {
         console.log(datos);
 
         if (datos.estado == "espera") {
-          query = { dueno: datos.iddueno, $or: [{ estado: datos.estado }, { estado: "confirmacion" }] };
+          query = { dueno: datos.iddueno, $or: [{ estado: datos.estado }, { estado: "rechazado" }] };
         } else {
           query = { dueno: datos.iddueno, estado: datos.estado }
         }

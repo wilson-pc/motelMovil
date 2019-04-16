@@ -47,3 +47,4 @@ export class SocketServiceReserva extends Socket {
     })
   }
 }
+

@@ -243,11 +243,30 @@ module.exports = async function (io) {
 
     });
 
-    socket.on('denuncia-producto', async (data) => {
+    socket.on('listar-denuncia', async (datos) => {
+      console.log(datos);
+      if(datos.idcliente){
+
+      }else{
+        var negocios = await Negocio.find({titular:datos.iddueno},{titular:1})
+        console.log(negocios);
+    /*  Producto.find({"denuncias.usuario":{ $all: [usuario] }},{},(error,lista)=>{
+          if(error){
+            io.to(socket.id).emit('respuesta-listar-denuncia', { error: "error listar Denuncias" });
+          }else{
+            io.to(socket.id).emit('respuesta-listar-denuncia', { datos: lista });
+          }
+
+        })*/
+      }
+  
+    });
+
+    socket.on('denuncia-producto', async (datos) => {
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
-              var datos=JSON.parse(data);
+           //   var datos=JSON.parse(data);
       var usuario = datos.idusuario;
       var fecha = new Date().toUTCString();
 
