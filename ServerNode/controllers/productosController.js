@@ -301,6 +301,7 @@ module.exports = async function (io) {
       console.log(data);
       Producto.findOne({ _id: data.id, "eliminado.estado": false }, { denuncias: 0 }, function (error, dato) {
         if (error) {
+          console.log(error);
           // res.status(500).send({ mensaje: "Error al listar" })
         } else {
           if (!dato) {
