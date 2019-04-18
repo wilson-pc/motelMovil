@@ -127,7 +127,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     if(this.userService.UserSeCion.datos){
       let denuncia = {
         idusuario: this.userService.UserSeCion.datos._id,
-        //idproducto: this.product._id,
+     //   idproducto: this.product._id,
         detalle: this.motivo
       }
       this.provedorFavoritos.emit('denuncia-producto', denuncia);
