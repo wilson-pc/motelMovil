@@ -3,6 +3,9 @@
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+   <string>We use your location for full functionality of certain app features.</string>
+    </edit-config>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

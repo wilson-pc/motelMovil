@@ -106,7 +106,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
   }
 
   irHome(){
-    this.nav.setRoot(TopsPage);
+    this.nav.setRoot(TabsPage);
   }
 
 

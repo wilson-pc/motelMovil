@@ -338,7 +338,7 @@ module.exports = async function (io) {
             "descripcion": "$descripcion"
           }
         }, {
-          $skip: 10 * data.parte
+          $skip: 10 * data.parte 
         }, {
           $limit: 10
         }
