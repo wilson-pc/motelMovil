@@ -58,15 +58,8 @@ export class SexShopPage {
 
   // ionViewWillEnter(){  
   //   //   this.response();
-  //   }
+  //   }    
     
-     ionViewDidLeave() {
-     
-     this.parte=0;
-     this.aux=0;
-     
-    }
-   
     presentModal(item) {
       const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
       modal.present();

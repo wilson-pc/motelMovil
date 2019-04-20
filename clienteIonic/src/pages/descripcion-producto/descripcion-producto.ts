@@ -157,6 +157,7 @@ export class DescripcionProductoPage {
   }
 
   irdetallestienda(){
+    this.dismissModal();
     this.navCtrl.setRoot(DetallesTiendaPage);
   }
 
