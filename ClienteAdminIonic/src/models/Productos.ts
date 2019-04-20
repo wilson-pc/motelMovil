@@ -15,7 +15,7 @@ export class Productos{
     public modificacion:{fecha:string};
 
     public estado:string;
-    public fotos:[string];    
+    public fotos:string[];    
     public seccionubicacion:string;    
 }
 /**

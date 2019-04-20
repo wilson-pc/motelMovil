@@ -40,7 +40,7 @@ export class DenunciaPage implements OnDestroy {
   });
   }
   sendEmitDenunciar(){
-    console.log("kcmkwmvrmvioenmi");
+    
     this.SocketDenuncia.emit("listar-denuncia",{iddueno:this.userOnly.userSesion.datos._id});
     //this.SocketDenuncia.emit("listar-denuncia",{idcliente:"5cacaf34bd59db27d46db7c7"});
    // this.socketProducto.emit("sacar-producto",{id:"5cac0bdcd0cdd2135474ee1b"})

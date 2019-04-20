@@ -127,7 +127,7 @@ module.exports = async function (io) {
 
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          console.log("|-> ", datos);
+         
           var producto = new Producto();
           var params = datos.producto;
           producto.nombre = params.nombre;
@@ -135,6 +135,7 @@ module.exports = async function (io) {
           producto.precio = params.precio;
           producto.tipo = await Tipo.findById(params.tipo);
           producto.foto = params.foto;
+          producto.fotos=params.fotos;
           producto.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           producto.creacion = params.creacion
@@ -483,7 +484,7 @@ module.exports = async function (io) {
     socket.on('listar-producto-negocio', async (data) => {
       console.log(data);
 
-      Producto.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.normal": 0 }, function (error, lista) {
+      Producto.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.normal": 0,fotos:0 }, function (error, lista) {
 
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })

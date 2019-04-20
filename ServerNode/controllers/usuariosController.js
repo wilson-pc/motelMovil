@@ -628,11 +628,12 @@ module.exports = async function (io) {
           var usuario = params.usuario;
           var pass = params.password;
           var tipo = params.tipo;
+          console.log(tipo);
 
           Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
-              console.log(error);
+          
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
             } else {
@@ -649,7 +650,7 @@ module.exports = async function (io) {
                   var usuario = new Usuario();
                   usuario._id = user._id;
                   usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
-                  console.log(usuario.login.password + " f", pass);
+              
 
                   bcrypt.compare(pass, user.login.password, function (error, ok, ss) {
                     if (ok) {
@@ -706,7 +707,7 @@ module.exports = async function (io) {
             } else {
 
               if (user == null) {
-                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exite" });
+                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no existe" });
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
