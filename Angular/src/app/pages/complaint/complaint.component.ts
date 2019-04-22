@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SocketConfigComportamientoService } from '../../socket-config.service';
+import { Productos } from '../../models/Productos';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-complaint',
@@ -10,21 +13,25 @@ export class ComplaintComponent implements OnInit {
   titulo: string;
 	public isCollapsed = true;
 	modal: NgbModalRef;
-	closeResult: string;
+  closeResult: string;
+  listComplaints: Productos[];
 
 	elements: any = [
 		{  producto: 'Rom Abuelo', nombreNegocio: 'LicoreriaCarla', negocio: 'Licoreria', admin: 'Carla', cantidadDenuncias: '65'}
 		//user, pass
 	];
 	// Cabezeras de los elementos
-	headElements = ['Nro', 'Producto', 'Negocio', 'Tipo Negocio', 'Administrador', 'Denuncias'];
-  constructor(private modalService: NgbModal) { 
+	headElements = ['Nro', 'Producto', 'Negocio', 'Tipo Negocio', 'Denuncias'];
+  constructor(private modalService: NgbModal, private socketComportamiento: SocketConfigComportamientoService) { 
     this.titulo = "ADMINISTRACION DE DENUNCIAS"
+    this.listComplaints = [];
+    // funcion para cargar datos en la lista
+    this.conn();
+    this.getComplaints();
   }
 
 	ngOnInit() { 
-		// funcion para cargar datos en la lista
-		this.getAdmin();
+		
 	}
 
 	// ACCIONES DE LOS MODALS
@@ -46,12 +53,26 @@ export class ComplaintComponent implements OnInit {
 	}
 
 	// COSUMO DE SERVICIOS
+  getComplaints() {
+    this.socketComportamiento.emit("listar-denuncia", []);
+  }
 
+  conn() {
+    this.listComplaints = [];
+    this.respuestaListarDenuncias().subscribe((data: any[]) => {
+      this.listComplaints = data;
+    });
+  }
+
+  respuestaListarDenuncias() {
+    let observable = new Observable(observer => {
+      this.socketComportamiento.on('respuesta-listar-denuncia', (data) => {
+        observer.next(data);
+      });
+    })
+    return observable;
+  }
 	delete(){
-
-	}
-	
-	getAdmin(){
 
 	}
 }

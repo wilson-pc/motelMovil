@@ -650,8 +650,6 @@ module.exports = async function (io) {
                   var usuario = new Usuario();
                   usuario._id = user._id;
                   usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
-              
-
                   bcrypt.compare(pass, user.login.password, function (error, ok, ss) {
                     if (ok) {
                       console.log("entra");
@@ -750,6 +748,41 @@ module.exports = async function (io) {
         console.log(e);
       }
     })
+
+    socket.on('suspender-usuario', async (data) => {
+
+      try {
+        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        if (bytes.toString()) {
+          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          var usuario = new Usuario();
+          var params = datos.usuario;
+          usuario._id = params._id;
+          usuario.suspendido=params.suspendido;
+          //guarda al nuevo usuario en la bd
+
+          Usuario.findByIdAndUpdate(params._id, usuario, { new: true }, async (error, actualizado) => {
+            if (error) {
+              io.to(socket.id).emit('respuesta-suspender-usuario', { mensaje: "error al actualizar datos usuario" });
+              // res.status(500).send({ mensaje: "error al guradar" })
+            } else {
+              console.log(actualizado);
+              io.to(socket.id).emit('respuesta-suspender-usuario', { exito: "actualizado con exito" });
+
+              io.emit('respuesta-suspender-usuario', actualizado);
+            }
+          })
+
+        }
+        else {
+
+        }
+      } catch (e) {
+        console.log(e);
+      }
+
+      //console.log(req.body);
+    });
 
 
     socket.on('cerrar-secion', async (data) => {

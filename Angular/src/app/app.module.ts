@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
 import { WebComponent } from './web/web.component';
 import { LoginComponent } from './login/login.component';
-import { SocketConfigService, SocketConfigService2, SocketConfigService3, SocketConfigHomeService } from './socket-config.service';
+import { SocketConfigService, SocketConfigService2, SocketConfigService3, SocketConfigHomeService, SocketConfigComportamientoService } from './socket-config.service';
 import { Error404Component } from './pages/error404/error404.component';
 import { RecuperacionComponent } from './recuperacion/recuperacion.component';
 import { OwnerService } from './services/owner.service';
@@ -37,7 +37,7 @@ import { OwnerService } from './services/owner.service';
     AppRoutingModule
     
   ],
-  providers: [SocketConfigService,OwnerService,SocketConfigService2,SocketConfigService3,SocketConfigHomeService,
+  providers: [SocketConfigService,OwnerService,SocketConfigService2,SocketConfigService3,SocketConfigHomeService,SocketConfigComportamientoService,
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy
