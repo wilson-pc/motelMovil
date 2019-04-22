@@ -204,7 +204,7 @@ productId:String;
      this.producto.precio=data.precio;
      this.producto._id=data._id;
      this.producto.nombre=data.nombre;
-     this.producto.precioReserva=data.precioReserva;
+     this.producto.precioreserva=data.precioreserva;
      this.producto.tipo=data.tipo;
 
      console.log(this.producto);

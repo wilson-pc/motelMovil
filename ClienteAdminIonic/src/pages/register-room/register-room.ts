@@ -63,16 +63,12 @@ export class RegisterRoomPage {
 this.mensaje="guardado con exito"
 
  console.log(dato);
-
   }
   filechoosser2() {
     let options = {
       maximumImagesCount: 10,
 
     }
-
-    
-
     this.imagePicker.getPictures(options)
       .then((results) => {
         for (let index = 0; index < results.length; index++) {
@@ -99,9 +95,6 @@ this.mensaje="guardado con exito"
 
     }
   }
-
-
-
   async fileChange(event) {
     // alert(event.srcElement.files[0].name);
     this.readFile(event.srcElement.files[0]).subscribe(data => {

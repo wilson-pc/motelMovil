@@ -6,7 +6,10 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
     <ion-title>denuncia</ion-title>
   </ion-navbar>
 
@@ -14,5 +17,24 @@
 
 
 <ion-content padding>
+    <ion-item *ngFor="let item of Denuncias" >
+        <ion-thumbnail item-start>
+          <img [src]="item.foto.miniatura" />
+        </ion-thumbnail>
 
+        <ion-col>
+          <ion-row>
+           
+          </ion-row>
+          <ion-row>
+            <h4><b>Producto: </b>{{item.nombre}}</h4>
+          </ion-row>
+          <ion-row>
+            <h4><b>Denuncias: </b>{{item.denuncias}}</h4>
+          </ion-row>
+          <!-- <ion-row>
+            <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>
+          </ion-row> -->
+        </ion-col>
+      </ion-item>
 </ion-content>

@@ -17,8 +17,8 @@
         Reservas
       </ion-segment-button>
 
-      <ion-segment-button value="Entregado">
-        Entregados
+      <ion-segment-button value="Entregado" (click)="getListReserve('aceptado')" >
+        Aceptados
       </ion-segment-button>
     </ion-segment>
   </div>
@@ -58,8 +58,11 @@
               </button>
             </ion-col>
 
-            <ion-col>
-              <button ion-button small color="default">Confirmar</button>
+            <ion-col *ngIf="reserve.estado=='espera'" >
+              <button ion-button small color="default"> esperando confirmacion</button>
+            </ion-col>
+            <ion-col *ngIf="reserve.estado=='rechazado'" >
+              <button ion-button small color="default"> Rechazado</button>
             </ion-col>
           </ion-row>
         </ion-col>

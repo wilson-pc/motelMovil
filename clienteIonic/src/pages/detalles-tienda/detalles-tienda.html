@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle (click)="atras()">
+      <ion-icon md="md-arrow-back"></ion-icon>
+    </button>
+    <ion-title>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button tappable (click)="presentNotifications($event)">
+        <ion-icon name="notifications"></ion-icon>
+      </button>
+      <button ion-button tappable (click)="goToAccount()">
+        <ion-icon name="cog"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header> 
+
+
+<ion-content padding>
+  <div>
+    <img class="centrado" src="../../assets/imgs/logo.png" />
+    <h2>Todo lo que puedas coger</h2>
+  </div>
+  
+    
+    <p>Direccion: Av. America</p>
+    <a href="https://goo.gl/maps/AbB8eqen3EG2" target="_blank">Google Maps</a>
+    <p>Telefono: 4542831</p>
+    <br>
+    <ion-list>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="../../assets/imgs/logo.png">
+        </ion-thumbnail>
+        <h2>Globos</h2>
+        <p>Super Perforacion</p>
+        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="../../assets/imgs/logo.png">
+        </ion-thumbnail>
+        <h2>Globos</h2>
+        <p>Super Perforacion</p>
+        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="../../assets/imgs/logo.png">
+        </ion-thumbnail>
+        <h2>Globos</h2>
+        <p>Super Perforacion</p>
+        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+        <img src="../../assets/imgs/logo.png">
+        </ion-thumbnail>
+        <h2>Globos</h2>
+        <p>Super Perforacion</p>
+        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
+      </ion-item>
+    </ion-list>
+</ion-content>

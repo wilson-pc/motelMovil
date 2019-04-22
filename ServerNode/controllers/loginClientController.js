@@ -204,7 +204,7 @@ module.exports = async function (io) {
             } else {
 
               if (user == null) {
-                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exite" });
+                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exsite" });
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {

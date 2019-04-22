@@ -38,10 +38,16 @@
         </ion-col>
       </ion-row>
 
+      <ion-item *ngIf="commerceOnly.tipo.nombre=='Motel'" (click)="imageChooser()" >
+        <ion-label floating>fotos:</ion-label>
+        <ion-input [(ngModel)]="fotosestado" formControlName="photos" name="fotos" disabled="true" type="text"></ion-input>
+      </ion-item>
+
       <ion-item>
         <ion-label floating>Nombre:</ion-label>
         <ion-input [(ngModel)]="product.nombre" formControlName="productNombre" name="nombre" type="text"></ion-input>
       </ion-item>
+
       <!--alert-->
       <ion-item no-lines
         *ngIf="!productForm.controls.productNombre.valid  && (productForm.controls.productNombre.dirty || statusInput)">

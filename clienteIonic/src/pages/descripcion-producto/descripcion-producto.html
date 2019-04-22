@@ -64,7 +64,7 @@
           <ion-row>
             <ion-col></ion-col>
             <ion-col>
-              <button ion-button color="danger">Ver Tienda</button>
+              <button ion-button color="danger" (click)="irdetallestienda()">Ver Tienda</button>
             </ion-col>
           </ion-row>
         </ion-card-content>
@@ -90,6 +90,7 @@
           </ion-row>
         </ion-card-content>
       </ion-card>
+      <button ion-button color="danger" (click)="showPrompt()">Denunciar</button>
       <!--Fin de card con estrella-->
     </ion-thumbnail>
 

@@ -39,3 +39,12 @@ export class SocketServiceComportamiento extends Socket {
     })
   }
 }
+
+export class SocketServiceReserva extends Socket {
+  constructor() {
+    super({
+      url: RutaServer.socket + "reservas", options: {}
+    })
+  }
+}
+
