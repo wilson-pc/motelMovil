@@ -232,6 +232,7 @@ module.exports = async function (io) {
       Negocio.findOneAndUpdate({ _id: negocio }, { $push: { visitas: visita } }, { new: true }, (error, actualizado) => {
         if (error) {
           io.to(socket.id).emit('respuesta-visitar-negocio', { error: "error contar visita" });
+
           //    res.status(500).send({ mensaje: "error al guradar" })
         } else {
           console.log(actualizado);
@@ -243,26 +244,143 @@ module.exports = async function (io) {
 
     });
 
-     //LISTAR TODAS LAS DENUNCIAS
-     socket.on('listar-denuncias', async (data) => {
+    socket.on('listar-denuncia', async (datos) => {
+    console.log(datos);
+      if (datos.idcliente) {
+  /*    Producto.find({"denuncias.usuario": { $all: [datos.idcliente]}},{denuncias:$size},(error,data)=>{
+           io.to(socket.id).emit('respuesta-listar-denuncia', { datos: data });
+        })*/
+        const ObjectId = mongoose.Types.ObjectId;
+        var producto = await Producto.aggregate([
+          {
+            $match: {
+              "denuncias.usuario": { $all: [ObjectId(datos.idcliente)]},
+              "eliminado.estado": false,
+              
+            }
+          },
+          {
+            $project: {
+              _id: "$_id",
+              "denuncias": { $size: "$denuncias" },
+              "likes": { $size: "$valoracion.usuario" },
+              "dislike": { $size: "$desvaloracion.usuario" },
+              "eliminado": "$eliminado",
+              "foto": { miniatura: "$foto.miniatura" },
+              "creacion": "$creacion",
+              "modificacion": "$modificacion",
+              "nombre": "$nombre",
+              "negocio": "$negocio",
+              "estado": "$estado",
+              "precio": "$precio",
+              "tipo": "$tipo",
+              "descripcion": "$descripcion"
+            }
+          },
+          { $sort: { "denuncias": 1 } },
 
-      console.log("entraste lista", data);
-      try {
-        Producto.find({ "eliminado.estado": false }, (error, denuncias) => {
-          if (error) {
-            io.to(socket.id).emit('respuesta-listar-denuncias', { error: "error al listar" });
-            //    res.status(500).send({ mensaje: "error al guradar" })
-          } else {
-            //console.log(denuncias);
-            io.to(socket.id).emit('respuesta-listar-denuncias', { datos: denuncias });
-            //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+        ])
+ 
+        io.to(socket.id).emit('respuesta-listar-denuncia', { datos: producto });
+      } else if(datos.iddueno){
+        var negocios = await Negocio.find({ titular: datos.iddueno }, { titular: 1 })
+     
+        const ObjectId = mongoose.Types.ObjectId;
+        var productos=[];
+        for (let index = 0; index < negocios.length; index++) {
+          const element = negocios[index];
+     
+          var producto = await Producto.aggregate([
+            {
+              $match: {
+                negocio: ObjectId(element._id),
+                "denuncias.0": { "$exists": true },
+                "eliminado.estado": false,
+                
+              }
+            },
+            {
+              $project: {
+                _id: "$_id",
+                "denuncias": { $size: "$denuncias" },
+                "likes": { $size: "$valoracion.usuario" },
+                "dislike": { $size: "$desvaloracion.usuario" },
+                "eliminado": "$eliminado",
+                "foto": { miniatura: "$foto.miniatura" },
+                "creacion": "$creacion",
+                "modificacion": "$modificacion",
+                "nombre": "$nombre",
+                "negocio": "$negocio",
+                "estado": "$estado",
+                "precio": "$precio",
+                "tipo": "$tipo",
+                "descripcion": "$descripcion"
+              }
+            },
+            { $sort: { "denuncias": 1 } },
 
+          ])
+
+          // var producto=await Producto.find({negocio:ObjectId(element._id),"denuncias.0": { "$exists": true }})
+ for (let index2 = 0; index2 < producto.length; index2++) {
+   const element2 = producto[index2];
+   productos.push(element2); 
+ }
+      
+        }
+
+    
+        io.to(socket.id).emit('respuesta-listar-denuncia', { datos: productos });
+        /*  Producto.find({"denuncias.usuario":{ $all: [usuario] }},{},(error,lista)=>{
+              if(error){
+                io.to(socket.id).emit('respuesta-listar-denuncia', { error: "error listar Denuncias" });
+              }else{
+                io.to(socket.id).emit('respuesta-listar-denuncia', { datos: lista });
+              }
+    
+            })*/
+      }else{
+        const ObjectId = mongoose.Types.ObjectId;
+        var producto = await Producto.aggregate([
+          {
+            $match: {
+              "denuncias.0": { "$exists": true },
+              "eliminado.estado": false,
+              
+            }
+          },
+ {
+          "$lookup": {
+            "from": "negocios", 
+            "localField": "negocio", 
+            "foreignField": "_id", 
+            "as": "negociodata"
           }
-        })
-      } catch (error) {
-        console.log("error");
-      }
+        },
+        
+        { $project: {
+              _id: "$_id",
+              "denuncias": { $size: "$denuncias" },
+              "likes": { $size: "$valoracion.usuario" },
+              "dislike": { $size: "$desvaloracion.usuario" },
+              "eliminado": "$eliminado",
+              "foto": { miniatura: "$foto.miniatura" },
+              "creacion": "$creacion",
+              "modificacion": "$modificacion",
+              "nombre": "$nombre",
+              "negocio": {nombre:{ $arrayElemAt: [ "$negociodata.nombre", 0 ] },"_id":{ $arrayElemAt: [ "$negociodata._id", 0 ] }},
+              "estado": "$estado",
+              "precio": "$precio",
+              "tipo": "$tipo",
+              "descripcion": "$descripcion"
+             }
+         },
+          { $sort: { "denuncias": 1 } },
 
+        ])
+        console.log(producto);
+        io.to(socket.id).emit('respuesta-listar-denuncia', { datos: producto });
+      }
 
     });
 
@@ -270,28 +388,28 @@ module.exports = async function (io) {
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
-           //   var datos=JSON.parse(data);
+      //   var datos=JSON.parse(data);
       var usuario = datos.idusuario;
       var fecha = new Date().toUTCString();
 
-      var count= await Producto.count({_id: datos.idproducto,"denuncias.usuario":{ $all: [usuario] }});
+      var count = await Producto.count({ _id: datos.idproducto, "denuncias.usuario": { $all: [usuario] } });
       console.log(count);
-      if(count==0){
-      Producto.findOneAndUpdate({ _id: datos.idproducto }, { $push: { denuncias: { usuario: usuario, fecha: fecha, detalle: datos.detalle } } }, { new: true }, (error, actualizado) => {
-        if (error) {
-          console.log(error);
-          io.to(socket.id).emit('respuesta-denuncia-negocio', { error: "error al guardar denuncia" });
-          //    res.status(500).send({ mensaje: "error al guradar" })
-        } else {
-          console.log(actualizado);
-          io.to(socket.id).emit('respuesta-denuncia-negocio', { datos: actualizado });
-          //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+      if (count == 0) {
+        Producto.findOneAndUpdate({ _id: datos.idproducto }, { $push: { denuncias: { usuario: usuario, fecha: fecha, detalle: datos.detalle } } }, { new: true }, (error, actualizado) => {
+          if (error) {
+            console.log(error);
+            io.to(socket.id).emit('respuesta-denuncia-negocio', { error: "error al guardar denuncia" });
+            //    res.status(500).send({ mensaje: "error al guradar" })
+          } else {
+            console.log(actualizado);
+            io.to(socket.id).emit('respuesta-denuncia-negocio', { datos: actualizado });
+            //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
-        }
-      })
-    }else{
-      io.to(socket.id).emit('respuesta-denuncia-negocio', { error:"error solo se permite una denuncia por producto" });
-    }
+          }
+        })
+      } else {
+        io.to(socket.id).emit('respuesta-denuncia-negocio', { error: "error solo se permite una denuncia por producto" });
+      }
 
       /*          }
   return data;

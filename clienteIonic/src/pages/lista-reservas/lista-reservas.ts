@@ -15,6 +15,7 @@ export class ListaReservasPage {
   reservationsListCompleted: any [] = [];
   reservationsList: any [] = [];
   list: any [] = [];
+  estado:string="espera";
 
   suscripctionSocket: Subscription;
 
@@ -24,40 +25,43 @@ export class ListaReservasPage {
     public reserveService: SocketReservaService,
     public userService: UsuarioProvider) {
       //Inicializacion del constructor
-      this.connectionBackendSocket();
-      this.getListReserve();
+      
+     this.GetEvent();
   }
 
   ionViewDidLoad() {
-    console.log(this.reservationsListCompleted);
-    console.log(this.reservationsList);
+    this.getListReserve(this.estado);
   }
 
-  listReserve(){
-    this.list.forEach((element: any )=> {
-      if(element.estado == "recogido"){
-        this.reservationsListCompleted.push(element);
-      }else{
-        this.reservationsList.push(element);
-      }
-    });
-  }
+
 
   //Consumo Socket 
-  getListReserve() {
-    let data = {idcliente: this.userService.UserSeCion.datos._id}
+  getListReserve(estado:string) {
+    let data = {idcliente: this.userService.UserSeCion.datos._id,estado:estado}
     this.reserveService.emit("listar-reserva", data);
   }
 
-  // Respuestas Socket
-  connectionBackendSocket() {
-    this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
-      this.list = data;
-      this.listReserve();
-    });
-  }
+  GetEvent(){
+    this.respuestaListarReserva().subscribe((data)=>{
+      console.log(data);
+      this.reservationsListCompleted=[];
+      if(data.error){
 
-  respuestaProductTop() {
+      }else{
+        data.forEach((element: any )=> {
+          if(element.estado == "aceptado"){
+            this.reservationsListCompleted.push(element);
+          }else{
+            this.reservationsList.push(element);
+          }
+        });
+      }
+    })
+  }
+  // Respuestas Socket
+
+
+  respuestaListarReserva() {
     return this.reserveService.fromEvent<any>('respuesta-listrar-reserva').map(data => data)
   }
 

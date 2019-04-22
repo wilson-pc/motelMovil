@@ -43,7 +43,7 @@ import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
 import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
 import { ProviderProductosProvider } from '../providers/provider-productos/provider-productos';
-import { SocketConfigService, SocketLoginService } from '../services/socket-config.service';
+import { SocketConfigService, SocketLoginService, SocketNegocioService3 } from '../services/socket-config.service';
 import { UsuarioProvider } from '../providers/usuario/usuario';
 import { IonicStorageModule } from '@ionic/storage';
 import { EditLoginPage } from '../pages/edit-login/edit-login';
@@ -161,6 +161,7 @@ export const firebaseConfig = {
     SocketUsuarioService2,
     SocketConfigService,
     SocketLoginService,
+    SocketNegocioService3,
     UsuarioProvider,
     conexionSocketComportamiento,
     SocketReservaService,

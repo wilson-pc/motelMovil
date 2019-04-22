@@ -19,18 +19,18 @@
 <ion-content padding>
     <ion-item *ngFor="let item of Denuncias" >
         <ion-thumbnail item-start>
-          <img [src]="item.producto.foto.miniatura" />
+          <img [src]="item.foto.miniatura" />
         </ion-thumbnail>
 
         <ion-col>
           <ion-row>
-            <h2><b>Negocio: {{item.negocio.nombre}}</b></h2>
+           
           </ion-row>
           <ion-row>
-            <h4><b>Producto: </b>{{item.producto.nombre}}</h4>
+            <h4><b>Producto: </b>{{item.nombre}}</h4>
           </ion-row>
           <ion-row>
-            <h4><b>Cantidad: </b>{{item.cantidad}}</h4>
+            <h4><b>Denuncias: </b>{{item.denuncias}}</h4>
           </ion-row>
           <!-- <ion-row>
             <h4><b>Fecha Venc.: </b>26-03-2019 18:15 hrs.</h4>

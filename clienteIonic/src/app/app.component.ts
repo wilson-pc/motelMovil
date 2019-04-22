@@ -17,7 +17,7 @@ import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
 import {AndroidPermissions} from '@ionic-native/android-permissions'
 import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
 import { UsuarioProvider } from '../providers/usuario/usuario';
-import { SocketUsuarioService2 } from '../services/socket-config.service';
+import { SocketUsuarioService2, SocketLoginService } from '../services/socket-config.service';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class MyApp {
   verificacion:any=0;
   content;
   navCtrl: any;
-  constructor(public socketUser:SocketUsuarioService2,public toastCtrl: ToastController,private storage: Storage,public userServ:UsuarioProvider, private androidPermissions: AndroidPermissions,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public socketLogin:SocketLoginService, public socketUser:SocketUsuarioService2,public toastCtrl: ToastController,private storage: Storage,public userServ:UsuarioProvider, private androidPermissions: AndroidPermissions,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
        
     this.initializeApp();
     this.connection();
@@ -57,12 +57,13 @@ export class MyApp {
 
           this.userServ.UserSeCion=datos;
         //  this.storage.remove("usuario");
+        this.socketLogin.emit("verificar-suspencion", {id:datos.datos._id});
           console.log("soy datos en app",datos);
           //alert("con secion");
         }else{
          
           this.userServ.UserSeCion=false;
-          console.log("sin cescio");
+          console.log("sin cescion");
         //  alert("sin secion");
         }
       });
@@ -86,6 +87,12 @@ export class MyApp {
 
 
   initializeApp() {
+    this.verificarSuspension().subscribe((dato)=>{
+      console.log(dato);
+      this.storage.remove("usuario");
+      this.userServ.UserSeCion=false;
+      this.nav.setRoot(LoginPage);
+    })
 
   this.content=document.getElementsByTagName('ion-menu');
   if(this.content)
@@ -101,6 +108,11 @@ export class MyApp {
       this.splashScreen.hide();
     });
   }
+  
+  verificarSuspension() {
+    return this.socketLogin.fromEvent<any>('respuesta-verificar-suspencion').map(data => data)
+  }
+
 
   openPage(page) {
     // Reset the content nav to have just this page

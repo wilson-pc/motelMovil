@@ -199,8 +199,14 @@ module.exports = async function (io) {
       var datos = data;
 
       if (datos.idcliente) {
+        var query = {};
         clients.push({ socketid: socket.id, idcliente: datos.idcliente });
-        Reservas.find({ cliente: datos.idcliente }, {}, (error, reservsas) => {
+        if (datos.estado == "espera") {
+          query = {cliente: datos.idcliente, $or: [{ estado: datos.estado }, { estado: "rechazado" }] };
+        } else {
+          query = { cliente: datos.idcliente, estado: datos.estado }
+        }
+        Reservas.find(query, {}, (error, reservsas) => {
           if (error) {
             io.to(socket.id).emit('respuesta-listrar-reserva', { error: "error no se pudo listar la reserva" });
           }

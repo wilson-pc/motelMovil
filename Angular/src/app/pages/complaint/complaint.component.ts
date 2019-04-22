@@ -21,7 +21,7 @@ export class ComplaintComponent implements OnInit {
 		//user, pass
 	];
 	// Cabezeras de los elementos
-	headElements = ['Nro', 'Producto', 'Negocio', 'Tipo Negocio', 'Administrador', 'Denuncias'];
+	headElements = ['Nro', 'Producto', 'Negocio', 'Tipo Negocio', 'Denuncias'];
   constructor(private modalService: NgbModal, private socketComportamiento: SocketConfigComportamientoService) { 
     this.titulo = "ADMINISTRACION DE DENUNCIAS"
     this.listComplaints = [];
@@ -54,20 +54,19 @@ export class ComplaintComponent implements OnInit {
 
 	// COSUMO DE SERVICIOS
   getComplaints() {
-    this.socketComportamiento.emit("listar-denuncias", null);
+    this.socketComportamiento.emit("listar-denuncia", []);
   }
 
   conn() {
     this.listComplaints = [];
     this.respuestaListarDenuncias().subscribe((data: any[]) => {
       this.listComplaints = data;
-      console.log(data);
     });
   }
 
   respuestaListarDenuncias() {
     let observable = new Observable(observer => {
-      this.socketComportamiento.on('respuesta-listar-denuncias', (data) => {
+      this.socketComportamiento.on('respuesta-listar-denuncia', (data) => {
         observer.next(data);
       });
     })

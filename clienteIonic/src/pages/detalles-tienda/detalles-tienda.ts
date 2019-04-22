@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { TopsPage } from '../tops/tops';
+import { TabsPage } from '../tabs/tabs';
+import { Productos } from '../../models/Productos';
+import { SocketNegocioService3, conexionSocketComportamiento, SocketConfigService } from '../../services/socket-config.service';
+import { Negocio } from '../../models/Negocio';
 
 /**
  * Generated class for the DetallesTiendaPage page.
@@ -16,15 +19,50 @@ import { TopsPage } from '../tops/tops';
 })
 export class DetallesTiendaPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  producto: Productos;
+  nombrene: String;
+  fotone: String;
+  direccione: String;
+  negocioaux: Negocio;
+  direcciongpsne: String;
+  telefonone: String;
+
+  constructor(public navCtrl: NavController,public navParams: NavParams,private productoServ: SocketNegocioService3) {
+    this.getProduct();
+    this.iniciarnegocio();
   }
 
   atras(){
-    this.navCtrl.setRoot(TopsPage);
+    this.navCtrl.setRoot(TabsPage);
+  }
+
+  sacarDatos() {
+    this.productoServ.emit("sacar-negocio", { id: this.producto.negocio });
+  }
+
+  sacarnegocio(){
+    return this.productoServ
+    .fromEvent<any>("respuesta-sacar-negocio")
+    .map( data => data );
+  }
+
+  iniciarnegocio(){
+    this.sacarnegocio().subscribe(datos=>{
+      console.log(datos);
+      this.nombrene=datos.nombre;
+      this.fotone=datos.foto;
+      this.direccione=datos.direccion.descripcion;
+      this.direcciongpsne=datos.direccion.ubicaciongps;
+      this.telefonone=datos.telefono;
+    });
+  }
+
+  getProduct() {
+    this.producto = this.navParams.get("producto");
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DetallesTiendaPage');
+    this.sacarDatos();
   }
 
 }
