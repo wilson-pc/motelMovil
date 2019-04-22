@@ -9,15 +9,15 @@ MÉTODO DE LA AUTENTICACIÓN
 
 // Creamos un middleware
 
-exports.autentication = function(req, res, next){
+exports.autentication = function (req, res, next) {
 
 	//Pasamos el token por una cabecera de autenticación
 
-	if(!req.headers.authorization){
-      console.log("no tiene");
-		return res.status(403).send({mensaje: "La petición no tiene la cabecera de autenticación"})
+	if (!req.headers.authorization) {
+		console.log("no tiene");
+		return res.status(403).send({ mensaje: "La petición no tiene la cabecera de autenticación" })
 
-	}else{
+	} else {
 
 		//Quitamos las comillas simples y dobles al token con el método replace
 
@@ -27,25 +27,25 @@ exports.autentication = function(req, res, next){
 		// La sentencia try...catch marca un bloque de instrucciones a intentar que pueden causar alguna excepción, y declarar una o más respuestas en caso de que una excepción sea arrojada. Si una excepción es arrojada, la sentencia try...catch se encarga de atraparla.
 
 		// Un bloque try es usado para para probar una sentencia
-         
-		try{
+
+		try {
 
 			var loadToken = token.decode(tokensent, claveSecreta);
-		
-              console.log(loadToken);
-			//Comparar la fecha actual con la expiración del token
-			if(loadToken.exp <= moment().unix()){
 
-				return res.status(403).send({mensaje: "El token ha expirado"})
+			console.log(loadToken);
+			//Comparar la fecha actual con la expiración del token
+			if (loadToken.exp <= moment().unix()) {
+
+				return res.status(403).send({ mensaje: "El token ha expirado" })
 
 			}
 
-		// Un bloque catch es usado para capturar todas las excepciones que pueden ser generadas en el bloque try (prueba).
+			// Un bloque catch es usado para capturar todas las excepciones que pueden ser generadas en el bloque try (prueba).
 
-		}catch(excepcion){
+		} catch (excepcion) {
 
 			console.log(excepcion)
-			return res.status(403).send({mensaje: "El token no es válido"})
+			return res.status(403).send({ mensaje: "El token no es válido" })
 
 		}
 

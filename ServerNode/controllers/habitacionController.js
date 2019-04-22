@@ -5,7 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
-require ('mongoose-pagination');
+require('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
@@ -26,17 +26,17 @@ module.exports = async function (io) {
           habitacion.negocio = params.negocio;
           habitacion.precio = params.precio;
           habitacion.precioreserva = params.precioreserva;
-          habitacion.estado=params.estado;
+          habitacion.estado = params.estado;
           habitacion.foto = params.foto;
           habitacion.descripcion = params.descripcion;
           habitacion.modificacion = params.modificacion;
 
           habitacion.save(async (error, nuevoProducto) => {
             if (error) {
-              
+
 
             } else {
-             
+
               var negocio = await Negocio.findByIdAndUpdate(params.negocio, { $inc: { productos: 1 } });
               io.emit('respuesta-habitacion', nuevoProducto);
             }
@@ -94,7 +94,7 @@ module.exports = async function (io) {
           habitacion.negocio = params.negocio;
           habitacion.precio = params.precio;
           habitacion.precioreserva = params.precioreserva;
-          habitacion.estado=params.estado;
+          habitacion.estado = params.estado;
           habitacion.tipo = await Tipo.findById(params.tipo);
           habitacion.foto = params.foto;
           habitacion.eliminado = { estado: false, razon: "" };
@@ -120,27 +120,27 @@ module.exports = async function (io) {
     })
     socket.on('listar-habitacion-negocio', async (data) => {
 
-      
-        Habitacion.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.portada": 0 }, function (error, lista) {
-  
-          if (error) {
-            // res.status(500).send({ mensaje: "Error al listar" })
-            io.to(socket.id).emit('respuesta-listado-habitacion-negocio', { error: "ocurrio un error al listar habitaciones" });
+
+      Habitacion.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.portada": 0 }, function (error, lista) {
+
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listado-habitacion-negocio', { error: "ocurrio un error al listar habitaciones" });
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listado-habitacion-negocio', { error: "no hay habitaciones en la base de datos" });
           } else {
-            if (!lista) {
-              //   res.status(404).send({ mensaje: "Error al listar" })
-              io.to(socket.id).emit('respuesta-listado-habitacion-negocio', { error: "no hay habitaciones en la base de datos" });
-            } else {
-              console.log("lista =>: ", lista);
-              io.to(socket.id).emit('respuesta-listado-habitacion-negocio', lista);
-            }
+            console.log("lista =>: ", lista);
+            io.to(socket.id).emit('respuesta-listado-habitacion-negocio', lista);
           }
-        });
+        }
       });
+    });
 
     socket.on('listar-habitacion', async (data) => {
 
-      Habitacion.find({"eliminado.estado": false }, { "foto.portada": 0 }).paginate(data.parte, 10, function (error, lista,total) {
+      Habitacion.find({ "eliminado.estado": false }, { "foto.portada": 0 }).paginate(data.parte, 10, function (error, lista, total) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-habitacion', { error: "ocurrio un error al listar habitaciones" });
@@ -150,7 +150,7 @@ module.exports = async function (io) {
             io.to(socket.id).emit('respuesta-listado-habitacion', { error: "no habitaciones en la base de datos" });
           } else {
             console.log(lista);
-            io.to(socket.id).emit('respuesta-listado-habitacion', {habitaciones:lista,total:total});
+            io.to(socket.id).emit('respuesta-listado-habitacion', { habitaciones: lista, total: total });
           }
         }
       });
@@ -158,29 +158,29 @@ module.exports = async function (io) {
     });
 
 
-//
+    //
 
 
-socket.on('listar-todos-habitaciones', async (data) => {
+    socket.on('listar-todos-habitaciones', async (data) => {
 
-  Habitacion.find({"eliminado.estado": false }, { "foto.portada": 0 }).paginate(data.parte, 10, function (error, lista, total) {
-    if (error) {
-      // res.status(500).send({ mensaje: "Error al listar" })
-      io.to(socket.id).emit('respuesta-listar-todos-habitaciones', { error: "ocurrio un error al listar productos" });
-    } else {
-      if (!lista) {
-        //   res.status(404).send({ mensaje: "Error al listar" })
-        io.to(socket.id).emit('respuesta-listar-todos-habitaciones', { error: "no hay productos en la base de datos" });
-      } else {
-        console.log(lista);
-        io.to(socket.id).emit('respuesta-listar-todos-habitaciones', {habitacion:lista,total:total});
-      }
-    }
-  });
-  // io.emit('respuesta-listar-habitacion', { user: socket.nickname, event: 'left' });
-});
-//
-  
+      Habitacion.find({ "eliminado.estado": false }, { "foto.portada": 0 }).paginate(data.parte, 10, function (error, lista, total) {
+        if (error) {
+          // res.status(500).send({ mensaje: "Error al listar" })
+          io.to(socket.id).emit('respuesta-listar-todos-habitaciones', { error: "ocurrio un error al listar productos" });
+        } else {
+          if (!lista) {
+            //   res.status(404).send({ mensaje: "Error al listar" })
+            io.to(socket.id).emit('respuesta-listar-todos-habitaciones', { error: "no hay productos en la base de datos" });
+          } else {
+            console.log(lista);
+            io.to(socket.id).emit('respuesta-listar-todos-habitaciones', { habitacion: lista, total: total });
+          }
+        }
+      });
+      // io.emit('respuesta-listar-habitacion', { user: socket.nickname, event: 'left' });
+    });
+    //
+
     socket.on('buscar-habitacion', async (data) => {
 
       Habitacion.find({

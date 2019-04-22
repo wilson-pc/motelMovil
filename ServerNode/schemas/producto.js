@@ -16,6 +16,7 @@ denuncias:[{usuario:{type: Schema.ObjectId, ref: "Usuarios"},fecha:Date,detalle:
 reportes:Number,
 tipo:Tipo,
 foto:{normal:String,miniatura:String},
+fotos:[String],
 descripcion:String,
 eliminado:{estado:Boolean,razon:String},
 creacion: {fecha:String },

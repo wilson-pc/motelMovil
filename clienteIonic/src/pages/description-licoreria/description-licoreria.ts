@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, AlertController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Favoritos } from '../../models/Favoritos';
 import * as CryptoJS from 'crypto-js';
@@ -28,11 +28,13 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   suscripctionSocket: Subscription;
   favorito: Favoritos;
   cantidad:number[]=[];
+  motivo: string;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public toastCtrl: ToastController,
+    public alertCtrl: AlertController,
     private reservaProduct: SocketReservaService,
     private userService: UsuarioProvider,
     private productoServ: SocketConfigService,
@@ -78,6 +80,38 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     this.viewCtrl.dismiss();
   }
 
+  //Confirmacion de Denuncia
+  showPrompt() {
+    const prompt = this.alertCtrl.create({
+      title: '¿Denunciar producto?',
+      message: "Escribe el motivo de la denuncia: ",
+      inputs: [
+        {
+          name: 'motivo',
+          placeholder: 'Motivo'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Enviar',
+          handler: data => {
+            console.log('Saved clicked');
+            console.log(data.motivo);
+            this.motivo = data.motivo;
+            this.reportProduct()
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
   //Consumo Socket 
   reserveProduct() {
     let reserva = {
@@ -87,6 +121,21 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     }
 
     this.reservaProduct.emit("reserva-producto", reserva)
+  }
+
+  reportProduct() {
+    if(this.userService.UserSeCion.datos){
+      let denuncia = {
+        idusuario: this.userService.UserSeCion.datos._id,
+     //   idproducto: this.product._id,
+        detalle: this.motivo
+      }
+      this.provedorFavoritos.emit('denuncia-producto', denuncia);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
+
   }
 
   // Respuestas Socket
@@ -100,6 +149,15 @@ export class DescriptionLicoreriaPage implements OnDestroy {
         this.presentToast(data.error);
       } else {
         this.presentToast("Producto Reservado");
+        this.dismiss();
+      }
+    });
+
+    this.suscripctionSocket = this.respuestaDenuncia().subscribe((data: any) => {
+      if (data.error) {
+        this.presentToast(data.error);
+      } else {
+        this.presentToast("Producto Denunciado");
         this.dismiss();
       }
     });
@@ -123,6 +181,10 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   respuestaReserva() {
     return this.reservaProduct.fromEvent<any>('respuesta-reserva-producto').map(data => data)
+  }
+
+  respuestaDenuncia() {
+    return this.provedorFavoritos.fromEvent<any>('respuesta-denuncia-negocio').map(data => data)
   }
 
   guardarFavorito() {

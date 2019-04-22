@@ -2,6 +2,7 @@
 var nodemailer = require('nodemailer');
 var Usuario = require('../schemas/usuario');
 var Crypto = require("../variables/desincryptar");
+var moment = require("moment");
 var Rol = require('../schemas/rol');
 const bcrypt = require('bcrypt-nodejs');
 var token = require("./../token/token");
@@ -115,6 +116,22 @@ module.exports = async function (io) {
       }
     });
 
+    socket.on('verificar-suspencion', async (data) => {
+      console.log("verificar",data);
+      Usuario.findById(data.id,{login:0,foto:0},(error,datos)=>{
+        if (error) {
+        
+        }else if(datos.suspendido){
+               if(datos.suspendido.estado==true){
+                io.to(socket.id).emit('respuesta-verificar-suspencion', { error: "false" });
+               }
+        } else {
+        //  io.to(socket.id).emit('respuesta-calificar-negocio', { datos: actualizado });
+          //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+
+        }
+      });
+    });
     socket.on('calificar-negocio', async (data) => {
       try {
         var datos = await Crypto.Desincryptar(data);
@@ -189,14 +206,15 @@ module.exports = async function (io) {
       // console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
       try {
         var datos = await Crypto.Desincryptar(data);
+        
         if (!datos.error) {
-
+   console.log(datos);
           var params = datos;
           var usuario = params.usuario;
           var pass = params.password;
           var tipo = params.tipo;
 
-          Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
+          Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo },async (error, user) => {
 
             if (error) {
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
@@ -204,37 +222,72 @@ module.exports = async function (io) {
             } else {
 
               if (user == null) {
-                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exite" });
+                io.to(socket.id).emit('respuesta-login', { mensaje: "usuario no exsite" });
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
-                console.log(user);
+
                 // res.status(200).send({ user });
                 if (user.login.estado != true) {
-                  var usuario = new Usuario();
-                  usuario._id = user._id;
-                  usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
+                  if (user.suspendido.estado == false) {
+                    var usuario = new Usuario();
+                    usuario._id = user._id;
+                    usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
 
-                  bcrypt.compare(pass, user.login.password, function (error, ok) {
+                    bcrypt.compare(pass, user.login.password, function (error, ok) {
 
-                    if (ok) {
+                      if (ok) {
 
-                      Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
+                        Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
 
-                        io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
-                        //  res.status(200).send({ token: token.crearToken(user), datos:user });
-                      });
+                          io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
+                          //  res.status(200).send({ token: token.crearToken(user), datos:user });
+                        });
 
+                      }
+                      else {
+                        io.to(socket.id).emit('respuesta-login', { mensaje: "error usuario y contraseñ incorrecta" });
+                        //  res.status(404).send({ mensaje: "usuario o contraseña incorrectas " })
+                      }
+                    });
+                  } else {
+                    var fecha = moment(user.suspendido.fecha, "DD-MM-YYYY").add(user.suspendido.duracion, 'days').toISOString();
+                    console.log(fecha);
+                    if (new Date().toISOString() >= fecha) {
+
+
+                    var usuario = new Usuario();
+                    usuario._id = user._id;
+                    usuario.suspendido = {estado:false};
+                    usuario.login = { usuario: user.login.usuario, password: user.login.password, estado: true }
+
+                    bcrypt.compare(pass, user.login.password,  function (error, ok){
+
+                      if (ok) {
+
+  
+                     //  await Usuario.findByIdAndUpdate(params._id, nusuario);
+                        Usuario.findByIdAndUpdate(user._id, usuario, { new: true }, function (error, lista) {
+
+                          io.to(socket.id).emit('respuesta-login', { token: token.crearToken(user), datos: user });
+                          //  res.status(200).send({ token: token.crearToken(user), datos:user });
+                        });
+
+                      }
+                      else {
+                        io.to(socket.id).emit('respuesta-login', { mensaje: "error usuario y contraseñ incorrecta" });
+                        //  res.status(404).send({ mensaje: "usuario o contraseña incorrectas " })
+                      }
+                    });
+                    } else {
+                      io.to(socket.id).emit('respuesta-login', { mensaje: "su cuenta a sido suspendido por " + user.suspendido.duracion + " dias por " + user.suspendido.razon });
                     }
-                    else {
-                      io.to(socket.id).emit('respuesta-login', { mensaje: "error usuario y contraseñ incorrecta" });
-                      //  res.status(404).send({ mensaje: "usuario o contraseña incorrectas " })
-                    }
-                  });
+
+                  }
 
                 } else {
 
-                  io.to(socket.id).emit('respuesta-login', { mensaje: "Ocurrio un error de cifrado" });
+                  io.to(socket.id).emit('respuesta-login', { mensaje: "Ocurrio un error" });
                   //res.status(401).send({ mensaje: "Usuario activo actualmente" })
                 }
               }

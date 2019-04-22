@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Icon } from 'ionic-angular';
 import {
   GoogleMaps,
   GoogleMap,
@@ -9,7 +9,8 @@ import {
   MarkerOptions,
   Marker,
   LatLng,
-  GoogleMapsMapTypeId
+  GoogleMapsMapTypeId,
+  MarkerIcon
 } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
@@ -30,35 +31,55 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class MapsPage {
   map: GoogleMap;
   myPosition:any ={};
+  icon: MarkerIcon = {
+    url: '../../assets/imgs/crustaceos.png',
+    size: {
+      width: 32,
+      height: 24
+    }
+  };
   markers: any[] = [
-    {
+    { 
       position:{
         latitude: -17.3666745,
         longitude: -66.2387878,
       },
       title:'Point 1',
-      bindPopup:"<h1>Soy un popup NO SE SI FUNCIONARA</h1>"
+      snippet:"pop up de ejemplo 1",
+      draggable:true
     },
+
     {
+      
       position:{
         latitude: -17.3706884,
         longitude: -66.2397749,
       },
-      title:'Point 2'
+      title:'Point 2',
+      snippet:"pop up de ejemplo 2",
+      draggable:true
     },
+
     {
+     
       position:{
         latitude: -17.391398,
         longitude: -66.2407904,
       },
-      title:'Point 3'
+      title:'Point 3',
+      snippet:"pop up de ejemplo 3",
+      draggable:true
     },
+    
     {
+     
       position:{
         latitude: -17.3878887,
         longitude: -66.223664,
       },
-      title:'Point 4'
+      title:'Point 4',
+      snippet:"pop up de ejemplo 4",
+      draggable:true
     },
   ];
   constructor(public navCtrl: NavController,
@@ -135,12 +156,7 @@ export class MapsPage {
       this.map.moveCamera({
         target: response.latLng
       });
-      this.map.addMarker({
-        title: 'My Position',
-        icon: 'blue',
-        animation: 'DROP',
-        position: response.latLng
-      });
+     
     })
     .catch(error =>{
       console.log(error);
@@ -149,8 +165,19 @@ export class MapsPage {
 
   addMarker(options){
     let markerOptions: MarkerOptions = {
+      icon:this.icon,
+      
       position: new LatLng(options.position.latitude, options.position.longitude),
-      title: options.title
+      title: options.title,
+      styles: {
+        'text-align': 'center',
+        'font-style': 'italic',
+        'font-weight': 'bold',
+        'color': 'red'
+      },
+      snippet:options.snippet,
+      draggable:options.draggable,
+      
     };
     this.map.addMarker(markerOptions);
   }
