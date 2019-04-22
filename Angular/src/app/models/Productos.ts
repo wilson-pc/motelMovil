@@ -1,5 +1,6 @@
 import { Negocio } from "./Negocio";
 import { Tipo } from "./TipoProducto";
+import { Denuncias } from "./Denuncias";
 
 export class Productos{
     public id:string;
@@ -10,6 +11,7 @@ export class Productos{
     public cantidad:Number;
     public tipo:Tipo;
     public foto:{normal:string,miniatura:string};
+    public denuncias:Denuncias;
     public descripcion:string;
     public eliminado:{estado:Boolean,razon:string};
     public creacion:{estado:Boolean,razon:string};

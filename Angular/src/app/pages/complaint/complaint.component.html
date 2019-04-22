@@ -109,13 +109,13 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let complaint of elements, let i=index">
+              <tr *ngFor="let complaint of listComplaints.datos, let i=index">
                 <td>{{i+1}}</td>
-                <td>{{complaint.producto}}</td>
+                <td>{{complaint.nombre}}</td>
                 <td>{{complaint.nombreNegocio}}</td>
-                <td>{{complaint.negocio}}</td>
+                <td>{{complaint.tipo.tiponegocio}}</td>
                 <td (click)="openModalView(contentView)">{{complaint.admin}}</td>
-                <td>{{complaint.cantidadDenuncias}}</td>
+                <td>{{complaint.denuncias.length}}</td>
 
                 <td class="text-right">
 

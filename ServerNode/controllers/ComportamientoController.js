@@ -243,23 +243,27 @@ module.exports = async function (io) {
 
     });
 
-    socket.on('listar-denuncia', async (datos) => {
-      console.log(datos);
-      if(datos.idcliente){
+     //LISTAR TODAS LAS DENUNCIAS
+     socket.on('listar-denuncias', async (data) => {
 
-      }else{
-        var negocios = await Negocio.find({titular:datos.iddueno},{titular:1})
-        console.log(negocios);
-    /*  Producto.find({"denuncias.usuario":{ $all: [usuario] }},{},(error,lista)=>{
-          if(error){
-            io.to(socket.id).emit('respuesta-listar-denuncia', { error: "error listar Denuncias" });
-          }else{
-            io.to(socket.id).emit('respuesta-listar-denuncia', { datos: lista });
+      console.log("entraste lista", data);
+      try {
+        Producto.find({ "eliminado.estado": false }, (error, denuncias) => {
+          if (error) {
+            io.to(socket.id).emit('respuesta-listar-denuncias', { error: "error al listar" });
+            //    res.status(500).send({ mensaje: "error al guradar" })
+          } else {
+            //console.log(denuncias);
+            io.to(socket.id).emit('respuesta-listar-denuncias', { datos: denuncias });
+            //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+
           }
-
-        })*/
+        })
+      } catch (error) {
+        console.log("error");
       }
-  
+
+
     });
 
     socket.on('denuncia-producto', async (datos) => {
