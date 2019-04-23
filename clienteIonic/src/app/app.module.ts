@@ -43,7 +43,7 @@ import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
 import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
 import { ProviderProductosProvider } from '../providers/provider-productos/provider-productos';
-import { SocketConfigService, SocketLoginService } from '../services/socket-config.service';
+import { SocketConfigService, SocketLoginService, SocketNegocioService3 } from '../services/socket-config.service';
 import { UsuarioProvider } from '../providers/usuario/usuario';
 import { IonicStorageModule } from '@ionic/storage';
 import { EditLoginPage } from '../pages/edit-login/edit-login';
@@ -52,7 +52,7 @@ import { DescriptionMotelPage } from '../pages/description-motel/description-mot
 import { DescriptionLicoreriaPage } from '../pages/description-licoreria/description-licoreria';
 import { DescriptionSexshopPage } from '../pages/description-sexshop/description-sexshop';
 import { DetallesTiendaPage } from '../pages/detalles-tienda/detalles-tienda';
-import {Geolocation} from '@ionic-native/geolocation/ngx'
+import {Geolocation} from '@ionic-native/geolocation'
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
@@ -161,6 +161,7 @@ export const firebaseConfig = {
     SocketUsuarioService2,
     SocketConfigService,
     SocketLoginService,
+    SocketNegocioService3,
     UsuarioProvider,
     conexionSocketComportamiento,
     SocketReservaService,
