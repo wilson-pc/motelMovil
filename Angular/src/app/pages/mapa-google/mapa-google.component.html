@@ -1,5 +1,20 @@
 <h1> {{texto}}</h1>
 
 <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
-  <agm-marker  [latitude]="lat" [longitude]="lng"></agm-marker>
+  <agm-marker 
+  [label]="labelOptions"
+  
+  [iconAnchorX]="10"
+  [iconAnchorY]="10"
+  [iconHeight]="10"
+  [iconWidth]="10"
+  *ngFor="let lugar of lugares"
+  [latitude]="lugar.lat" [longitude]="lugar.lng">
+    <agm-info-window [disableAutoPan]="true">
+      Hi, this is the content of the <strong>{{lugar.descripcion}}</strong>
+    </agm-info-window>
+    <!-- [iconUrl]="img" -->
+  </agm-marker>
+  
+ 
 </agm-map>
