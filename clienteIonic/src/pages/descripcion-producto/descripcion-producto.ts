@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, ViewController, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ViewController, ToastController, AlertController, ModalController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Observable, Subscription } from 'rxjs';
 import { SocketReservaService, conexionSocketComportamiento } from '../../services/socket-config.service';
@@ -25,6 +25,7 @@ export class DescripcionProductoPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
+    public modalCtrl: ModalController,
     public viewCtrl: ViewController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
@@ -41,6 +42,11 @@ export class DescripcionProductoPage {
       this.cantidad.push(index);
       
     }
+  }
+
+  productDescription(product: Productos) {
+    const modal = this.modalCtrl.create(DetallesTiendaPage, { producto: product });
+    modal.present();
   }
 
   dismissModal() {
@@ -157,8 +163,7 @@ export class DescripcionProductoPage {
   }
 
   irdetallestienda(){
-    this.dismissModal();
-    this.navCtrl.setRoot(DetallesTiendaPage);
+    this.navCtrl.push(DetallesTiendaPage);
   }
 
   ngOnDestroy() {

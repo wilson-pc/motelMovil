@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { DescripcionProductoPage } from '../descripcion-producto/descripcion-producto';
+import { DetallesTiendaPage } from '../detalles-tienda/detalles-tienda';
 import { SocketConfigService } from '../../services/socket-config.service';
 import { Subscription } from 'rxjs';
 import { Productos } from '../../models/Productos';

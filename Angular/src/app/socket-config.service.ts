@@ -32,3 +32,11 @@ export class SocketConfigService3 extends Socket {
     })
   }
 }
+
+export class SocketConfigComportamientoService extends Socket {
+  constructor() {
+    super({
+      url: RutaServer.socket + "comportamiento", options: {}
+    })
+  }
+}

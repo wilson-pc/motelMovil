@@ -11,6 +11,8 @@ import { clave } from '../../app/cryptoclave';
 import { ProductProvider } from '../../providers/product/product';
 import { FormBuilder, Validators } from '@angular/forms';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ImagePicker } from '@ionic-native/image-picker';
+declare var window;
 
 @Component({
   selector: 'page-register-products',
@@ -25,7 +27,8 @@ export class RegisterProductsPage {
   nombreimagen: string = "selecciona una foto";
   listTypeProduct: Tipo[] = [];
   typeProduct: Tipo;
-
+fotos:string[]=[];
+  fotosestado:string="";
   submitAttempt: boolean;
   statusInput: boolean;
   productForm: any;
@@ -38,7 +41,8 @@ export class RegisterProductsPage {
     private productProvider: ProductProvider,
     private productService: SocketServiceProduct,
     private formBuilder: FormBuilder,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private imagePicker: ImagePicker) {
     //Inicializacion
     this.product = new Productos;
     this.typeProduct = new Tipo;
@@ -57,6 +61,7 @@ export class RegisterProductsPage {
     this.productForm = this.formBuilder.group({
       productNombre: ['', Validators.compose([Validators.maxLength(30), Validators.required])],
       productImg: ['', Validators.compose([])],
+      photos: ['', Validators.compose([])],
       productTipo: ['', Validators.compose([Validators.required])],
       productPrecio: ['', Validators.compose([Validators.maxLength(4), Validators.pattern('[0-9]*'), Validators.required])],
       productDescripcion: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(80), Validators.required])]
@@ -85,6 +90,44 @@ export class RegisterProductsPage {
 
   filechoosser() {
     this.fileInput.nativeElement.click();
+  }
+  imageChooser(){
+    let options = {
+      maximumImagesCount: 10,
+
+    }
+    this.imagePicker.getPictures(options)
+      .then((results) => {
+       
+        for (let index = 0; index < results.length; index++) {
+           
+          const element = results[index];
+        
+          getFileContentAsBase64(element, (base64Image) => {
+            resizeBase64(base64Image.target._result, 700, 500).then((result2) => {
+              this.fotos.push(result2);
+           
+              this.fotosestado=this.fotos.length +" imagenes procesados";
+            });
+       /*     try {
+              this.fotos.push(base64Image.target._result);
+           
+              this.fotosestado=this.fotos.length +" imagenes procesados";
+            } catch (error) {
+              alert(JSON.stringify(error));
+            }*/
+           
+
+            //  this.imageLists.push(base64Image);
+            //window.open(base64Image);
+
+            // Then you'll be able to handle the myimage.png file as base64
+          });
+
+        }
+      }, (err) => { 
+        alert(JSON.stringify(err)); 
+      });
   }
 
   addTypeProduct() {
@@ -129,7 +172,7 @@ export class RegisterProductsPage {
       resizeBase64(data, 90, 60).then((result) => {
         this.product.foto = { miniatura: result, normal: "" }
       });
-      resizeBase64(data, 90, 60).then((result) => {
+      resizeBase64(data, 700, 500).then((result) => {
         this.product.foto.normal = result;
         console.log(this.product);
       });
@@ -182,9 +225,10 @@ export class RegisterProductsPage {
       this.product.creacion = { fecha: date };
       this.product.modificacion = { fecha: date };
       let data = this.product;
-
+       this.product.fotos=this.fotos;
       console.log("Producto A GUARDAR", data);
       var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ producto: data }), clave.clave);
+     // alert(JSON.stringify(this.fotos));
       this.productService.emit("registrar-producto", ciphertext.toString());
     }
   }
@@ -256,5 +300,29 @@ export class RegisterProductsPage {
       });
     })
     return observable;
+  }
+  
+}
+
+function getFileContentAsBase64(path, callback) {
+  
+  window.resolveLocalFileSystemURL(path, gotFile, fail);
+
+  function fail(e) {
+    alert('Cannot found requested file');
+  }
+
+  function gotFile(fileEntry) {
+  
+    fileEntry.file(function (file) {
+      var reader = new FileReader();
+      reader.onloadend = function (e) {
+        var content = e;
+        
+        callback(content);
+      };
+      // The most important point, use the readAsDatURL Method from the file plugin
+      reader.readAsDataURL(file);
+    });
   }
 }
