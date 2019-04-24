@@ -6,7 +6,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { ChartsModule } from 'ng2-charts';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-
+import { LongPressModule } from 'ionic-long-press';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NotificationsPage } from '../pages/notifications/notifications';
@@ -74,6 +74,7 @@ export const firebaseConfig = {
     HttpClientModule,
     ChartsModule,
     SocketIoModule,
+    LongPressModule,
     IonicModule.forRoot(MyApp,{
       scrollPadding: false,
       scrollAssist: true,

@@ -10,7 +10,6 @@ import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
 import { ProductProvider } from '../../providers/product/product';
 import { FormBuilder, Validators } from '@angular/forms';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ImagePicker } from '@ionic-native/image-picker';
 declare var window;
 

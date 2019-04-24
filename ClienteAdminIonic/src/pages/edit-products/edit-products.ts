@@ -7,26 +7,28 @@ import { Tipo } from '../../models/TipoProducto';
 import { SocketServiceProduct } from '../../providers/socket-config/socket-config';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
+import { Subscription } from 'rxjs/Subscription';
 import { resizeBase64 } from 'base64js-es6';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ReservasHabitaciones } from '../../models/ReservasHabitaciones';
-
 @Component({
   selector: 'page-edit-products',
   templateUrl: 'edit-products.html',
 })
 export class EditProductsPage {
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput2') fileInput2: ElementRef;
   producto: Productos;
   commerceOnly: Negocio;
+  private suscribe: Subscription[] = [];
   nombreimagen: string = "selecciona una foto";
 productId:String;
   submitAttempt: boolean;
   statusInput: boolean;
   productForm: any;
-
+  listImages:string[]=[];
   listTypeProduct: Tipo[] = [];
   typeProduct: Tipo;
+  cambio:boolean=false;
 
   constructor(
     public navCtrl: NavController,
@@ -82,19 +84,18 @@ productId:String;
   }
 
 
-  filechoosser() {
-    this.fileInput.nativeElement.click();
-  }
+ 
 
   async getCommerceAndProduct() {
     this.producto = this.navParams.get("product");
-    console.log(this.producto);
-  //  this.productService.emit("sacar-producto", {id:this.producto._id});
+    this.productService.emit("sacar-producto", {id:this.producto._id});
     this.commerceOnly = this.navParams.get("commerce");
     this.getTypeProducts();
-  console.log(this.producto);
+  
   }
-
+  filechoosser() {
+    this.fileInput.nativeElement.click();
+  }
   // Carga de la foto
   async fileChange(event) {
     // alert(event.srcElement.files[0].name);
@@ -106,7 +107,7 @@ productId:String;
       });
       resizeBase64(data, 90, 60).then((result) => {
         this.producto.foto.normal = result;
-        console.log(this.producto);
+     
 
       });
       this.nombreimagen = event.srcElement.files[0].name;
@@ -130,12 +131,15 @@ productId:String;
   //Consumos de Servicios
   updateProduct() {
     // Modificar producto
-    console.log(this.producto.estado);
+
     this.statusInput = true;
     if (!this.productForm.valid) {
       this.alertMessage("Imposible Actualizar verifique los campos de actualizacion.")
     }
     else {
+      if(this.cambio){
+        this.producto.fotos=this.listImages;
+      }
       var date = new Date().toUTCString();
       this.producto.negocio = this.commerceOnly._id as any;
       this.producto.modificacion = { fecha: date };
@@ -193,34 +197,25 @@ productId:String;
   // Conexion con el Backend
   connectionBackendSocket() {
     // tipos de producto
-    this.respuestaTipoProducto().subscribe((data: any) => {
+   this.suscribe.push(this.respuestaTipoProducto().subscribe((data: any) => {
       this.listTypeProduct = data;
-    });
-    this.respuestaSacarProducto().subscribe((data: Productos) => {
-     let dd=data.estado;
-     console.log(dd);
-     this.producto=new Productos;
-     this.producto.estado=dd;
-     this.producto.precio=data.precio;
-     this.producto._id=data._id;
-     this.producto.nombre=data.nombre;
-     this.producto.precioreserva=data.precioreserva;
-     this.producto.tipo=data.tipo;
+    }));
 
-     console.log(this.producto);
-  
-    });
+   this.suscribe.push(this.respuestaSacarProducto().subscribe((data: Productos) => {
+    console.log(data);
+    this.listImages=data.fotos;
+        }));
 
     // agregar tipos de producto
-    this.respuestaRegistrarTipoProducto().subscribe((data: any) => {
+   this.suscribe.push(this.respuestaRegistrarTipoProducto().subscribe((data: any) => {
       this.alertMessage("Tipo producto '" + data.tipo + "', agregado.");
-    });
+    }));
 
     // actualizar producto
-    this.respuestaActualizarProducto().subscribe((data: any) => {
+   this.suscribe.push(this.respuestaActualizarProducto().subscribe((data: any) => {
       this.alertMessage("Producto '" + this.producto.nombre + "' , actualizado con exito");
       this.viewCtrl.dismiss();
-    });
+    }));
   }
 
   respuestaTipoProducto() {
@@ -257,4 +252,30 @@ productId:String;
     })
     return observable;
   }
+  onLongPress(index){
+   this.listImages.splice(index,1);
+   this.cambio=true;
+  
+  }
+  filechoosser2() {
+    this.fileInput2.nativeElement.click();
+  }
+  // Carga de la foto
+  async fileChange2(event) {
+    // alert(event.srcElement.files[0].name);
+    this.readFile(event.srcElement.files[0]).subscribe(data => {
+      resizeBase64(data, 700, 500).then((result) => {
+        this.cambio=true;
+        this.listImages.push(result);
+
+
+      });
+    });
+  }
+  ionViewWillLeave() {
+    console.log("close");
+   this.suscribe.forEach(element => {
+     element.unsubscribe();
+   });
+    }
 }
