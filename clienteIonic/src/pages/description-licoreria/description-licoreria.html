@@ -53,14 +53,14 @@
           <ion-row>
 
             <ion-col>
-              <button ion-button icon-start clear small color="default">
+              <button ion-button icon-start clear small color="default" (click)="likeProduct(productoRecibido._id)">
                 <ion-icon name="thumbs-up"></ion-icon>
                 <div> {{productoRecibido.likes}}</div>
               </button>
             </ion-col>
 
             <ion-col>
-              <button ion-button icon-start clear small color="default">
+              <button ion-button icon-start clear small color="default" (click)="dislikeProduct(productoRecibido._id)">
                 <ion-icon ios="ios-thumbs-down" md="md-thumbs-down"></ion-icon>
                 <div> {{productoRecibido.dislike}}</div>
               </button>
