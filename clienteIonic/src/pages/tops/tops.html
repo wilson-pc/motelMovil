@@ -51,11 +51,11 @@
             <h3>{{productTop.descripcion}}</h3>
           </ion-row>
           <ion-row>
-            <button ion-button clear small color="default" icon-start>
+            <button ion-button clear small color="default" icon-start (click)="likeProduct(productTop._id)">
               <ion-icon name='thumbs-up'></ion-icon>
               {{productTop.likes}}
             </button>
-            <button ion-button clear small color="default" icon-start>
+            <button ion-button clear small color="default" icon-start (click)="dislikeProduct(productTop._id)">
               <ion-icon name='thumbs-down'></ion-icon>
               {{productTop.dislike}}
             </button>
@@ -84,7 +84,7 @@
             <h3>{{productTop.descripcion}}</h3>
           </ion-row>
           <ion-row>
-            <button ion-button clear small color="default" icon-start>
+            <button ion-button clear small color="default" icon-start (click)="likeProduct(productTop._id)">
               <ion-icon name='thumbs-up'></ion-icon>
               {{productTop.likes}}
             </button>
@@ -117,7 +117,7 @@
             <h3>{{productTop.descripcion}}</h3>
           </ion-row>
           <ion-row>
-            <button ion-button clear small color="default" icon-start>
+            <button ion-button clear small color="default" icon-start (click)="likeProduct(productTop._id)">
               <ion-icon name='thumbs-up'></ion-icon>
               {{productTop.likes}}
             </button>

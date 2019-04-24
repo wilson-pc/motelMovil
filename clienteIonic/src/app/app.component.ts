@@ -16,6 +16,7 @@ import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
 import {AndroidPermissions} from '@ionic-native/android-permissions'
 import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
+import { ComplaintsPage } from '../pages/complaints/complaints';
 import { UsuarioProvider } from '../providers/usuario/usuario';
 import { SocketUsuarioService2, SocketLoginService } from '../services/socket-config.service';
 
@@ -78,7 +79,7 @@ export class MyApp {
       { title: 'Mis Favoritos', component: ListaFavoritosPage },
       { title: 'Deseos', component: ListaDeseosPage },
       { title: 'Billetera', component: LocalWeatherPage},
-      
+      { title: 'Mis Denuncias', component: ComplaintsPage},
     ];
 
 
