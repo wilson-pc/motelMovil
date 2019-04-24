@@ -362,35 +362,27 @@ module.exports = async function (io) {
     });
 
 
-    socket.on('sacar-negocio', async (data) => {
-      try {
-        const bytes = CryptoJS.AES.decrypt(data, clave.clave);
-        if (bytes.toString()) {
-          var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    socket.on('sacar-negocio', async (datos) => {
 
-
+      console.log(datos);
           Negocio.findOne({ _id: datos.id, "eliminado.estado": false }, function (error, dato) {
             if (error) {
               io.to(socket.id).emit('respuesta-sacar-negocio', { error: "no se pudo buscar al negocio" })
               // res.status(500).send({ mensaje: "Error al listar" })
             } else {
-              if (!lista) {
+              if (!dato) {
                 io.to(socket.id).emit('respuesta-sacar-negocio', { error: "no se pudo encontrar al negocio" })
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-                io.to(socket.id).emit('respuesta', dato);
+                io.to(socket.id).emit('respuesta-sacar-negocio', dato);
 
               }
             }
           });
-
-        }
-        return data;
-      } catch (e) {
-        console.log(e);
-      }
-
     });
+
+
+
     socket.on('buscar-negocio', async (data) => {
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
