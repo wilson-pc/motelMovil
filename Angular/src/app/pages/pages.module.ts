@@ -25,7 +25,8 @@ import { AgmCoreModule } from '@agm/core';
         NgMultiSelectDropDownModule.forRoot(),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAmDFQR1MLBKTwWPTW5IG31nDsPbYmJ2h4'
-          })
+          }),
+        
     ],
     declarations: [
         PageComponent,
@@ -37,9 +38,7 @@ import { AgmCoreModule } from '@agm/core';
         WalletComponent,
         ComplaintComponent,
         RegistryUserComponent,
-        MapaGoogleComponent,
-       
-       
+        MapaGoogleComponent,      
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

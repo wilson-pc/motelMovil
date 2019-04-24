@@ -27,9 +27,10 @@ export class DetallesTiendaPage {
   direcciongpsne: String;
   telefonone: String;
 
-  constructor(public navCtrl: NavController,public navParams: NavParams,private productoServ: SocketNegocioService3) {
+  constructor(public navCtrl: NavController,public navParams: NavParams,private productoServ: SocketNegocioService3,private productsnegocio: SocketConfigService) {
     this.getProduct();
     this.iniciarnegocio();
+    this.datosproductos();
   }
 
   atras(){
@@ -40,13 +41,23 @@ export class DetallesTiendaPage {
     this.productoServ.emit("sacar-negocio", { id: this.producto.negocio });
   }
 
-  sacarnegocio(){
+  sacarProductos(){
+    this.productsnegocio.emit("listar-productos-negocio",{ negocio: this.producto.negocio });
+  }
+
+   sacarnegocio(){
     return this.productoServ
     .fromEvent<any>("respuesta-sacar-negocio")
     .map( data => data );
   }
 
-  iniciarnegocio(){
+  sacarProductosNegocio(){
+    return this.productsnegocio
+    .fromEvent<any>("respuesta-listado-productos-negocio")
+    .map( data => data);
+  }
+
+   iniciarnegocio(){
     this.sacarnegocio().subscribe(datos=>{
       console.log(datos);
       this.nombrene=datos.nombre;
@@ -57,12 +68,20 @@ export class DetallesTiendaPage {
     });
   }
 
-  getProduct() {
-    this.producto = this.navParams.get("producto");
+  datosproductos(){
+    this.sacarProductosNegocio().subscribe(datos=>{
+      console.log(datos);
+    });
   }
+
+   getProduct() {
+    this.producto = this.navParams.get("producto");
+    console.log(this.producto.negocio);
+   }
 
   ionViewDidLoad() {
     this.sacarDatos();
+    this.sacarProductos();
   }
 
 }

@@ -191,6 +191,7 @@ module.exports = async function (io) {
     socket.on('calificar-producto', async (data) => {
       try {
         var datos = await Crypto.Desincryptar(data);
+        console.log("datos: ",datos);
         if (!datos.error) {
           var cliente = datos.idcliente;
           var producto = datos.idproducto;

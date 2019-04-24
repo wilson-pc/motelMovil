@@ -41,6 +41,7 @@ import { MapsPage } from '../pages/maps/maps';
 import { ListaDeseosPage } from '../pages/lista-deseos/lista-deseos';
 import { ListaReservasPage } from '../pages/lista-reservas/lista-reservas';
 import { ListaFavoritosPage } from '../pages/lista-favoritos/lista-favoritos';
+import { ComplaintsPage } from '../pages/complaints/complaints';
 import { DescripcionProductoPage } from '../pages/descripcion-producto/descripcion-producto';
 import { ProviderProductosProvider } from '../providers/provider-productos/provider-productos';
 import { SocketConfigService, SocketLoginService, SocketNegocioService3 } from '../services/socket-config.service';
@@ -88,6 +89,7 @@ export const firebaseConfig = {
     ListaDeseosPage,
     ListaReservasPage,
     ListaFavoritosPage,
+    ComplaintsPage,
     ProfileUserPage,
     DescripcionProductoPage,
     DescriptionMotelPage,
@@ -134,6 +136,7 @@ export const firebaseConfig = {
     ListaDeseosPage,
     ListaReservasPage,
     ListaFavoritosPage,
+    ComplaintsPage,
     DescripcionProductoPage,
     DescriptionMotelPage,
     DescriptionLicoreriaPage,

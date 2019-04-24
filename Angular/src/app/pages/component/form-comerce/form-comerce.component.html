@@ -35,15 +35,22 @@
                                           <div id="collapseExample" [ngbCollapse]="isCollapsed">
                                             <div class="card">
                                               <div class="card-body">
-                                                    <label class=" control-label">Direccion de coordenadas</label>
+                                                    <label class=" control-label">Direccion Fisica</label>
                                                     <div class="">
                                                         <!--{ubicaciongps:string,descripcion:string}-->
-                                                        <input [(ngModel)]="ubicaciongps" type="text"  name="gps" placeholder="1.345345435, -2.342342432" class="form-control input-md" required="">
+                                                        <input [(ngModel)]="ubicacionFisica" type="text"  name="gps" placeholder="Av. x Nro 125" class="form-control input-md" required="">
                                                     </div>
 
-                                                    <label class=" control-label">Descripcion de la ubicacion</label>
+                                                    <label class=" control-label">Latitud</label>
                                                     <div class="">
-                                                        <input [(ngModel)]="descripcion" type="text"  name="des" placeholder="Av. C Nro. 1003" class="form-control input-md" required="">
+                                                        <input [(ngModel)]="latitud" type="text"  name="lat" placeholder="-32.36589888 latitud" class="form-control input-md" disabled required="">
+                                                    </div>
+                                                    <label class=" control-label">Longitud</label>
+                                                    <div class="">
+                                                        <input [(ngModel)]="longitud" type="text"  name="long" placeholder="-60.36598852 longitud" class="form-control input-md" disabled required="">
+                                                    </div>
+                                                    <div>
+                                                        <button type="button" class="btn btn-outline-primary" (click)="verificacionGeolocalizacion()">Mi Ubicacion</button>
                                                     </div>
                                               </div>
                                             </div>
@@ -196,7 +203,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Direccion:</td>
-                                                            <td>{{negocios.direccion.descripcion}}</td>
+                                                            <td>{{negocios.direccion.ubicacionFisica}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Telefono</td>
@@ -234,7 +241,7 @@
                                 <tr *ngFor="let user of ListaNegocio, let i=index">
                                     <td>{{i+1}}</td>
                                     <td>{{user.nombre}}</td>
-                                    <td>{{user.direccion.descripcion}}</td>
+                                    <td>{{user.direccion.ubicacionFisica}}</td>
                                     <td>{{user.telefono}}</td>                            
                                     <td>{{user.correo}}</td>
                                     <td class="text-right">

@@ -9,7 +9,7 @@ import { InfoWindowManager } from '@agm/core';
 })
 export class MapaGoogleComponent implements OnInit {
 
-  texto : string = 'Wenceslau Braz - Cuidado com as cargas';
+  texto : string = 'Bienvenido a MapTRIXI';
   lat: number = -17.3957575;
   lng: number = -66.1460038;
   zoom: number = 15; 
@@ -34,7 +34,7 @@ export class MapaGoogleComponent implements OnInit {
 ]
   
   labelOptions = {
-    //color: '#ee4646',
+    color: '#rgba(133, 131, 131, 0.705);',
     fontFamily: '',
     fontSize: '10px',
     fontWeight: 'bold',

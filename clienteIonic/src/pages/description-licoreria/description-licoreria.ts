@@ -138,6 +138,20 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   }
 
+  likeProduct(idProducto){
+    console.log("Producto: ", idProducto);
+    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+    var datosCrypt = this.encryptData(datos);
+    this.provedorFavoritos.emit('calificar-producto', datosCrypt);
+  }
+
+  dislikeProduct(idProducto){
+    console.log("Producto: ", idProducto);
+    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+    var datosCrypt = this.encryptData(datos);
+    this.provedorFavoritos.emit('descalificar-producto', datosCrypt);
+  }
+
   // Respuestas Socket
   connectionBackendSocket() {
     this.clientesSubscription = this.eventoSacarDatos().subscribe(data => {
@@ -160,6 +174,14 @@ export class DescriptionLicoreriaPage implements OnDestroy {
         this.presentToast("Producto Denunciado");
         this.dismiss();
       }
+    });
+
+    this.suscripctionSocket = this.respuestaCalificarProducto().subscribe((data: any) => {
+      console.log("Calificado ");
+    });
+
+    this.suscripctionSocket = this.respuestaDescalificarProducto().subscribe((data: any) => {
+      console.log("Descalificado ");
     });
   }
 
@@ -185,6 +207,14 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   respuestaDenuncia() {
     return this.provedorFavoritos.fromEvent<any>('respuesta-denuncia-negocio').map(data => data)
+  }
+
+  respuestaCalificarProducto(){
+    return this.provedorFavoritos.fromEvent<any>('respuesta-calificar-producto').map(data => data)
+  }
+
+  respuestaDescalificarProducto(){
+    return this.provedorFavoritos.fromEvent<any>('respuesta-descalificar-producto').map(data => data)
   }
 
   guardarFavorito() {

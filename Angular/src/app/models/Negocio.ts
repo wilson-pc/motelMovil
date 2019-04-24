@@ -7,13 +7,13 @@ export class Negocio {
     public titular:string;
     public foto:string;
     public tipo:TipoNegocio;
-    public direccion:{ubicaciongps:string,descripcion:string}
-    public telefono:string//ok
+    public direccion:{ubicacionFisica:string,latitud:number,longitud:number};
+    public telefono:string;//ok
     public nit:string;//ok
     public correo:string;//ok
     public eliminado:{estado:Boolean,razon:string}
     public creacion:{usuario:string,fecha:string};
-    public modificacion:{fecha:string,usuario:string}
+    public modificacion:{fecha:string,usuario:string};
 }
 
 /**
