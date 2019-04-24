@@ -6,6 +6,7 @@ import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { RegistryUserComponent } from './registry-user/registry-user.component';
 import { Error404Component } from './error404/error404.component';
+import { MapaGoogleComponent } from './mapa-google/mapa-google.component';
 
 const routes: Routes = [
     {
@@ -18,6 +19,7 @@ const routes: Routes = [
             { path: 'usuarios', component: RegistryUserComponent },
             { path: 'billetera', component: WalletComponent },
             { path: 'denuncias', component: ComplaintComponent },
+            { path: 'mapa', component: MapaGoogleComponent }
         ]
     }
 ];

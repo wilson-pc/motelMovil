@@ -18,7 +18,8 @@ import { FormComerceComponent } from './form-comerce/form-comerce.component';
     FormsModule,
     ReactiveFormsModule,
     JsonpModule,
-    NgbModule
+    NgbModule,
+    
   ],
   declarations: [
     ListCommerceComponent,

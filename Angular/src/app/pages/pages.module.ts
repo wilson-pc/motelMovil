@@ -13,6 +13,8 @@ import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { RegistryUserComponent } from './registry-user/registry-user.component';
+import { MapaGoogleComponent } from './mapa-google/mapa-google.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
     imports: [
@@ -20,7 +22,11 @@ import { RegistryUserComponent } from './registry-user/registry-user.component';
         PagesRoutingModule,
         FormsModule,
         Ng2SearchPipeModule,
-        NgMultiSelectDropDownModule.forRoot()
+        NgMultiSelectDropDownModule.forRoot(),
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyAmDFQR1MLBKTwWPTW5IG31nDsPbYmJ2h4'
+          }),
+        
     ],
     declarations: [
         PageComponent,
@@ -31,7 +37,8 @@ import { RegistryUserComponent } from './registry-user/registry-user.component';
         RegistryOwnerComponent,
         WalletComponent,
         ComplaintComponent,
-        RegistryUserComponent
+        RegistryUserComponent,
+        MapaGoogleComponent,      
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
