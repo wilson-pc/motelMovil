@@ -275,6 +275,7 @@ module.exports = async function (io) {
           producto.estado = params.estado;
           producto.tipo = await Tipo.findById(params.tipo);
           producto.foto = params.foto;
+          producto.fotos = params.fotos;
           // usuario.eliminado = { estado: false, razon: "" };
           producto.descripcion = params.descripcion;
           //  producto.creacion = params.creacion
