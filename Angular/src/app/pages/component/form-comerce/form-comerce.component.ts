@@ -20,8 +20,9 @@ export class FormComerceComponent implements OnInit {
 
 	titulo: string;
 	tituloregistro:string;
-	ubicaciongps:string;
-	descripcion:string;
+	ubicacionFisica:string;
+	latitud:number;
+	longitud:number;
 	datanew={};
 	eliminar: boolean = false;
 	razonBorrado:string;
@@ -52,9 +53,20 @@ export class FormComerceComponent implements OnInit {
 	];
 	// Cabezeras de los elementos
 	headElements = ['Nro', 'Nombre de Negocio', 'Direccion', 'Telefono', 'Email', 'Opciones'];
-  constructor(private buscador:BuscadorService,private route:ActivatedRoute,private servicioflag:UsuarioService,private socket:SocketConfigService3,private modalService: NgbModal, private usuarioServ:UsuarioService) { 
+	constructor(private buscador:BuscadorService,
+		private route:ActivatedRoute,
+		private servicioflag:UsuarioService,
+		private socket:SocketConfigService3,
+		private modalService: NgbModal, 
+		private usuarioServ:UsuarioService,
+		) {
+			
+		//	this.verificacionGeolocalizacion();
 	var tit= this.route.snapshot.paramMap.get('negocio');
 	this.titulo = "registro de "+ tit;
+	
+	// this.latitud=0;
+	// this.longitud=0;
 
 	this.buscador.lugar="negocios";
 	this.buscador.termino=tit;
@@ -135,8 +147,9 @@ export class FormComerceComponent implements OnInit {
 		this.negocios=negocio;
 		
 		this.negocios.tipo=negocio.tipo._id as any;
-		this.descripcion=negocio.direccion.descripcion;
-		this.ubicaciongps=negocio.direccion.ubicaciongps;
+		this.ubicacionFisica=negocio.direccion.ubicacionFisica;
+		this.latitud=negocio.direccion.latitud;
+		this.longitud=negocio.direccion.longitud;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })    
     this.modal.result.then((e) => {
     });  
@@ -146,8 +159,9 @@ export class FormComerceComponent implements OnInit {
 		this.flag=anyflag;
 		this.negocios=negocio;
 		this.negocios.tipo=negocio.tipo._id as any;
-		this.descripcion=negocio.direccion.descripcion;
-		this.ubicaciongps=negocio.direccion.ubicaciongps;
+		this.ubicacionFisica=negocio.direccion.ubicacionFisica;
+		this.longitud=negocio.direccion.longitud;
+		this.latitud= negocio.direccion.latitud;
 		
 		console.log(negocio);
 	
@@ -176,7 +190,7 @@ export class FormComerceComponent implements OnInit {
 
 	verificaciondeCampos(){
 
-		var bool = (this.negocios.nombre!=undefined && this.ubicaciongps!=undefined && this.descripcion!=undefined &&
+		var bool = (this.negocios.nombre!=undefined && this.ubicacionFisica!=undefined && this.longitud!=undefined && this.latitud!=undefined &&
 					this.negocios.telefono!=undefined && this.negocios.foto!=undefined && this.negocios.correo);
 					 if(bool){
 						var aux= this.validateEmail(this.negocios.correo)
@@ -212,7 +226,7 @@ export class FormComerceComponent implements OnInit {
 		this.isRequired=false;
 		this.isExito=false;	
 	
-			this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
+			this.negocios.direccion={ubicacionFisica:this.ubicacionFisica,latitud:this.latitud,longitud:this.longitud};
 			this.negocios.creacion={usuario:this.usuarioServ.usuarioActual.datos._id,fecha:date};
 			this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
 		var response=this.verificaciondeCampos();
@@ -248,7 +262,7 @@ export class FormComerceComponent implements OnInit {
 		this.isRequired=false;
 		this.isExito=false;		
 
-		this.negocios.direccion={ubicaciongps:this.ubicaciongps,descripcion:this.descripcion};
+		this.negocios.direccion={ubicacionFisica:this.ubicacionFisica,longitud:this.longitud,latitud:this.latitud};
 		
 		this.negocios.modificacion={fecha:date,usuario:this.usuarioServ.usuarioActual.datos._id};
 
@@ -323,8 +337,9 @@ export class FormComerceComponent implements OnInit {
 	limpiarCampos()
 	{
 		this.negocios=new Negocio;
-		this.descripcion="";
-		this.ubicaciongps="";		
+		this.ubicacionFisica="";
+		this.longitud=0;
+		this.latitud=0;		
 	}
 	limpiarMensajes(){						
 
@@ -557,6 +572,25 @@ export class FormComerceComponent implements OnInit {
 			});
 		})
 		return observable;
+	}
+
+	verificacionGeolocalizacion(){
+		if(navigator.geolocation)
+		{
+			console.log("soporta navegacion");
+
+			navigator.geolocation.getCurrentPosition(data =>{
+				console.log("mi latitud es:",data.coords.latitude);
+				console.log("mi longitud es:",data.coords.longitude);
+				this.latitud=data.coords.latitude;
+				this.longitud=data.coords.longitude;
+			});
+
+		}
+		else{
+			console.log("no soporta");
+		}
+	
 	}
 
 }
