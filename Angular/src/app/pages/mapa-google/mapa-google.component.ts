@@ -1,36 +1,46 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Icon } from 'ionic-angular';
-import {
-  GoogleMaps,
-  GoogleMap,
-  GoogleMapsEvent,
-  GoogleMapOptions,
-  CameraPosition,
-  MarkerOptions,
-  Marker,
-  LatLng,
-  GoogleMapsMapTypeId,
-  MarkerIcon
-} from '@ionic-native/google-maps';
-//import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { InfoWindow } from '@agm/core/services/google-maps-types';
+import { InfoWindowManager } from '@agm/core';
 
-
-
-/**
- * Generated class for the MapsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
 @Component({
-  selector: 'page-maps',
-  templateUrl: 'maps.html',
+  selector: 'app-mapa-google',
+  templateUrl: './mapa-google.component.html',
+  styleUrls: ['./mapa-google.component.css']
 })
-export class MapsPage {
-  map: GoogleMap;
-  myPosition:any ={};
+export class MapaGoogleComponent implements OnInit {
+
+  texto : string = 'Bienvenido a MapTRIXI';
+  lat: number = -17.3957575;
+  lng: number = -66.1460038;
+  zoom: number = 15; 
+
+  lugares=[
+    {    
+      lat:-17.3905598,
+      lng:-66.1524502,
+      descripcion:"posicion 1"
+    },
+    {    
+      lat:-17.3957575,
+      lng:-66.1460060,
+      descripcion:"posicion 2"
+    },
+    {    
+      lat:-17.3936598,
+      lng:-66.1460500,
+      descripcion:"posicion 3"
+    },
+
+]
+  
+  labelOptions = {
+    color: '#rgba(133, 131, 131, 0.705);',
+    fontFamily: '',
+    fontSize: '10px',
+    fontWeight: 'bold',
+    letterSpacing:'0.5px',
+    text: 'Plan Pagado/No pagado'
+  }
   img:string = "data:image/jpeg;base64,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"
@@ -42,154 +52,15 @@ export class MapsPage {
   +"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";
-  icon: MarkerIcon = {
-    url: this.img,
-    size: {
-      width: 48,
-      height: 45
-    }
-  };
-  markers: any[] = [
-    { 
-      position:{
-        latitude: -17.3666745,
-        longitude: -66.2387878,
-      },
-      title:'Point 1',
-      snippet:"pop up de ejemplo 1",
-      draggable:true
-    },
+  
+  constructor() { 
+    //_el.nativeElement('agmmarker').open();
+  }
 
-    {
-      
-      position:{
-        latitude: -17.3706884,
-        longitude: -66.2397749,
-      },
-      title:'Point 2',
-      snippet:"pop up de ejemplo 2",
-      draggable:true
-    },
+  ngOnInit() {
+  }
 
-    {
-     
-      position:{
-        latitude: -17.391398,
-        longitude: -66.2407904,
-      },
-      title:'Point 3',
-      snippet:"pop up de ejemplo 3",
-      draggable:true
-    },
+  verificarInfo(){
     
-    {
-     
-      position:{
-        latitude: -17.3878887,
-        longitude: -66.223664,
-      },
-      title:'Point 4',
-      snippet:"pop up de ejemplo 4",
-      draggable:true
-    },
-  ];
-  constructor(public navCtrl: NavController,
-     public navParams: NavParams,
-     private googleMaps: GoogleMaps,) {
   }
-
-  ionViewDidLoad(){
-    this.loadMap();
-    //this.getCurrentPosition();
-  }
-
-  loadMap(){
-
-    let mapOptions: GoogleMapOptions = {
-      mapType: GoogleMapsMapTypeId.TERRAIN,
-      camera: {
-        target: {
-          lat: 43.0741904, // default location
-          lng: -89.3809802 // default location
-        },
-        zoom: 18,
-        tilt: 30,        
-      },
-      controls: {
-        'compass': true,
-        'myLocationButton': true,
-        'myLocation': true,   // (blue dot)
-        'indoorPicker': true,
-        'zoom': true,          // android only
-        'mapToolbar': true     // android only
-      }
-      // gestures: {
-      //   scroll: true,
-      //   tilt: true,
-      //   zoom: true,
-      //   rotate: true
-      // },
-      // preferences: {
-      //   zoom: {
-      //     minZoom: 0,
-      //     maxZoom: 110,
-      //   },
-      //   building: false
-      // },
-      // styles: []
-      
-    };
-
-    this.map = this.googleMaps.create('map_canvas', mapOptions);
-
-    // Wait the MAP_READY before using any methods.
-    this.map.one(GoogleMapsEvent.MAP_READY)
-    .then(() => {
-      // Now you can use all methods safely.
-      this.getPosition();
-      //use to markers Options
-     
-      this.markers.forEach(marker=>{
-        this.addMarker(marker);
-      });
-
-    })
-    .catch(error =>{
-      console.log(error);
-    });
-
-  }
-
-  getPosition(): void{
-    this.map.getMyLocation()
-    .then(response => {
-      this.map.moveCamera({
-        target: response.latLng
-      });
-     
-    })
-    .catch(error =>{
-      console.log(error);
-    });
-  }
-
-  addMarker(options){
-    let markerOptions: MarkerOptions = {
-      icon:this.icon,      
-      position: new LatLng(options.position.latitude, options.position.longitude),
-      title: options.title,
-      styles: {
-        'text-align': 'center',
-        'font-style': 'italic',
-        'font-weight': 'bold',
-        'color': 'red'
-      },
-      snippet:options.snippet,
-      draggable:options.draggable,
-      
-    };
-    this.map.addMarker(markerOptions);
-  }
-
- 
 }

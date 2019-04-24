@@ -6,6 +6,7 @@ import { conexionSocketComportamiento } from '../../services/socket-config.servi
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import { Moteles } from '../../models/Moteles';
 import { Habitacion } from '../../models/Habitacion';
+import { Geolocation } from '@ionic-native/geolocation';
 
 /**
  * Generated class for the ListaFavoritosLicoreriasPage page.
@@ -34,11 +35,18 @@ export class ListaFavoritosPage {
 
   producto:Productos;
  
+  latitud:number;
+  longitud:number;
 
+  latitud1:number;
+  longitud1:number;
+
+  other:any;
    constructor(public navCtrl: NavController,
      public navParams: NavParams,      
      private usuarioLogueado:UsuarioProvider,
-     public provedorSocketFavoritos:conexionSocketComportamiento) {
+     public provedorSocketFavoritos:conexionSocketComportamiento,
+     public geolocalizacion: Geolocation) {
       
         this.obtenerListadeFavoritosLicores();  
         this.respuestaListaFavoritosLicores();  
@@ -55,10 +63,30 @@ export class ListaFavoritosPage {
     
    // this.obtenerListadeFavoritos();
     this.producto=new Productos();
+
+    this.getCurrentPosition();
+    this.getPositionForObserver();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ListaFavoritosLicoreriasPage');   
+  }
+
+  getCurrentPosition(){
+    this.geolocalizacion.getCurrentPosition().then(data =>{
+      this.latitud= data.coords.latitude;
+      this.longitud=data.coords.longitude;
+    }).catch(error=>{
+      console.log("error en:",error);
+    });
+  }
+
+  getPositionForObserver(){
+    let watch = this.geolocalizacion.watchPosition();
+    watch.subscribe(data =>{
+      this.latitud1= data.coords.latitude;
+      this.longitud1=data.coords.longitude;
+    });
   }
 
 

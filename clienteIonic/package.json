@@ -24,7 +24,7 @@
     "@ionic-native/core": "~4.18.0",
     "@ionic-native/facebook": "^4.20.0",
     "@ionic-native/file-chooser": "^4.19.0",
-    "@ionic-native/geolocation": "^5.4.0",
+    "@ionic-native/geolocation": "^4.20.0",
     "@ionic-native/google-maps": "^4.21.0",
     "@ionic-native/google-plus": "^4.20.0",
     "@ionic-native/image-picker": "^4.19.0",
@@ -34,6 +34,7 @@
     "angularfire2": "^5.0.0-rc.11",
     "base64js-es6": "^1.0.1",
     "cordova-android": "7.1.4",
+    "cordova-browser": "6.0.0",
     "cordova-plugin-android-permissions": "^1.0.0",
     "cordova-plugin-crypto-file": "^1.4.0",
     "cordova-plugin-device": "^2.0.2",
@@ -92,7 +93,8 @@
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "1084156115455-rc0ahd5f8ak576o2eomo6g2k92tr8kee.apps.googleusercontent.com",
-        "PLAY_SERVICES_VERSION": "11.8.0"
+        "PLAY_SERVICES_VERSION": "11.8.0",
+        "server_client_id": "1084156115455-cuj0uav5a0jhsvirnvp0dlu2cc3k1cuu.apps.googleusercontent.com"
       },
       "cordova-plugin-googlemaps": {
         "API_KEY_FOR_ANDROID": "AIzaSyAZDz6bYcbKu9MUnraQxfL6MQwLEt9bCBc",
