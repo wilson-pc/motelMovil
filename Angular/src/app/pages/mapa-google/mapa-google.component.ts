@@ -63,4 +63,9 @@ export class MapaGoogleComponent implements OnInit {
   verificarInfo(){
     
   }
+
+  obtenerNegocios(){
+    //listar-todos-negocio
+    //respuesta-listar-todos-negocio
+  }
 }

@@ -233,6 +233,24 @@ module.exports = async function (io) {
       });
     });
 
+    //LISTAR NEGOCIOS
+    socket.on('listar-todos-negocio', async (data) => {
+      Negocio.find({ "eliminado.estado": false, "tipo.nombre": data.termino }, { foto: 0 }, function (error, lista) {
+        if (error) {
+          io.to(socket.id).emit('respuesta-listar-todos-negocio', { error: "No se pudo listar los negocios" })
+          // res.status(500).send({ mensaje: "Error al listar" })
+        } else {
+          if (!lista) {
+            io.to(socket.id).emit('respuesta-listar-todos-negocio', { error: "aun no hay negocios en registrados" })
+            //   res.status(404).send({ mensaje: "Error al listar" })
+          } else {
+            console.log(lista);
+            io.to(socket.id).emit('respuesta-listar-todos-negocio', lista);
+          }
+        }
+      });
+    });
+
     socket.on('listar-negocio-detallado', async (data) => {
       Negocio.find({ "eliminado.estado": false, "tipo.nombre": data.termino }, { foto: 0 }, async function (error, lista) {
         if (error) {
@@ -249,6 +267,8 @@ module.exports = async function (io) {
         }
       });
     });
+
+    //LISTAR TODOS LOS NEGOCIOS
 
     socket.on('listar-negocio2', async (data) => {
       Negocio.find({ "eliminado.estado": false, titular: { $exists: false } }, { foto: 0 }, function (error, lista) {
