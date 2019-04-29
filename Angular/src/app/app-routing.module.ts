@@ -9,17 +9,19 @@ import { RecuperacionComponent } from './recuperacion/recuperacion.component';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'inicio',
-        pathMatch: 'full',
-      },
-      {
+        redirectTo:'inicio',
+        pathMatch:'full'
+    },
+   
+    {
         path: '',
         component: WebComponent,
         children: [
-            {
+        {
           path: '',
           loadChildren: './web/web.module#WebModule'
-      }]},
+        }]
+    },
 
     {
         path: '',

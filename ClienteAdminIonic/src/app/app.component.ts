@@ -43,8 +43,7 @@ export class MyApp {
       { title: 'Inicio', component: HomePage },
       { title: 'Productos', component: ListProductsPage },
       { title: 'Denuncias', component: DenunciaPage },
-      { title: 'Reservas', component: ReservaPage },
-      { title: 'Billetera', component: BilleteraPage }
+      { title: 'Reservas', component: ReservaPage }
     ];
     // Valid route
     this.validUserLocalStorage();
