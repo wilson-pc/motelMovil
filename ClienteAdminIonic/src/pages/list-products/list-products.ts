@@ -13,6 +13,7 @@ import { RegisterProductsPage } from '../register-products/register-products';
 import { EditProductsPage } from '../edit-products/edit-products';
 import { ViewProductsPage } from '../view-products/view-products';
 import {imageDefault} from '../../app/imageDefualt'
+import { Subscription } from 'rxjs/Subscription';
 
 type AOA = any[][];
 
@@ -23,6 +24,7 @@ type AOA = any[][];
 export class ListProductsPage {
   @ViewChild('fileInput') fileInput: ElementRef;
   data: any[][] = [[1,2,3],[4,5,6]];
+  private suscribe: Subscription = new Subscription();
   // variables de acceso interno y externo
   space: string = "   ";
   listCommerce: Negocio[] = [];
@@ -106,7 +108,6 @@ exceltojson:any[]=[];
   }
 
   infoProduct(product) {
-    console.log(product);
     const modal = this.modalCtrl.create(ViewProductsPage, {product: product, commerce: this.commerceOnly });
     modal.present();
   }
@@ -211,7 +212,7 @@ exceltojson:any[]=[];
     });
 
     // productos de un negocio
-    this.respuestaProductosNegocio().subscribe((data: any) => {
+  this.suscribe=  this.respuestaProductosNegocio().subscribe((data: any) => {
       console.log(data);
       this.listProducts = data;
     });
@@ -283,4 +284,7 @@ exceltojson:any[]=[];
     })
     return observable;
   }
+  ionViewWillLeave() {
+    this.suscribe.unsubscribe();
+    }
 }
