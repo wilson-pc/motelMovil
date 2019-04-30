@@ -482,7 +482,7 @@ module.exports = async function (io) {
     //PRODUCTOS PARA LISTAR EN CLIENTES
     socket.on('listar-productos-negocio', async (data) => {
 
-const ObjectId = mongoose.Types.ObjectId;
+    const ObjectId = mongoose.Types.ObjectId;
       Producto.aggregate([
         { $match: { "negocio": ObjectId(data.termino), "eliminado.estado": false } },
         {
