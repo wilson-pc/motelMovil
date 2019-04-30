@@ -786,12 +786,12 @@ module.exports = async function (io) {
 
 
     socket.on('cerrar-secion', async (data) => {
-
+console.log(data);
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
+                console.log(datos);
           var usuario2 = await Usuario.findById(datos.id);
           console.log(usuario2);
           var usuario = new Usuario();
