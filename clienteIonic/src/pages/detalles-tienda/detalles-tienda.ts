@@ -4,6 +4,7 @@ import { TabsPage } from '../tabs/tabs';
 import { Productos } from '../../models/Productos';
 import { SocketNegocioService3, conexionSocketComportamiento, SocketConfigService } from '../../services/socket-config.service';
 import { Negocio } from '../../models/Negocio';
+import { Subscription } from 'rxjs';
 
 /**
  * Generated class for the DetallesTiendaPage page.
@@ -20,6 +21,8 @@ import { Negocio } from '../../models/Negocio';
 export class DetallesTiendaPage {
 
   producto: Productos;
+  listProductTop: Productos[] = [];
+  suscripctionSocket: Subscription;
   nombrene: String;
   fotone: String;
   direccione: String;
@@ -30,7 +33,22 @@ export class DetallesTiendaPage {
   constructor(public navCtrl: NavController,public navParams: NavParams,private productoServ: SocketNegocioService3,private productsnegocio: SocketConfigService) {
     this.getProduct();
     this.iniciarnegocio();
-    this.datosproductos();
+    this.connectionBackendSocket();
+    this.getProductTop();
+  }
+
+  getProductTop() {
+    this.productsnegocio.emit("listar-productos-negocio",{ termino: this.producto.negocio });
+  }
+
+  connectionBackendSocket() {
+    this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
+      this.listProductTop = data;
+    });
+  }
+
+  respuestaProductTop() {
+    return this.productsnegocio.fromEvent<any>('respuesta-listado-productos-negocio').map(data => data)
   }
 
   atras(){
@@ -41,25 +59,14 @@ export class DetallesTiendaPage {
     this.productoServ.emit("sacar-negocio", { id: this.producto.negocio });
   }
 
-  sacarProductos(){
-    this.productsnegocio.emit("listar-productos-negocio",{ negocio: this.producto.negocio });
-  }
-
    sacarnegocio(){
     return this.productoServ
     .fromEvent<any>("respuesta-sacar-negocio")
     .map( data => data );
   }
 
-  sacarProductosNegocio(){
-    return this.productsnegocio
-    .fromEvent<any>("respuesta-listado-productos-negocio")
-    .map( data => data);
-  }
-
    iniciarnegocio(){
     this.sacarnegocio().subscribe(datos=>{
-      console.log(datos);
       this.nombrene=datos.nombre;
       this.fotone=datos.foto;
       this.direccione=datos.direccion.descripcion;
@@ -68,20 +75,12 @@ export class DetallesTiendaPage {
     });
   }
 
-  datosproductos(){
-    this.sacarProductosNegocio().subscribe(datos=>{
-      console.log(datos);
-    });
-  }
-
    getProduct() {
     this.producto = this.navParams.get("producto");
-    console.log(this.producto.negocio);
    }
 
   ionViewDidLoad() {
     this.sacarDatos();
-    this.sacarProductos();
   }
 
 }

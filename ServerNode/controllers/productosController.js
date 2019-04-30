@@ -480,16 +480,15 @@ module.exports = async function (io) {
 
     socket.on('listar-productos-negocio', async (data) => {
 
-      console.log(data);
       Producto.aggregate([
-        {$match : {"negocio": data.negocio, "eliminado.estado": false,}},
+        { $match: { "negocio": data.termino, "eliminado.estado": false, } },
         {
           $project: {
             _id: "$_id",
             "likes": { $size: "$valoracion.usuario" },
-            "dislike":{$size: "$desvaloracion.usuario"},
+            "dislike": { $size: "$desvaloracion.usuario" },
             "eliminado": "$eliminado",
-            "foto":{miniatura:"$foto.miniatura"},
+            "foto": { miniatura: "$foto.miniatura" },
             "creacion": "$creacion",
             "modificacion": "$modificacion",
             "nombre": "$nombre",
@@ -500,28 +499,23 @@ module.exports = async function (io) {
             "tipo": "$tipo",
             "descripcion": "$descripcion"
           }
-        },{
-          $skip:10*data.parte
-        },{
-          $limit:10
-        }
+        },
+        { $sort: { "likes": -1 } },
+        { $limit: 10 }
       ], function (error, lista) {
         if (error) {
-          console.log("este es el error:",error)
-          // res.status(500).send({ mensaje: "Error al listar" })
-          io.to(socket.id).emit('respuesta-listado-productos-negocio', { error: "ocurrio un error al listar productos" });
+          console.log(lista);
+          io.to(socket.id).emit('respuesta-listar-productos-negocio', { error: "ocurrio un error en el servidor" });
         } else {
           if (!lista) {
-            console.log("lista 2");
-            //   res.status(404).send({ mensaje: "Error al listar" })
-            io.to(socket.id).emit('respuesta-listado-productos-negocio', { error: "no hay productos en la base de datos" });
+            io.to(socket.id).emit('respuesta-listar-productos-negocio', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("lista");
-            io.to(socket.id).emit('respuesta-listado-productos-negocio', lista);
+            console.log("exito listado");
+            io.to(socket.id).emit('respuesta-listar-productos-negocio', lista);
           }
         }
       });
-      // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
+
     });
 
 
