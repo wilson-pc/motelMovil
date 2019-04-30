@@ -33,22 +33,26 @@ export class DetallesTiendaPage {
   constructor(public navCtrl: NavController,public navParams: NavParams,private productoServ: SocketNegocioService3,private productsnegocio: SocketConfigService) {
     this.getProduct();
     this.iniciarnegocio();
-    this.connectionBackendSocket();
+    
     this.getProductTop();
+    this.connectionBackendSocket();
+    
   }
 
   getProductTop() {
-    this.productsnegocio.emit("listar-productos-negocio",{ termino: this.producto.negocio });
+    let dato={ termino: this.producto.negocio };
+    this.productsnegocio.emit("listar-productos-negocio",dato);
   }
 
   connectionBackendSocket() {
     this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
       this.listProductTop = data;
+      console.log(data);
     });
   }
 
   respuestaProductTop() {
-    return this.productsnegocio.fromEvent<any>('respuesta-listado-productos-negocio').map(data => data)
+    return this.productsnegocio.fromEvent<any>('respuesta-listar-productos-negocio').map(data => data)
   }
 
   atras(){
@@ -77,6 +81,8 @@ export class DetallesTiendaPage {
 
    getProduct() {
     this.producto = this.navParams.get("producto");
+        
+    console.log("detalles",this.producto);
    }
 
   ionViewDidLoad() {

@@ -269,6 +269,8 @@ module.exports = async function (io) {
       });
     });
 
+    //LISTAR TODOS LOS NEGOCIOS
+
     socket.on('listar-negocio2', async (data) => {
       Negocio.find({ "eliminado.estado": false, titular: { $exists: false } }, { foto: 0 }, function (error, lista) {
         if (error) {
