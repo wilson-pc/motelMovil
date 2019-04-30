@@ -479,7 +479,7 @@ module.exports = async function (io) {
     });
 
     socket.on('listar-productos-negocio', async (data) => {
-
+   console.log("efwefwr",data);
       Producto.aggregate([
         { $match: { "negocio": data.termino, "eliminado.estado": false, } },
         {
@@ -539,7 +539,7 @@ module.exports = async function (io) {
     });
     //
     socket.on('listar-producto-negocio', async (data) => {
-      console.log(data);
+      console.log("datata", data);
 
       Producto.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.normal": 0,fotos:0 }, function (error, lista) {
 
