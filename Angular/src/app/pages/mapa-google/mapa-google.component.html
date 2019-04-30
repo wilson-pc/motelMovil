@@ -2,16 +2,15 @@
 
 <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
   <agm-marker 
-  [label]="labelOptions"
-  
-  [iconAnchorX]="10"
-  [iconAnchorY]="10"
-  [iconHeight]="10"
-  [iconWidth]="10"
   *ngFor="let lugar of lugares"
-  [latitude]="lugar.lat" [longitude]="lugar.lng">
+  [label]="labelOptions"
+  [iconUrl]="{ url:lugar.foto, scaledSize: { width: 40, height: 40, anchor : {x:50, y:50} }}"
+  
+  [latitude]="lugar.direccion.latitud" [longitude]="lugar.direccion.longitud">
     <agm-info-window [disableAutoPan]="true">
-      Hi, this is the content of the <strong>{{lugar.descripcion}}</strong>
+      Bienvenido a <strong>{{lugar.nombre}}</strong><br>
+      Direccion: <strong>{{lugar.direccion.ubicacionFisica}}</strong><br>
+      Telefonos: <strong>{{lugar.telefono}}</strong>
     </agm-info-window>
     <!-- [iconUrl]="img" -->
   </agm-marker>

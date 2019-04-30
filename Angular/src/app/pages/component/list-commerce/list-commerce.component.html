@@ -15,13 +15,8 @@
                             <tr *ngFor="let commerce of listCommerce, let i=index" (click)="openListProducts(commerce)">
                                 <td>{{i+1}}</td>
                                 <td>{{commerce.nombre}}</td>
-                                <td>{{commerce.cantidadProductos}}</td>
-                                <td>{{commerce.valoracion}}</td>
-                                <td>{{commerce.cantidadReportes}}</td>
-                                <td>{{commerce.cantidadVisitas}}</td>
-                                <td>{{commerce.montoTotal}}</td>
-                                <td>{{commerce.montoMesPasado}}</td>
-                                <td>{{commerce.montoActual}}</td>
+                                <td>{{commerce.productos}}</td>
+                                <td>{{commerce.visitas.length}}</td>
                             </tr>
                         </tbody>
                     </table>

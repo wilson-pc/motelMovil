@@ -1,3 +1,4 @@
+import { ProductProvider } from './../../providers/product/product';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Negocio } from '../../models/Negocio';
@@ -5,6 +6,9 @@ import * as CryptoJS from 'crypto-js';
 import { SocketServiceProduct } from '../../providers/socket-config/socket-config';
 import { Productos } from '../../models/Productos';
 import { clave } from '../../app/cryptoclave';
+import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+
 
 @Component({
   selector: 'page-view-products',
@@ -12,8 +16,10 @@ import { clave } from '../../app/cryptoclave';
 })
 export class ViewProductsPage {
 
+  private suscribe: Subscription = new Subscription();
   commerceOnly: Negocio;
   productOnly: Productos;
+  listImages:string[]=[];
 
   constructor(
     public navCtrl: NavController,
@@ -25,10 +31,35 @@ export class ViewProductsPage {
   }
 
   ionViewDidLoad() {
+    this.connection();
   }
+sacarProducto(){
+  this.productService.emit("sacar-producto",{id:this.productOnly._id})
+}
 
   dismissModal(){
     this.viewCtrl.dismiss();
+  }
+
+  connection(){
+   this.suscribe= this.respuestaSacarProducto().subscribe((data: Productos) => {
+      console.log(data);
+     this.listImages=data.fotos;
+   
+     });
+  }
+  ionViewWillLeave() {
+    console.log("close");
+    this.suscribe.unsubscribe();
+    }
+  respuestaSacarProducto() {
+    let observable = new Observable(observer => {
+      this.productService.on('respuesta-sacar-producto', (data) => {
+
+        observer.next(data);
+      });
+    })
+    return observable;
   }
   changeEstado(event){
 console.log(event);
@@ -44,8 +75,9 @@ this.productService.emit("actualizar-producto", ciphertext.toString());
   }
   getProduct() {
     this.productOnly = this.navParams.get('product');
-    console.log(this.productOnly);
+    
     this.commerceOnly = this.navParams.get('commerce');
+    this.sacarProducto();
   }
 
 }

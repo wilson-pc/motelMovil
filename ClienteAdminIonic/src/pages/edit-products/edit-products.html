@@ -96,7 +96,18 @@
       <ion-item no-lines *ngIf="!productForm.controls.productDescripcion.valid  && (productForm.controls.productDescripcion.dirty || statusInput)">
         <p>Campo descripción inválido; caracteres (10 - 90).</p>
       </ion-item>
-
+       <br>
+       <ion-grid>
+          <input type="file" accept="image/*" name="fileInput2" (change)="fileChange2($event)" #fileInput2 class="input-file"
+            style="position:absolute; top: -999999px">
+        <ion-row *ngIf="commerceOnly.tipo.nombre=='Motel' && listImages.length>0">
+          <ion-col col-6 col-md-4 col-xl-3 *ngFor="let image of listImages,let i = index">
+            <img [src]="image" alt="" ion-long-press [interval]="500"  (onPressing)="onLongPress(i)">
+          </ion-col>
+          <ion-icon (click)="filechoosser2()" name="add-circle"></ion-icon>
+        </ion-row>
+      </ion-grid>
+    
       <br><br>
       <ion-buttons>
         <button ion-button block color="secondary" (click)="updateProduct()">
@@ -107,5 +118,5 @@
     </form>
 
   </ion-list>
-
+  
 </ion-content>
