@@ -5,6 +5,7 @@ var Negocio = require("../schemas/negocio");
 var clave = require("./../variables/claveCrypto");
 var Tipo = require("../schemas/tipo");
 var Crypto = require("../variables/desincryptar");
+var mongoose = require("mongoose");
 require('mongoose-pagination');
 module.exports = async function (io) {
   var clients = [];
@@ -478,10 +479,12 @@ module.exports = async function (io) {
       // io.emit('respuesta-listar-producto', { user: socket.nickname, event: 'left' });
     });
 
+    //PRODUCTOS PARA LISTAR EN CLIENTES
     socket.on('listar-productos-negocio', async (data) => {
 
+const ObjectId = mongoose.Types.ObjectId;
       Producto.aggregate([
-        { $match: { "negocio": data.termino, "eliminado.estado": false, } },
+        { $match: { "negocio": ObjectId(data.termino), "eliminado.estado": false } },
         {
           $project: {
             _id: "$_id",
@@ -504,7 +507,7 @@ module.exports = async function (io) {
         { $limit: 10 }
       ], function (error, lista) {
         if (error) {
-          console.log(lista);
+         
           io.to(socket.id).emit('respuesta-listar-productos-negocio', { error: "ocurrio un error en el servidor" });
         } else {
           if (!lista) {
