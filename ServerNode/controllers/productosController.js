@@ -84,7 +84,7 @@ module.exports = async function (io) {
           for (let index = 0; index < datos.length; index++) {
             idnegocios = datos[index].tipo.idnegocio;
             var tipo = await Tipo.findOne({ tipo: datos[index].tipo.tipo });
-            console.log(tipo);
+          
             if (tipo != null) {
               datos[index].tipo = tipo;
             } else {
@@ -99,13 +99,13 @@ module.exports = async function (io) {
 
           Producto.create(datos, async (error, nuevoProducto) => {
             if (error) {
-              console.log(error);
+              
               io.emit('respuesta-importar-productos', { error: "no se pudo importar el excel" });
             } else {
 
-              console.log("nuevo producto creado");
+              
               var negocio = await Negocio.findByIdAndUpdate(idnegocios, { $inc: { productos: datos.length } });
-              console.log("registro exitoso");
+             
               io.emit('respuesta-importar-productos', { exito: "guardado" });
             }
           })
@@ -147,9 +147,9 @@ module.exports = async function (io) {
               console.log(error);
 
             } else {
-              console.log("nuevo producto creado");
+             
               var negocio = await Negocio.findByIdAndUpdate(params.negocio, { $inc: { productos: 1 } });
-              console.log("ervkjrbeui fgeriu");
+             
               io.emit('respuesta-producto', nuevoProducto);
 
 
@@ -182,7 +182,7 @@ module.exports = async function (io) {
                     //   res.status(404).send({ mensaje: "Error al listar" })
                     io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
                   } else {
-                    console.log("oifh reghu9nhgiuhfierhfuinhfephgceuep gy");
+                    
                     io.emit('respuesta-listado-producto', lista);
                   }
                 }
@@ -264,9 +264,6 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-          console.log(datos);
-
           var producto = new Producto();
           var params = datos.producto;
           producto._id = params._id;
@@ -286,7 +283,6 @@ module.exports = async function (io) {
               console.log(error);
               io.to(socket.id).emit('respuesta-actualizar-producto', { error: "ocurio un error al crear el producto" });
             } else {
-              console.log("exito 0>", productoActualizado);
               io.emit('respuesta-actualizar-producto', productoActualizado);
             }
           })
@@ -301,7 +297,7 @@ module.exports = async function (io) {
 
     socket.on('sacar-producto', async (data) => {
 
-      console.log(data);
+      
       Producto.findOne({ _id: data.id, "eliminado.estado": false }, { denuncias: 0 }, function (error, dato) {
         if (error) {
           console.log(error);
@@ -310,7 +306,7 @@ module.exports = async function (io) {
           if (!dato) {
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-            console.log(dato);
+         
             io.to(socket.id).emit('respuesta-sacar-producto', dato);
 
           }
@@ -329,7 +325,7 @@ module.exports = async function (io) {
           if (!dato) {
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-            console.log(dato);
+           
             io.to(socket.id).emit('respuesta-sacar-producto', dato);
 
           }
@@ -339,7 +335,7 @@ module.exports = async function (io) {
 
     socket.on('listar-producto-licores', async (data) => {
 
-      console.log(data);
+     
       Producto.aggregate([
         { $match: { "tipo.tiponegocio": "Licoreria", "eliminado.estado": false, } },
         {
@@ -371,11 +367,11 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-listado-producto-licores', { error: "ocurrio un error al listar productos" });
         } else {
           if (!lista) {
-            console.log("lista 2");
+           
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-licores', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("lista xxxxxxx=>", lista);
+           
             io.to(socket.id).emit('respuesta-listado-producto-licores', lista);
           }
         }
@@ -419,11 +415,11 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-listado-producto-sexshops', { error: "ocurrio un error al listar productos" });
         } else {
           if (!lista) {
-            console.log("lista 2");
+          
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-sexshops', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("lista");
+            
             io.to(socket.id).emit('respuesta-listado-producto-sexshops', lista);
           }
         }
@@ -435,7 +431,7 @@ module.exports = async function (io) {
     //METODO PARA SACAR PRODUCTOS MOTELES
     socket.on('listar-producto-moteles', async (data) => {
 
-      console.log(data);
+      
       Producto.aggregate([
         { $match: { "tipo.tiponegocio": 'Motel', "eliminado.estado": false, } },
         {
@@ -467,11 +463,11 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-listado-producto-moteles', { error: "ocurrio un error al listar productos" });
         } else {
           if (!lista) {
-            console.log("lista 2");
+            
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-moteles', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("lista");
+            
             io.to(socket.id).emit('respuesta-listado-producto-moteles', lista);
           }
         }
@@ -513,7 +509,7 @@ module.exports = async function (io) {
           if (!lista) {
             io.to(socket.id).emit('respuesta-listar-productos-negocio', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("exito listado");
+            
             io.to(socket.id).emit('respuesta-listar-productos-negocio', lista);
           }
         }
@@ -542,7 +538,7 @@ module.exports = async function (io) {
     });
     //
     socket.on('listar-producto-negocio', async (data) => {
-      console.log("datata", data);
+  
 
       Producto.find({ negocio: data.termino, "eliminado.estado": false }, { "foto.normal": 0,fotos:0 }, function (error, lista) {
 
@@ -576,7 +572,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-search', { error: "no hay productos en la base de datos" });
           } else {
-            console.log(lista);
+           
             io.to(socket.id).emit('respuesta-listado-producto-search', lista);
           }
         }
@@ -611,13 +607,13 @@ module.exports = async function (io) {
         { $limit: 10 }
       ], function (error, lista) {
         if (error) {
-          console.log(lista);
+          
           io.to(socket.id).emit('respuesta-top-productos', { error: "ocurrio un error en el servidor" });
         } else {
           if (!lista) {
             io.to(socket.id).emit('respuesta-top-productos', { error: "no hay productos en la base de datos" });
           } else {
-            console.log("exito listado");
+            
             io.to(socket.id).emit('respuesta-top-productos', lista);
           }
         }

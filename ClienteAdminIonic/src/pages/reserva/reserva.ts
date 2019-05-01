@@ -34,7 +34,7 @@ export class ReservaPage  implements OnDestroy {
     this.ReservaSubscription.push(this.reservaService.getReservas().subscribe((data)=>{
       this.reservasCompletas=[];
      if(data.error){
-        console.log(data);
+       
      }else{
        data.forEach(element => {
         if(element.estado=="espera" ||element.estado=="rechazado"){
@@ -64,6 +64,7 @@ export class ReservaPage  implements OnDestroy {
  
   }
   confirmarClick(item){
+  
     let datos={_id:item._id,estado:"aceptado",cliente:item.cliente._id}
     this.reservaService.sendEmitCambiarReserva(datos);
   }

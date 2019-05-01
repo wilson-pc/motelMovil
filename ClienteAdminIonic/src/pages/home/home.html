@@ -16,14 +16,15 @@
       refreshingText="Actualizando...">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let commerce of listCommerce">
-    <div (click)="modalEstadisticas(commerce)">
-        <ion-card-header>
-          {{commerce.tipo.nombre}}
-        </ion-card-header>
-        <ion-card-content>
-          {{commerce.nombre}}
-        </ion-card-content>
-    </div>
+  <ion-card *ngFor="let commerce of listCommerce" (click)="modalEstadisticas(commerce)">
+    <img [src]="commerce.foto" height="200" width="133" />
+    <ion-card-content>
+      <ion-card-title>
+        {{commerce.nombre}}
+        </ion-card-title>
+      <p>
+
+      </p>
+    </ion-card-content>
   </ion-card>
 </ion-content>

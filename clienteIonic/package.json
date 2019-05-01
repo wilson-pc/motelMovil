@@ -26,7 +26,6 @@
     "@ionic-native/file-chooser": "^4.19.0",
     "@ionic-native/geolocation": "^4.20.0",
     "@ionic-native/google-maps": "^4.21.0",
-    "@ionic-native/google-plus": "^4.20.0",
     "@ionic-native/image-picker": "^4.19.0",
     "@ionic-native/splash-screen": "~4.18.0",
     "@ionic-native/status-bar": "~4.18.0",
@@ -43,7 +42,6 @@
     "cordova-plugin-filechooser": "^1.2.0",
     "cordova-plugin-geolocation": "4.0.1",
     "cordova-plugin-googlemaps": "2.5.3",
-    "cordova-plugin-googleplus": "7.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^2.4.1",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -91,11 +89,6 @@
       },
       "cordova-sqlite-storage": {},
       "cordova-plugin-android-permissions": {},
-      "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "1084156115455-rc0ahd5f8ak576o2eomo6g2k92tr8kee.apps.googleusercontent.com",
-        "PLAY_SERVICES_VERSION": "11.8.0",
-        "server_client_id": "1084156115455-cuj0uav5a0jhsvirnvp0dlu2cc3k1cuu.apps.googleusercontent.com"
-      },
       "cordova-plugin-googlemaps": {
         "API_KEY_FOR_ANDROID": "AIzaSyAZDz6bYcbKu9MUnraQxfL6MQwLEt9bCBc",
         "API_KEY_FOR_IOS": "AIzaSyAZDz6bYcbKu9MUnraQxfL6MQwLEt9bCBc",
@@ -104,8 +97,6 @@
       },
       "cordova-plugin-geolocation": {}
     },
-    "platforms": [
-      "android"
-    ]
+    "platforms": []
   }
 }

@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
-import { Negocio } from '../../models/Negocio';
 import { conexionSocketComportamiento } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
-import { Moteles } from '../../models/Moteles';
 import { Habitacion } from '../../models/Habitacion';
 import { Geolocation } from '@ionic-native/geolocation';
 

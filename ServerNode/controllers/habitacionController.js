@@ -10,7 +10,7 @@ module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
     // var host=socket.handshake.headers.host;
-    console.log("Hola soy ionic Habitacion");
+
 
     socket.on('registrar-habitacion', async (data) => {
 
@@ -19,7 +19,7 @@ module.exports = async function (io) {
 
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          console.log("|-> ", datos);
+        
           var habitacion = new Habitacion();
           var params = datos.habitacion;
           habitacion.nombre = params.nombre;
@@ -57,7 +57,7 @@ module.exports = async function (io) {
     socket.on('eliminar-habitacion', async (data) => {
       try {
         var datos = await Crypto.Desincryptar(data);
-        console.log("back Product ->", datos);
+       
         if (!datos.error) {
           var habitacion = new Habitacion();
           habitacion._id = datos.id;
@@ -131,7 +131,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-habitacion-negocio', { error: "no hay habitaciones en la base de datos" });
           } else {
-            console.log("lista =>: ", lista);
+           
             io.to(socket.id).emit('respuesta-listado-habitacion-negocio', lista);
           }
         }
@@ -149,7 +149,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-habitacion', { error: "no habitaciones en la base de datos" });
           } else {
-            console.log(lista);
+         
             io.to(socket.id).emit('respuesta-listado-habitacion', { habitaciones: lista, total: total });
           }
         }
@@ -172,7 +172,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listar-todos-habitaciones', { error: "no hay productos en la base de datos" });
           } else {
-            console.log(lista);
+            
             io.to(socket.id).emit('respuesta-listar-todos-habitaciones', { habitacion: lista, total: total });
           }
         }
@@ -196,7 +196,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-habitacion', { error: "no hay habitaciones en la base de datos" });
           } else {
-            console.log(lista);
+           
             io.to(socket.id).emit('respuesta-listado-habitacion', lista);
           }
         }

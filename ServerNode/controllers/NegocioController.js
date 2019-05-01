@@ -19,7 +19,7 @@ module.exports = async function (io) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
           var negocio = new Negocio();
           //  var tipo = new Tipo();
-          console.log(datos)
+       
           var params = datos.negocio;
           negocio.nombre = params.nombre;
           //  negocio.titular = params.titular;
@@ -36,7 +36,7 @@ module.exports = async function (io) {
 
           var contador = await Negocio.countDocuments({ "negocio.nit": params.nit });
           if (contador < 1) {
-            console.log(negocio);
+          
 
             negocio.save((error, nuevonegocio) => {
               if (error) {
@@ -48,7 +48,7 @@ module.exports = async function (io) {
 
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-                console.log(nuevonegocio);
+                
                 console.log("Se guardo el negocio correctamente");
                 io.to(socket.id).emit('respuesta-registro-negocio', { datos: nuevonegocio });
                 io.emit('respuesta-registro-negocio-todos', { datos: nuevonegocio });
@@ -79,7 +79,7 @@ module.exports = async function (io) {
 
             //    res.status(500).send({ mensaje: "error al guradar" })
           } else {
-            console.log(nuevoNegocio);
+            
             io.emit('respuesta-registro-producto', nuevoNegocio);
           }
         })
@@ -93,7 +93,6 @@ module.exports = async function (io) {
 
     socket.on('actualizar-negocio', async (data) => {
 
-      console.log(data);
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
@@ -112,7 +111,7 @@ module.exports = async function (io) {
           negocio.correo = params.correo;
           negocio.modificacion = params.modificacion;
 
-          console.log("LLEGO A ACTUALIZAR");
+        
 
           Negocio.findOneAndUpdate({ _id: params._id }, negocio, { new: true }, (error, actualizado) => {
             if (error) {
@@ -139,13 +138,13 @@ module.exports = async function (io) {
     //
     socket.on('eliminar-negocio', async (data) => {
 
-      console.log("Entro a la peticion")
+     
       try {
-        console.log("Entro a la peticion y try")
+        
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          console.log(datos);
+          
           var negocio = new Negocio();
           var params = datos.negocio;
           negocio._id = params._id;
@@ -226,7 +225,7 @@ module.exports = async function (io) {
             io.to(socket.id).emit('respuesta-listar-negocio', { error: "aun no hay negocios en registrados" })
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-            console.log(lista);
+           
             io.to(socket.id).emit('respuesta-listar-negocio', lista);
           }
         }
@@ -244,7 +243,7 @@ module.exports = async function (io) {
             io.to(socket.id).emit('respuesta-listar-todos-negocio', { error: "aun no hay negocios en registrados" })
             //   res.status(404).send({ mensaje: "Error al listar" })
           } else {
-            console.log(lista);
+           
             io.to(socket.id).emit('respuesta-listar-todos-negocio', lista);
           }
         }
@@ -322,7 +321,7 @@ module.exports = async function (io) {
 
     socket.on('buscar-negocio', async (data) => {
       try {
-        console.log(data);
+        
         Negocio.find({ "eliminado.estado": false, "tipo.nombre": data.tipo, nombre: new RegExp(data.termino, 'i') }, function (error, lista) {
           if (error) {
             // res.status(500).send({ mensaje: "Error al listar" })
@@ -330,7 +329,7 @@ module.exports = async function (io) {
             if (!lista) {
               //   res.status(404).send({ mensaje: "Error al listar" })
             } else {
-              console.log(lista);
+              
               io.to(socket.id).emit('respuesta-buscar-negocios', lista);
             }
           }
@@ -385,7 +384,7 @@ module.exports = async function (io) {
 
     socket.on('sacar-negocio', async (datos) => {
 
-      console.log(datos);
+    
           Negocio.findOne({ _id: datos.id, "eliminado.estado": false }, function (error, dato) {
             if (error) {
               io.to(socket.id).emit('respuesta-sacar-negocio', { error: "no se pudo buscar al negocio" })
