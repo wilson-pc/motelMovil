@@ -5,6 +5,7 @@ import { Productos } from '../../models/Productos';
 import { Habitacion } from '../../models/Habitacion';
 import {  SocketConfigService } from '../../services/socket-config.service';
 import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 /**
  * Generated class for the LicoreriaPage page.
@@ -21,7 +22,7 @@ import { DescriptionLicoreriaPage } from '../description-licoreria/description-l
 export class LicoreriaPage {
   infiniteScroll:any;
   parte:number;  
-
+  
   searchQuery: string = '';
   items: string[];
   habitaciones:Habitacion;
@@ -37,6 +38,7 @@ export class LicoreriaPage {
      public productService:SocketConfigService,
      public modalCtrl: ModalController) {
    this.parte=0;
+   this.presentLoadingDefault()
    this.obtenerdatosProductos();  
     this.respuestaProductosNegocioLicores();   
   }
@@ -55,16 +57,30 @@ export class LicoreriaPage {
     
   }
 
+  //LOADING 
+
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Porfavor espere...',
+       
+    });
+    this.loading.present(); 
+   
+  }
+  //END LOADING
+
+
    loadData(event) {
   
     this.cont++;  
     if(this.cont==1)
     {      
       setTimeout(()=>{
-        event.complete();
+        
         this.parte++;        
         this.obtenerdatosProductos();    
-        console.log("se termino el tiempo");      
+        console.log("se termino el tiempo"); 
+        event.complete();     
         this.cont=0;
       },3000);
     }           
@@ -105,17 +121,20 @@ export class LicoreriaPage {
 
   respuestaProductosNegocioLicores() {
         
-    this.productService.on('respuesta-listado-producto-licores',(data)=>{
+    this.productService.on('respuesta-listado-producto-licores',async (data)=>{
                       
           if(!data.error){
             console.log("este es el data:",data);
 
-            data.forEach(element => {
+            await data.forEach(element => {
               this.listauxProductos.push(element);
               this.listProductos.push(element);
             });    
-
+            this.loading.dismiss();
           
+            if(this.infiniteScroll){
+              this.infiniteScroll.complete();
+            }
           }
           else{
             console.log("error en la lista");

@@ -1,5 +1,5 @@
 import { Component,ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll, LoadingController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll, LoadingController, ModalController, Loading } from 'ionic-angular';
 import { Habitacion } from '../../models/Habitacion';
 import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
@@ -30,7 +30,7 @@ export class MotelPage {
   producto:Productos;
   listProductos:Productos[]=[];
   listauxProductos:Productos[]=[];
-  loading:any;
+  loading:Loading;
   cont=0;
 
   constructor(public loadingCtrl: LoadingController,
@@ -39,15 +39,10 @@ export class MotelPage {
     private socketservicio: SocketConfigService,
     public modalCtrl: ModalController) {
       this.parte=0;
+      this.presentLoadingDefault();
       this.obtenerdatosProductos();
   this.respuestaProductosNegocioMoteles();
   
-    
-  }
- 
-  ionViewWillEnter()
-  {    
-    
     
   }
 
@@ -58,22 +53,33 @@ export class MotelPage {
   }
 
   //FUNCION PARA LOADING
-    
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Porfavor espere...',
+       
+    });
+    this.loading.present(); 
+   
+  }
 
   //FUNCION PARA SCROLL INFINITO
   loadData(event) {
   
+   
+    this.infiniteScroll = event;
     this.cont++;  
     if(this.cont==1)
-    {
-      
-      setTimeout(()=>{
-        event.complete();
-        this.parte++;        
-        this.obtenerdatosProductos();    
-        console.log("se termino el tiempo");      
-        this.cont=0;
-      },3000);
+    {           
+          setTimeout(()=>{
+            this.parte++;        
+          this.obtenerdatosProductos();    
+          event.complete();
+          console.log("se termino el tiempo");      
+          this.cont=0;
+
+          },3000)
+          
+               
     }           
     
   }
@@ -121,15 +127,16 @@ export class MotelPage {
 
   respuestaProductosNegocioMoteles() {
         
-    this.socketservicio.on('respuesta-listado-producto-moteles',(data)=>{
+    this.socketservicio.on('respuesta-listado-producto-moteles',async (data)=>{
         if(!data.error){
           console.log(data);
 
-          data.forEach(element => {
+          await data.forEach(element => {
             this.listauxProductos.push(element);
             this.listProductos.push(element);
-          });
-         
+          });         
+          this.loading.dismiss();          
+                   
         }
         else{
           console.log("ocurrio un problema");

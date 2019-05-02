@@ -21,7 +21,7 @@ export class ListCommerceComponent implements OnInit {
   negocios: Negocio;
 
   // Cabezeras de los elementos
-  headElements = ['Nro', 'Nombre', 'Cantidad Productos', 'Valoracion', 'Reportes', 'Visitas', 'Monto Total', 'Monto Mes Pasado', 'Monto Actual'];
+  headElements = ['Nro', 'Nombre', 'Cuartos Disponibles', 'Valoracion', 'Reportes', 'Visitas'];
 
   constructor(private rout: Router, private route: ActivatedRoute, private socketNegocio: SocketConfigService3) {
     this.tipoNegocio = this.route.snapshot.paramMap.get('tipo');
@@ -38,12 +38,7 @@ export class ListCommerceComponent implements OnInit {
     if (this.tipoNegocio === 'moteles') {
       this.socketNegocio.emit("listar-negocio", { termino: "Motel" });
     }
-    if (this.tipoNegocio === 'licorerias') {
-      this.socketNegocio.emit("listar-negocio", { termino: "Licoreria" });
-    }
-    if (this.tipoNegocio === 'sexshops') {
-      this.socketNegocio.emit("listar-negocio", { termino: "SexShop" });
-    }
+  
   }
 
   conn() {
