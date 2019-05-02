@@ -44,7 +44,7 @@ module.exports = async function (io) {
           //console.log(nuevoNegocio);
 
 
-          console.log("Guardado")
+
           io.emit('respuesta-reserva-producto', nuevaReserve);
         }
       })
@@ -215,14 +215,15 @@ module.exports = async function (io) {
         })
       } else {
         var query = {};
-        console.log(datos);
+    
 
         if (datos.estado == "espera") {
           query = { dueno: datos.iddueno, $or: [{ estado: datos.estado }, { estado: "rechazado" }] };
         } else {
           query = { dueno: datos.iddueno, estado: datos.estado }
         }
-        Reservas.find(query, {}, (error, reservsas) => {
+        Reservas.find(query, (error, reservsas) => {
+         
           if (error) {
             io.to(socket.id).emit('respuesta-listrar-reserva', { error: "error no se pudo listar la reserva" });
           }
@@ -253,7 +254,7 @@ module.exports = async function (io) {
         if (error) {
           io.to(socket.id).emit('respuesta-listrar-reserva-rango', { error: "error no se pudo listar la reserva" });
         }
-        console.log("Reservas", reservsas);
+       
         io.to(socket.id).emit('respuesta-listrar-reserva-rango', reservsas);
       })
 

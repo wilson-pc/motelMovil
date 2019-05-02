@@ -1,17 +1,14 @@
 import { Usuarios } from './../../models/Usuarios';
 import {Component} from "@angular/core";
 import {NavController, AlertController, ToastController, MenuController} from "ionic-angular";
-import {HomePage} from "../home/home";
 import {RegisterPage} from "../register/register";
 import { Facebook } from "@ionic-native/facebook";
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
-import { GooglePlus } from '@ionic-native/google-plus';
 import { UsuarioProvider } from './../../providers/usuario/usuario';
 import { Storage } from '@ionic/storage';
 import { SocketLoginService } from '../../services/socket-config.service';
 import { TabsPage } from '../tabs/tabs';
-import { TopsPage } from '../tops/tops';
 
 @Component({
   selector: 'page-login',
@@ -21,7 +18,7 @@ export class LoginPage {
   rolUser:string="5c45ef2909d2200ea8f6db83";
 usuario:Usuarios;
 loginUser:any={usuario:"",password:"",tipo:"Cliente"};
-  constructor(private googlePlus: GooglePlus,private storage: Storage,private userServ:UsuarioProvider,private socketLogin:SocketLoginService,private facebook: Facebook,public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
+  constructor(private storage: Storage,private userServ:UsuarioProvider,private socketLogin:SocketLoginService,private facebook: Facebook,public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
     this.menu.swipeEnable(false);
     this.usuario=new Usuarios;
     this.connectonSocket();
@@ -131,7 +128,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
       }
     });
   }
-  loginGoogle(){
+/* loginGoogle(){
     this.googlePlus.login({})
   .then(data =>{
     var fecha=new Date().toUTCString();
@@ -173,7 +170,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
     
   }
 
-
+*/
 
   forgotPass() {
     let forgot = this.forgotCtrl.create({
@@ -189,13 +186,13 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
       buttons: [
         {
           text: 'Cancelar',
-          handler: data => {
+          handler: () => {
             console.log('Recuperacion de contraseña Cancelado');
           }
         },
         {
           text: 'Enviar',
-          handler: data => {
+          handler: () => {
             console.log('Recuperar contraseña enviado');
             let toast = this.toastCtrl.create({
               message: 'El correo electrónico fue enviado exitosamente',

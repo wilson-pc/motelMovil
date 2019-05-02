@@ -58,6 +58,16 @@ export class ModalViewStatisticsPage {
     this.comportamientoSevice.emit('visitas-grafica', data);
     console.log('ionViewDidLoad ModalViewStatisticsPage');
   }
+  sacarVisistas(){
+    let data = {
+      idnegocio: this.negocio._id,
+      rangofecha: {
+        inicio: this.desde,
+        fin: moment(this.hasta).add(1,"M").format('YYYY-MM-DD')
+      }
+    };
+    this.comportamientoSevice.emit('visitas-grafica', data);
+  }
 
   getNegocio(){
     this.negocio = this.navParams.get('id_negocio');
@@ -109,18 +119,15 @@ export class ModalViewStatisticsPage {
 
   // Conexion con el Backend
   connectionBackendSocket() {
+  
     this.respuestaVerificarListaVisitas().subscribe((data: any) => {
+      this.lista=[];
+      this.mesess=[];
       this.lista = data;
-      console.log(this.lista);
      this.lista.forEach(element => {
         this.cantidades.push(element.visitas);
-        console.log(element._id+'-01')
         this.mesess.push(this.meses[moment(element._id+'-01').month()]);
-      });
-      console.log("lista de visitas", this.lista);
-      console.log("lista de cantidades", this.cantidades);
-      console.log("lista de meses", this.mesess);
-      
+      });      
       setTimeout(() => {
         this.lineChart = this.getLineChart();
       }, 150)

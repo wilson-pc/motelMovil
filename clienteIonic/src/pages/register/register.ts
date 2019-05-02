@@ -10,7 +10,7 @@ import { Facebook } from "@ionic-native/facebook";
 import { resizeBase64 } from 'base64js-es6';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
-import { GooglePlus } from '@ionic-native/google-plus';
+
 import { ReplaySubject, Observable } from 'rxjs';
 import { defecto } from './imagedefault';
 
@@ -26,7 +26,7 @@ export class RegisterPage {
   password:string;
   defaultImage:string=defecto.defecto;
   @ViewChild('fileInput') fileInput: ElementRef;
-  constructor(private userSocket:SocketUsuarioService2,private googlePlus: GooglePlus,private storage: Storage,private userServ:UsuarioProvider,private facebook: Facebook,public nav: NavController,private socketLogin:SocketLoginService,public toastCtrl: ToastController) {
+  constructor(private userSocket:SocketUsuarioService2,private storage: Storage,private userServ:UsuarioProvider,private facebook: Facebook,public nav: NavController,private socketLogin:SocketLoginService,public toastCtrl: ToastController) {
     this.usuario=new Usuarios;
   }
 
@@ -146,7 +146,7 @@ if(this.usuario.nombre && this.usuario.nombre && this.validateEmail(this.usuario
     });
   }
   //abrir el modal de google para el login
-  loginGoogle(){
+ /* loginGoogle(){
     this.googlePlus.login({})
   .then(data =>{
     var fecha=new Date().toUTCString();
@@ -167,7 +167,7 @@ if(this.usuario.nombre && this.usuario.nombre && this.validateEmail(this.usuario
     this.RegisterGoogle(this.usuario);
   })
   .catch(err => console.error(err));
-  }
+  }*/
   //sacar los datos del usuario de facebook
   getInfo(){
     this.facebook.api('/me?fields=id,name,email,first_name,picture,last_name,gender',['public_profile','email'])

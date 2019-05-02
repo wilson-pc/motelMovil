@@ -167,16 +167,16 @@ module.exports = async function (io) {
 
     socket.on('registrar-usuario', async (data) => {
 
-      console.log("datos recividod de  nuevos usuario");
+     
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          console.log(datos);
+      
           var usuario = new Usuario();
 
           var params = datos.usuario;
-          console.log("datos recividod de  nuevos usuario");
+     
           usuario.nombre = params.nombre;
           usuario.apellidos = params.apellidos;
           usuario.genero = params.genero;
@@ -212,13 +212,13 @@ module.exports = async function (io) {
                           var negocio = new Negocio();
                           negocio._id = element;
                           negocio.titular = nuevoUsuario._id;
-                          console.log(negocio);
+                        
                           var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                         }
                       }
 
                       io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
-                      console.log("registro con exito");
+                     
                       io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
                     }
                   })
@@ -280,7 +280,7 @@ module.exports = async function (io) {
                 }
               }
 
-              console.log(actualizado);
+             
               io.to(socket.id).emit('respuesta-actualizar-usuario', { exito: "actualizado con exito" });
 
               io.emit('respuesta-actualizar-usuario-todos', actualizado);
@@ -372,7 +372,7 @@ module.exports = async function (io) {
               symbols: false,
               exclude: "/",
             });
-            console.log(password);
+        
             var hash = token2.crearToken(password);
 
             var mailOptions = {
@@ -404,7 +404,7 @@ module.exports = async function (io) {
               }
             });
           } else {
-            console.log("Este correo no esta registrado utilise el correo con la que registro la cuenta");
+           
             io.to(socket.id).emit('correo-recuperacion', { error: "Este correo no esta registrado utilise el correo con la que registro la cuenta" });
           }
         } else {
@@ -431,8 +431,7 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-validar-token', { error: "token invalido" });
 
         } else {
-          console.log(loadToken);
-
+       
           Usuario.findOne({ "tokenrecuperacion.token": token, "eliminado.estado": false }, { foto: 0 }, function (error, dato) {
             if (error) {
 
@@ -443,7 +442,7 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-validar-token', { error: "token invalido" });
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-                console.log(dato);
+               
                 io.to(socket.id).emit('respuesta-validar-token', dato);
               }
             }
@@ -510,7 +509,7 @@ module.exports = async function (io) {
                   io.to(socket.id).emit('respuesta-cambiar-login', { error: "Error no se pudo cambiar los datos" });
                   //   res.status(404).send({ mensaje: "Error al listar" })
                 } else {
-                  console.log(dato);
+               
                   io.to(socket.id).emit('respuesta-cambiar-login', dato);
 
                 }
@@ -532,7 +531,6 @@ module.exports = async function (io) {
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-          console.log(datos);
           Usuario.findOne({ _id: datos.id, "eliminado.estado": false }, function (error, dato) {
             if (error) {
               // res.status(500).send({ mensaje: "Error al listar" })
@@ -562,7 +560,7 @@ module.exports = async function (io) {
             if (!lista) {
               //   res.status(404).send({ mensaje: "Error al listar" })
             } else {
-              console.log(lista);
+              
               io.to(socket.id).emit('respuesta-buscar-usuarios', lista);
             }
           }
@@ -709,7 +707,7 @@ module.exports = async function (io) {
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
-                console.log(user);
+               
                 // res.status(200).send({ user });
                 if (user.login.estado != true) {
                   var usuario = new Usuario();
@@ -766,7 +764,7 @@ module.exports = async function (io) {
               io.to(socket.id).emit('respuesta-suspender-usuario', { mensaje: "error al actualizar datos usuario" });
               // res.status(500).send({ mensaje: "error al guradar" })
             } else {
-              console.log(actualizado);
+              
               io.to(socket.id).emit('respuesta-suspender-usuario', { exito: "actualizado con exito" });
 
               io.emit('respuesta-suspender-usuario', actualizado);
@@ -791,16 +789,16 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
+               
           var usuario2 = await Usuario.findById(datos.id);
-          console.log(usuario2);
+        
           var usuario = new Usuario();
           usuario._id = datos.id;
           usuario.login = { usuario: usuario2.login.usuario, password: usuario2.login.password, estado: false };
 
           // console.log(lista);
           Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, function (error, data) {
-            console.log(data);
+        
 
             if (error) {
               //  io.to(socket.id).emit('progreso',{total:image.length,progreso:index+1});

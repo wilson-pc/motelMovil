@@ -10,7 +10,7 @@ var token = require("./../token/token");
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
-    console.log("hola desde ionic 2");
+  
     socket.on('login-facebook', async (data) => {
 
       try {
@@ -42,14 +42,14 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-login-facebook', { error: "error no se pudo guardar el registro" });
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-                console.log("nuevo");
+              
                 io.to(socket.id).emit('respuesta-login-facebook', { token: token.crearToken(usuario2), datos: usuario2 });
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
               }
             })
           } else {
-            console.log("actualizao");
+           
             io.to(socket.id).emit('respuesta-login-facebook', { token: token.crearToken(usuario), datos: usuario });
           }
 
@@ -65,10 +65,10 @@ module.exports = async function (io) {
 
 
     socket.on('login-googlepus', async (data) => {
-      console.log("llega");
+   
       try {
         var datos = await Crypto.Desincryptar(data);
-        console.log(datos);
+        
         if (!datos.error) {
 
           var login = { usuario: datos.usuario.nombre, estado: true }
@@ -95,14 +95,14 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-login-googlepus', { error: "error no se pudo guardar el registro" });
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-                console.log("nuevo");
+               
                 io.to(socket.id).emit('respuesta-login-googlepus', { token: token.crearToken(usuario2), datos: usuario2 });
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
               }
             })
           } else {
-            console.log("actualizao");
+            
             io.to(socket.id).emit('respuesta-login-googlepus', { token: token.crearToken(usuario), datos: usuario });
           }
 
@@ -117,7 +117,7 @@ module.exports = async function (io) {
     });
 
     socket.on('verificar-suspencion', async (data) => {
-      console.log("verificar",data);
+      
       Usuario.findById(data.id,{login:0,foto:0},(error,datos)=>{
         if (error) {
         
@@ -174,7 +174,7 @@ module.exports = async function (io) {
           //usuario.login = params.login;
           usuario.foto = params.foto;
           usuario.modificacion = params.modificacion;
-          console.log(usuario);
+          
           //guarda al nuevo usuario en la bd
 
           Usuario.findByIdAndUpdate(params._id, usuario, { new: true }, async (error, actualizado) => {
@@ -183,7 +183,7 @@ module.exports = async function (io) {
               // res.status(500).send({ mensaje: "error al guradar" })
             } else {
 
-              console.log(actualizado);
+              
               io.to(socket.id).emit('respuesta-actualizar-usuario-cliente', actualizado);
 
               //  io.emit('respuesta-actualizar-usuario-todos', actualizado);
@@ -208,7 +208,7 @@ module.exports = async function (io) {
         var datos = await Crypto.Desincryptar(data);
         
         if (!datos.error) {
-   console.log(datos);
+ 
           var params = datos;
           var usuario = params.usuario;
           var pass = params.password;
@@ -252,7 +252,7 @@ module.exports = async function (io) {
                     });
                   } else {
                     var fecha = moment(user.suspendido.fecha, "DD-MM-YYYY").add(user.suspendido.duracion, 'days').toISOString();
-                    console.log(fecha);
+                   
                     if (new Date().toISOString() >= fecha) {
 
 

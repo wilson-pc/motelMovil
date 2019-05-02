@@ -8,7 +8,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import {GooglePlus} from '@ionic-native/google-plus'
 import { ListPage } from '../pages/list/list';
 import {AndroidPermissions} from '@ionic-native/android-permissions'
 import { StatusBar } from '@ionic-native/status-bar';
@@ -158,7 +157,6 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     GoogleMaps,
-    GooglePlus,
     AndroidPermissions,
     ProviderProductosProvider,
     SocketUsuarioService2,

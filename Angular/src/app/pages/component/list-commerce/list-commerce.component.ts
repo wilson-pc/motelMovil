@@ -21,7 +21,7 @@ export class ListCommerceComponent implements OnInit {
   negocios: Negocio;
 
   // Cabezeras de los elementos
-  headElements = ['Nro', 'Nombre', 'Cuartos Disponibles', 'Valoracion', 'Reportes', 'Visitas'];
+  headElements = ['Nro', 'Nombre', 'Cuartos Disponibles', 'Valoracion', 'Denuncias', 'Visitas'];
 
   constructor(private rout: Router, private route: ActivatedRoute, private socketNegocio: SocketConfigService3) {
     this.tipoNegocio = this.route.snapshot.paramMap.get('tipo');

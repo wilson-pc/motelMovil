@@ -12,7 +12,7 @@ module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
     socket.on('agregar-favorito', async (data) => {
-      console.log("entro favor", data);
+      
       try {
         var datos = await Crypto.Desincryptar(data);
 
@@ -23,11 +23,11 @@ module.exports = async function (io) {
           favorito.usuario = datos.idsuario;
           favorito.tipo = datos.tipoproducto;
           //favorito.fecha=new Date().toUTCString();
-          console.log("soy favorito:", favorito);
+          
 
           try {
             var cantidad = await Favorito.countDocuments({ producto: datos.idproducto, usuario: datos.idsuario });
-            console.log("yosoy la cantidad:", cantidad);
+           
             //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
             if (cantidad == 0) {
               favorito.save((error, favoritos) => {
@@ -66,7 +66,7 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-quitar-favorito', { error: "error al borrar" });
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-                console.log(actualizado);
+               
                 io.to(socket.id).emit('respuesta-quitar-favorito', { datos: nofavorito });
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
@@ -87,9 +87,6 @@ module.exports = async function (io) {
 
     //LISTAR TODOS LOS FAVORITOS
     socket.on('listar-favoritos', async (data) => {
-
-
-      console.log("entraste lista", data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
         Favorito.find({ usuario: data.idusuario }, (error, favoritos) => {
@@ -114,8 +111,6 @@ module.exports = async function (io) {
 
     socket.on('listar-favorito-licores', async (data) => {
 
-
-      console.log("entraste lista", data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
         Favorito.find({ usuario: data.idusuario, tipo: "Licoreria" }, (error, favoritos) => {
@@ -139,9 +134,6 @@ module.exports = async function (io) {
     //INICIO DE FAVORITOS POR TIPO DE MOTELES
 
     socket.on('listar-favorito-moteles', async (data) => {
-
-
-      console.log("entraste lista", data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
         Favorito.find({ usuario: data.idusuario, tipo: "Motel" }, (error, favoritos) => {
@@ -168,7 +160,6 @@ module.exports = async function (io) {
     socket.on('listar-favorito-sexshops', async (data) => {
 
 
-      console.log("entraste lista", data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
         Favorito.find({ usuario: data.idusuario, tipo: "SexShop" }, (error, favoritos) => {
@@ -191,7 +182,6 @@ module.exports = async function (io) {
     socket.on('calificar-producto', async (data) => {
       try {
         var datos = await Crypto.Desincryptar(data);
-        console.log("datos: ",datos);
         if (!datos.error) {
           var cliente = datos.idcliente;
           var producto = datos.idproducto;
@@ -204,7 +194,6 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-calificar-producto', { error: "error al calificar" });
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-                console.log(actualizado);
                 io.to(socket.id).emit('respuesta-calificar-producto', { datos: actualizado });
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
@@ -224,7 +213,6 @@ module.exports = async function (io) {
 
     socket.on('visitar-negocio', async (datos) => {
 
-      console.log(datos)
       var cliente = datos.idcliente;
       var negocio = datos.idnegocio;
       var fecha = new Date().toUTCString();
@@ -236,7 +224,6 @@ module.exports = async function (io) {
 
           //    res.status(500).send({ mensaje: "error al guradar" })
         } else {
-          console.log(actualizado);
           io.to(socket.id).emit('respuesta-visitar-negocio', { datos: actualizado });
           //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
@@ -246,7 +233,7 @@ module.exports = async function (io) {
     });
 
     socket.on('listar-denuncia', async (datos) => {
-    console.log(datos);
+
       if (datos.idcliente) {
   /*    Producto.find({"denuncias.usuario": { $all: [datos.idcliente]}},{denuncias:$size},(error,data)=>{
            io.to(socket.id).emit('respuesta-listar-denuncia', { datos: data });
@@ -379,7 +366,7 @@ module.exports = async function (io) {
           { $sort: { "denuncias": 1 } },
 
         ])
-        console.log(producto);
+
         io.to(socket.id).emit('respuesta-listar-denuncia', { datos: producto });
       }
 
@@ -394,7 +381,7 @@ module.exports = async function (io) {
       var fecha = new Date().toUTCString();
 
       var count = await Producto.count({ _id: datos.idproducto, "denuncias.usuario": { $all: [usuario] } });
-      console.log(count);
+     
       if (count == 0) {
         Producto.findOneAndUpdate({ _id: datos.idproducto }, { $push: { denuncias: { usuario: usuario, fecha: fecha, detalle: datos.detalle } } }, { new: true }, (error, actualizado) => {
           if (error) {
@@ -402,7 +389,7 @@ module.exports = async function (io) {
             io.to(socket.id).emit('respuesta-denuncia-negocio', { error: "error al guardar denuncia" });
             //    res.status(500).send({ mensaje: "error al guradar" })
           } else {
-            console.log(actualizado);
+          
             io.to(socket.id).emit('respuesta-denuncia-negocio', { datos: actualizado });
             //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
@@ -433,7 +420,6 @@ module.exports = async function (io) {
           calificacion.negocio = datos.idnegocio;
           calificacion.estrella = datos.estrella;
           calificacion.fecha = new Date().toUTCString();
-          console.log(calificacion);
           await Negocio.update({ _id: datos.idnegocio }, { $pull: { "calificacion": { usuario: datos.idcliente } } });
           Negocio.findOneAndUpdate({ _id: datos.idnegocio }, { $push: { calificacion: calificacion } }, { new: true }, (error, actualizado) => {
             if (error) {
@@ -481,18 +467,13 @@ module.exports = async function (io) {
       }
 
       catch (e) {
-        console.log(e);
+       
       }
     });
 
     socket.on('visitas-grafica', async (datos) => {
 
-      console.log(datos);
-      /*     try {
-                 var datos = await Crypto.Desincryptar(data);
-                 if (!datos.error) {*/
       const ObjectId = mongoose.Types.ObjectId;
-      //var datos = JSON.parse(data);
       Negocio.aggregate([
         { $unwind: "$visitas" },
         {
@@ -521,9 +502,6 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-visitas-grfica', { error: "no hay visitas en la base de datos" });
           } else {
-
-            console.log(lista);
-            console.log("oifh reghu9nhgiuhfierhfuinhfephgceuep gy");
             io.to(socket.id).emit('respuesta-visitas-grfica', lista);
           }
         }

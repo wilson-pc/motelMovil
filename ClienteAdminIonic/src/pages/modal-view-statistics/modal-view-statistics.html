@@ -29,13 +29,13 @@
             <canvas #lineCanvas></canvas>
             <ion-item>
               <ion-label>Desde</ion-label>
-              <ion-datetime displayFormat="MMM" monthShortNames="{{meses}}" [(ngModel)]="desde"></ion-datetime>
+              <ion-datetime displayFormat="DD/MMM/YYYY" monthShortNames="{{meses}}" [(ngModel)]="desde"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label>Hasta</ion-label>
-              <ion-datetime displayFormat="MMM" monthShortNames="{{meses}}" [(ngModel)]="nombreMes"></ion-datetime>
+              <ion-datetime displayFormat="DD/MMM/YYYY" monthShortNames="{{meses}}" [(ngModel)]="nombreMes"></ion-datetime>
             </ion-item>
-            <button ion-button full (click)="connectionBackendSocket()">Calcular</button>
+            <button ion-button full (click)="sacarVisistas()">Calcular</button>
         </ion-card-content>
   </ion-card>
 

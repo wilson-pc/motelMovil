@@ -10,37 +10,10 @@
     <p>Telefono: {{telefonone}}</p>
     <br>
     <ion-list>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>Globos</h2>
-        <p>Super Perforacion</p>
-        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>Globos</h2>
-        <p>Super Perforacion</p>
-        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>Globos</h2>
-        <p>Super Perforacion</p>
-        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-        <img src="../../assets/imgs/logo.png">
-        </ion-thumbnail>
-        <h2>Globos</h2>
-        <p>Super Perforacion</p>
-        <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
-      </ion-item>
+        <ion-item *ngFor="let productTop of listProductTop">
+              <img [src]="productTop.foto.miniatura" />
+                <h2 style="text-transform: uppercase;"><b>{{productTop.nombre}}</b></h2>
+                <h3>haha:{{productTop.descripcion}}</h3>
+          </ion-item>
     </ion-list>
 </ion-content>
