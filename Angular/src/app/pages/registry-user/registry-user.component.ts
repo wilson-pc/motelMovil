@@ -26,6 +26,7 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
   titulo: string;
 	public isCollapsed = true;
 	modal: NgbModalRef;
+	usuarioViewData:Usuarios;
 	closeResult: string;
 	isError: boolean = false;
 	isExito: boolean = false;
@@ -142,12 +143,23 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 		});
 	}
 
-	openModalView(content, id: string) {
-		this.contentUserID = id;
+	openModalView(content, usuario:Usuarios) {
+		//this.contentUserID = id;
 		
 		this.viewUser();
+		this.usuarioViewData=usuario
+		console.log("yo soy el usuario",this.usuarioViewData);
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
+
+		});
+	}
+
+	openModalSuspent(content){
+		//this.usuarioViewData=usuario;
+		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
+		this.modal.result.then((e) => {
+			
 		});
 	}
 
@@ -210,8 +222,13 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 
 	}
 
+	suspend(){
+		console.log("hola");
+		
+	}
+
 	update() {
-		console.log("llega y nada");
+		
 		var fecha = new Date().toUTCString();
 
 		this.usuarioActualizado.modificacion = { fecha: fecha, usuario: this.usuarioServ.usuarioActual.datos._id };

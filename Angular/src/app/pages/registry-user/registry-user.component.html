@@ -22,41 +22,35 @@
                   </div>
                   <div class="panel-body">
                     <div class="row">
-                      <div class="col-md-3"> <img alt="User Pic" src="https://www.socialtools.me/blog/wp-content/uploads/2016/04/foto-de-perfil.jpg"
+                      <div class="col-md-3"> <img alt="User Pic" src="../../../assets/images/newicono.png"
                           class="img-circle img-responsive"> </div>
 
                       <div class=" col-md-9 col-lg-9 ">
                         <table class="table table-user-information">
                           <tbody>
                             <tr>
-                              <td>Department:</td>
-                              <td>Programming</td>
+                              <td>Nombre:</td>
+                              <td>{{usuarioViewData.nombre}}</td>
                             </tr>
                             <tr>
-                              <td>Hire date:</td>
-                              <td>06/23/2013</td>
+                              <td>Apellidos</td>
+                              <td>{{usuarioViewData.apellidos}}</td>
                             </tr>
                             <tr>
-                              <td>Date of Birth</td>
-                              <td>01/24/1988</td>
+                              <td>Fecha de creacion:</td>
+                              <td>{{usuarioViewData.creacion.fecha}}</td>
                             </tr>
 
                             <tr>
                             <tr>
-                              <td>Gender</td>
-                              <td>Female</td>
-                            </tr>
-                            <tr>
-                              <td>Home Address</td>
-                              <td>Kathmandu,Nepal</td>
+                              <td>Genero</td>
+                              <td>{{usuarioViewData.genero}}</td>
                             </tr>
                             <tr>
                               <td>Email</td>
-                              <td><a href="mailto:info@support.com">info@support.com</a></td>
-                            </tr>
-                            <td>Phone Number</td>
-                            <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
-                            </td>
+                              <td>{{usuarioViewData.email}}</td>
+                            </tr>                     
+                           
                           </tbody>
                         </table>
                       </div>
@@ -123,7 +117,7 @@
             <tbody>
               <tr *ngFor="let user of usuarios, let i=index">
                 <td>{{i+1}}</td>
-                <td (click)="openModalView(contentView)">{{user.nombre}}</td>
+                <td (click)="openModalView(contentView,user)">{{user.nombre}}</td>
                 <td>{{user.apellidos}}</td>
                 <td>{{user.genero}}</td>
                 <td>{{user.email}}</td>
