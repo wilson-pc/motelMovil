@@ -149,7 +149,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
     this.RegisterGoogle(this.usuario);
   })
   .catch(err => console.error(err));
-  }
+  }*/
   // login and go to home page
   login() {
     if(this.loginUser.usuario!="" && this.loginUser.password!=""){
@@ -169,9 +169,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
     }
     
   }
-
-*/
-
+  
   forgotPass() {
     let forgot = this.forgotCtrl.create({
       title: 'Olvidaste tu Contraseña?',

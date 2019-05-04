@@ -116,8 +116,8 @@ productId:String;
     });
   }
 
-  public readFile(fileToRead: File): Observable<MSBaseReader> {
-    let base64Observable = new ReplaySubject<MSBaseReader>(1);
+  public readFile(fileToRead: File): Observable<any> {
+    let base64Observable = new ReplaySubject<any>(1);
 
     let fileReader = new FileReader();
     fileReader.onload = event => {

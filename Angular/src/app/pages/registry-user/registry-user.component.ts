@@ -53,6 +53,8 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	contentUserID: string;
 	buttons:boolean=true;
 
+	razonText:string;
+
 	items: any = []
 	term: string;
 	negocio: Negocio;
@@ -62,7 +64,7 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 
   constructor(private ownerService :OwnerService,private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
 		this.profileUser = new Usuarios;
-
+this.razonText="";
 		this.titulo = "Administracion de Usuarios";
 		this.usuario = new Usuarios;
 		this.errorMensaje = "Error no se pudo guardar el registro."
@@ -77,7 +79,10 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 			console.log(owner);
 			console.log("Algo anda vien");
 			this.usuarios = owner;
-		})
+		});
+
+		this.callSuspend();
+
   }
   
   cargarDrow(){
@@ -155,8 +160,8 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 		});
 	}
 
-	openModalSuspent(content){
-		//this.usuarioViewData=usuario;
+	openModalSuspent(content,usuario:Usuarios){
+		this.usuarioViewData=usuario;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 			
@@ -174,14 +179,14 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 		this.negocioActualPorEvento(this.usuarioActualizado._id);
 	}
 
-	openModalDelete(content, id) {
-		this.idUsuario = id;
+	openModalDelete(content, usuario:Usuarios) {
+		this.usuarioViewData=usuario;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
 
 		//Obtener listado de negocios antes de eliminar
-		this.negocioActualPorEvento(id);
+		//this.negocioActualPorEvento(id);
 	}
 
 	cancelModal() {
@@ -222,11 +227,41 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 
 	}
 
-	suspend(){
-		console.log("hola");
-		
+	callSuspend(){
+		this.socket.on('respuesta-suspender-usuario', data =>{
+			console.log(data);
+		});
 	}
 
+	suspend(){
+		console.log("hola");
+		let data = new Usuarios;
+		let fecha = new Date().toUTCString();
+		let datos;
+		data = this.usuarioViewData;
+		data.suspendido.estado=true;
+		data.suspendido.razon=this.razonText
+		data.suspendido.duracion=10;
+		data.suspendido.fecha= fecha as any;
+		
+		 datos={usuario:data};
+		console.log(datos);
+		datos =this.encryptData(datos);
+		console.log(datos);
+		this.socket.emit('suspender-usuario',datos);
+
+		this.callSuspend();
+	}
+
+	encryptData(data) {
+
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
+	}
+	
 	update() {
 		
 		var fecha = new Date().toUTCString();

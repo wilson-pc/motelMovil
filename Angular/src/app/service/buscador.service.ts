@@ -23,6 +23,7 @@ export class BuscadorService {
       }if(this.termino=="moteles"){
         this.socketnegocio.emit("buscar-negocio",{termino:terminos,tipo:"Motel"});
       }
+      
     }
   }
  

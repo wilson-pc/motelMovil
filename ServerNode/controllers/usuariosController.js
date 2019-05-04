@@ -750,9 +750,12 @@ module.exports = async function (io) {
     socket.on('suspender-usuario', async (data) => {
 
       try {
+        
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
+        console.log("usuariosCoontroller",bytes);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          console.log("datis",datos);
           var usuario = new Usuario();
           var params = datos.usuario;
           usuario._id = params._id;
