@@ -16,6 +16,7 @@ import { RegistryUserComponent } from './registry-user/registry-user.component';
 import { MapaGoogleComponent } from './mapa-google/mapa-google.component';
 import { AgmCoreModule } from '@agm/core';
 
+
 @NgModule({
     imports: [
         CommonModule,
@@ -25,8 +26,7 @@ import { AgmCoreModule } from '@agm/core';
         NgMultiSelectDropDownModule.forRoot(),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAmDFQR1MLBKTwWPTW5IG31nDsPbYmJ2h4'
-          }),
-        
+          })        
     ],
     declarations: [
         PageComponent,
@@ -38,7 +38,9 @@ import { AgmCoreModule } from '@agm/core';
         WalletComponent,
         ComplaintComponent,
         RegistryUserComponent,
-        MapaGoogleComponent,      
+        MapaGoogleComponent
+        
+        
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

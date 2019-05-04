@@ -1,9 +1,12 @@
+
+
 <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
         <h4 class="card-title"> {{titulo}}</h4>
         <!--Modal -->
+     
         <ng-template #contentView let-modal>
           <div class="modal-header">
             <h4 class="modal-title" id="modal-basic-title">Perfil de usuario</h4>
@@ -98,6 +101,7 @@
         <div class="modal-body">
           <p>¿Desea suspender al usuario?</p>
           <input type="text" [(ngModel)]="razonText" name="razon" class="form-control input-md" placeholder="Ingrese razon a suspender">
+          <p *ngIf="messageBool==true" class="message-suspender">Usuario suspendido</p>
         </div>        
         <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
@@ -105,10 +109,15 @@
         </div>
       </ng-template>
 
+      
       <!--LISTA USUARIOS-->
+
+      <div *ngIf="usuarios.length==0" class="loader"></div> 
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table">
+          <!-- Datos de carga -->         
+
+          <table *ngIf="usuarios.length!=0" class="table">
             <thead class=" text-primary">
               <th class="hedarTitleTable" *ngFor="let head of headElements">{{head}}</th>
               <th class="text-right hedarTitleTable">
@@ -116,14 +125,16 @@
               </th>
             </thead>
             <tbody>
+            
               <tr *ngFor="let user of usuarios, let i=index">
                 <td>{{i+1}}</td>
                 <td (click)="openModalView(contentView,user)">{{user.nombre}}</td>
                 <td>{{user.apellidos}}</td>
                 <td>{{user.genero}}</td>
                 <td>{{user.email}}</td>
+                <td>{{user._id}}</td>
                 <td class="text-right">
-                  <i class='mdi mdi-arrow-down-bold-circle btn btn-warning' (click)="openModalSuspent(contentSuspend,user)"></i>
+                  <i *ngIf="user.suspendido.estado != true" class='mdi mdi-arrow-down-bold-circle btn btn-warning' (click)="openModalSuspent(contentSuspend,user)"></i>
                   <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user)"></i>
                 </td>
               </tr>

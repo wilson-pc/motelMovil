@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Socket } from 'net';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { OwnerService } from '../../services/owner.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-registry-user',
@@ -23,7 +24,8 @@ import { OwnerService } from '../../services/owner.service';
   styleUrls: ['./registry-user.component.css']
 })
 export class RegistryUserComponent implements OnInit,OnDestroy {
-  titulo: string;
+	titulo: string;
+	messageBool:boolean=false;
 	public isCollapsed = true;
 	modal: NgbModalRef;
 	usuarioViewData:Usuarios;
@@ -47,7 +49,7 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	dropdownSettings = {};
 
   // Cabeceras de la Tabla
-  headElements = ['Nro', 'Nombres', 'Apellidos', 'Genero', 'Email'];
+  headElements = ['Nro', 'Nombres', 'Apellidos', 'Genero', 'Email', 'Tipo de Registro'];
 	profileUser: Usuarios;
 	negociosUsuario: Negocio[] = [];
 	contentUserID: string;
@@ -62,26 +64,35 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 
 	OwnerSubscription: Array<Subscription> = [];
 
-  constructor(private ownerService :OwnerService,private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
-		this.profileUser = new Usuarios;
-this.razonText="";
-		this.titulo = "Administracion de Usuarios";
-		this.usuario = new Usuarios;
-		this.errorMensaje = "Error no se pudo guardar el registro."
-		
-		this.a = 1;
-		// Model Negocios
-		this.negocio = new Negocio;
-		this.usuarioActualizado = new Usuarios
-	
-		this.buscador.lugar = "usuarios";
-		this.usuarioServ.getOwner().subscribe((owner)=>{
-			console.log(owner);
-			console.log("Algo anda vien");
-			this.usuarios = owner;
-		});
+  constructor(
+		private ownerService :OwnerService,
+		private socket: SocketConfigService2,
+		private socket3: SocketConfigService3,
+		private modalService: NgbModal,
+		private usuarioServ: UsuarioService,
+		private buscador: BuscadorService,
+		private spinner: NgxSpinnerService) 
+		{
+			//CODE CONSTRUCTOR HERE
+							this.profileUser = new Usuarios;
+							this.razonText="";
+							this.titulo = "Administracion de Usuarios";
+							this.usuario = new Usuarios;
+							this.errorMensaje = "Error no se pudo guardar el registro."
+							
+							this.a = 1;
+							// Model Negocios
+							this.negocio = new Negocio;
+							this.usuarioActualizado = new Usuarios
+						
+							this.buscador.lugar = "usuarios";
+							this.usuarioServ.getOwner().subscribe((owner)=>{
+								console.log(owner);
+								console.log("Algo anda vien");
+								this.usuarios = owner;
+							});
 
-		this.callSuspend();
+							this.callSuspend();
 
   }
   
@@ -90,8 +101,20 @@ this.razonText="";
 		this.peticionSocketNegocio();
 	}
 	
+	spinerAction(){
+		this.spinner.show();
+ 
+    setTimeout(() => {
+        /** spinner ends after 5 seconds */
+        this.spinner.hide();
+		}, 5000);
+	}
 	//Llenar el ng-select
 	ngOnInit() {
+		//SPINER ACTION
+		this.spinerAction();
+		
+
 		this.conn();
 		this.usuarioServ.sendEmitGetOwner();
 		this.selectedItems = [
@@ -249,7 +272,6 @@ this.razonText="";
 		datos =this.encryptData(datos);
 		console.log(datos);
 		this.socket.emit('suspender-usuario',datos);
-
 		this.callSuspend();
 	}
 
