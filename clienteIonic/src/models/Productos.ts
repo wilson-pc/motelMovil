@@ -13,6 +13,7 @@ export class Productos{
     public tipo:Tipo;
     public estado:string;
     public foto:{normal:string,miniatura:string};
+    public fotos:{string};
     public descripcion:string;
     public eliminado:{estado:boolean,razon:string};
     public creacion:{estado:boolean,razon:string};

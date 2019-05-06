@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ViewController, ToastController, AlertController, ModalController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Observable, Subscription } from 'rxjs';
-import { SocketReservaService, conexionSocketComportamiento } from '../../services/socket-config.service';
+import { SocketReservaService, conexionSocketComportamiento, SocketConfigService } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
@@ -17,8 +17,10 @@ export class DescripcionProductoPage {
 
   cantidadReserva = 1;
   product: Productos;
+  productID: Productos;
   suscripctionSocket: Subscription;
   cantidad:number[]=[];
+  slideData: any = [];
   motivo: string;
 
   constructor(
@@ -30,11 +32,12 @@ export class DescripcionProductoPage {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public productService: SocketReservaService,
+    public productoService: SocketConfigService,
     private provedorFavoritos: conexionSocketComportamiento,
     public userService: UsuarioProvider) {
     //Inicializacion del constructor
-    this.connectionBackendSocket()
     this.getProduct();
+    this.connectionBackendSocket();
   }
 
   ionViewDidLoad() {
@@ -60,11 +63,6 @@ export class DescripcionProductoPage {
       position: 'buttom'
     });
     toast.present();
-  }
-
-  getProduct() {
-    this.product = this.navParams.get("producto");
-    console.log(this.product);
   }
 
   //Confirmacion de Denuncia
@@ -100,6 +98,12 @@ export class DescripcionProductoPage {
   }
 
   //Consumo Socket 
+   getProduct() {
+    this.productID = this.navParams.get("producto");
+    console.log("Producto saliente: ", this.productID);
+    this.productoService.emit("sacar-producto", this.productID);
+  }
+
   reserveProduct() {
     let reserva = {
       idcliente: this.userService.UserSeCion.datos._id,
@@ -141,6 +145,13 @@ export class DescripcionProductoPage {
 
   // Respuestas Socket
   connectionBackendSocket() {
+
+    this.suscripctionSocket = this.respuestaSacarProducto().subscribe((data: any) => {
+      console.log("Producto", data);
+      this.product = data;
+      this.slideData = data.fotos;
+    });
+
     this.suscripctionSocket = this.respuestaReserva().subscribe((data: any) => {
       if(data.error){
         this.presentToast(data.error);
@@ -174,6 +185,10 @@ export class DescripcionProductoPage {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  respuestaSacarProducto() {
+    return this.productoService.fromEvent<any> ('respuesta-sacar-producto').map(data=>data)
   }
 
   respuestaReserva() {

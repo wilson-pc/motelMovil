@@ -295,7 +295,7 @@ module.exports = async function (io) {
 
     })
 
-    socket.on('sacar-producto', async (data) => {
+    /*socket.on('sacar-producto', async (data) => {
 
       
       Producto.findOne({ _id: data.id, "eliminado.estado": false }, { denuncias: 0 }, function (error, dato) {
@@ -313,19 +313,21 @@ module.exports = async function (io) {
         }
       });
 
-    });
+    });*/
 
     socket.on('sacar-producto', async (data) => {
       
-      console.log(data);
-      Producto.findOne({ _id: data.id, "eliminado.estado": false },{denuncias:0}, function (error, dato) {
+      console.log("Producto entrante: ", data);
+      Producto.findOne({ _id: data._id, "eliminado.estado": false }, { denuncias: 0 }, function (error, dato) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })
+          console.log("error", error);
         } else {
           if (!dato) {
             //   res.status(404).send({ mensaje: "Error al listar" })
+            console.log("error vacio");
           } else {
-           
+           console.log("Encontrado!")
             io.to(socket.id).emit('respuesta-sacar-producto', dato);
 
           }
@@ -592,6 +594,7 @@ module.exports = async function (io) {
             "dislike": { $size: "$desvaloracion.usuario" },
             "eliminado": "$eliminado",
             "foto": { miniatura: "$foto.miniatura" },
+            "fotos": ["$fotos"],
             "creacion": "$creacion",
             "modificacion": "$modificacion",
             "nombre": "$nombre",
