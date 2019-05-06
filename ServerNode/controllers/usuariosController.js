@@ -23,9 +23,6 @@ module.exports = async function (io) {
   var clients = [];
 
   io.on('connection', async function (socket) {
-
-
-
     // var host=socket.handshake.headers.host;
     console.log(socket.id);
     clients.push(socket.id);
@@ -54,13 +51,6 @@ module.exports = async function (io) {
       catch (e) {
         console.log(e);
       }
-
-
-
-      //console.log(req.body);
-
-
-
     });
 
 

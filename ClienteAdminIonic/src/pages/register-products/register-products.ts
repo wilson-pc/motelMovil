@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NavController, NavParams, ViewController, AlertController, ToastController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
 import { resizeBase64 } from 'base64js-es6';
 import { Negocio } from '../../models/Negocio';
 import { Productos } from '../../models/Productos';

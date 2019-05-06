@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, NavController } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -14,7 +14,6 @@ import { ListProductsPage } from '../pages/list-products/list-products';
 import { EditLoginPage } from '../pages/edit-login/edit-login';
 import { DenunciaPage } from '../pages/denuncia/denuncia';
 import { ReservaPage } from '../pages/reserva/reserva';
-import { BilleteraPage } from '../pages/billetera/billetera';
 
 
 @Component({

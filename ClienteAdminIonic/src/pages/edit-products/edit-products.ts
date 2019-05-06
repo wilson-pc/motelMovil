@@ -17,7 +17,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class EditProductsPage {
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('fileInput2') fileInput2: ElementRef;
-  producto: Productos;
+  producto: any;
   commerceOnly: Negocio;
   private suscribe: Subscription[] = [];
   nombreimagen: string = "selecciona una foto";
@@ -39,7 +39,6 @@ productId:String;
     private formBuilder: FormBuilder,
     private toastCtrl: ToastController) {
     //Inicializacion
-    this.producto=new Productos();
     this.getCommerceAndProduct();
     this.connectionBackendSocket();
     this.typeProduct = new Tipo;
@@ -57,8 +56,8 @@ productId:String;
       productImg: ['', Validators.compose([])],
       productTipoVal: ['', Validators.compose([])],
       productTipo: ['', Validators.compose([Validators.required])],
+      productEstado: ['', Validators.compose([Validators.required])],
       productPrecio: ['', Validators.compose([Validators.required])],
-      productCantidad: ['', Validators.compose([Validators.maxLength(3), Validators.pattern('[0-9]*'), Validators.required])],
       productDescripcion: ['', Validators.compose([Validators.minLength(10), Validators.maxLength(80), Validators.required])]
     });
   }
@@ -88,6 +87,7 @@ productId:String;
 
   async getCommerceAndProduct() {
     this.producto = this.navParams.get("product");
+    console.log(this.producto);
     this.productService.emit("sacar-producto", {id:this.producto._id});
     this.commerceOnly = this.navParams.get("commerce");
     this.getTypeProducts();
@@ -131,7 +131,7 @@ productId:String;
   //Consumos de Servicios
   updateProduct() {
     // Modificar producto
-
+console.log(this.productForm);
     this.statusInput = true;
     if (!this.productForm.valid) {
       this.alertMessage("Imposible Actualizar verifique los campos de actualizacion.")

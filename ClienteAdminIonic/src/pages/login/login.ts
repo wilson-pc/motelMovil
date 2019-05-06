@@ -63,7 +63,7 @@ export class LoginPage {
             var ciphertext = CryptoJS.AES.encrypt(
               JSON.stringify({ email: data.email, fecha:fecha}), clave.clave);
                  this.userSocket.emit("correo-recuperacion",ciphertext.toString());
-                 this.userSocket.on("respuesta-cambiar-login",(data) => {
+                 this.userSocket.on("correo-recuperacion",(data) => {
                   if(!data.error){
                  
                     let toast = this.toastCtrl.create({
