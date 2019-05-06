@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, AlertController, ModalController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { Favoritos } from '../../models/Favoritos';
 import * as CryptoJS from 'crypto-js';
@@ -7,6 +7,7 @@ import { clave } from '../../app/cryptoclave';
 import { Subscription } from 'rxjs';
 import { SocketReservaService, conexionSocketComportamiento, SocketConfigService } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
+import { DetallesTiendaPage } from '../detalles-tienda/detalles-tienda';
 
 /**
  * Generated class for the DescriptionLicoreriaPage page.
@@ -32,6 +33,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public modalCtrl: ModalController,
     public viewCtrl: ViewController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
@@ -58,6 +60,11 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     this.productoRecibido = this.navParams.get("producto")
     console.log("producto",this.productoRecibido);
     this.sacarDatos();
+  }
+
+  productDescription(product: Productos) {
+    const modal = this.modalCtrl.create(DetallesTiendaPage, { producto: product });
+    modal.present();
   }
 
   ionViewDidLoad() {
