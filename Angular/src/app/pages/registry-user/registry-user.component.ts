@@ -49,7 +49,7 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	dropdownSettings = {};
 
   // Cabeceras de la Tabla
-  headElements = ['Nro', 'Nombres', 'Apellidos', 'Genero', 'Email', 'Tipo de Registro'];
+  headElements = ['Nro', 'Nombres', 'Apellidos', 'Genero', 'Email', 'Dias de suspencion'];
 	profileUser: Usuarios;
 	negociosUsuario: Negocio[] = [];
 	contentUserID: string;
@@ -253,6 +253,12 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	callSuspend(){
 		this.socket.on('respuesta-suspender-usuario', data =>{
 			console.log(data);
+			this.messageBool=true;
+			setTimeout(()=>{				
+				 this.messageBool=false;
+				 this.modal.close();
+			},3000);		
+			
 		});
 	}
 
@@ -269,10 +275,18 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 		
 		 datos={usuario:data};
 		console.log(datos);
-		datos =this.encryptData(datos);
-		console.log(datos);
-		this.socket.emit('suspender-usuario',datos);
-		this.callSuspend();
+		if(this.razonText.length > 10){
+			datos =this.encryptData(datos);
+			console.log(datos);
+			this.socket.emit('suspender-usuario',datos);	
+		}
+		else{
+			this.isRequired=true;
+			setTimeout(()=>{
+				this.isRequired=false;				
+			},5000)
+		}
+			
 	}
 
 	encryptData(data) {

@@ -102,6 +102,7 @@
           <p>¿Desea suspender al usuario?</p>
           <input type="text" [(ngModel)]="razonText" name="razon" class="form-control input-md" placeholder="Ingrese razon a suspender">
           <p *ngIf="messageBool==true" class="message-suspender">Usuario suspendido</p>
+          <p *ngIf="isRequired==true" class="message-invalido">Ingreso invalido, Ingrese una razon valida</p>
         </div>        
         <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>
@@ -132,7 +133,7 @@
                 <td>{{user.apellidos}}</td>
                 <td>{{user.genero}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user._id}}</td>
+                <td>{{user.suspendido.duracion}}</td>
                 <td class="text-right">
                   <i *ngIf="user.suspendido.estado != true" class='mdi mdi-arrow-down-bold-circle btn btn-warning' (click)="openModalSuspent(contentSuspend,user)"></i>
                   <i class='mdi mdi-delete btn btn-danger' (click)="openModalDelete(contentDelete,user)"></i>
