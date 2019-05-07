@@ -10,7 +10,7 @@ export class Usuarios{
     public telefono:string;
     public genero:string;
     public direccion:string;
-    public suspendido:{estado:boolean,razon:string};
+    public suspendido:{estado:boolean,razon:string,duracion:Number,fecha:Date};
     public email:String;
     public login:{usuario:string,password:string,estado:boolean}
     public eliminado:{estado:Boolean,razon:string};

@@ -18,9 +18,11 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./registry-user.component.css']
 })
 export class RegistryUserComponent implements OnInit,OnDestroy {
-  titulo: string;
+	titulo: string;
+	messageBool:boolean=false;
 	public isCollapsed = true;
 	modal: NgbModalRef;
+	usuarioViewData:Usuarios;
 	closeResult: string;
 	isError: boolean = false;
 	isExito: boolean = false;
@@ -36,31 +38,46 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	loginusuario: string;
 	loginpassword: string;
   // Cabeceras de la Tabla
-  headElements = ['Nro', 'Nombres', 'Apellidos', 'Genero', 'Email'];
+  headElements = ['Nro', 'Nombres', 'Apellidos', 'Genero', 'Email', 'Dias de suspencion'];
 	profileUser: Usuarios;
 	negociosUsuario: Negocio[] = [];
 	contentUserID: string;
 	buttons:boolean=true;
+
+	razonText:string;
 
 	items: any = []
 	term: string;
 
 	OwnerSubscription: Array<Subscription> = [];
 
-  constructor(private socket: SocketConfigService2, private socket3: SocketConfigService3, private modalService: NgbModal, private usuarioServ: UsuarioService, private buscador: BuscadorService) {
-		this.profileUser = new Usuarios;
+  constructor(
+		private socket: SocketConfigService2,
+		private socket3: SocketConfigService3,
+		private modalService: NgbModal,
+		private usuarioServ: UsuarioService,
+		private buscador: BuscadorService) 
+		{
+			//CODE CONSTRUCTOR HERE
+							this.profileUser = new Usuarios;
+							this.razonText="";
+							this.titulo = "Administracion de Usuarios";
+							this.usuario = new Usuarios;
+							this.errorMensaje = "Error no se pudo guardar el registro."
+							
+							this.a = 1;
+							// Model Negocios
+							this.callSuspend();
+							this.profileUser = new Usuarios;
+							
+							
+							this.buscador.lugar = "clientes";
+							this.usuarioServ.getOwner().subscribe((owner)=>{
+								console.log(owner);
+								console.log("Algo anda vien");
+								this.usuarios = owner;
+							})
 
-		this.titulo = "Administracion de Usuarios";
-		this.usuario = new Usuarios;
-		
-		this.a = 1;
-		// Model Negocios
-		this.buscador.lugar = "clientes";
-		this.usuarioServ.getOwner().subscribe((owner)=>{
-			console.log(owner);
-			console.log("Algo anda vien");
-			this.usuarios = owner;
-		})
   }
   
   cargarDrow(){
@@ -70,6 +87,10 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	
 	//Llenar el ng-select
 	ngOnInit() {
+		//SPINER ACTION
+	
+		
+
 		this.conn();
 		this.usuarioServ.sendEmitGetOwner();
 	}
@@ -79,19 +100,33 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
         });
 	  }
 	// ACCIONES DE LOS MODALS
-	openModalView(content, id: string) {
-		this.contentUserID = id;
+	openModalView(content, usuario:Usuarios) {
+		//this.contentUserID = id;
 		
 		this.viewUser();
+		this.usuarioViewData=usuario
+		console.log("yo soy el usuario",this.usuarioViewData);
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
+
 		});
 	}
-	openModalDelete(content, id) {
-		this.idUsuario = id;
+
+	openModalSuspent(content,usuario:Usuarios){
+		this.usuarioViewData=usuario;
+		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
+		this.modal.result.then((e) => {
+			
+		});
+	}
+	openModalDelete(content, usuario:Usuarios) {
+		this.usuarioViewData=usuario;
 		this.modal = this.modalService.open(content, { centered: true, backdropClass: 'light-blue-backdrop' })
 		this.modal.result.then((e) => {
 		});
+
+		//Obtener listado de negocios antes de eliminar
+		//this.negocioActualPorEvento(id);
 	}
 
 	cancelModal() {
@@ -102,6 +137,64 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 
 	// COSUMO DE SERVICIOS
 
+	/*	if (this.usuario.nombre != undefined && this.usuario.apellidos != undefined && this.user != undefined && this.selectedItems.length > 0 && this.validateEmail(this.usuario.email)) {
+			this.buttons=false;
+		    this.usuarioServ.saveOwner(ciphertext.toString());
+		}
+		else {
+			this.isRequired = true;
+		}
+
+	}*/
+
+	callSuspend(){
+		this.socket.on('respuesta-suspender-usuario', data =>{
+			console.log(data);
+			this.messageBool=true;
+			setTimeout(()=>{				
+				 this.messageBool=false;
+				 this.modal.close();
+			},3000);		
+			
+		});
+	}
+
+	suspend(){
+		console.log("hola");
+		let data = new Usuarios;
+		let fecha = new Date().toUTCString();
+		let datos;
+		data = this.usuarioViewData;
+		data.suspendido.estado=true;
+		data.suspendido.razon=this.razonText
+		data.suspendido.duracion=10;
+		data.suspendido.fecha= fecha as any;
+		
+		 datos={usuario:data};
+		console.log(datos);
+		if(this.razonText.length > 10){
+			datos =this.encryptData(datos);
+			console.log(datos);
+			this.socket.emit('suspender-usuario',datos);	
+		}
+		else{
+			this.isRequired=true;
+			setTimeout(()=>{
+				this.isRequired=false;				
+			},5000)
+		}
+			
+	}
+
+	encryptData(data) {
+
+    try {
+      return CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave).toString();
+    } catch (e) {
+      console.log(e);
+    }
+	}
+	
 
 	delete(razon) {
 		let data = { id: this.idUsuario, razon: razon }
