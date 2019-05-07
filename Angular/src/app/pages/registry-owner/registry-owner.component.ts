@@ -1,6 +1,3 @@
-
-import { SocketConfigService } from './../../socket-config.service';
-import { element } from 'protractor';
 import { BuscadorService } from './../../service/buscador.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { Component, OnInit, ɵConsole, OnDestroy } from '@angular/core';
@@ -11,11 +8,8 @@ import { SocketConfigService2, SocketConfigService3 } from '../../socket-config.
 import { Observable, observable } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../cryptoclave';
-import { FormControl } from '@angular/forms';
 import { Negocio } from '../../models/Negocio';
 import { Subscription } from 'rxjs/Subscription';
-import { Socket } from 'net';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { OwnerService } from '../../services/owner.service';
 
 @Component({
