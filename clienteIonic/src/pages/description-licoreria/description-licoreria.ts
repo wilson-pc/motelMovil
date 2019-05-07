@@ -30,6 +30,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   favorito: Favoritos;
   cantidad:number[]=[];
   motivo: string;
+  slideData: any = [];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -163,6 +164,8 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   connectionBackendSocket() {
     this.clientesSubscription = this.eventoSacarDatos().subscribe(data => {
       this.imagenProducto = data.foto.normal;
+      this.slideData = data.fotos;
+      console.log("Imagenes: ", this.slideData);
     })
 
     this.suscripctionSocket = this.respuestaReserva().subscribe((data: any) => {
@@ -201,7 +204,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   }
 
   sacarDatos() {
-    this.productoServ.emit("sacar-producto", { id: this.productoRecibido._id })
+    this.productoServ.emit("sacar-producto", this.productoRecibido)
   }
 
   eventoSacarDatos() {
