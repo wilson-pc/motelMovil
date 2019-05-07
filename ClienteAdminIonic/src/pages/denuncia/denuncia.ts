@@ -1,9 +1,8 @@
-import { Socket } from 'ng-socket-io';
+
 import { SocketServiceComportamiento, SocketServiceProduct } from './../../providers/socket-config/socket-config';
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs';
-import { from } from 'rxjs/observable/from';
 import { UserOnlyProvider } from '../../providers/user-only/user-only';
 
 /**

@@ -1,5 +1,5 @@
+import { EditProductPage } from './../pages/edit-product/edit-product';
 import { EditLoginPage } from './../pages/edit-login/edit-login';
-import { RegisterRoomPage } from './../pages/register-room/register-room';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -13,15 +13,9 @@ import { NotificationsPage } from '../pages/notifications/notifications';
 import { LoginPage } from '../pages/login/login';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
-import { ActivityService } from '../services/activity-service';
-import { SocketIoModule,SocketIoConfig } from 'ng-socket-io';
-import { TripService } from '../services/trip-service';
-import { WeatherProvider } from '../services/weather';
+import { SocketIoModule} from 'ng-socket-io';
 import {FileChooser} from '@ionic-native/file-chooser';
 import { ImagePicker } from '@ionic-native/image-picker';
-import { AuthProvider } from '../providers/auth/auth';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireModule } from 'angularfire2';
 import { CommercePage } from '../pages/commerce/commerce';
 import { 
   SocketServiceCommerce, 
@@ -43,15 +37,6 @@ import { BilleteraPage } from '../pages/billetera/billetera';
 import { ModalViewStatisticsPageModule } from '../pages/modal-view-statistics/modal-view-statistics.module';
 import { ReservationProvider } from '../providers/reservation/reservation';
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyDAlY3ozstpEbo4Q4eGoX0LAg7WhuCu8x8",
-  authDomain: "hotelmovildb.firebaseapp.com",
-  databaseURL: "https://hotelmovildb.firebaseio.com",
-  projectId: "hotelmovildb",
-  storageBucket: "hotelmovildb.appspot.com",
-  messagingSenderId: "1084156115455"
-};
-
 @NgModule({
   declarations: [
     MyApp,
@@ -59,7 +44,6 @@ export const firebaseConfig = {
     LoginPage,
     NotificationsPage,
     EditLoginPage,
-    RegisterRoomPage,
     CommercePage,
     ListProductsPage,
     RegisterProductsPage,
@@ -67,6 +51,7 @@ export const firebaseConfig = {
     ViewProductsPage,
     DenunciaPage,
     BilleteraPage,
+    EditProductPage,
     ReservaPage
   ],
   imports: [
@@ -80,8 +65,6 @@ export const firebaseConfig = {
       scrollAssist: true,
       autoFocusAssist: false
     }),
-    AngularFireModule.initializeApp(firebaseConfig,'demo104'),
-    AngularFireDatabaseModule,
     IonicStorageModule.forRoot({
       name: '__ionic3_start_theme',
         driverOrder: ['indexeddb', 'sqlite', 'websql']
@@ -94,12 +77,12 @@ export const firebaseConfig = {
     HomePage,
     LoginPage,
     NotificationsPage,
-    RegisterRoomPage,
     EditLoginPage,
     CommercePage,
     ListProductsPage,
     RegisterProductsPage,
     EditProductsPage,
+    EditProductPage,
     ViewProductsPage,
     DenunciaPage,
     BilleteraPage,
@@ -107,10 +90,7 @@ export const firebaseConfig = {
   ],
   providers: [
     StatusBar,
-    ActivityService,
     SocketIoModule,
-    TripService,
-    WeatherProvider,
     FileChooser,
     SocketServiceCommerce,
     SocketServiceHomeService,
@@ -122,7 +102,6 @@ export const firebaseConfig = {
     SplashScreen,
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider,
     UserOnlyProvider,
     CommerceProvider,
     ProductProvider,

@@ -5,13 +5,14 @@ import { RegistryOwnerComponent } from './registry-owner/registry-owner.componen
 import { WalletComponent } from './wallet/wallet.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { RegistryUserComponent } from './registry-user/registry-user.component';
-import { Error404Component } from './error404/error404.component';
 import { MapaGoogleComponent } from './mapa-google/mapa-google.component';
+import {RouteGuardService} from '../services/route-guard.service'
 
 const routes: Routes = [
     {
         path: '', 
-        component: PageComponent, 
+        component: PageComponent,
+        canActivate: [RouteGuardService], 
         children: [
             { path: 'administracion', loadChildren: './starter/starter.module#StarterModule' },
             { path: 'administracion', loadChildren: './component/component.module#ComponentsModule' },

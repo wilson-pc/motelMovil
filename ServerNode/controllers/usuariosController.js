@@ -23,9 +23,6 @@ module.exports = async function (io) {
   var clients = [];
 
   io.on('connection', async function (socket) {
-
-
-
     // var host=socket.handshake.headers.host;
     console.log(socket.id);
     clients.push(socket.id);
@@ -54,13 +51,6 @@ module.exports = async function (io) {
       catch (e) {
         console.log(e);
       }
-
-
-
-      //console.log(req.body);
-
-
-
     });
 
 
@@ -573,6 +563,27 @@ module.exports = async function (io) {
       }
 
     });
+    socket.on('buscar-usuario-cliente', async (data) => {
+      try {
+        Usuario.find({ "eliminado.estado": false,"rol.rol": "Cliente", $or: [{ nombre: new RegExp(data.termino, 'i') }, { apellido: new RegExp(data.termino, 'i') }] }, function (error, lista) {
+          if (error) {
+            // res.status(500).send({ mensaje: "Error al listar" })
+          } else {
+            if (!lista) {
+              //   res.status(404).send({ mensaje: "Error al listar" })
+            } else {
+              io.to(socket.id).emit('respuesta-buscar-usuarios-cliente', lista);
+            }
+          }
+        });
+
+      }
+
+      catch (e) {
+        console.log(e);
+      }
+
+    });
 
     socket.on('recuperar-login', async (data) => {
       try {
@@ -792,30 +803,32 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-               
+              
           var usuario2 = await Usuario.findById(datos.id);
-        
-          var usuario = new Usuario();
-          usuario._id = datos.id;
-          usuario.login = { usuario: usuario2.login.usuario, password: usuario2.login.password, estado: false };
-
-          // console.log(lista);
-          Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, function (error, data) {
-        
-
-            if (error) {
-              //  io.to(socket.id).emit('progreso',{total:image.length,progreso:index+1});
-              io.to(socket.id).emit('respuesta-cerrar', { mensaje: "ocurrio un error durante el cierre se cesion" });
-              //  res.status(500).send({ mensaje: "Error desconocido" })
-            } else {
-              if (!data) {
+          if(usuario2){
+            var usuario = new Usuario();
+            usuario._id = datos.id;
+            usuario.login = { usuario: usuario2.login.usuario, password: usuario2.login.password, estado: false };
+  
+            // console.log(lista);
+            Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, function (error, data) {
+              if (error) {
+                //  io.to(socket.id).emit('progreso',{total:image.length,progreso:index+1});
                 io.to(socket.id).emit('respuesta-cerrar', { mensaje: "ocurrio un error durante el cierre se cesion" });
-                //  res.status(404).send({ mensaje: "Error no se  pudo cerrar secion" })
+                //  res.status(500).send({ mensaje: "Error desconocido" })
               } else {
-                io.to(socket.id).emit('respuesta-cerrar', { data: true });
+                if (!data) {
+                  io.to(socket.id).emit('respuesta-cerrar', { mensaje: "ocurrio un error durante el cierre se cesion" });
+                  //  res.status(404).send({ mensaje: "Error no se  pudo cerrar secion" })
+                } else {
+                  io.to(socket.id).emit('respuesta-cerrar', { data: true });
+                }
               }
-            }
-          });
+            });
+          }else{
+            io.to(socket.id).emit('respuesta-cerrar', { mensaje: "borrado" });
+          }
+       
 
         }
         return data;

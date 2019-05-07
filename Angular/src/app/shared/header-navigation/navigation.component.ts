@@ -14,64 +14,71 @@ import { Observable } from 'rxjs';
 })
 export class NavigationComponent implements AfterViewInit {
     name: string;
-    termino:string="";
-    constructor(private socket:SocketConfigService2,private rout: Router,public usuarioServ:UsuarioService,private buscador:BuscadorService,private socketNegocio:SocketConfigService3) {
+    termino: string = "";
+    constructor(private socket: SocketConfigService2, private rout: Router, public usuarioServ: UsuarioService, private buscador: BuscadorService, private socketNegocio: SocketConfigService3) {
         this.conn();
-     }
+    }
 
-    cerrarCesion(){
-      
-        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({id:this.usuarioServ.usuarioActual.datos._id}), clave.clave);
-        this.socket.emit("cerrar-secion",ciphertext.toString());
-        
-       }
+    cerrarCesion() {
 
-       conn(){
-        this.respuestaCerrar().subscribe((data:any) => {
-            console.log(data);
-              if(data){
-            localStorage.clear();
-            this.usuarioServ.usuarioActual=undefined;
-            this.rout.navigate(['/inicio']);
-              }else{
-                  console.log("error");
-              }
-            });
-      }
-      respuestaCerrar() {
+        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ id: this.usuarioServ.usuarioActual.datos._id }), clave.clave);
+        this.socket.emit("cerrar-secion", ciphertext.toString());
+
+    }
+
+    conn() {
+        this.respuestaCerrar().subscribe((data: any) => {
+          
+            if (data.data) {
+                localStorage.clear();
+                this.usuarioServ.usuarioActual = undefined;
+                this.rout.navigate(['/inicio']);
+            } else {
+                if(data.mensaje=="borrado"){
+              console.log("elemeto borrado");
+                }else{
+                    alert("ocurrio un error al cerrar secion");
+                }
+            }
+        });
+    }
+    respuestaCerrar() {
         let observable = new Observable(observer => {
-          this.socket.on('respuesta-cerrar', (data) => {
-            observer.next(data);
-          });
+            this.socket.on('respuesta-cerrar', (data) => {
+                observer.next(data);
+            });
         })
         return observable;
-        }
-        buscar(event) {
-            
-           if(this.termino.length>1){
-            if(event.keyCode == 13) {
+    }
+    buscar(event) {
+
+        if (this.termino.length > 1) {
+            if (event.keyCode == 13) {
                 this.buscador.Buscar(this.termino);
-              }
-           }else{
-              // console.log(this.termino);
-             //  console.log(this.buscador.lugar);
-           if(this.buscador.lugar=="usuarios"){
-           
-            this.socket.emit("listar-usuario", { data: "nada" });
-           }else
-           if(this.buscador.termino=="licorerias"){
-               console.log("entra a lico");
-            this.socketNegocio.emit("listar-negocio", { termino:'Licoreria'});
-           }else
-           //sexshops
-           if(this.buscador.termino=="sexshops"){
-           	this.socketNegocio.emit("listar-negocio", { termino:'SexShop'});
-           }else
-           if(this.buscador.termino=="moteles"){
-	this.socketNegocio.emit("listar-negocio", { termino:'Motel'});
-           }
-           }
-          }
+            }
+        } else {
+            // console.log(this.termino);
+            //  console.log(this.buscador.lugar);
+            if (this.buscador.lugar == "clientes") {
+                this.socket.emit("listar-usuario-cliente", { termino: 'nada' });
+            } else
+                if (this.buscador.lugar == "usuarios") {
+
+                    this.socket.emit("listar-usuario", { data: "nada" });
+                } else
+                    if (this.buscador.termino == "licorerias") {
+                        console.log("entra a lico");
+                        this.socketNegocio.emit("listar-negocio", { termino: 'Licoreria' });
+                    } else
+                        //sexshops
+                        if (this.buscador.termino == "sexshops") {
+                            this.socketNegocio.emit("listar-negocio", { termino: 'SexShop' });
+                        } else
+                            if (this.buscador.termino == "moteles") {
+                                this.socketNegocio.emit("listar-negocio", { termino: 'Motel' });
+                            }
+        }
+    }
 
     exitAdmin() {
         this.rout.navigate(['/administracion']);

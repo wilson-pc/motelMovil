@@ -14,6 +14,7 @@ import { EditProductsPage } from '../edit-products/edit-products';
 import { ViewProductsPage } from '../view-products/view-products';
 import {imageDefault} from '../../app/imageDefualt'
 import { Subscription } from 'rxjs/Subscription';
+import { EditProductPage } from '../edit-product/edit-product';
 
 type AOA = any[][];
 
@@ -47,7 +48,8 @@ exceltojson:any[]=[];
     public productService: SocketServiceProduct,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private nav:NavController) {
     //Inicializacion
     this.connectionBackendSocket();
     this.getAllCommerce();
@@ -114,8 +116,9 @@ exceltojson:any[]=[];
 
   updateProduct(producto:Productos) {
       console.log(producto);
+     // this.nav.push(EditProductPage, { product: producto, commerce: this.commerceOnly });
     const modal = this.modalCtrl.create(EditProductsPage, { product: producto, commerce: this.commerceOnly });
-    modal.present();
+   modal.present();
     //this.getProductsCommerce();
   }
 

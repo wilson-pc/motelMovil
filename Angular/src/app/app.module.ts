@@ -16,8 +16,6 @@ import { SocketConfigService, SocketConfigService2, SocketConfigService3, Socket
 import { Error404Component } from './pages/error404/error404.component';
 import { RecuperacionComponent } from './recuperacion/recuperacion.component';
 import { OwnerService } from './services/owner.service';
-import {NgxSpinnerModule } from 'ngx-spinner';
-import {AtomSpinnerModule} from 'angular-epic-spinners'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
@@ -37,8 +35,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgxSpinnerModule,
-    AtomSpinnerModule,
     NgbModule
     
   ],

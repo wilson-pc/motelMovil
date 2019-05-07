@@ -1,4 +1,3 @@
-import { ProductProvider } from './../../providers/product/product';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Negocio } from '../../models/Negocio';
