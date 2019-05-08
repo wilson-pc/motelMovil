@@ -299,9 +299,6 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 		})
 		return observable;
 	}
-
-
-
 	respuestaSacarUsuario() {
 		let observable = new Observable(observer => {
 			//respuesta-eliminar-usuario

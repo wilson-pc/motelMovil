@@ -216,6 +216,7 @@ module.exports = async function (io) {
 
     //{"eliminado.estado":false,"tipo.nombre":data.termino},{foto:0}
     socket.on('listar-negocio', async (data) => {
+      console.log(data);
       Negocio.find({ "eliminado.estado": false, "tipo.nombre": data.termino }, { foto: 0 }, function (error, lista) {
         if (error) {
           io.to(socket.id).emit('respuesta-listar-negocio', { error: "No se pudo listar los negocios" })
