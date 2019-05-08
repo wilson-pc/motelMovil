@@ -70,6 +70,7 @@ module.exports = async function (io) {
           usuario.genero = params.genero;
           usuario.email = params.email;
           usuario.login = params.login;
+          usuario.tiporegistro = params.tiporegistro;
           usuario.foto = params.foto;
           usuario.eliminado = { estado: false, razon: "" };
           usuario.creacion = params.creacion

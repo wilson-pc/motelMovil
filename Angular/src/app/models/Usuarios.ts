@@ -9,6 +9,7 @@ export class Usuarios{
     public foto:string;
     public telefono:string;
     public genero:string;
+    public tiporegistro:string;
     public direccion:string;
     public suspendido:{estado:boolean,razon:string,duracion:Number,fecha:Date};
     public email:String;
