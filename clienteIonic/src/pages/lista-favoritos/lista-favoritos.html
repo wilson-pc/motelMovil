@@ -39,62 +39,8 @@
 </div> -->
 
 
- <ion-list>
-
-    <div padding>
-        <ion-segment [(ngModel)]="productos">
-          <ion-segment-button value="licores">
-            Licores
-          </ion-segment-button>
-          <ion-segment-button value="moteles">
-            Moteles
-          </ion-segment-button>
-          <ion-segment-button value="productosSex">
-              Products Sex
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-
-      
-      <div [ngSwitch]="productos" >        
-        <ion-list *ngSwitchCase="'licores'" >
-          <div *ngIf="listabuscadorProductoslicores!=undefined || listabuscadorProductoslicores!=null">
-            <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>            
-           
-            <ion-item *ngFor="let items of listabuscadorProductoslicores">
-              
-                
-                    <ion-thumbnail item-start>
-                        <img [src]="items.foto.normal">
-                    </ion-thumbnail>
-               
-               
-                <div class="contentList">
-                  <div class="titulolist">
-                      <h2>{{items.nombre}}</h2>
-                      <p>{{items.descripcion}}</p>
-                  </div>
-                 
-                  <div class="likes">
-                    <div class="like">
-                        <ion-icon name="thumbs-up"></ion-icon>
-                        <div>1 k</div>
-                    </div>
-                    <div class="dislike">
-                        <ion-icon name="thumbs-down"></ion-icon>
-                        <div>100</div>
-                    </div>
-                    <div class="vermas">
-                        <button ion-button clear item-end>Ver mas</button>
-                    </div>
-                  </div>
-                 </div>  <!--fin div content            -->                
-              
-              </ion-item>  
-            </div>   
-        </ion-list>
-      
-        <ion-list *ngSwitchCase="'moteles'">
+     <div padding>
+        <ion-list>
             <div *ngIf="listamotelbuscador!=undefined || listamotelbuscador!=null">
             <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
             <ion-item *ngFor="let items of listamotelbuscador">
@@ -127,41 +73,5 @@
               </ion-item>       
             </div>
         </ion-list>
-
-        <ion-list *ngSwitchCase="'productosSex'">
-            <div *ngIf="listasexshopbuscador!=undefined || listasexshopbuscador!=null">
-            <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-            <ion-item *ngFor="let items of listasexshopbuscador">
-
-                
-              <ion-thumbnail item-start>
-                <img [src]="items.foto.normal">
-              </ion-thumbnail>
-                
-              <div class="contentList">
-                <div class="titulolist">
-                    <h2>{{items.nombre}}</h2>
-                    <p>{{items.descripcion}}</p>
-                </div>
-               
-                <div class="likes">
-                  <div class="like">
-                      <ion-icon name="thumbs-up"></ion-icon>
-                      <div>1 k</div>
-                  </div>
-                  <div class="dislike">
-                      <ion-icon name="thumbs-down"></ion-icon>
-                      <div>100</div>
-                  </div>
-                  <div class="vermas">
-                      <button ion-button clear item-end>Ver mas</button>
-                  </div>
-                </div>
-               </div>  <!--fin div content            -->
-            </ion-item> 
-            </div>           
-          </ion-list>
-      </div>   
-  </ion-list>
-
+    </div>
 </ion-content>
