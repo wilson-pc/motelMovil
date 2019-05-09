@@ -15,7 +15,7 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  rolUser:string="5c45ef2909d2200ea8f6db83";
+  rolUser:string="5cd33535021ca1a0384b5eb0";
 usuario:Usuarios;
 loginUser:any={usuario:"",password:"",tipo:"Cliente"};
   constructor(private storage: Storage,private userServ:UsuarioProvider,private socketLogin:SocketLoginService,private facebook: Facebook,public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
