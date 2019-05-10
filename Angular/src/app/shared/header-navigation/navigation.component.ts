@@ -10,7 +10,8 @@ import { Observable } from 'rxjs';
 
 @Component({
     selector: 'ap-navigation',
-    templateUrl: './navigation.component.html'
+    templateUrl: './navigation.component.html',
+    styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements AfterViewInit {
     name: string;

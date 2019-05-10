@@ -83,7 +83,11 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>¿Desea suspender el registro?</p>
+          <p>¿Desea eliminar el registro?</p>
+          <input type="text" [(ngModel)]="razonText" name="razonel" class="form-control input-md" placeholder="Ingrese razon a elimnar">
+          <p *ngIf="messageBool==true" class="message-suspender">Usuario suspendido</p>
+          <p *ngIf="isError==true" class="message-invalido">Ocurrio un error mientras se borraba el dato</p>
+          <p *ngIf="isRequired==true" class="message-invalido">Ingreso invalido, Ingrese una razon valida</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light" (click)="cancelModal()">Cancelar</button>

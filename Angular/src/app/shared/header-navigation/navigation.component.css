@@ -1,0 +1,11 @@
+.logonew{
+    width: 80%;    
+    text-align: left;
+    margin-right: 700px;
+}
+.logonew p{
+    padding: 15px;
+    color: white;
+    font-size: 1.2em;
+    font-family: Lucida Calligraphy;
+}

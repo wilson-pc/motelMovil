@@ -74,10 +74,11 @@ export class FormComerceComponent implements OnInit {
 		this.negocios=new Negocio;
 		this.ListaNegocio=[];
 		this.getNegocios();
+		this.peticionSocketNegocio();	
 		this.limpiarMensajes();
 		this.conn();
 		this.flag=0;		
-		this.peticionSocketNegocio();	
+		
 		//console.log(this.route.snapshot.paramMap.get('negocio'));
 	}
 
@@ -156,6 +157,7 @@ export class FormComerceComponent implements OnInit {
 	}
 	openModalUpdate(content,negocio:Negocio,anyflag) {
 
+		console.log("modal",negocio);
 		this.flag=anyflag;
 		this.negocios=negocio;
 		this.negocios.tipo=negocio.tipo._id as any;
@@ -271,13 +273,14 @@ export class FormComerceComponent implements OnInit {
 		{
 		
 
-		let data={negocio:this.negocios}
+		let data={negocio:this.negocios}		
+	
 		 var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data),clave.clave)
-		 this.socket.emit("actualizar-negocio",ciphertext.toString());
-		 this.socket.on('respuesta-actualizar-negocio-todos',(data)=>{
+		  this.socket.emit("actualizar-negocio",ciphertext.toString());
+		  this.socket.on('respuesta-actualizar-negocio-todos',(data)=>{
 			console.log("Entraste a respuesta y estoy funcionando");
-			console.log(data);
-			});	
+		 	console.log(data);
+		 	});	
 		}
 		else{
 			this.isRequired=true;

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SocketConfigService2 } from '../socket-config.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,9 @@ export class UsuarioService {
     this.socket.emit("actualizar-usuario",data);
   }
   deleteOwner(data){
-    this.socket.emit("eliminar-usuario", data);
+   
+      this.socket.emit("eliminar-usuario", data);
+   
   }
   eventDeleteOwner(){
     return this.socket

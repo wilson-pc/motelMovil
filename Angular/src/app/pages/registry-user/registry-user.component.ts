@@ -12,6 +12,7 @@ import { clave } from '../../cryptoclave';
 import { Negocio } from '../../models/Negocio';
 import { Subscription } from 'rxjs/Subscription';
 
+
 @Component({
   selector: 'app-registry-user',
   templateUrl: './registry-user.component.html',
@@ -68,18 +69,21 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 							this.a = 1;
 							// Model Negocios
 							this.callSuspend();
+							this.callDeleteSocket();
 							this.profileUser = new Usuarios;
 							
 							
 							this.buscador.lugar = "clientes";
-							this.usuarioServ.getOwner().subscribe((owner)=>{
-								console.log(owner);
-								console.log("Algo anda vien");
-								this.usuarios = owner;
-							})
+						this.listarUsuarios();
 
   }
-  
+  listarUsuarios(){
+		this.usuarioServ.getOwner().subscribe((owner)=>{
+			console.log(owner);
+			console.log("Algo anda vien");
+			this.usuarios = owner;
+		})
+	}
   cargarDrow(){
 		console.log("nuevoi");
 
@@ -88,9 +92,6 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	//Llenar el ng-select
 	ngOnInit() {
 		//SPINER ACTION
-	
-		
-
 		this.conn();
 		this.usuarioServ.sendEmitGetOwner();
 	}
@@ -150,11 +151,20 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 	callSuspend(){
 		this.socket.on('respuesta-suspender-usuario', data =>{
 			console.log(data);
-			this.messageBool=true;
-			setTimeout(()=>{				
-				 this.messageBool=false;
-				 this.modal.close();
-			},3000);		
+			if(!data.mensaje){
+				this.messageBool=true;
+				setTimeout(()=>{				
+					this.messageBool=false;
+					this.razonText="";
+					this.modal.close();
+			 },3000);		
+			}
+			else{
+				this.isError=true;
+				setTimeout(()=>{
+					this.isError=false;
+				},3000)
+			}			
 			
 		});
 	}
@@ -194,14 +204,42 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
       console.log(e);
     }
 	}
+
+	callDeleteSocket(){
+		this.socket.on('respuesta-eliminar-usuario',data=>{
+			if(!data.error){
+				this.messageBool=true;
+				setTimeout(()=>{
+					this.messageBool=true;
+					this.modal.close();
+					this.razonText="";
+					this.usuarioServ.sendEmitGetOwner();
+				},2000)
+			}
+			else{
+				this.isError=true;
+				setTimeout(()=>{
+					this.isError=false;
+				},3000)
+			}
+			
+		});
+	}	
 	
-
-	delete(razon) {
-		let data = { id: this.idUsuario, razon: razon }
-
-		var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-		this.eliminar=false;
-		this.usuarioServ.deleteOwner(ciphertext.toString());
+	delete() {
+		let data = { id: this.usuarioViewData._id, razon: this.razonText };
+		console.log(data);		
+		if(data.razon.length >10){
+			var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);	
+			this.usuarioServ.deleteOwner(ciphertext.toString())
+		}
+		else{
+			this.isRequired=true;
+			setTimeout(()=>{
+				this.isRequired=false;
+			},5000)
+		}
+	
 	}
 
 
@@ -266,15 +304,15 @@ export class RegistryUserComponent implements OnInit,OnDestroy {
 			console.log(data);
 			this.usuarios.push(data.usuario)
 		}));		
-	  this.OwnerSubscription.push(this.usuarioServ.eventDeleteOwner().subscribe((data: any) => {
+	  // this.OwnerSubscription.push(this.usuarioServ.eventDeleteOwner().subscribe((data: any) => {
 			
-			if(data.exito){
-			this.modal.close();
-			this.eliminar = false;}
-			else{
+		// 	if(data.exito){
+		// 	this.modal.close();
+		// 	this.eliminar = false;}
+		// 	else{
 
-			}
-		}));
+		// 	}
+		// }));
 		//eliminar negocio del panel de edicio
 
 		this.OwnerSubscription.push(this.usuarioServ.eventUpdateAll().subscribe((data)=>{
