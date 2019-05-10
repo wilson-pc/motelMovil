@@ -59,8 +59,8 @@ export class ComplaintComponent implements OnInit {
 
   conn() {
     this.listComplaints = [];
-    this.respuestaListarDenuncias().subscribe((data: any[]) => {
-      this.listComplaints = data;
+    this.respuestaListarDenuncias().subscribe((data: any) => {
+      this.listComplaints = data.datos;
     });
   }
 

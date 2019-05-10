@@ -33,7 +33,7 @@ export class ViewProductsPage {
     this.connection();
   }
 sacarProducto(){
-  this.productService.emit("sacar-producto",{id:this.productOnly._id})
+  this.productService.emit("sacar-producto",{_id:this.productOnly._id})
 }
 
   dismissModal(){

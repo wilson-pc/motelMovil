@@ -54,7 +54,7 @@ export class EditProductPage {
   async getCommerceAndProduct() {
     console.log("wcokwovmowe");
     this.producto = this.navParams.get("product");
-    this.productService.emit("sacar-producto", {id:this.producto._id});
+    this.productService.emit("sacar-producto", {_id:this.producto._id});
     this.commerceOnly = this.navParams.get("commerce");
     let data = { tipo: this.commerceOnly.tipo.nombre }
     this.productService.emit("listar-tiposproductos-negocio", data);

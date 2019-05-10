@@ -1,7 +1,7 @@
+import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SocketReservaService } from '../../services/socket-config.service';
-import { Subscription } from 'rxjs';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 
 @IonicPage()
@@ -38,11 +38,12 @@ export class ListaReservasPage {
   //Consumo Socket 
   getListReserve(estado:string) {
     let data = {idcliente: this.userService.UserSeCion.datos._id,estado:estado}
+    console.log(data);
     this.reserveService.emit("listar-reserva", data);
   }
 
   GetEvent(){
-    this.respuestaListarReserva().subscribe((data)=>{
+  this.suscripctionSocket= this.respuestaListarReserva().subscribe((data)=>{
       console.log(data);
       this.reservationsListCompleted=[];
       if(data.error){

@@ -109,7 +109,7 @@
               </th>
             </thead>
             <tbody>
-              <tr *ngFor="let complaint of listComplaints.datos, let i=index">
+              <tr *ngFor="let complaint of listComplaints, let i=index">
                 <td>{{i+1}}</td>
                 <td>{{complaint.nombre}}</td>
                 <td>{{complaint.negocio.nombre}}</td>
