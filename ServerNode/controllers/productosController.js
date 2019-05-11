@@ -326,7 +326,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             console.log("error vacio");
           } else {
-           console.log("Encontrado!",datos)
+
             io.to(socket.id).emit('respuesta-sacar-producto', dato);
 
           }
@@ -601,7 +601,7 @@ module.exports = async function (io) {
     });
 
     socket.on('top-productos', async (data) => {
-
+        console.log(data);
       Producto.aggregate([
         { $match: { "tipo.tiponegocio": data.tipo, "eliminado.estado": false, } },
         {
@@ -611,7 +611,6 @@ module.exports = async function (io) {
             "dislike": { $size: "$desvaloracion.usuario" },
             "eliminado": "$eliminado",
             "foto": { miniatura: "$foto.miniatura" },
-            "fotos": ["$fotos"],
             "creacion": "$creacion",
             "modificacion": "$modificacion",
             "nombre": "$nombre",
@@ -633,7 +632,7 @@ module.exports = async function (io) {
           if (!lista) {
             io.to(socket.id).emit('respuesta-top-productos', { error: "no hay productos en la base de datos" });
           } else {
-            
+            console.log(data);
             io.to(socket.id).emit('respuesta-top-productos', lista);
           }
         }

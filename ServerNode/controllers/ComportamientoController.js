@@ -6,13 +6,14 @@ var Crypto = require("../variables/desincryptar");
 var Calificacion = require("../schemas/calificacion");
 var mongoose = require("mongoose");
 var Favorito = require("../schemas/favoritos");
+var Reservas = require("../schemas/reservasproductos");
 
 
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
     socket.on('agregar-favorito', async (data) => {
-      
+      console.log("agregar");
       try {
         var datos = await Crypto.Desincryptar(data);
 
@@ -134,6 +135,7 @@ module.exports = async function (io) {
     //INICIO DE FAVORITOS POR TIPO DE MOTELES
 
     socket.on('listar-favorito-moteles', async (data) => {
+      console.log(data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
         Favorito.find({ usuario: data.idusuario, tipo: "Motel" }, (error, favoritos) => {
@@ -373,11 +375,15 @@ module.exports = async function (io) {
     });
 
     socket.on('denuncia-producto', async (datos) => {
+      console.log(datos  );
+      var countReservas = await Reservas.count({cliente:datos.idusuario,producto:datos.idproducto });
+      console.log(countReservas);
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
       //   var datos=JSON.parse(data);
-      var usuario = datos.idusuario;
+      if(count>0){
+     var usuario = datos.idusuario;
       var fecha = new Date().toUTCString();
 
       var count = await Producto.count({ _id: datos.idproducto, "denuncias.usuario": { $all: [usuario] } });
@@ -398,6 +404,9 @@ module.exports = async function (io) {
       } else {
         io.to(socket.id).emit('respuesta-denuncia-negocio', { error: "error solo se permite una denuncia por producto" });
       }
+    }else{
+      io.to(socket.id).emit('respuesta-denuncia-negocio', { error: "error deve reservar primero el producto" });
+    }
 
       /*          }
   return data;

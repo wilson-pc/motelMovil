@@ -61,6 +61,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     this.productoRecibido = this.navParams.get("producto")
     console.log("producto",this.productoRecibido);
     this.sacarDatos();
+    this.registrarVisita();
   }
 
   productDescription(product: Productos) {
@@ -135,7 +136,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     if(this.userService.UserSeCion.datos){
       let denuncia = {
         idusuario: this.userService.UserSeCion.datos._id,
-     //   idproducto: this.product._id,
+         idproducto: this.productoRecibido._id,
         detalle: this.motivo
       }
       this.provedorFavoritos.emit('denuncia-producto', denuncia);

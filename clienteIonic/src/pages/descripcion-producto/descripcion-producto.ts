@@ -34,7 +34,8 @@ export class DescripcionProductoPage {
     public productService: SocketReservaService,
     public productoService: SocketConfigService,
     private provedorFavoritos: conexionSocketComportamiento,
-    public userService: UsuarioProvider) {
+    public userService: UsuarioProvider,
+    private usuarioLogin: UsuarioProvider) {
     //Inicializacion del constructor
     this.getProduct();
     this.connectionBackendSocket();
@@ -101,7 +102,9 @@ export class DescripcionProductoPage {
    getProduct() {
     this.productID = this.navParams.get("producto");
     console.log("Producto saliente: ", this.productID);
-    this.productoService.emit("sacar-producto", this.productID);
+    this.product = this.navParams.get("producto");
+    this.productoService.emit("sacar-producto", {_id:this.productID._id});
+    this.registrarVisita();
   }
 
   reserveProduct() {
@@ -118,7 +121,7 @@ export class DescripcionProductoPage {
     if(this.userService.UserSeCion.datos){
       let denuncia = {
         idusuario: this.userService.UserSeCion.datos._id,
-        idproducto: this.product._id,
+        idproducto: this.productID._id,
         detalle: this.motivo
       }
       this.provedorFavoritos.emit('denuncia-producto', denuncia);
@@ -214,5 +217,9 @@ export class DescripcionProductoPage {
   ngOnDestroy() {
     this.suscripctionSocket.unsubscribe();
   }
-
+  registrarVisita(){
+    let data = { idcliente: this.usuarioLogin.UserSeCion.datos._id , idnegocio: this.productID.negocio };
+    console.log("Cliente",data);
+    this.provedorFavoritos.emit('visitar-negocio', data);
+  }
 }

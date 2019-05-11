@@ -55,6 +55,7 @@ export class TopsPage {
     let tipo = {};
 
     if (this.Negocios == "Moteles") {
+      console.log("negocios motelesshhhhh hj");
       tipo = { tipo: "Motel" };
       this.productService.emit("top-productos", tipo);
     }

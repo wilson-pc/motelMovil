@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { conexionSocketComportamiento } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import { Habitacion } from '../../models/Habitacion';
 import { Geolocation } from '@ionic-native/geolocation';
+import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
 
 /**
  * Generated class for the ListaFavoritosLicoreriasPage page.
@@ -44,7 +45,8 @@ export class ListaFavoritosPage {
      public navParams: NavParams,      
      private usuarioLogueado:UsuarioProvider,
      public provedorSocketFavoritos:conexionSocketComportamiento,
-     public geolocalizacion: Geolocation) {
+     public geolocalizacion: Geolocation,
+     public modalCtrl: ModalController) {
       
         this.obtenerListadeFavoritosLicores();  
         this.respuestaListaFavoritosLicores();  
@@ -98,6 +100,11 @@ export class ListaFavoritosPage {
     this.listabuscadorProductoslicores=this.listaProductoslicores;
     console.log("lista de favoritos",this.listabuscadorProductoslicores);
    
+  }
+  presentModal(item) {
+    console.log(item);
+    const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
+      modal.present();
   }
   
   getItems(ev: any) {
@@ -161,8 +168,10 @@ export class ListaFavoritosPage {
     
   }
 
+
   respuestaListaFavoritosMoteles(){
     this.provedorSocketFavoritos.on('respuesta-listar-favorito-moteles',(data)=>{
+      console.log(data);
      // console.log("datos",data.datos);
       for (let index = 0; index < data.datos.length; index++) {
         const element = data.datos[index];
