@@ -32,7 +32,7 @@ var UseHabitacion = require('./controllers/habitacionController')(habitacion);
 var useComportamineto = require('./controllers/ComportamientoController')(comportamiento);
 var useReservas = require("./controllers/ReservasController")(reserva);
 
-mongoose.connect('mongodb://root:root123@ds161104.mlab.com:61104/triservicesapp', { useNewUrlParser: true }, (error, respuesta) => {
+mongoose.connect('mongodb://root:toor123@ds161104.mlab.com:61104/triservicesapp', { useNewUrlParser: true }, (error, respuesta) => {
   //  mongoose.connect('mongodb://192.168.1.16:27017/triservice', (error, respuesta) => {
   if (error) {
 

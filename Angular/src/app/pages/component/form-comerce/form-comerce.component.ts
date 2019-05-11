@@ -94,7 +94,7 @@ export class FormComerceComponent implements OnInit {
 
 		if(tit=='moteles'){
 			this.socket.emit("listar-negocio", { termino:'Motel'});
-			this.negocios.tipo= "5c48958b734dbc052c531a0a" as any;
+			this.negocios.tipo= "5cd333fd021ca1a0384b2e24" as any;
 		}
 		if(tit=='licorerias'){
 			this.socket.emit("listar-negocio", { termino:'Licoreria'});
