@@ -32,7 +32,7 @@ export class MotelPage {
   listauxProductos:Productos[]=[];
   loading:Loading;
   cont=0;
-
+  suscripctionSocket: Subscription;
   constructor(public loadingCtrl: LoadingController,
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -144,6 +144,18 @@ export class MotelPage {
       
          
     })
+
+    this.suscripctionSocket = this.respuestaNuevoProducto().subscribe(data=>{
+      console.log("nuevo producto",data);
+      this.listauxProductos.push(data[0]);
+    })
       
    }
+   respuestaNuevoProducto() {
+    return this.socketservicio.fromEvent<any>('nuevo-producto').map(data => data)
+  }
+  ngOnDestroy() {
+    console.log("unsuscribe");
+    this.suscripctionSocket.unsubscribe();
+  }
 }

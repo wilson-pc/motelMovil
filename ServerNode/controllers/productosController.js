@@ -147,14 +147,11 @@ module.exports = async function (io) {
               console.log(error);
 
             } else {
-             
               var negocio = await Negocio.findByIdAndUpdate(params.negocio, { $inc: { productos: 1 } });
-             
               io.emit('respuesta-producto', nuevoProducto);
-
-
+              const ObjectId = mongoose.Types.ObjectId;
               Producto.aggregate([
-                { $match: { "tipo.tiponegocio": params.tipo, "eliminado.estado": false, } },
+                { $match: { "_id": ObjectId(nuevoProducto._id), "eliminado.estado": false, } },
                 {
                   $project: {
                     _id: "$_id",
@@ -174,17 +171,11 @@ module.exports = async function (io) {
                 }
               ], function (error, lista) {
                 if (error) {
-
-                  // res.status(500).send({ mensaje: "Error al listar" })
-                  io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
-                } else {
-                  if (!lista) {
-                    //   res.status(404).send({ mensaje: "Error al listar" })
-                    io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
-                  } else {
-                    
-                    io.emit('respuesta-listado-producto', lista);
-                  }
+                      console.log(error);
+                   // io.emit('respuesta-listado-producto', lista);
+                  
+                }else{
+                  io.emit('nuevo-producto', lista);
                 }
               });
             }
