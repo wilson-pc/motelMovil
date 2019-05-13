@@ -6,6 +6,7 @@ import { Productos } from '../../models/Productos';
 import { SocketConfigService } from '../../services/socket-config.service';
 import { DescriptionMotelPage } from '../description-motel/description-motel';
 import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
+import { Subscription } from 'rxjs';
 
 
 /**
