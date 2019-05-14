@@ -43,8 +43,6 @@ export class MotelPage {
       this.presentLoadingDefault();
       this.obtenerdatosProductos();
   this.respuestaProductosNegocioMoteles();
-  
-    
   }
 
   ionViewDidLoad() {
@@ -78,9 +76,7 @@ export class MotelPage {
           console.log("se termino el tiempo");      
           this.cont=0;
 
-          },3000)
-          
-               
+          },3000)       
     }           
     
   }
@@ -142,8 +138,6 @@ export class MotelPage {
         else{
           console.log("ocurrio un problema");
         }
-      
-         
     })
 
     this.suscripctionSocket = this.respuestaNuevoProducto().subscribe(data=>{
