@@ -104,17 +104,24 @@ export class DescripcionProductoPage {
     console.log("Producto saliente: ", this.productID);
     this.product = this.navParams.get("producto");
     this.productoService.emit("sacar-producto", {_id:this.productID._id});
-    this.registrarVisita();
+    if(this.userService.UserSeCion.datos != undefined){
+      this.registrarVisita();
+    }
   }
 
   reserveProduct() {
-    let reserva = {
-      idcliente: this.userService.UserSeCion.datos._id,
-      cantidad: this.cantidadReserva,
-      idproducto: this.product._id
+    if(this.userService.UserSeCion.datos){
+      let reserva = {
+        idcliente: this.userService.UserSeCion.datos._id,
+        cantidad: this.cantidadReserva,
+        idproducto: this.product._id
+      }
+      
+      this.productService.emit("reserva-producto", reserva)
     }
-    
-    this.productService.emit("reserva-producto", reserva)
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   reportProduct() {
@@ -133,17 +140,27 @@ export class DescripcionProductoPage {
   }
 
   likeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.provedorFavoritos.emit('calificar-producto', datosCrypt);
+    if(this.userService.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.provedorFavoritos.emit('calificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   dislikeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.provedorFavoritos.emit('descalificar-producto', datosCrypt);
+    if(this.userService.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.provedorFavoritos.emit('descalificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   // Respuestas Socket

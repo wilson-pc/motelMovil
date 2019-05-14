@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ToastController, ViewController } from 'ionic-angular';
 import { DescripcionProductoPage } from '../descripcion-producto/descripcion-producto';
 import { DetallesTiendaPage } from '../detalles-tienda/detalles-tienda';
 import { SocketConfigService, conexionSocketComportamiento } from '../../services/socket-config.service';
@@ -26,6 +26,8 @@ export class TopsPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     private userServ:UsuarioProvider,
+    public toastCtrl: ToastController,
+    public viewCtrl: ViewController,
     public productService: SocketConfigService,
     public comportamientoService: conexionSocketComportamiento) {
     //Inicializacion del constructor
@@ -40,6 +42,19 @@ export class TopsPage {
 
   ionViewDidLoad() {
 
+  }
+
+  presentToast(reserveMessage: string) {
+    const toast = this.toastCtrl.create({
+      message: reserveMessage,
+      duration: 2000,
+      position: 'buttom'
+    });
+    toast.present();
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 
   encryptData(data) {
@@ -70,17 +85,27 @@ export class TopsPage {
   }
 
   likeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userServ.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.comportamientoService.emit('calificar-producto', datosCrypt);
+    if(this.userServ.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userServ.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.comportamientoService.emit('calificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   dislikeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userServ.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.comportamientoService.emit('descalificar-producto', datosCrypt);
+    if(this.userServ.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userServ.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.comportamientoService.emit('descalificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   // Respuestas Socket
