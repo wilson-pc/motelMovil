@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ViewController } from 'ionic-angular';
 import { SocketReservaService } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 
@@ -23,7 +23,9 @@ export class ListaReservasPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public reserveService: SocketReservaService,
-    public userService: UsuarioProvider) {
+    public userService: UsuarioProvider,
+    public viewCtrl: ViewController,
+    public toastCtrl: ToastController) {
       //Inicializacion del constructor
       
      this.GetEvent();
@@ -33,13 +35,29 @@ export class ListaReservasPage {
     this.getListReserve(this.estado);
   }
 
+  presentToast(reserveMessage: string) {
+    const toast = this.toastCtrl.create({
+      message: reserveMessage,
+      duration: 2000,
+      position: 'buttom'
+    });
+    toast.present();
+  }
 
+  dismiss() {
+    this.viewCtrl.dismiss();
+  }
 
   //Consumo Socket 
   getListReserve(estado:string) {
-    let data = {idcliente: this.userService.UserSeCion.datos._id,estado:estado}
-    console.log(data);
-    this.reserveService.emit("listar-reserva", data);
+    if(this.userService.UserSeCion.datos){
+      let data = {idcliente: this.userService.UserSeCion.datos._id,estado:estado}
+      console.log(data);
+      this.reserveService.emit("listar-reserva", data);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   GetEvent(){

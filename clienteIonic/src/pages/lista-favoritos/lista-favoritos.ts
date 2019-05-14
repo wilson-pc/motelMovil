@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ToastController, ViewController } from 'ionic-angular';
 import { Productos } from '../../models/Productos';
 import { conexionSocketComportamiento } from '../../services/socket-config.service';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
@@ -46,16 +46,18 @@ export class ListaFavoritosPage {
      private usuarioLogueado:UsuarioProvider,
      public provedorSocketFavoritos:conexionSocketComportamiento,
      public geolocalizacion: Geolocation,
-     public modalCtrl: ModalController) {
+     public modalCtrl: ModalController,
+     public viewCtrl: ViewController,
+    public toastCtrl: ToastController) {
       
-        this.obtenerListadeFavoritosLicores();  
-        this.respuestaListaFavoritosLicores();  
+        //this.obtenerListadeFavoritosLicores();  
+        //this.respuestaListaFavoritosLicores();  
 
         this.obtenerListadeFavoritosMoteles();
         this.respuestaListaFavoritosMoteles();
 
-        this.obtenerListadeFavoritosSexshop();
-        this.respuestaListaFavoritosSexshop();
+        //this.obtenerListadeFavoritosSexshop();
+        //this.respuestaListaFavoritosSexshop();
     
 
       
@@ -105,6 +107,15 @@ export class ListaFavoritosPage {
     console.log(item);
     const modal = this.modalCtrl.create(DescriptionLicoreriaPage,{producto:item});
       modal.present();
+  }
+
+  presentToast(reserveMessage: string) {
+    const toast = this.toastCtrl.create({
+      message: reserveMessage,
+      duration: 2000,
+      position: 'buttom'
+    });
+    toast.present();
   }
   
   getItems(ev: any) {
@@ -156,14 +167,16 @@ export class ListaFavoritosPage {
    }
 
    async obtenerListadeFavoritosMoteles(){
-    let usuario={idusuario: this.usuarioLogueado.UserSeCion.datos._id};
     //console.log("este es el usuario:",usuario);
-    if(usuario.idusuario != undefined || usuario.idusuario !=null)
+    if(this.usuarioLogueado.UserSeCion.datos)
     {
       console.log("entro if");
+      let usuario={idusuario: this.usuarioLogueado.UserSeCion.datos._id};
       await this.provedorSocketFavoritos.emit('listar-favorito-moteles',usuario);
        //await this.respuestaListaFavoritos();
-
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
     }
     
   }
