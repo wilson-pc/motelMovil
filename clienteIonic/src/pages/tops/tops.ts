@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ToastController, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ToastController, ViewController, Loading, LoadingController } from 'ionic-angular';
 import { DescripcionProductoPage } from '../descripcion-producto/descripcion-producto';
 import { DetallesTiendaPage } from '../detalles-tienda/detalles-tienda';
 import { SocketConfigService, conexionSocketComportamiento } from '../../services/socket-config.service';
@@ -20,8 +20,9 @@ export class TopsPage {
   listProductTop: Productos[] = [];
   suscripctionSocket: Subscription;
   calificarProducto: any = [];
-
+  loading:Loading;
   constructor(
+    public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public navParams: NavParams,
     public modalCtrl: ModalController,
@@ -32,6 +33,7 @@ export class TopsPage {
     public comportamientoService: conexionSocketComportamiento) {
     //Inicializacion del constructor
     this.connectionBackendSocket();
+    this.presentLoadingDefault();
     this.getProductTop();
   }
 
@@ -43,6 +45,17 @@ export class TopsPage {
   ionViewDidLoad() {
 
   }
+    //FUNCION PARA LOADING
+    presentLoadingDefault() {
+      console.log("contar loading");
+      this.loading = this.loadingCtrl.create({
+        content: 'Porfavor espere...',
+         
+      });
+      this.loading.present(); 
+     
+    }
+  
 
   presentToast(reserveMessage: string) {
     const toast = this.toastCtrl.create({
@@ -111,7 +124,13 @@ export class TopsPage {
   // Respuestas Socket
   connectionBackendSocket() {
     this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
-      this.listProductTop = data;
+      if(data.error){
+         alert("ocurrio un error inesperado");
+      }else{
+        this.listProductTop = data;
+        this.loading.dismiss();   
+      }
+  
     });
 
     this.suscripctionSocket = this.respuestaCalificarProducto().subscribe((data: any) => {

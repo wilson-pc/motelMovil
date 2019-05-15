@@ -32,7 +32,7 @@ export class MotelPage {
   listauxProductos:Productos[]=[];
   loading:Loading;
   cont=0;
-  suscripctionSocket: Subscription;
+  suscripctionSocket: Subscription[]=[];
   constructor(public loadingCtrl: LoadingController,
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -52,6 +52,7 @@ export class MotelPage {
 
   //FUNCION PARA LOADING
   presentLoadingDefault() {
+    console.log("contar loading");
     this.loading = this.loadingCtrl.create({
       content: 'Porfavor espere...',
        
@@ -164,11 +165,11 @@ export class MotelPage {
         }
     })
 
-    this.suscripctionSocket = this.respuestaNuevoProducto().subscribe(data=>{
+    this.suscripctionSocket.push(this.respuestaNuevoProducto().subscribe(data=>{
      
       this.listauxProductos.push(data[0]);
-    })
-      this.respuestaBuscarProducto().subscribe(data=>{
+    }))
+     this.suscripctionSocket.push(this.respuestaBuscarProducto().subscribe(data=>{
         console.log(data);
       if(!data.error){
         this.listauxProductos=data;
@@ -177,7 +178,7 @@ export class MotelPage {
         this.loading.dismiss(); 
          alert("no hay resultado de busquedad");
       }
-      })
+      }))
    }
    respuestaNuevoProducto() {
     return this.socketservicio.fromEvent<any>('nuevo-producto').map(data => data)
@@ -187,6 +188,9 @@ export class MotelPage {
   }
   ngOnDestroy() {
     console.log("unsuscribe");
-    this.suscripctionSocket.unsubscribe();
+  this.suscripctionSocket.forEach(element => {
+    element.unsubscribe();
+  });
+    
   }
 }
