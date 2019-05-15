@@ -26,7 +26,7 @@
 
 <ion-content>
 
-     <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+     <ion-searchbar (keyup)="BuscarProducto($event)"></ion-searchbar>
       
   <ion-list *ngIf="listauxProductos!=undefined">
       <ion-item  *ngFor="let item of listauxProductos">

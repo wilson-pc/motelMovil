@@ -568,21 +568,23 @@ module.exports = async function (io) {
     });
 
     socket.on('buscar-producto', async (data) => {
-
+          console.log(data);
       Producto.find({
         "tipo.tiponegocio": data.tipo, "eliminado.estado": false,
         $or: [{ nombre: new RegExp(data.termino, 'i') }, { descripcion: new RegExp(data.termino, 'i') },
         { 'tipo.tipo': new RegExp(data.termino, 'i') }]
       }, { "foto.normal": 0 }, function (error, lista) {
         if (error) {
+          console.log(error+"578");
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-producto-search', { error: "ocurrio un error al listar productos" });
         } else {
-          if (!lista) {
+          if (lista.length==0) {
+            console.log("sin resultado");
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-search', { error: "no hay productos en la base de datos" });
           } else {
-           
+             console.log(lista[0].nombre+"587");
             io.to(socket.id).emit('respuesta-listado-producto-search', lista);
           }
         }
@@ -623,7 +625,7 @@ module.exports = async function (io) {
           if (!lista) {
             io.to(socket.id).emit('respuesta-top-productos', { error: "no hay productos en la base de datos" });
           } else {
-            console.log(data);
+          
             io.to(socket.id).emit('respuesta-top-productos', lista);
           }
         }

@@ -1,10 +1,8 @@
-import { Component,ViewChild } from '@angular/core';
+import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams, InfiniteScroll, LoadingController, ModalController, Loading } from 'ionic-angular';
 import { Habitacion } from '../../models/Habitacion';
-import { ProviderProductosProvider } from '../../providers/provider-productos/provider-productos';
 import { Productos } from '../../models/Productos';
 import { SocketConfigService } from '../../services/socket-config.service';
-import { DescriptionMotelPage } from '../description-motel/description-motel';
 import { DescriptionLicoreriaPage } from '../description-licoreria/description-licoreria';
 import { Subscription } from 'rxjs';
 
@@ -28,6 +26,7 @@ export class MotelPage {
   searchQuery: string = '';
   items: string[];
   habitaciones:Habitacion;
+  buscador:boolean=false;
   producto:Productos;
   listProductos:Productos[]=[];
   listauxProductos:Productos[]=[];
@@ -121,6 +120,31 @@ export class MotelPage {
       modal.present();
   }
 
+  BuscarProducto(event){
+
+    let termino=event.target.value;
+    
+      if(event.keyCode=== 13){
+        if(termino.length>2){
+          let datos={tipo:"Motel",termino:termino};
+          this.socketservicio.emit('buscar-producto', datos); 
+          this.buscador=true;
+          this.loading = this.loadingCtrl.create({
+            content: 'Please wait...'
+          });
+          this.loading.present();
+        }
+          else{
+            this.listauxProductos=this.listProductos;
+           console.log("enter llega sbbweibrfbui");
+          }
+      }
+      if(termino.length<3){
+        this.listauxProductos=this.listProductos;
+      }
+    
+     
+  }
 
   respuestaProductosNegocioMoteles() {
         
@@ -141,13 +165,25 @@ export class MotelPage {
     })
 
     this.suscripctionSocket = this.respuestaNuevoProducto().subscribe(data=>{
-      console.log("nuevo producto",data);
+     
       this.listauxProductos.push(data[0]);
     })
-      
+      this.respuestaBuscarProducto().subscribe(data=>{
+        console.log(data);
+      if(!data.error){
+        this.listauxProductos=data;
+        this.loading.dismiss();
+      }else{
+        this.loading.dismiss(); 
+         alert("no hay resultado de busquedad");
+      }
+      })
    }
    respuestaNuevoProducto() {
     return this.socketservicio.fromEvent<any>('nuevo-producto').map(data => data)
+  }
+  respuestaBuscarProducto() {
+    return this.socketservicio.fromEvent<any>('respuesta-listado-producto-search').map(data => data)
   }
   ngOnDestroy() {
     console.log("unsuscribe");
