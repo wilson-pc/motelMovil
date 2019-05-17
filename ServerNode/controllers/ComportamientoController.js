@@ -1,5 +1,4 @@
 "use strict"
-var nodemailer = require('nodemailer');
 var Producto = require('../schemas/producto');
 var Negocio = require('../schemas/negocio');
 var Crypto = require("../variables/desincryptar");
@@ -7,11 +6,115 @@ var Calificacion = require("../schemas/calificacion");
 var mongoose = require("mongoose");
 var Favorito = require("../schemas/favoritos");
 var Reservas = require("../schemas/reservasproductos");
+var Deseos = require("../schemas/deseos");
 
 
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
+
+    socket.on('agregar-deseos', async (data) => {
+      console.log("agregar");
+      try {
+        var datos = data;
+
+        if (!datos.error) {
+
+          var deseos = new Deseos();
+          deseos.producto = datos.idproducto;
+          deseos.usuario = datos.idsuario;
+          deseos.tipo = datos.tipoproducto;
+          //favorito.fecha=new Date().toUTCString();
+          console.log(deseos);
+
+          try {
+            var cantidad = await Deseos.countDocuments({ producto: datos.idproducto, usuario: datos.idsuario });
+           console.log(cantidad);
+            //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+            if (cantidad == 0) {
+              deseos.save(async(error, favoritos) => {
+                if (error) {
+                  console.log(error);
+                  io.to(socket.id).emit('respuesta-agregar-deseos', { error: "error a agregar a deseos" });
+                  //    res.status(500).send({ mensaje: "error al guradar" })
+                } else {
+                  console.log("exito",favoritos);
+
+                  var dd=await Deseos.find();
+                   console.log(dd);
+                  // console.log(actualizado);
+                  io.to(socket.id).emit('respuesta-agregar-deseos', { datos: favoritos });
+                  //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+
+                }
+              })
+            } else {
+              console.log("ya existe");
+              io.to(socket.id).emit('respuesta-agregar-deseos', { error: "el producto ya esta en los deseos" });
+            }
+          } catch (error) {
+            console.log("error", error);
+          }
+        }
+        return data;
+      }
+
+      catch (e) {
+        console.log(e);
+      }
+    });
+
+    socket.on('quitar-deseos', async (data) => {
+      try {
+        var datos = await Crypto.Desincryptar(data);
+        if (!datos.error) {
+          try {
+            Deseos.remove({ producto: data.idproducto, usuario: data.idsuario }, (error, ndeseos) => {
+              if (error) {
+                io.to(socket.id).emit('respuesta-quitar-deseos', { error: "error al borrar" });
+                //    res.status(500).send({ mensaje: "error al guradar" })
+              } else {
+               
+                io.to(socket.id).emit('respuesta-quitar-deseos', { datos: ndeseos });
+                //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+
+              }
+            })
+
+          } catch (error) {
+            console.log("error");
+          }
+        }
+        return data;
+      }
+
+      catch (e) {
+        console.log(e);
+      }
+    });
+
+    socket.on('listar-deseos-moteles', async (data) => {
+      console.log(data);
+      try {
+        //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
+        Deseos.find({ usuario: data.idusuario, tipo: "Motel" }).populate('producto',{fotos:0,"foto.normal":0}).exec((error, favoritos) => {
+          if (error) {
+            io.to(socket.id).emit('respuesta-listar-deseos-moteles', { error: "error al listar" });
+            //    res.status(500).send({ mensaje: "error al guradar" })
+          } else {
+            //console.log(favoritos);
+            io.to(socket.id).emit('respuesta-listar-deseos-moteles', { datos: favoritos });
+            //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
+
+          }
+        })
+      } catch (error) {
+        console.log("error");
+      }
+
+
+    });
+
     socket.on('agregar-favorito', async (data) => {
       console.log("agregar");
       try {
@@ -90,12 +193,13 @@ module.exports = async function (io) {
     socket.on('listar-favoritos', async (data) => {
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
-        Favorito.find({ usuario: data.idusuario }, (error, favoritos) => {
+        Favorito.find({ usuario: data.idusuario }).populate('producto',{fotos:0,"foto.normal":0}).exec((error, favoritos) => {
+         console.log(favoritos);
           if (error) {
             io.to(socket.id).emit('respuesta-listar-favoritos', { error: "error al listar" });
             //    res.status(500).send({ mensaje: "error al guradar" })
           } else {
-            //console.log(favoritos);
+            console.log(favoritos);
             io.to(socket.id).emit('respuesta-listar-favoritos', { datos: favoritos });
             //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
@@ -138,7 +242,7 @@ module.exports = async function (io) {
       console.log(data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
-        Favorito.find({ usuario: data.idusuario, tipo: "Motel" }, (error, favoritos) => {
+        Favorito.find({ usuario: data.idusuario, tipo: "Motel" }).populate('producto',{fotos:0,"foto.normal":0}).exec((error, favoritos) => {
           if (error) {
             io.to(socket.id).emit('respuesta-listar-favorito-moteles', { error: "error al listar" });
             //    res.status(500).send({ mensaje: "error al guradar" })
@@ -182,25 +286,38 @@ module.exports = async function (io) {
 
     });
     socket.on('calificar-producto', async (data) => {
+      
       try {
         var datos = await Crypto.Desincryptar(data);
         if (!datos.error) {
+          console.log(datos);
           var cliente = datos.idcliente;
           var producto = datos.idproducto;
           var valoracion = { usuario: cliente, fecha: new Date().toUTCString() };
 
           try {
+            var countReservas = await Reservas.count({cliente:cliente,producto:producto });
+            console.log(countReservas);
+            if( countReservas >0){
             await Producto.update({ _id: producto }, { $pull: { "desvaloracion": { usuario: cliente } } });
+            var countlikes = await Producto.count({_id: producto,"valoracion.usuario": cliente });
+           console.log(countlikes);
+          if(countlikes<1){
             Producto.findOneAndUpdate({ _id: producto }, { $push: { valoracion: valoracion } }, { new: true }, (error, actualizado) => {
               if (error) {
                 io.to(socket.id).emit('respuesta-calificar-producto', { error: "error al calificar" });
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-                io.to(socket.id).emit('respuesta-calificar-producto', { datos: actualizado });
+                io.to(socket.id).emit('respuesta-calificar-producto', { datos: producto });
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
               }
-            })
+            })}else{
+              io.to(socket.id).emit('respuesta-calificar-producto', { error: "ya calificaste este producto" });
+            }
+          }else{
+            io.to(socket.id).emit('respuesta-calificar-producto', { error: "primero deves reservar el producto " });
+          }
           } catch (error) {
             console.log("error");
           }
@@ -375,14 +492,13 @@ module.exports = async function (io) {
     });
 
     socket.on('denuncia-producto', async (datos) => {
-      console.log(datos  );
       var countReservas = await Reservas.count({cliente:datos.idusuario,producto:datos.idproducto });
       console.log(countReservas);
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
       //   var datos=JSON.parse(data);
-      if(count>0){
+      if( countReservas >0){
      var usuario = datos.idusuario;
       var fecha = new Date().toUTCString();
 
@@ -419,6 +535,7 @@ module.exports = async function (io) {
 
 
     socket.on('calificar-negocio', async (data) => {
+      console.log(data);
       try {
         var datos = await Crypto.Desincryptar(data);
         if (!datos.error) {
@@ -451,6 +568,7 @@ module.exports = async function (io) {
     });
 
     socket.on('descalificar-producto', async (data) => {
+      console.log(data +"ei3jfiok45gpok");
       try {
         var datos = await Crypto.Desincryptar(data);
         if (!datos.error) {
@@ -458,17 +576,26 @@ module.exports = async function (io) {
           var cliente = datos.idcliente;
           var producto = datos.idproducto;
           var valoracion = { usuario: cliente, fecha: datos.fecha }
+          var countReservas = await Reservas.count({cliente:cliente,producto:producto });
+          if( countReservas >0){
           await Producto.update({ _id: producto }, { $pull: { "valoracion": { usuario: cliente } } });
-          Producto.findOneAndUpdate({ _id: producto }, { $push: { desvaloracion: valoracion } }, { new: true }, (error, actualizado) => {
+          var countlikes = await Producto.count({_id: producto,"valoracion.usuario": cliente });
+          console.log(countlikes);
+         if(countlikes<1){
+          Producto.update({ _id: producto }, { $push: { desvaloracion: valoracion } }, (error, actualizado) => {
             if (error) {
               io.to(socket.id).emit('respuesta-descalificar-producto', { error: "error al guradar nuevos datos" });
               //    res.status(500).send({ mensaje: "error al guradar" })
             } else {
-              io.to(socket.id).emit('respuesta-descalificar-producto', { datos: actualizado });
+              io.to(socket.id).emit('respuesta-descalificar-producto', { datos: producto });
               //  io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
             }
-          })
+          })}else{
+            io.to(socket.id).emit('respuesta-descalificar-producto', { error: "ya calificaste este producto" });
+          }}else{
+            io.to(socket.id).emit('respuesta-calificar-producto', { error: "primero deves reservar el producto " });
+          }
 
 
         }

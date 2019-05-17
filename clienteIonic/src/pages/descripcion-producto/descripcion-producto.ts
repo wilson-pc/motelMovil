@@ -109,6 +109,13 @@ export class DescripcionProductoPage {
     }
   }
 
+  masTarde(id){
+    if(this.userService.UserSeCion.datos){
+    this.provedorFavoritos.emit("agregar-deseos", {idproducto:id,tipoproducto:"Motel",idsuario:this.userService.UserSeCion.datos._id})
+    }else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
+  }
   reserveProduct() {
     if(this.userService.UserSeCion.datos){
       let reserva = {

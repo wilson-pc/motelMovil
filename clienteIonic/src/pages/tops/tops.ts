@@ -17,8 +17,8 @@ import { UsuarioProvider } from '../../providers/usuario/usuario';
 export class TopsPage {
 
   Negocios = "Moteles";
-  listProductTop: Productos[] = [];
-  suscripctionSocket: Subscription;
+  listProductTop: any[] = [];
+  suscripctionSocket: Subscription[]=[];
   calificarProducto: any = [];
   loading:Loading;
   constructor(
@@ -123,7 +123,8 @@ export class TopsPage {
 
   // Respuestas Socket
   connectionBackendSocket() {
-    this.suscripctionSocket = this.respuestaProductTop().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaProductTop().subscribe((data: any) => {
+      console.log(data);
       if(data.error){
          alert("ocurrio un error inesperado");
       }else{
@@ -131,15 +132,29 @@ export class TopsPage {
         this.loading.dismiss();   
       }
   
-    });
+    }));
 
-    this.suscripctionSocket = this.respuestaCalificarProducto().subscribe((data: any) => {
-      console.log("Calificado ");
-    });
+    this.suscripctionSocket.push(this.respuestaCalificarProducto().subscribe((data: any) => {
+     
+      if(!data.error){
+           var producto= this.listProductTop.filter(producto=>producto._id==data.datos)[0]
+       
+           producto.likes = producto.likes+1;
+      }else{
+        this.presentToast(data.error);
+      }
+    }));
 
-    this.suscripctionSocket = this.respuestaDescalificarProducto().subscribe((data: any) => {
-      console.log("Descalificado ");
-    });
+    this.suscripctionSocket.push(this.respuestaDescalificarProducto().subscribe((data: any) => {
+     
+      if(!data.error){
+           var producto= this.listProductTop.filter(producto=>producto._id==data.datos)[0]
+          
+           producto.dislike = producto.dislike+1;
+      }else{
+         this.presentToast(data.error);
+      }
+    }));
   }
 
   respuestaProductTop() {
@@ -155,6 +170,9 @@ export class TopsPage {
   }
 
   ngOnDestroy() {
-    this.suscripctionSocket.unsubscribe();
+    this.suscripctionSocket.forEach(element => {
+      element.unsubscribe();
+    });
+  
   }
 }
