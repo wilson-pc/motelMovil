@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-toolbar>
-      <ion-title>Registrar</ion-title>
+      <ion-title>Registrar Habitación</ion-title>
       <ion-buttons start>
         <button ion-button (click)="dismissModal()">
           <span ion-text color="primary" showWhen="ios, android">Cancelar</span>
@@ -32,7 +32,7 @@
       </ion-row>
 
       <ion-item *ngIf="commerceOnly.tipo.nombre=='Motel'" (click)="imageChooser()" >
-        <ion-label floating>fotos:</ion-label>
+        <ion-label floating>Fotos:</ion-label>
         <ion-input [(ngModel)]="fotosestado" formControlName="photos" name="fotos" disabled="true" type="text"></ion-input>
       </ion-item>
 
@@ -50,7 +50,7 @@
       <ion-row>
         <ion-col col-10>
           <ion-item>
-            <ion-label floating>Tipo producto: </ion-label>
+            <ion-label floating>Tipo de Habitación: </ion-label>
             <ion-select [(ngModel)]="product.tipo" formControlName="productTipo" okText="Aceptar" cancelText="Cancelar">
               <ion-option *ngFor="let type of listTypeProduct" value="{{type._id}}">{{type.tipo}}</ion-option>
             </ion-select>
@@ -68,7 +68,7 @@
       <!--alert-->
       <ion-item no-lines
         *ngIf="!productForm.controls.productTipo.valid  && (productForm.controls.productTipo.dirty || statusInput)">
-        <p>Campo tipo producto inválido: seleccione un tipo.</p>
+        <p>Campo tipo de Habitación inválido: Seleccione un tipo.</p>
       </ion-item>
 
       <ion-item>
@@ -78,12 +78,12 @@
       <!--alert-->
       <ion-item no-lines
         *ngIf="!productForm.controls.productPrecio.valid  && (productForm.controls.productPrecio.dirty || statusInput)">
-        <p>Campo precio inválido; máximo 4 cifras.</p>
+        <p>Campo de precio inválido; máximo 4 cifras.</p>
       </ion-item>
       <!--alert-->
 
       <ion-item>
-        <ion-label floating>Descripcion:</ion-label>
+        <ion-label floating>Descripción:</ion-label>
         <ion-input [(ngModel)]="product.descripcion" formControlName="productDescripcion" name="descripcion"
           type="text"></ion-input>
       </ion-item>

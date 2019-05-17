@@ -106,7 +106,7 @@ fotos:string[]=[];
             resizeBase64(base64Image.target._result, 700, 500).then((result2) => {
               this.fotos.push(result2);
            
-              this.fotosestado=this.fotos.length +" imagenes procesados";
+              this.fotosestado=this.fotos.length +" imágen(es) procesada(s)";
             });
        /*     try {
               this.fotos.push(base64Image.target._result);
@@ -132,7 +132,7 @@ fotos:string[]=[];
   addTypeProduct() {
     const prompt = this.alertCtrl.create({
       title: 'Crear Tipo',
-      message: "Ingrese el nombre de un tipo de producto.",
+      message: "Ingrese el nombre de un tipo de habitación.",
       inputs: [
         {
           name: 'tipo',
@@ -141,7 +141,7 @@ fotos:string[]=[];
       ],
       buttons: [
         {
-          text: 'cancelar',
+          text: 'Cancelar',
           handler: data => {
           }
         },
@@ -149,6 +149,7 @@ fotos:string[]=[];
           text: 'Guardar',
           handler: data => {
             let dato = data.tipo;
+            console.log(dato);
             this.addTypeProducts(dato);
           }
         }

@@ -152,6 +152,7 @@ loginUser:any={usuario:"",password:"",tipo:"Cliente"};
   }*/
   // login and go to home page
   login() {
+    console.log (this.loginUser+"yuio");
     if(this.loginUser.usuario!="" && this.loginUser.password!=""){
       var datos=this.encryptData(this.loginUser);
       this.socketLogin.emit("login-usuario-clientes", datos);
