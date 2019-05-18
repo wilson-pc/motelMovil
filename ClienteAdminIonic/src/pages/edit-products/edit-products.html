@@ -2,7 +2,7 @@
   
   <ion-navbar>
     <ion-toolbar>
-      <ion-title>Editar Producto</ion-title>
+      <ion-title>Editar Habitación</ion-title>
       <ion-buttons start>
         <button ion-button (click)="dismissModal()">
           <span ion-text color="primary" showWhen="ios, android">Cancelar</span>
@@ -42,7 +42,7 @@
       <ion-row>
         <ion-col col-10>
           <ion-item>
-            <ion-label floating>Tipo producto: </ion-label>
+            <ion-label floating>Tipo Habitación: </ion-label>
             <ion-select [(ngModel)]="producto.tipo.tipo" formControlName="productTipo" okText="Aceptar" cancelText="Cancelar">
               <ion-option *ngFor="let type of listTypeProduct" value="{{type.tipo}}">{{type.tipo}}</ion-option>
             </ion-select>
@@ -59,7 +59,7 @@
       </ion-row>
       <!--alert-->
       <ion-item no-lines *ngIf="!productForm.controls.productTipo.valid  && (productForm.controls.productTipo.dirty || statusInput)">
-        <p>Campo tipo producto inválido: seleccione un tipo.</p>
+        <p>Campo tipo de habitación inválido: Seleccione un tipo.</p>
       </ion-item>
 
       <ion-item>
@@ -68,15 +68,15 @@
       </ion-item>
       <!--alert-->
       <ion-item no-lines *ngIf="!productForm.controls.productPrecio.valid  && (productForm.controls.productPrecio.dirty || statusInput)">
-        <p>Campo precio inválido; máximo 4 cifras.</p>
+        <p>Campo de precio inválido; máximo 4 cifras.</p>
       </ion-item>
 
       <ion-item>
         <ion-label floating>Estado:</ion-label>
         <ion-select [(ngModel)]="producto.estado" formControlName="productEstado" name="estado">
-          <ion-option value="casi agotado">casi agotado</ion-option>
+          <ion-option value="casi agotado">reservado</ion-option>
           <ion-option value="disponible">disponible</ion-option>
-          <ion-option value="agotado">agotado</ion-option>
+          <ion-option value="agotado">ocupado</ion-option>
         </ion-select>
       </ion-item>
       <!--alert-->
