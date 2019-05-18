@@ -47,7 +47,7 @@
 
                 
                 <ion-thumbnail item-start>
-                  <img [src]="items.foto.normal">
+                  <img [src]="items.foto.miniatura">
                 </ion-thumbnail>
                 
                 <div class="contentList">
@@ -57,16 +57,16 @@
                   </div>
                  
                   <div class="likes">
-                    <div class="like">
+                  <!-- <div class="like">
                         <ion-icon name="thumbs-up"></ion-icon>
                         <div>1 k</div>
                     </div>
                     <div class="dislike">
                         <ion-icon name="thumbs-down"></ion-icon>
                         <div>100</div>
-                    </div>
+                    </div>--> 
                     <div class="vermas">
-                        <button ion-button clear item-end>Ver mas</button>
+                        <button ion-button clear item-end (click)="presentModal(items)">Ver mas</button>
                     </div>
                   </div>
                  </div>  <!--fin div content            -->

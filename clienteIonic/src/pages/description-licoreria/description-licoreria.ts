@@ -61,6 +61,9 @@ export class DescriptionLicoreriaPage implements OnDestroy {
     this.productoRecibido = this.navParams.get("producto")
     console.log("producto",this.productoRecibido);
     this.sacarDatos();
+    if(this.userService.UserSeCion.datos){
+      this.registrarVisita();
+    }
   }
 
   productDescription(product: Productos) {
@@ -122,20 +125,25 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   //Consumo Socket 
   reserveProduct() {
-    let reserva = {
-      idcliente: this.userService.UserSeCion.datos._id,
-      cantidad: this.cantidadReserva,
-      idproducto: this.productoRecibido._id
-    }
+    if(this.userService.UserSeCion.datos){
+      let reserva = {
+        idcliente: this.userService.UserSeCion.datos._id,
+        cantidad: this.cantidadReserva,
+        idproducto: this.productoRecibido._id
+      }
 
-    this.reservaProduct.emit("reserva-producto", reserva)
+      this.reservaProduct.emit("reserva-producto", reserva)
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   reportProduct() {
     if(this.userService.UserSeCion.datos){
       let denuncia = {
         idusuario: this.userService.UserSeCion.datos._id,
-     //   idproducto: this.product._id,
+         idproducto: this.productoRecibido._id,
         detalle: this.motivo
       }
       this.provedorFavoritos.emit('denuncia-producto', denuncia);
@@ -147,17 +155,27 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   }
 
   likeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.provedorFavoritos.emit('calificar-producto', datosCrypt);
+    if(this.userService.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.provedorFavoritos.emit('calificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   dislikeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.provedorFavoritos.emit('descalificar-producto', datosCrypt);
+    if(this.userService.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.provedorFavoritos.emit('descalificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   // Respuestas Socket

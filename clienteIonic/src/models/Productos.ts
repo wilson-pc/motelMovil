@@ -8,6 +8,7 @@ export class Productos{
     public precio:number;   
     public disponibilidad:string;
     public valoracion:number;
+    public desvaloracion:Number;
     public reportes:number;
     public cantidad:number;
     public tipo:Tipo;

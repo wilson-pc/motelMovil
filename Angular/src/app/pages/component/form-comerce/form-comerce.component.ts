@@ -98,11 +98,11 @@ export class FormComerceComponent implements OnInit {
 		}
 		if(tit=='licorerias'){
 			this.socket.emit("listar-negocio", { termino:'Licoreria'});
-			this.negocios.tipo="5c4884160a1ca42b68044bc6" as any;
+			this.negocios.tipo="5cd33443021ca1a0384b4683" as any;
 		}
 		if(tit=='sexshops'){
 			this.socket.emit("listar-negocio", { termino:'SexShop'});
-			this.negocios.tipo="5c4895b7577cc931d01645ff" as any;
+			this.negocios.tipo="5cd3342b021ca1a0384b4511" as any;
 		}			
 	}
 	

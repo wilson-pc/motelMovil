@@ -34,7 +34,8 @@ export class DescripcionProductoPage {
     public productService: SocketReservaService,
     public productoService: SocketConfigService,
     private provedorFavoritos: conexionSocketComportamiento,
-    public userService: UsuarioProvider) {
+    public userService: UsuarioProvider,
+    private usuarioLogin: UsuarioProvider) {
     //Inicializacion del constructor
     this.getProduct();
     this.connectionBackendSocket();
@@ -101,24 +102,40 @@ export class DescripcionProductoPage {
    getProduct() {
     this.productID = this.navParams.get("producto");
     console.log("Producto saliente: ", this.productID);
-    this.productoService.emit("sacar-producto", this.productID);
+    this.product = this.navParams.get("producto");
+    this.productoService.emit("sacar-producto", {_id:this.productID._id});
+    if(this.userService.UserSeCion.datos != undefined){
+      this.registrarVisita();
+    }
   }
 
-  reserveProduct() {
-    let reserva = {
-      idcliente: this.userService.UserSeCion.datos._id,
-      cantidad: this.cantidadReserva,
-      idproducto: this.product._id
+  masTarde(id){
+    if(this.userService.UserSeCion.datos){
+    this.provedorFavoritos.emit("agregar-deseos", {idproducto:id,tipoproducto:"Motel",idsuario:this.userService.UserSeCion.datos._id})
+    }else{
+      this.presentToast("Debes iniciar sesion primero!");
     }
-    
-    this.productService.emit("reserva-producto", reserva)
+  }
+  reserveProduct() {
+    if(this.userService.UserSeCion.datos){
+      let reserva = {
+        idcliente: this.userService.UserSeCion.datos._id,
+        cantidad: this.cantidadReserva,
+        idproducto: this.product._id
+      }
+      
+      this.productService.emit("reserva-producto", reserva)
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   reportProduct() {
     if(this.userService.UserSeCion.datos){
       let denuncia = {
         idusuario: this.userService.UserSeCion.datos._id,
-        idproducto: this.product._id,
+        idproducto: this.productID._id,
         detalle: this.motivo
       }
       this.provedorFavoritos.emit('denuncia-producto', denuncia);
@@ -130,17 +147,27 @@ export class DescripcionProductoPage {
   }
 
   likeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.provedorFavoritos.emit('calificar-producto', datosCrypt);
+    if(this.userService.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.provedorFavoritos.emit('calificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   dislikeProduct(idProducto){
-    console.log("Producto: ", idProducto);
-    var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
-    var datosCrypt = this.encryptData(datos);
-    this.provedorFavoritos.emit('descalificar-producto', datosCrypt);
+    if(this.userService.UserSeCion.datos){
+      console.log("Producto: ", idProducto);
+      var datos = { idcliente: this.userService.UserSeCion.datos._id, idproducto: idProducto };
+      var datosCrypt = this.encryptData(datos);
+      this.provedorFavoritos.emit('descalificar-producto', datosCrypt);
+    }
+    else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   // Respuestas Socket
@@ -214,5 +241,9 @@ export class DescripcionProductoPage {
   ngOnDestroy() {
     this.suscripctionSocket.unsubscribe();
   }
-
+  registrarVisita(){
+    let data = { idcliente: this.usuarioLogin.UserSeCion.datos._id , idnegocio: this.productID.negocio };
+    console.log("Cliente",data);
+    this.provedorFavoritos.emit('visitar-negocio', data);
+  }
 }

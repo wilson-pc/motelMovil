@@ -147,14 +147,11 @@ module.exports = async function (io) {
               console.log(error);
 
             } else {
-             
               var negocio = await Negocio.findByIdAndUpdate(params.negocio, { $inc: { productos: 1 } });
-             
               io.emit('respuesta-producto', nuevoProducto);
-
-
+              const ObjectId = mongoose.Types.ObjectId;
               Producto.aggregate([
-                { $match: { "tipo.tiponegocio": params.tipo, "eliminado.estado": false, } },
+                { $match: { "_id": ObjectId(nuevoProducto._id), "eliminado.estado": false, } },
                 {
                   $project: {
                     _id: "$_id",
@@ -174,17 +171,11 @@ module.exports = async function (io) {
                 }
               ], function (error, lista) {
                 if (error) {
-
-                  // res.status(500).send({ mensaje: "Error al listar" })
-                  io.to(socket.id).emit('respuesta-listado-producto', { error: "ocurrio un error al listar productos" });
-                } else {
-                  if (!lista) {
-                    //   res.status(404).send({ mensaje: "Error al listar" })
-                    io.to(socket.id).emit('respuesta-listado-producto', { error: "no hay productos en la base de datos" });
-                  } else {
-                    
-                    io.emit('respuesta-listado-producto', lista);
-                  }
+                      console.log(error);
+                   // io.emit('respuesta-listado-producto', lista);
+                  
+                }else{
+                  io.emit('nuevo-producto', lista);
                 }
               });
             }
@@ -326,7 +317,7 @@ module.exports = async function (io) {
             //   res.status(404).send({ mensaje: "Error al listar" })
             console.log("error vacio");
           } else {
-           console.log("Encontrado!",datos)
+
             io.to(socket.id).emit('respuesta-sacar-producto', dato);
 
           }
@@ -577,21 +568,23 @@ module.exports = async function (io) {
     });
 
     socket.on('buscar-producto', async (data) => {
-
+          console.log(data);
       Producto.find({
         "tipo.tiponegocio": data.tipo, "eliminado.estado": false,
         $or: [{ nombre: new RegExp(data.termino, 'i') }, { descripcion: new RegExp(data.termino, 'i') },
         { 'tipo.tipo': new RegExp(data.termino, 'i') }]
       }, { "foto.normal": 0 }, function (error, lista) {
         if (error) {
+          console.log(error+"578");
           // res.status(500).send({ mensaje: "Error al listar" })
           io.to(socket.id).emit('respuesta-listado-producto-search', { error: "ocurrio un error al listar productos" });
         } else {
-          if (!lista) {
+          if (lista.length==0) {
+            console.log("sin resultado");
             //   res.status(404).send({ mensaje: "Error al listar" })
             io.to(socket.id).emit('respuesta-listado-producto-search', { error: "no hay productos en la base de datos" });
           } else {
-           
+             console.log(lista[0].nombre+"587");
             io.to(socket.id).emit('respuesta-listado-producto-search', lista);
           }
         }
@@ -601,7 +594,7 @@ module.exports = async function (io) {
     });
 
     socket.on('top-productos', async (data) => {
-
+        console.log(data);
       Producto.aggregate([
         { $match: { "tipo.tiponegocio": data.tipo, "eliminado.estado": false, } },
         {
@@ -611,7 +604,6 @@ module.exports = async function (io) {
             "dislike": { $size: "$desvaloracion.usuario" },
             "eliminado": "$eliminado",
             "foto": { miniatura: "$foto.miniatura" },
-            "fotos": ["$fotos"],
             "creacion": "$creacion",
             "modificacion": "$modificacion",
             "nombre": "$nombre",
@@ -633,7 +625,7 @@ module.exports = async function (io) {
           if (!lista) {
             io.to(socket.id).emit('respuesta-top-productos', { error: "no hay productos en la base de datos" });
           } else {
-            
+          
             io.to(socket.id).emit('respuesta-top-productos', lista);
           }
         }
