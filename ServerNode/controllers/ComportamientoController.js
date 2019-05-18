@@ -60,17 +60,15 @@ module.exports = async function (io) {
     });
 
     socket.on('quitar-deseos', async (data) => {
-      try {
-        var datos = await Crypto.Desincryptar(data);
-        if (!datos.error) {
+    
           try {
+          
             Deseos.remove({ producto: data.idproducto, usuario: data.idsuario }, (error, ndeseos) => {
               if (error) {
                 io.to(socket.id).emit('respuesta-quitar-deseos', { error: "error al borrar" });
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-               
-                io.to(socket.id).emit('respuesta-quitar-deseos', { datos: ndeseos });
+                io.to(socket.id).emit('respuesta-quitar-deseos', { datos: data.idproducto});
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
               }
@@ -80,13 +78,7 @@ module.exports = async function (io) {
             console.log("error");
           }
         }
-        return data;
-      }
-
-      catch (e) {
-        console.log(e);
-      }
-    });
+     );
 
     socket.on('listar-deseos-moteles', async (data) => {
       console.log(data);

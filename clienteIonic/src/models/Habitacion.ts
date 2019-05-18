@@ -2,7 +2,7 @@
 import { Tipo } from "./TipoProducto";
 
 export class Habitacion {
-    public id:string;
+    public _id:string;
     public nombre: string;
     public descripcion : string;
     public tipo:Tipo;

@@ -37,7 +37,11 @@ export class ListaDeseosPage {
     console.log('ionViewDidLoad ListaFavoritosLicoreriasPage');
   }
 
-
+  quitar(item){
+    console.log(item);
+    let usuario = { idsuario: this.usuarioLogueado.UserSeCion.datos._id,idproducto:item._id };
+    this.provedorSocketFavoritos.emit('quitar-deseos', usuario);
+  }
 
   presentModal(item) {
     console.log(item);
@@ -80,9 +84,26 @@ export class ListaDeseosPage {
         this.presentToast(data.error)
       }
     })
+    this.respuestaQuitar().subscribe(data=>{
+      if (!data.error) {
+      for (let index = 0; index < this.Deseos.length; index++) {
+        const element = this.Deseos[index];
+        if(element._id==data.datos){
+          this.Deseos.splice(index,1);
+        }
+        
+      }
+      } else {
+        this.presentToast(data.error)
+      }
+    })
   }
   respuestaListarDeseos() {
     return this.provedorSocketFavoritos.fromEvent<any>('respuesta-listar-deseos-moteles').map(data => data)
+
+  }
+  respuestaQuitar() {
+    return this.provedorSocketFavoritos.fromEvent<any>('respuesta-quitar-deseos').map(data => data)
 
   }
 
