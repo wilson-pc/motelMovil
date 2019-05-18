@@ -55,7 +55,9 @@
                       <h2>{{items.nombre}}</h2>
                       <p>{{items.descripcion}}</p>
                   </div>
-                 
+                  <div class="vermas">
+                    <button ion-button clear item-end (click)="quitar(items)">Quitar</button>
+                </div>
                   <div class="likes">
                   <!-- <div class="like">
                         <ion-icon name="thumbs-up"></ion-icon>

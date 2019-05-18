@@ -148,9 +148,7 @@ module.exports = async function (io) {
     });
 
     socket.on('quitar-favorito', async (data) => {
-      try {
-        var datos = await Crypto.Desincryptar(data);
-        if (!datos.error) {
+     
           try {
             Favorito.remove({ producto: data.idproducto, usuario: data.idsuario }, (error, nofavorito) => {
               if (error) {
@@ -158,23 +156,17 @@ module.exports = async function (io) {
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
                
-                io.to(socket.id).emit('respuesta-quitar-favorito', { datos: nofavorito });
+                io.to(socket.id).emit('respuesta-quitar-favorito', { datos: data.idproducto });
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
               }
             })
 
           } catch (error) {
-            console.log("error");
+            io.to(socket.id).emit('respuesta-quitar-favorito', { error: "error al borrar" });
           }
         }
-        return data;
-      }
-
-      catch (e) {
-        console.log(e);
-      }
-    });
+      );
 
     //LISTAR TODOS LOS FAVORITOS
     socket.on('listar-favoritos', async (data) => {

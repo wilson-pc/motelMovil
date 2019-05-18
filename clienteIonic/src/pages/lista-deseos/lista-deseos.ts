@@ -61,8 +61,6 @@ export class ListaDeseosPage {
   obtenerListadeFavoritosMoteles() {
     //console.log("este es el usuario:",usuario);
     if (this.usuarioLogueado.UserSeCion.datos) {
-      console.log("nfr3ni");
-
       let usuario = { idusuario: this.usuarioLogueado.UserSeCion.datos._id };
       this.provedorSocketFavoritos.emit('listar-deseos-moteles', usuario);
       //await this.respuestaListaFavoritos();
