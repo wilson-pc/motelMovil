@@ -32,18 +32,13 @@ module.exports = async function (io) {
            console.log(cantidad);
             //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
             if (cantidad == 0) {
-              deseos.save(async(error, favoritos) => {
+              deseos.save(async(error, deseo) => {
                 if (error) {
                   console.log(error);
                   io.to(socket.id).emit('respuesta-agregar-deseos', { error: "error a agregar a deseos" });
                   //    res.status(500).send({ mensaje: "error al guradar" })
                 } else {
-                  console.log("exito",favoritos);
-
-                  var dd=await Deseos.find();
-                   console.log(dd);
-                  // console.log(actualizado);
-                  io.to(socket.id).emit('respuesta-agregar-deseos', { datos: favoritos });
+                  io.to(socket.id).emit('respuesta-agregar-deseos', { exito: "agregado a deseo con exito" });
                   //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
                 }
@@ -97,13 +92,13 @@ module.exports = async function (io) {
       console.log(data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
-        Deseos.find({ usuario: data.idusuario, tipo: "Motel" }).populate('producto',{fotos:0,"foto.normal":0}).exec((error, favoritos) => {
+        Deseos.find({ usuario: data.idusuario, tipo: "Motel" }).populate('producto',{fotos:0,"foto.normal":0}).exec((error, deseos) => {
           if (error) {
             io.to(socket.id).emit('respuesta-listar-deseos-moteles', { error: "error al listar" });
             //    res.status(500).send({ mensaje: "error al guradar" })
           } else {
-            //console.log(favoritos);
-            io.to(socket.id).emit('respuesta-listar-deseos-moteles', { datos: favoritos });
+            console.log("favoritos exito", deseos.length);
+            io.to(socket.id).emit('respuesta-listar-deseos-moteles', { datos: deseos });
             //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
           }
