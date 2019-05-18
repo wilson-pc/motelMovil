@@ -78,7 +78,6 @@ export class MyApp {
       { title: 'Mis Reservas ', component: ListaReservasPage },
       { title: 'Mis Favoritos', component: ListaFavoritosPage },
       { title: 'Deseos', component: ListaDeseosPage },
-      { title: 'Billetera', component: LocalWeatherPage},
       { title: 'Mis Denuncias', component: ComplaintsPage},
     ];
 
