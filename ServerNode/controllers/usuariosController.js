@@ -126,7 +126,7 @@ module.exports = async function (io) {
       usuario.telefono = "45252523";
       usuario.email = "sa@yandex.com";
       usuario.login = { usuario: 'sa', password: '123', estado: false };
-      usuario.rol = await Rol.findById("5cd33511021ca1a0384b5c2c");
+      usuario.rol = await Rol.findById("5c45eed64d12261e10b57845");
 
 
       //encripta el pasword del usuario

@@ -22,7 +22,7 @@ export class ModalViewStatisticsPage {
   nombreMes : string;
 
   // Meses del año
-  meses : any[] = ['Enero', 'Ferebrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+  meses : any[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   // Variables externas
