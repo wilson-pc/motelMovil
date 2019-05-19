@@ -3,10 +3,10 @@ var mongose = require("mongoose");
 var Schema = mongose.Schema;
 var Producto=require("./producto").schema;
 var Reservaproducto = Schema({
-    cliente:{type: Schema.ObjectId, ref: "Usuarios",autopopulate: true},
-    negocio:{type: Schema.ObjectId, ref: "Negocios",autopopulate: true},
+    cliente:{type: Schema.ObjectId, ref: "Usuarios"},
+    negocio:{type: Schema.ObjectId, ref: "Negocios"},
     tiempo:{fechareserva:Date,fechalimite:Date},
-    producto:{type: Schema.ObjectId, ref: "Productos",autopopulate: true},
+    producto:{type: Schema.ObjectId, ref: "Productos"},
     precioactual:Number,
     cantidad:Number,
     fechaentrega:Date,

@@ -627,7 +627,7 @@ module.exports = async function (io) {
 
 
     socket.on('login-usuario', async (data) => {
-      // console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
+       console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {

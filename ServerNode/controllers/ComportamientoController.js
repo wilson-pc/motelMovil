@@ -331,6 +331,7 @@ module.exports = async function (io) {
     });
 
     socket.on('listar-denuncia', async (datos) => {
+     
 
       if (datos.idcliente) {
   /*    Producto.find({"denuncias.usuario": { $all: [datos.idcliente]}},{denuncias:$size},(error,data)=>{
@@ -370,6 +371,7 @@ module.exports = async function (io) {
         io.to(socket.id).emit('respuesta-listar-denuncia', { datos: producto });
       } else if(datos.iddueno){
         var negocios = await Negocio.find({ titular: datos.iddueno }, { titular: 1 })
+        console.log(negocios);
      
         const ObjectId = mongoose.Types.ObjectId;
         var productos=[];

@@ -205,12 +205,12 @@ module.exports = async function (io) {
 
 
     socket.on('login-usuario-clientes', async (data) => {
-      // console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
+       console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
       try {
         var datos = await Crypto.Desincryptar(data);
         
         if (!datos.error) {
- 
+         console.log(datos);
           var params = datos;
           var usuario = params.usuario;
           var pass = params.password;
