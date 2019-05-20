@@ -61,7 +61,7 @@ export class LicoreriaPage {
 
   presentLoadingDefault() {
     this.loading = this.loadingCtrl.create({
-      content: 'Porfavor espere...',
+      content: 'Por favor espere...',
        
     });
     this.loading.present(); 

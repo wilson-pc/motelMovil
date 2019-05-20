@@ -49,7 +49,7 @@ export class TopsPage {
     presentLoadingDefault() {
       console.log("contar loading");
       this.loading = this.loadingCtrl.create({
-        content: 'Porfavor espere...',
+        content: 'Por favor espere...',
          
       });
       this.loading.present(); 

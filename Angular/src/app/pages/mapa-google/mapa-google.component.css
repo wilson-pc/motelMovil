@@ -8,7 +8,7 @@ img{
     max-width: 150px;
 }
 #banner{
-    margin: auto;  
+    /*margin: auto;  */
     text-align: center;
 }/*
 #banner2{
@@ -20,6 +20,6 @@ img{
 */
 #banner3{
     font-family: 'Baloo Bhai', cursive;
-    margin: auto;  
+    /*margin: auto;  */
     text-align: center;
 }
