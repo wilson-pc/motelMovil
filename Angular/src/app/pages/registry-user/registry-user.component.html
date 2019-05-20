@@ -32,11 +32,11 @@
                         <table class="table table-user-information">
                           <tbody>
                             <tr>
-                              <td>Nombre:</td>
+                              <td>Nombre(s):</td>
                               <td>{{usuarioViewData.nombre}}</td>
                             </tr>
                             <tr>
-                              <td>Apellidos</td>
+                              <td>Apellido(s)</td>
                               <td>{{usuarioViewData.apellidos}}</td>
                             </tr>
                             <tr>
@@ -50,7 +50,7 @@
                               <td>{{usuarioViewData.genero}}</td>
                             </tr>
                             <tr>
-                              <td>Email</td>
+                              <td>E-mail</td>
                               <td>{{usuarioViewData.email}}</td>
                             </tr>                     
                            
@@ -84,7 +84,7 @@
         </div>
         <div class="modal-body">
           <p>¿Desea eliminar el registro?</p>
-          <input type="text" [(ngModel)]="razonText" name="razonel" class="form-control input-md" placeholder="Ingrese razon a elimnar">
+          <input type="text" [(ngModel)]="razonText" name="razonel" class="form-control input-md" placeholder="Ingrese razon de la elimnacion">
           <p *ngIf="messageBool==true" class="message-suspender">Usuario suspendido</p>
           <p *ngIf="isError==true" class="message-invalido">Ocurrio un error mientras se borraba el dato</p>
           <p *ngIf="isRequired==true" class="message-invalido">Ingreso invalido, Ingrese una razon valida</p>
@@ -104,7 +104,7 @@
         </div>
         <div class="modal-body">
           <p>¿Desea suspender al usuario?</p>
-          <input type="text" [(ngModel)]="razonText" name="razon" class="form-control input-md" placeholder="Ingrese razon a suspender">
+          <input type="text" [(ngModel)]="razonText" name="razon" class="form-control input-md" placeholder="Ingrese razon de la suspension">
           <p *ngIf="messageBool==true" class="message-suspender">Usuario suspendido</p>
           <p *ngIf="isRequired==true" class="message-invalido">Ingreso invalido, Ingrese una razon valida</p>
         </div>        

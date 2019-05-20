@@ -2,3 +2,24 @@ agm-map {
     height: 600px;
     /*color: rgba(133, 131, 131, 0.705);*/
    }
+
+img{
+    border-radius: 50%;
+    max-width: 150px;
+}
+#banner{
+    margin: auto;  
+    text-align: center;
+}/*
+#banner2{
+    border: 2px solid rgb(255, 0, 0);
+    margin: auto;  
+    padding: 20px;
+    text-align: center;
+}
+*/
+#banner3{
+    font-family: 'Baloo Bhai', cursive;
+    margin: auto;  
+    text-align: center;
+}

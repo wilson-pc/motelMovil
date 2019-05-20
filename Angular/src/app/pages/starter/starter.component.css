@@ -3,6 +3,7 @@
 }
 .card-img-top{
     height: 100%;
+    border-radius: 50%;
 }
 .btnregistrar{
     width: 50%;

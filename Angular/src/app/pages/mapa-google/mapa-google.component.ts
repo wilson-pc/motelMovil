@@ -10,7 +10,7 @@ import { SocketConfigService, SocketConfigService3 } from '../../socket-config.s
 })
 export class MapaGoogleComponent implements OnInit {
 
-  texto : string = 'Bienvenido a MapTRIXI';
+  texto : string = 'TRIXY Map';
   lat: number = -17.3957575;
   lng: number = -66.1460038;
   zoom: number = 15; 

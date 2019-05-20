@@ -1,4 +1,11 @@
-<h1> {{texto}}</h1>
+
+
+
+<div class="row">
+  <div id="banner" class="col-md-4"><img src="../../assets/Trixy2.jpeg"></div>
+  <div id="banner2" class="col-md-4"></div>
+  <div class="col-md-4"><h1 id="banner3"> Trixy Map </h1></div>
+</div>
 
 <agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
   <agm-marker 
@@ -10,7 +17,7 @@
     <agm-info-window [disableAutoPan]="true">
       Bienvenido a <strong>{{lugar.nombre}}</strong><br>
       Direccion: <strong>{{lugar.direccion.ubicacionFisica}}</strong><br>
-      Telefonos: <strong>{{lugar.telefono}}</strong>
+      Telefono(s): <strong>{{lugar.telefono}}</strong>
     </agm-info-window>
     <!-- [iconUrl]="img" -->
   </agm-marker>
