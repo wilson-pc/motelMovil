@@ -188,7 +188,7 @@ export class RegistryOwnerComponent implements OnInit,OnDestroy  {
 		this.isExito = false;
 		this.usuario.login = { usuario: this.user, password: this.password, estado: false };
 		let seleccionados = [];
-		this.usuario.rol = "5cd33525021ca1a0384b5d97" as any;
+		this.usuario.rol = "Admin" as any;
 		this.usuario.creacion = { fecha: date, usuario: this.usuarioServ.usuarioActual.datos._id }
 		this.usuario.modificacion = { fecha: date, usuario: this.usuarioServ.usuarioActual.datos._id };
 		this.selectedItems.forEach(element => {

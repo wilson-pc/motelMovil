@@ -1,3 +1,3 @@
 export var RutaServer = {
-    socket: "http://localhost:3000/",
+    socket: "https://triservicedemo.herokuapp.com/",
 }

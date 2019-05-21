@@ -36,7 +36,7 @@ module.exports = async function (io) {
             usuarios.creacion = params.creacion
             usuarios.login = { usuario: params.nombre, estado: true }
             usuarios.modificacion = params.modificacion;
-            usuarios.rol = await Rol.findById(params.rol);
+            usuarios.rol = await Rol.findOne({rol:params.rol});
 
             usuarios.save((error, usuario2) => {
               if (error) {

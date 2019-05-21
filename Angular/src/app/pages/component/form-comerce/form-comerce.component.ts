@@ -94,15 +94,15 @@ export class FormComerceComponent implements OnInit {
 
 		if(tit=='moteles'){
 			this.socket.emit("listar-negocio", { termino:'Motel'});
-			this.negocios.tipo= "5cd333fd021ca1a0384b2e24" as any;
+			this.negocios.tipo= "Motel" as any;
 		}
 		if(tit=='licorerias'){
 			this.socket.emit("listar-negocio", { termino:'Licoreria'});
-			this.negocios.tipo="5cd33443021ca1a0384b4683" as any;
+			this.negocios.tipo="Licoreria" as any;
 		}
 		if(tit=='sexshops'){
 			this.socket.emit("listar-negocio", { termino:'SexShop'});
-			this.negocios.tipo="5cd3342b021ca1a0384b4511" as any;
+			this.negocios.tipo="SexShop" as any;
 		}			
 	}
 	
@@ -357,7 +357,7 @@ export class FormComerceComponent implements OnInit {
 
 		if(tit=='moteles'){
 			this.socket.emit("listar-negocio", { termino:'Motel'});
-			this.negocios.tipo= "5cd333fd021ca1a0384b2e24" as any;
+			this.negocios.tipo= "Motel" as any;
 			this.respuestaListarNegocio().subscribe((data: any[]) => {
 				console.log("carga al array");
 				this.ListaNegocio=data;

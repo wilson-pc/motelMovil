@@ -75,7 +75,7 @@ module.exports = async function (io) {
           usuario.eliminado = { estado: false, razon: "" };
           usuario.creacion = params.creacion
           usuario.modificacion = params.modificacion;
-          usuario.rol = await Rol.findById(params.rol);
+          usuario.rol = await Rol.findOne({rol:params.rol});
           var cantidad = await Usuario.countDocuments({ email: params.email });
           if (cantidad < 1) {
             if (params.nombre) {
