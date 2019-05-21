@@ -4,20 +4,43 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      <strong>Ionic 3</strong> Start Theme
+     lista de Deseos
     </ion-title>
     <ion-buttons end>
-      <button ion-button tappable (click)="presentNotifications($event)">
-        <ion-icon name="notifications"></ion-icon>
-      </button>
-      <button ion-button tappable (click)="goToAccount()">
-        <ion-icon name="cog"></ion-icon>
-      </button>
+  
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
+  <div padding>
+    <ion-list>
+        <div *ngIf="Deseos!=undefined || Deseos!=null">
+        <ion-item *ngFor="let items of Deseos">
 
+            
+            <ion-thumbnail item-start>
+              <img [src]="items.foto.miniatura">
+            </ion-thumbnail>
+            
+            <div class="contentList">
+              <div class="titulolist">
+                  <h2>{{items.nombre}}</h2>
+                  <p>{{items.descripcion}}</p>
+              </div>
+              <div class="vermas">
+                <button ion-button clear item-end (click)="quitar(items)">Quitar</button>
+            </div>
+              <div class="likes">
+             
+                <div class="vermas">
+                    <button ion-button clear item-end (click)="presentModal(items)">Ver mas</button>
+                </div>
+              </div>
+             </div>  
+          </ion-item>       
+        </div>
+    </ion-list>
+</div>
 </ion-content>

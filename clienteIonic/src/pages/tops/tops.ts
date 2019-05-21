@@ -124,7 +124,7 @@ export class TopsPage {
   // Respuestas Socket
   connectionBackendSocket() {
     this.suscripctionSocket.push(this.respuestaProductTop().subscribe((data: any) => {
-      console.log(data);
+     
       if(data.error){
          alert("ocurrio un error inesperado");
       }else{

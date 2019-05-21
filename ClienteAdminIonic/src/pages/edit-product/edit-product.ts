@@ -227,7 +227,7 @@ export class EditProductPage {
   async fileChange2(event) {
     // alert(event.srcElement.files[0].name);
     this.readFile(event.srcElement.files[0]).subscribe(data => {
-      resizeBase64(data, 700, 500).then((result) => {
+      resizeBase64(data, 500, 300).then((result) => {
         this.cambio=true;
         this.listImages.push(result);
 

@@ -20,7 +20,7 @@ import { defecto } from './imagedefault';
 })
 export class RegisterPage {
   usuario:Usuarios;
-  rolUser:string="5c45ef2909d2200ea8f6db83";
+  rolUser:string="Cliente";
   nombreimagen: string = "selecciona una foto";
   nombreDeUsuario:string;
   password:string;

@@ -195,39 +195,44 @@ module.exports = async function (io) {
       /*     try {
                  var datos = await Crypto.Desincryptar(data);
                  if (!datos.error) {*/
-      console.log(clients);
+      
       var datos = data;
 
       if (datos.idcliente) {
         var query = {};
+        console.log(datos);
         clients.push({ socketid: socket.id, idcliente: datos.idcliente });
         if (datos.estado == "espera") {
           query = {cliente: datos.idcliente, $or: [{ estado: datos.estado }, { estado: "rechazado" }] };
         } else {
           query = { cliente: datos.idcliente, estado: datos.estado }
         }
-        Reservas.find(query, {}, (error, reservsas) => {
+        Reservas.find(query, {}).populate("negocio",{nombre:1}).populate("producto",{fotos:0,"foto.normal":0}).exec((error, reservsas) => {
           if (error) {
+            console.log();
             io.to(socket.id).emit('respuesta-listrar-reserva', { error: "error no se pudo listar la reserva" });
           }
-
+          console.log(reservsas);
           io.to(socket.id).emit('respuesta-listrar-reserva', reservsas);
         })
       } else {
         var query = {};
     
-
+       console.log(datos);
         if (datos.estado == "espera") {
           query = { dueno: datos.iddueno, $or: [{ estado: datos.estado }, { estado: "rechazado" }] };
         } else {
           query = { dueno: datos.iddueno, estado: datos.estado }
         }
-        Reservas.find(query, (error, reservsas) => {
+        Reservas.find(query, {}).populate("negocio",{nombre:1}).populate("producto",{fotos:0,"foto.normal":0}).exec((error, reservsas) => {
          
           if (error) {
+            console.log("error");
             io.to(socket.id).emit('respuesta-listrar-reserva', { error: "error no se pudo listar la reserva" });
-          }
+          }else{
+          console.log("exito",reservsas);
           io.to(socket.id).emit('respuesta-listrar-reserva', reservsas);
+          }
         })
       }
 

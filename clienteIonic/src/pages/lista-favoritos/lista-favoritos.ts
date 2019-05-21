@@ -49,7 +49,7 @@ export class ListaFavoritosPage {
      public modalCtrl: ModalController,
      public viewCtrl: ViewController,
     public toastCtrl: ToastController) {
-      
+      this.connectSocket();
         //this.obtenerListadeFavoritosLicores();  
         //this.respuestaListaFavoritosLicores();  
 
@@ -82,7 +82,11 @@ export class ListaFavoritosPage {
       console.log("error en:",error);
     });
   }
-
+  quitar(item){
+    console.log(item);
+    let usuario = { idsuario: this.usuarioLogueado.UserSeCion.datos._id,idproducto:item._id };
+    this.provedorSocketFavoritos.emit('quitar-favorito', usuario);
+  }
   getPositionForObserver(){
     let watch = this.geolocalizacion.watchPosition();
     watch.subscribe(data =>{
@@ -165,7 +169,21 @@ export class ListaFavoritosPage {
        console.log("listas Buscador",this.listabuscadorProductoslicores);
      });    
    }
-
+   connectSocket() {
+    this.respuestaQuitar().subscribe(data=>{
+      if (!data.error) {
+      for (let index = 0; index < this.listamotelbuscador.length; index++) {
+        const element = this.listamotelbuscador[index];
+        if(element._id==data.datos){
+          this.listamotelbuscador.splice(index,1);
+        }
+        
+      }
+      } else {
+        this.presentToast(data.error)
+      }
+    })
+  }
    async obtenerListadeFavoritosMoteles(){
     //console.log("este es el usuario:",usuario);
     if(this.usuarioLogueado.UserSeCion.datos)
@@ -228,6 +246,9 @@ export class ListaFavoritosPage {
     
     
   }
+  respuestaQuitar() {
+    return this.provedorSocketFavoritos.fromEvent<any>('respuesta-quitar-favorito').map(data => data)
 
+  }
 
 }

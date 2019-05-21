@@ -18,7 +18,7 @@ export class DescripcionProductoPage {
   cantidadReserva = 1;
   product: Productos;
   productID: Productos;
-  suscripctionSocket: Subscription;
+  suscripctionSocket: Subscription[]=[];
   cantidad:number[]=[];
   slideData: any = [];
   motivo: string;
@@ -173,37 +173,45 @@ export class DescripcionProductoPage {
   // Respuestas Socket
   connectionBackendSocket() {
 
-    this.suscripctionSocket = this.respuestaSacarProducto().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaSacarProducto().subscribe((data: any) => {
       console.log("Producto", data);
       this.product = data;
       this.slideData = data.fotos;
-    });
+    }))
 
-    this.suscripctionSocket = this.respuestaReserva().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaReserva().subscribe((data: any) => {
       if(data.error){
         this.presentToast(data.error);
       }else{
         this.presentToast("Producto Reservado");
         this.dismissModal();
       }
-    });
+    }))
 
-    this.suscripctionSocket = this.respuestaDenuncia().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaDenuncia().subscribe((data: any) => {
       if (data.error) {
         this.presentToast(data.error);
       } else {
         this.presentToast("Producto Denunciado");
         this.dismissModal();
       }
-    });
+    }))
 
-    this.suscripctionSocket = this.respuestaCalificarProducto().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaCalificarProducto().subscribe((data: any) => {
       console.log("Calificado ");
-    });
+    }))
 
-    this.suscripctionSocket = this.respuestaDescalificarProducto().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaDescalificarProducto().subscribe((data: any) => {
       console.log("Descalificado ");
-    });
+    }))
+
+    this.suscripctionSocket.push(this.respuestaDeseo().subscribe((data:any)=>{
+      if(!data.error){
+        this.presentToast(data.exito);
+      }else{
+        this.presentToast(data.error);
+      }
+    }))
   }
 
   encryptData(data) {
@@ -233,13 +241,19 @@ export class DescripcionProductoPage {
   respuestaDescalificarProducto(){
     return this.provedorFavoritos.fromEvent<any>('respuesta-descalificar-producto').map(data => data)
   }
+  respuestaDeseo(){
+    return this.provedorFavoritos.fromEvent<any>('respuesta-agregar-deseos').map(data => data)
+  }
+
 
   irdetallestienda(){
     this.navCtrl.push(DetallesTiendaPage);
   }
 
   ngOnDestroy() {
-    this.suscripctionSocket.unsubscribe();
+    this.suscripctionSocket.forEach(element => {
+      element.unsubscribe();
+    });
   }
   registrarVisita(){
     let data = { idcliente: this.usuarioLogin.UserSeCion.datos._id , idnegocio: this.productID.negocio };

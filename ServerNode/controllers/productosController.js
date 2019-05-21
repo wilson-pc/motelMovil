@@ -307,7 +307,7 @@ module.exports = async function (io) {
     });*/
 
     socket.on('sacar-producto', async (data) => {
-    
+          console.log(data);
       Producto.findOne({ _id: data._id, "eliminado.estado": false }, { denuncias: 0 }, function (error, dato) {
         if (error) {
           // res.status(500).send({ mensaje: "Error al listar" })

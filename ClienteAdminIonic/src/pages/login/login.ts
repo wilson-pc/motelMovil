@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { NavController, AlertController, ToastController, MenuController } from "ionic-angular";
 import { HomePage } from "../home/home";
-import { Usuarios } from "../../models/Usuarios";
 import { SocketServiceUser } from "../../providers/socket-config/socket-config";
 import * as CryptoJS from 'crypto-js';
 import { clave } from "../../app/cryptoclave";

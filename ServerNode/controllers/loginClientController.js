@@ -36,7 +36,7 @@ module.exports = async function (io) {
             usuarios.creacion = params.creacion
             usuarios.login = { usuario: params.nombre, estado: true }
             usuarios.modificacion = params.modificacion;
-            usuarios.rol = await Rol.findById(params.rol);
+            usuarios.rol = await Rol.findOne({rol:params.rol});
 
             usuarios.save((error, usuario2) => {
               if (error) {
@@ -205,12 +205,12 @@ module.exports = async function (io) {
 
 
     socket.on('login-usuario-clientes', async (data) => {
-      // console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
+       console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
       try {
         var datos = await Crypto.Desincryptar(data);
         
         if (!datos.error) {
- 
+         console.log(datos);
           var params = datos;
           var usuario = params.usuario;
           var pass = params.password;

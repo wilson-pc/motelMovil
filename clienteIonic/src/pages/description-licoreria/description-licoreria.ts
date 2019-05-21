@@ -26,7 +26,7 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   imagenProducto: any;
   cantidadReserva = 1;
   clientesSubscription: Subscription;
-  suscripctionSocket: Subscription;
+  suscripctionSocket: Subscription[]=[];
   favorito: Favoritos;
   cantidad:number[]=[];
   motivo: string;
@@ -54,7 +54,10 @@ export class DescriptionLicoreriaPage implements OnDestroy {
 
   ngOnDestroy() {
     this.clientesSubscription.unsubscribe();
-    this.suscripctionSocket.unsubscribe();
+// this.suscripctionSocket.unsubscribe();
+    this.suscripctionSocket.forEach(element => {
+      element.unsubscribe();
+    });
   }
 
   obtenerDatosProducto() {
@@ -69,6 +72,13 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   productDescription(product: Productos) {
     const modal = this.modalCtrl.create(DetallesTiendaPage, { producto: product });
     modal.present();
+  }
+  masTarde(id){
+    if(this.userService.UserSeCion.datos){
+    this.provedorFavoritos.emit("agregar-deseos", {idproducto:id,tipoproducto:"Motel",idsuario:this.userService.UserSeCion.datos._id})
+    }else{
+      this.presentToast("Debes iniciar sesion primero!");
+    }
   }
 
   ionViewDidLoad() {
@@ -186,31 +196,38 @@ export class DescriptionLicoreriaPage implements OnDestroy {
       console.log("Imagenes: ", this.slideData);
     })
 
-    this.suscripctionSocket = this.respuestaReserva().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaReserva().subscribe((data: any) => {
       if (data.error) {
         this.presentToast(data.error);
       } else {
         this.presentToast("Producto Reservado");
         this.dismiss();
       }
-    });
+    }));
 
-    this.suscripctionSocket = this.respuestaDenuncia().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaDenuncia().subscribe((data: any) => {
       if (data.error) {
         this.presentToast(data.error);
       } else {
         this.presentToast("Producto Denunciado");
         this.dismiss();
       }
-    });
+    }))
 
-    this.suscripctionSocket = this.respuestaCalificarProducto().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaCalificarProducto().subscribe((data: any) => {
       console.log("Calificado ");
-    });
+    }))
 
-    this.suscripctionSocket = this.respuestaDescalificarProducto().subscribe((data: any) => {
+    this.suscripctionSocket.push(this.respuestaDescalificarProducto().subscribe((data: any) => {
       console.log("Descalificado ");
-    });
+    }))
+    this.suscripctionSocket.push(this.respuestaDeseo().subscribe((data:any)=>{
+      if(!data.error){
+        this.presentToast(data.exito);
+      }else{
+        this.presentToast(data.error);
+      }
+    }))
   }
 
   encryptData(data) {
@@ -244,7 +261,9 @@ export class DescriptionLicoreriaPage implements OnDestroy {
   respuestaDescalificarProducto(){
     return this.provedorFavoritos.fromEvent<any>('respuesta-descalificar-producto').map(data => data)
   }
-
+  respuestaDeseo(){
+    return this.provedorFavoritos.fromEvent<any>('respuesta-agregar-deseos').map(data => data)
+  }
   guardarFavorito() {
 
     let data = { 

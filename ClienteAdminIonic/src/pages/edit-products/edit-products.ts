@@ -88,7 +88,7 @@ productId:String;
   async getCommerceAndProduct() {
     this.producto = this.navParams.get("product");
     console.log(this.producto);
-    this.productService.emit("sacar-producto", {id:this.producto._id});
+    this.productService.emit("sacar-producto", {_id:this.producto._id});
     this.commerceOnly = this.navParams.get("commerce");
     this.getTypeProducts();
   
@@ -145,6 +145,7 @@ console.log(this.productForm);
       this.producto.modificacion = { fecha: date };
 
       let data = this.producto;
+      console.log(this.producto);
       var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ producto: data }), clave.clave);
       this.productService.emit("actualizar-producto", ciphertext.toString());
     }
@@ -264,7 +265,7 @@ console.log(this.productForm);
   async fileChange2(event) {
     // alert(event.srcElement.files[0].name);
     this.readFile(event.srcElement.files[0]).subscribe(data => {
-      resizeBase64(data, 700, 500).then((result) => {
+      resizeBase64(data, 500, 300).then((result) => {
         this.cambio=true;
         this.listImages.push(result);
 

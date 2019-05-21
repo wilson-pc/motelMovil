@@ -32,18 +32,13 @@ module.exports = async function (io) {
            console.log(cantidad);
             //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
             if (cantidad == 0) {
-              deseos.save(async(error, favoritos) => {
+              deseos.save(async(error, deseo) => {
                 if (error) {
                   console.log(error);
                   io.to(socket.id).emit('respuesta-agregar-deseos', { error: "error a agregar a deseos" });
                   //    res.status(500).send({ mensaje: "error al guradar" })
                 } else {
-                  console.log("exito",favoritos);
-
-                  var dd=await Deseos.find();
-                   console.log(dd);
-                  // console.log(actualizado);
-                  io.to(socket.id).emit('respuesta-agregar-deseos', { datos: favoritos });
+                  io.to(socket.id).emit('respuesta-agregar-deseos', { exito: "agregado a deseo con exito" });
                   //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
                 }
@@ -65,17 +60,15 @@ module.exports = async function (io) {
     });
 
     socket.on('quitar-deseos', async (data) => {
-      try {
-        var datos = await Crypto.Desincryptar(data);
-        if (!datos.error) {
+    
           try {
+          
             Deseos.remove({ producto: data.idproducto, usuario: data.idsuario }, (error, ndeseos) => {
               if (error) {
                 io.to(socket.id).emit('respuesta-quitar-deseos', { error: "error al borrar" });
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
-               
-                io.to(socket.id).emit('respuesta-quitar-deseos', { datos: ndeseos });
+                io.to(socket.id).emit('respuesta-quitar-deseos', { datos: data.idproducto});
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
               }
@@ -85,25 +78,19 @@ module.exports = async function (io) {
             console.log("error");
           }
         }
-        return data;
-      }
-
-      catch (e) {
-        console.log(e);
-      }
-    });
+     );
 
     socket.on('listar-deseos-moteles', async (data) => {
       console.log(data);
       try {
         //   await Producto.update({_id:producto},{ $pull: { "desvaloracion": {usuario:cliente}} });
-        Deseos.find({ usuario: data.idusuario, tipo: "Motel" }).populate('producto',{fotos:0,"foto.normal":0}).exec((error, favoritos) => {
+        Deseos.find({ usuario: data.idusuario, tipo: "Motel" }).populate('producto',{fotos:0,"foto.normal":0}).exec((error, deseos) => {
           if (error) {
             io.to(socket.id).emit('respuesta-listar-deseos-moteles', { error: "error al listar" });
             //    res.status(500).send({ mensaje: "error al guradar" })
           } else {
-            //console.log(favoritos);
-            io.to(socket.id).emit('respuesta-listar-deseos-moteles', { datos: favoritos });
+            console.log("favoritos exito", deseos.length);
+            io.to(socket.id).emit('respuesta-listar-deseos-moteles', { datos: deseos });
             //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
           }
@@ -161,9 +148,7 @@ module.exports = async function (io) {
     });
 
     socket.on('quitar-favorito', async (data) => {
-      try {
-        var datos = await Crypto.Desincryptar(data);
-        if (!datos.error) {
+     
           try {
             Favorito.remove({ producto: data.idproducto, usuario: data.idsuario }, (error, nofavorito) => {
               if (error) {
@@ -171,23 +156,17 @@ module.exports = async function (io) {
                 //    res.status(500).send({ mensaje: "error al guradar" })
               } else {
                
-                io.to(socket.id).emit('respuesta-quitar-favorito', { datos: nofavorito });
+                io.to(socket.id).emit('respuesta-quitar-favorito', { datos: data.idproducto });
                 //        io.emit('respuesta-actualizar-negocio-todos',{datos:actualizado});  
 
               }
             })
 
           } catch (error) {
-            console.log("error");
+            io.to(socket.id).emit('respuesta-quitar-favorito', { error: "error al borrar" });
           }
         }
-        return data;
-      }
-
-      catch (e) {
-        console.log(e);
-      }
-    });
+      );
 
     //LISTAR TODOS LOS FAVORITOS
     socket.on('listar-favoritos', async (data) => {
@@ -352,6 +331,7 @@ module.exports = async function (io) {
     });
 
     socket.on('listar-denuncia', async (datos) => {
+     
 
       if (datos.idcliente) {
   /*    Producto.find({"denuncias.usuario": { $all: [datos.idcliente]}},{denuncias:$size},(error,data)=>{
@@ -391,6 +371,7 @@ module.exports = async function (io) {
         io.to(socket.id).emit('respuesta-listar-denuncia', { datos: producto });
       } else if(datos.iddueno){
         var negocios = await Negocio.find({ titular: datos.iddueno }, { titular: 1 })
+        console.log(negocios);
      
         const ObjectId = mongoose.Types.ObjectId;
         var productos=[];

@@ -172,7 +172,7 @@ fotos:string[]=[];
       resizeBase64(data, 90, 60).then((result) => {
         this.product.foto = { miniatura: result, normal: "" }
       });
-      resizeBase64(data, 700, 500).then((result) => {
+      resizeBase64(data, 500, 400).then((result) => {
         this.product.foto.normal = result;
         console.log(this.product);
       });

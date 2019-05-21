@@ -22,13 +22,17 @@
           </ion-card-title>
           <ion-row>
             <ion-col col-4>
-              <img [src]="imagenProducto" /><br>
+              <img [src]="productoRecibido.foto.miniatura" /><br>
             </ion-col>
             <ion-col col-8>
 
               <button (click)="guardarFavorito()" ion-button icon-start clear small color="default">
                 <ion-label  color="primary">Agregar a Favoritos</ion-label>
                 <ion-icon ios="ios-heart-outline" md="md-heart-outline"></ion-icon>
+              </button>
+              <button (click)="masTarde(productoRecibido._id)"  ion-button icon-start clear small color="default">
+                <ion-label color="primary">Deseo</ion-label>
+                <ion-icon ios="ios-clock" md="md-clock"></ion-icon>
               </button>
               <button ion-button icon-start clear small color="default">
                 <ion-label color="primary">Precio: {{productoRecibido.precio}} Bs</ion-label>
