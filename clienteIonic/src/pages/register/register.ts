@@ -38,7 +38,8 @@ export class RegisterPage {
       this.usuario.foto = this.defaultImage;
     }
     //console.log(this.usuario);
-    if (this.usuario.nombre && this.usuario.nombre && this.validateEmail(this.usuario.email) && this.usuario.login.usuario && this.usuario.login.password) {
+    if (this.usuario.nombre && this.usuario.nombre && this.validateEmail(this.usuario.email)
+      && this.usuario.login.usuario && this.usuario.login.password) {
       this.usuario.rol = this.rolUser as any;
       var date = new Date().toUTCString();
       this.usuario.tiporegistro = "app";
