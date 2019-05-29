@@ -64,6 +64,7 @@ export class MyApp {
         }else{
          
           this.userServ.UserSeCion=false;
+          alert("Inicie Session");
           console.log("sin cescion");
         //  alert("sin secion");
         }
