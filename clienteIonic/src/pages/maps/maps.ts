@@ -118,7 +118,7 @@ export class MapsPage {
       controls: {
         'compass': true,
         'myLocationButton': true,
-        'myLocation': true,   // (blue dot)
+        //'myLocation': true,   // (blue dot)
         'indoorPicker': true,
         'zoom': true,          // android only
         'mapToolbar': true     // android only

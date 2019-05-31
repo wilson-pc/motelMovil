@@ -157,6 +157,7 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     GoogleMaps,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
     AndroidPermissions,
     ProviderProductosProvider,
     SocketUsuarioService2,
