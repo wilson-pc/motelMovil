@@ -75,7 +75,7 @@ module.exports = async function (io) {
           usuario.eliminado = { estado: false, razon: "" };
           usuario.creacion = params.creacion
           usuario.modificacion = params.modificacion;
-          usuario.rol = await Rol.findOne({rol:params.rol});
+          usuario.rol = await Rol.findOne({ rol: params.rol });
           var cantidad = await Usuario.countDocuments({ email: params.email });
           if (cantidad < 1) {
             if (params.nombre) {
@@ -158,16 +158,16 @@ module.exports = async function (io) {
 
     socket.on('registrar-usuario', async (data) => {
 
-     
+
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-      
+
           var usuario = new Usuario();
 
           var params = datos.usuario;
-     
+
           usuario.nombre = params.nombre;
           usuario.apellidos = params.apellidos;
           usuario.genero = params.genero;
@@ -203,13 +203,13 @@ module.exports = async function (io) {
                           var negocio = new Negocio();
                           negocio._id = element;
                           negocio.titular = nuevoUsuario._id;
-                        
+
                           var Nnegocio = await Negocio.findByIdAndUpdate(element, negocio);
                         }
                       }
 
                       io.to(socket.id).emit('respuesta-crear', { exito: "registro guardado con exito" });
-                     
+
                       io.emit('respuesta-crear-todos', { usuario: nuevoUsuario });
                     }
                   })
@@ -271,7 +271,7 @@ module.exports = async function (io) {
                 }
               }
 
-             
+
               io.to(socket.id).emit('respuesta-actualizar-usuario', { exito: "actualizado con exito" });
 
               io.emit('respuesta-actualizar-usuario-todos', actualizado);
@@ -363,7 +363,7 @@ module.exports = async function (io) {
               symbols: false,
               exclude: "/",
             });
-        
+
             var hash = token2.crearToken(password);
 
             var mailOptions = {
@@ -395,7 +395,7 @@ module.exports = async function (io) {
               }
             });
           } else {
-           
+
             io.to(socket.id).emit('correo-recuperacion', { error: "Este correo no esta registrado utilise el correo con la que registro la cuenta" });
           }
         } else {
@@ -422,7 +422,7 @@ module.exports = async function (io) {
           io.to(socket.id).emit('respuesta-validar-token', { error: "token invalido" });
 
         } else {
-       
+
           Usuario.findOne({ "tokenrecuperacion.token": token, "eliminado.estado": false }, { foto: 0 }, function (error, dato) {
             if (error) {
 
@@ -433,7 +433,7 @@ module.exports = async function (io) {
                 io.to(socket.id).emit('respuesta-validar-token', { error: "token invalido" });
                 //   res.status(404).send({ mensaje: "Error al listar" })
               } else {
-               
+
                 io.to(socket.id).emit('respuesta-validar-token', dato);
               }
             }
@@ -500,7 +500,7 @@ module.exports = async function (io) {
                   io.to(socket.id).emit('respuesta-cambiar-login', { error: "Error no se pudo cambiar los datos" });
                   //   res.status(404).send({ mensaje: "Error al listar" })
                 } else {
-               
+
                   io.to(socket.id).emit('respuesta-cambiar-login', dato);
 
                 }
@@ -551,7 +551,7 @@ module.exports = async function (io) {
             if (!lista) {
               //   res.status(404).send({ mensaje: "Error al listar" })
             } else {
-              
+
               io.to(socket.id).emit('respuesta-buscar-usuarios', lista);
             }
           }
@@ -566,7 +566,7 @@ module.exports = async function (io) {
     });
     socket.on('buscar-usuario-cliente', async (data) => {
       try {
-        Usuario.find({ "eliminado.estado": false,"rol.rol": "Cliente", $or: [{ nombre: new RegExp(data.termino, 'i') }, { apellido: new RegExp(data.termino, 'i') }] }, function (error, lista) {
+        Usuario.find({ "eliminado.estado": false, "rol.rol": "Cliente", $or: [{ nombre: new RegExp(data.termino, 'i') }, { apellido: new RegExp(data.termino, 'i') }] }, function (error, lista) {
           if (error) {
             // res.status(500).send({ mensaje: "Error al listar" })
           } else {
@@ -627,7 +627,7 @@ module.exports = async function (io) {
 
 
     socket.on('login-usuario', async (data) => {
-       console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
+      console.log("jntrnrkmrktmkrlbm{kl mmklmlk n ntj");
       try {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
@@ -643,7 +643,7 @@ module.exports = async function (io) {
           Usuario.findOne({ 'login.usuario': usuario, 'rol.rol': tipo }, (error, user) => {
 
             if (error) {
-          
+
               io.to(socket.id).emit('respuesta-login', { mensaje: "error al buscar" });
               //  res.status(500).send({ mensaje: "Error al buscar usuario" })
             } else {
@@ -719,7 +719,7 @@ module.exports = async function (io) {
                 //alert("Usuario o Contraseña incorrecta");
                 //    res.status(404).send({ mensaje: "usuario no existe " })
               } else {
-               
+
                 // res.status(200).send({ user });
                 if (user.login.estado != true) {
                   var usuario = new Usuario();
@@ -762,16 +762,16 @@ module.exports = async function (io) {
     socket.on('suspender-usuario', async (data) => {
 
       try {
-        
+
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
-        console.log("usuariosCoontroller",bytes);
+        console.log("usuariosCoontroller", bytes);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-          console.log("datis",datos);
+          console.log("datis", datos);
           var usuario = new Usuario();
           var params = datos.usuario;
           usuario._id = params._id;
-          usuario.suspendido=params.suspendido;
+          usuario.suspendido = params.suspendido;
           //guarda al nuevo usuario en la bd
 
           Usuario.findByIdAndUpdate(params._id, usuario, { new: true }, async (error, actualizado) => {
@@ -779,7 +779,7 @@ module.exports = async function (io) {
               io.to(socket.id).emit('respuesta-suspender-usuario', { mensaje: "error al actualizar datos usuario" });
               // res.status(500).send({ mensaje: "error al guradar" })
             } else {
-              
+
               io.to(socket.id).emit('respuesta-suspender-usuario', { exito: "actualizado con exito" });
 
               io.emit('respuesta-suspender-usuario', actualizado);
@@ -804,13 +804,13 @@ module.exports = async function (io) {
         const bytes = CryptoJS.AES.decrypt(data, clave.clave);
         if (bytes.toString()) {
           var datos = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-              
+
           var usuario2 = await Usuario.findById(datos.id);
-          if(usuario2){
+          if (usuario2) {
             var usuario = new Usuario();
             usuario._id = datos.id;
             usuario.login = { usuario: usuario2.login.usuario, password: usuario2.login.password, estado: false };
-  
+
             // console.log(lista);
             Usuario.findByIdAndUpdate(datos.id, usuario, { new: true }, function (error, data) {
               if (error) {
@@ -826,10 +826,10 @@ module.exports = async function (io) {
                 }
               }
             });
-          }else{
+          } else {
             io.to(socket.id).emit('respuesta-cerrar', { mensaje: "borrado" });
           }
-       
+
 
         }
         return data;

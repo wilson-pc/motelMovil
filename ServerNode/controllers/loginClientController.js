@@ -10,7 +10,7 @@ var token = require("./../token/token");
 module.exports = async function (io) {
   var clients = [];
   io.on('connection', async function (socket) {
-  
+    /*
     socket.on('login-facebook', async (data) => {
 
       try {
@@ -117,7 +117,7 @@ module.exports = async function (io) {
         console.log(e);
       }
     });
-
+    */
     socket.on('verificar-suspencion', async (data) => {
       
       Usuario.findById(data.id,{login:0,foto:0},(error,datos)=>{
