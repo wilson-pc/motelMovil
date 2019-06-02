@@ -84,6 +84,7 @@ export class RegisterPage {
     }
     //  this.nav.setRoot(HomePage);
   }
+  /*
   //Registrar el inicio de cecion de facebook en la bd
   RegisterFacebook(dataUsuario: Usuarios) {
     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify({ usuario: dataUsuario }), clave.clave);
@@ -168,7 +169,7 @@ export class RegisterPage {
      this.RegisterGoogle(this.usuario);
    })
    .catch(err => console.error(err));
-   }*/
+   }
   //sacar los datos del usuario de facebook
   getInfo() {
     this.facebook.api('/me?fields=id,name,email,first_name,picture,last_name,gender', ['public_profile', 'email'])
@@ -197,7 +198,7 @@ export class RegisterPage {
       .catch(error => {
         console.error(error);
       });
-  }
+  }*/
   // go to login page
   login() {
     this.nav.setRoot(LoginPage);
