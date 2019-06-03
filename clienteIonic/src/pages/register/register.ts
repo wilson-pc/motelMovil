@@ -6,7 +6,7 @@ import { NavController, ToastController } from "ionic-angular";
 import { LoginPage } from "../login/login";
 import { Storage } from '@ionic/storage';
 import { HomePage } from "../home/home";
-import { Facebook } from "@ionic-native/facebook";
+
 import { resizeBase64 } from 'base64js-es6';
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
@@ -24,64 +24,79 @@ export class RegisterPage {
   nombreimagen: string = "selecciona una foto";
   nombreDeUsuario: string;
   password: string;
+  password2: string;
   defaultImage: string = defecto.defecto;
   @ViewChild('fileInput') fileInput: ElementRef;
-  constructor(private userSocket: SocketUsuarioService2, private storage: Storage, private userServ: UsuarioProvider, private facebook: Facebook, public nav: NavController, private socketLogin: SocketLoginService, public toastCtrl: ToastController) {
+  constructor(private userSocket: SocketUsuarioService2, private storage: Storage, private userServ: UsuarioProvider, public nav: NavController, private socketLogin: SocketLoginService, public toastCtrl: ToastController) {
     this.usuario = new Usuarios;
   }
 
   // register and go to home page
   register() {
     //console.log(this.usuario);
-    this.usuario.login = { usuario: this.nombreDeUsuario, password: this.password, estado: false };
-    if (!this.usuario.foto) {
-      this.usuario.foto = this.defaultImage;
-    }
-    //console.log(this.usuario);
-    if (this.usuario.nombre && this.usuario.nombre && this.validateEmail(this.usuario.email)
-      && this.usuario.login.usuario && this.usuario.login.password) {
-      this.usuario.rol = this.rolUser as any;
-      var date = new Date().toUTCString();
-      this.usuario.tiporegistro = "app";
-      this.usuario.creacion = { fecha: date } as any
-      this.usuario.modificacion = { fecha: date } as any;
-      console.log(this.usuario);
-      let data = { usuario: this.usuario, negocio: [] }
-      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
-      this.userSocket.emit("registrar-usuario-cliente", ciphertext.toString());
-      this.userSocket.on('respuesta-registrar-usuario-cliente', (data) => {
-        if (!data.error) {
-          this.nav.setRoot(LoginPage);
-          let toast = this.toastCtrl.create({
-            showCloseButton: true,
-            cssClass: 'profile-bg',
-            message: "registro con exito inicie secion",
-            duration: 3000,
-            position: 'bottom'
-          });
-          toast.present();
-        } else {
-          let toast = this.toastCtrl.create({
-            showCloseButton: true,
-            cssClass: 'profile-bg',
-            message: data.error,
-            duration: 3000,
-            position: 'bottom'
-          });
-          toast.present();
-        }
-      });
+    if(this.password == this.password2)
+    {
+      this.usuario.login = { usuario: this.nombreDeUsuario, password: this.password, estado: false };
+      if (!this.usuario.foto) {
+        this.usuario.foto = this.defaultImage;
+      }
+      //console.log(this.usuario);
+      if (this.usuario.nombre && this.usuario.nombre && this.validateEmail(this.usuario.email)
+        && this.usuario.login.usuario && this.usuario.login.password) {
+        this.usuario.rol = this.rolUser as any;
+        var date = new Date().toUTCString();
+        this.usuario.tiporegistro = "app";
+        this.usuario.creacion = { fecha: date } as any
+        this.usuario.modificacion = { fecha: date } as any;
+        console.log(this.usuario);
+        let data = { usuario: this.usuario, negocio: [] }
+        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), clave.clave);
+        this.userSocket.emit("registrar-usuario-cliente", ciphertext.toString());
+        this.userSocket.on('respuesta-registrar-usuario-cliente', (data) => {
+          if (!data.error) {
+            this.nav.setRoot(LoginPage);
+            let toast = this.toastCtrl.create({
+              showCloseButton: true,
+              cssClass: 'profile-bg',
+              message: "registro con exito inicie secion",
+              duration: 3000,
+              position: 'bottom'
+            });
+            toast.present();
+          } else {
+            let toast = this.toastCtrl.create({
+              showCloseButton: true,
+              cssClass: 'profile-bg',
+              message: data.error,
+              duration: 3000,
+              position: 'bottom'
+            });
+            toast.present();
+          }
+        });
 
-    } else {
+      } else {
+        let toast = this.toastCtrl.create({
+          showCloseButton: true,
+          cssClass: 'profile-bg',
+          message: 'error debe completar todos los campos',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      }
+    }
+    else{
       let toast = this.toastCtrl.create({
         showCloseButton: true,
         cssClass: 'profile-bg',
-        message: 'error debe completar todos los campos',
+        message: 'error el password no coinciden',
         duration: 3000,
         position: 'bottom'
       });
       toast.present();
     }
+    
     //  this.nav.setRoot(HomePage);
   }
   /*

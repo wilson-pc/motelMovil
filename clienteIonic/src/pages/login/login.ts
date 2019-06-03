@@ -2,7 +2,7 @@ import { Usuarios } from './../../models/Usuarios';
 import { Component } from "@angular/core";
 import { NavController, AlertController, ToastController, MenuController } from "ionic-angular";
 import { RegisterPage } from "../register/register";
-import { Facebook } from "@ionic-native/facebook";
+//import { Facebook } from "@ionic-native/facebook";
 import * as CryptoJS from 'crypto-js';
 import { clave } from '../../app/cryptoclave';
 import { UsuarioProvider } from './../../providers/usuario/usuario';
@@ -19,7 +19,7 @@ export class LoginPage {
   rolUser: string = "Cliente";
   usuario: Usuarios;
   loginUser: any = { usuario: "", password: "", tipo: "Cliente" };
-  constructor(private storage: Storage, private socketForgotPass: SocketUsuarioService2, private userServ: UsuarioProvider, private socketLogin: SocketLoginService, private facebook: Facebook, public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
+  constructor(private storage: Storage, private socketForgotPass: SocketUsuarioService2, private userServ: UsuarioProvider, private socketLogin: SocketLoginService,public nav: NavController, public forgotCtrl: AlertController, public menu: MenuController, public toastCtrl: ToastController) {
     this.menu.swipeEnable(false);
     this.usuario = new Usuarios;
     this.connectonSocket();

@@ -367,16 +367,16 @@ module.exports = async function (io) {
             var hash = token2.crearToken(password);
 
             var mailOptions = {
-              from: '"Triservice" <wilson-pc@yandex.com>',
+              from: '"Trixy" <wilson-pc@yandex.com>',
               to: email,
-              subject: 'correo de recuperacion',
+              subject: 'Recuperación de Cuenta',
               text: 'Recupera tu correo',
-              html: '<div> <table cellspacing="0" cellpadding="0" border="0"><tbody><tr width="100%"><td valign="top" align="left" style="background:#f0f0f0; font:15px"><table style="border:none; padding:0 18px; margin:50px auto; width:500px">' +
-                '<tbody><tr width="100%" height="57"> <td valign="top" align="left" style="border-top-left-radius:4px; border-top-right-radius:4px; background:#0079BF; padding:12px 18px; text-align:center"> <h2  style="font-weight:bold; font-size:18px; color:#fff; vertical-align:top"> Tri service</h2>' +
-                '</td> </tr><tr width="100%"> <td valign="top" align="left" style="border-bottom-left-radius:4px; border-bottom-right-radius:4px; background:#fff; padding:18px"><h1 style="font-size:20px; margin:0; color:#333">Buenas: </h1>' +
-                ' <p style="font:15px/1.25em,Arial,Helvetica; color:#333">Hemos notado que esta tratando de recuperar su usuario y contraseña de triservice.</p><p style="font:15px/1.25em, Arial,Helvetica; color:#333"><strong>Fecha y hora:</strong>' + fecha + '<br>' +
-                '<p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si no es usted ignore este correo</p>' +
-                ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#333">Si es usted as click <a href="http://triservicedemo.herokuapp.com/recuperacion/' + hash + '" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> ' +
+              html: '<div> <table cellspacing="0" cellpadding="0" border="0"><tbody><tr width="100%"><td valign="top" align="left" style="background:#000000; font:15px"><table style="border:none; padding:0 18px; margin:50px auto; width:500px">' +
+                '<tbody><tr width="100%" height="57"> <td valign="top" align="left" style="border-top-left-radius:4px; border-top-right-radius:4px; background:#f00; padding:12px 18px; text-align:center"> <h2  style="font-weight:bold; font-size:18px; color:#fff; vertical-align:top"> Trixy</h2>' +
+                '</td> </tr><tr width="100%"> <td valign="top" align="left" style="border-bottom-left-radius:4px; border-bottom-right-radius:4px; background:#000; padding:18px"><h1 style="font-size:20px; margin:0; color:#fff">Estimado usuario de Trixy: </h1>' +
+                ' <p style="font:15px/1.25em,Arial,Helvetica; color:#fff">Hemos notado que esta tratando de recuperar su usuario y contraseña.</p><p style="font:15px/1.25em, Arial,Helvetica; color:#fff"><strong>Fecha y hora de la petición:</strong>' + fecha + '<br>' +
+                '<p style="font:15px/1.25em ,Arial,Helvetica; color:#fff">Si usted no realizó ninguna petición de cambio de contraseña ignore este correo</p>' +
+                ' <p style="font:15px/1.25em ,Arial,Helvetica; color:#fff">Si realizó la petición, presione <a href="http://triservicedemo.herokuapp.com/recuperacion/' + hash + '" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> ' +
                 'aqui</a> para poder crear sus nuevos creenciales </p></td></tr></tbody></table> </td></tr> </tbody> </div>'
             };
 
