@@ -53,20 +53,25 @@
             <ion-col>
               <button ion-button icon-start clear small color="default" (click)="likeProduct(product._id)">
                 <ion-icon name="thumbs-up"></ion-icon>
-                <div>100</div>
+                {{product.likes}}
               </button>
             </ion-col>
 
             <ion-col>
               <button ion-button icon-start clear small color="default" (click)="dislikeProduct(product._id)">
                 <ion-icon ios="ios-thumbs-down" md="md-thumbs-down"></ion-icon>
-                <div>10</div>
+                {{product.dislikes}}
               </button>
             </ion-col>
           </ion-row>
 
           <ion-row>
-            <ion-col></ion-col>
+            <ion-col>
+              <button ion-button color="danger" (click)="showPrompt()">Denunciar</button>
+            </ion-col>
+            <ion-col>
+              <button ion-button color="danger" (click)="reserveProduct()">Reservar</button>
+            </ion-col>
             <ion-col>
               <button ion-button color="danger" (click)="productDescription(product)">Ver Motel</button>
             </ion-col>
@@ -81,7 +86,7 @@
               </ion-slide>
             </ion-slides>
       </ion-card>
-
+ <!--
       <ion-card>
         <ion-card-content>
           <ion-card-title>
@@ -103,6 +108,7 @@
         </ion-card-content>
       </ion-card>
       <button ion-button color="danger" (click)="showPrompt()">Denunciar</button>
+      -->
       <!--Fin de card con estrella-->
     </ion-thumbnail>
 

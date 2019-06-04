@@ -16,7 +16,7 @@ import { DetallesTiendaPage } from '../detalles-tienda/detalles-tienda';
 export class DescripcionProductoPage {
 
   cantidadReserva = 1;
-  product: Productos;
+  product: any;
   productID: Productos;
   suscripctionSocket: Subscription[]=[];
   cantidad:number[]=[];

@@ -20,7 +20,7 @@
 <ion-content>
 
   <div padding>
-    <ion-item *ngFor="let productTop of listProductTop">
+    <ion-item *ngFor="let productTop of listProductTop" (click)="productDescription(productTop)">
       <ion-thumbnail item-start>
         <img [src]="productTop.foto.miniatura" />
       </ion-thumbnail>

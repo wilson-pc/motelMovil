@@ -87,6 +87,7 @@ export class TopsPage {
       tipo = { tipo: "Motel" };
       this.productService.emit("top-productos", tipo);
     }
+    /*
     if (this.Negocios == "Licorerias") {
       tipo = { tipo: "Licoreria" };
       this.productService.emit("top-productos", tipo);
@@ -95,6 +96,7 @@ export class TopsPage {
       tipo = { tipo: "SexShop" };
       this.productService.emit("top-productos", tipo);
     }
+    */
   }
 
   likeProduct(idProducto){
