@@ -7,6 +7,7 @@ import { DescriptionLicoreriaPage } from '../description-licoreria/description-l
 import { Subscription } from 'rxjs';
 
 
+
 /**
  * Generated class for the MotelPage page.
  *

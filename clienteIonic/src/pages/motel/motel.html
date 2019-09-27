@@ -38,6 +38,29 @@
         <button ion-button clear item-end (click)="presentModal(item)">Ver</button>
       </ion-item>    
     </ion-list>
+
+    <ion-card>
+      <img src="assets/imgs/trix.png" class="center">
+  
+      <ion-card-content class="letrasG">
+        Banners publicitarios, ponga su propaganda en este lugar, contactenos al 626XXXXXX-727XXXXXXXX!
+      </ion-card-content>
+      <ion-row no-padding>
+          <ion-col>
+            <button ion-button clear small color="danger" icon-start>
+              <ion-icon name="laptop"></ion-icon>
+              Link a pagina
+            </button>
+          </ion-col>
+          <ion-col text-right>
+            <button ion-button clear small color="danger" icon-start>
+              <ion-icon name='share-alt'></ion-icon>
+              Compartir
+            </button>
+          </ion-col>
+        </ion-row>    
+    </ion-card>
+    
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event,parte+1)">
       <ion-infinite-scroll-content
         loadingSpinner="bubbles"
